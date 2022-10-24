@@ -1,0 +1,747 @@
+.hide {
+  display: none !important;
+}
+textarea {
+  font-size: 12px;
+  text-align: left;
+  width: calc(100% - 20px - 2px);
+  border-radius: 10px;
+  padding: 10px;
+  resize: none;
+  overflow: hidden;
+  height: 15em;
+}
+div.box {
+  margin-top: 10px;
+}
+div.textblock {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  align-items: center;
+}
+div.textblock label {
+  text-align: center;
+  border: 1px solid black;
+  border-top: 0;
+  font-size: 10px;
+  width: calc(100% - 20px - 2px);
+  border-radius: 0 0 10px 10px;
+  padding: 4px 0;
+  font-weight: bold;
+}
+div.textblock textarea {
+  border: 1px solid black;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+ul li {
+  list-style-image: none;
+  display: block;
+}
+::-moz-placeholder {
+  color: #bbb;
+}
+:-ms-input-placeholder {
+  color: #bbb;
+}
+::placeholder {
+  color: #bbb;
+}
+label {
+  text-transform: uppercase;
+  font-size: 12px;
+}
+header {
+  display: flex;
+  align-items: stretch;
+}
+header section.charname {
+  border: 1px solid black;
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+  padding: 5px 0;
+  background-color: #eee;
+  width: 30%;
+  display: flex;
+  flex-direction: column-reverse;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  text-align: center;
+  font-size: large;
+}
+header section.charname div {
+  padding: 0.5em;
+  margin: 5px;
+  border: 0;
+}
+header section.misc {
+  width: 70%;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+header section.misc ul {
+  padding: 10px 0px 5px 0px;
+  display: flex;
+  flex-wrap: wrap;
+}
+header section.misc ul li {
+  width: 33.33333%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+header section.misc ul li div {
+  margin-bottom: 5px;
+}
+header section.misc ul li div.value {
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+main {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  flex-grow: 1;
+}
+main > section{
+  margin-right: 5px;
+  flex-grow: 1;
+}
+div.label-container {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  margin-top: 6px;
+  margin-left: -0px;
+  border: 1px solid black;
+  border-left: 0;
+  text-align: center;
+}
+div.label-container > label {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  transform: translate(0%, 50%);
+  width: 100%;
+  font-size: 8px;
+}
+section.attributes {
+  display: flex;
+  flex-direction: row;
+  min-width: 75px;
+  max-width: 100px;
+}
+div.scores {
+  background-color: #bbb;
+  border-radius: 10px;
+  flex-grow: 1;
+}
+div.attributeName {
+  font-size: 8px;
+  font-weight: bold;
+}
+div.scores ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  /* padding-bottom: 75px; */
+}
+div.scores ul li {
+  height: 80px;
+  width: 70px;
+  background-color: white;
+  border: 1px solid black;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+}
+div.mod {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+div.abilityName {
+  padding-top: 5px;
+  font-size: small;
+  
+}
+div.abilityMod {
+  font-size: 40px;
+  background: white;
+}
+div.abilityScore {
+  margin-top: 0px;
+  display: flex;
+  justify-content: center;
+}
+div.abilityScore div.score {
+  background: white;
+  width: 30px;
+  height: 20px;
+  border: 1px inset black;
+  border-radius: 20px;
+  margin: -1px;
+}
+section.attr-applications{
+  min-width: 135px;
+  max-width: 150px;
+}
+div.proficiencybonus input {
+  width: 30px;
+  height: 28px;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 10px;
+}
+ div.list-section {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px 5px;
+}
+div.list-section div.label {
+  margin-top: 10px;
+  margin-bottom: 2.5px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: bold;
+}
+div.list-section ul li {
+  display: flex;
+  align-items: center;
+}
+div.list-section ul li > * {
+  margin-left: 5px;
+}
+div.saveName {
+  text-transform: none;
+  font-size: 14px;
+  text-align: left;
+  order: 3;
+}
+div.inspiration, div.proficiencybonus{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+div.inspiration input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid black;
+  padding: 15px;
+  border-radius: 10px;
+  
+}
+div.proficiencybonus div.value{
+  width: 30px;
+  height: 28px;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 10px;
+}
+span.skillAbility {
+  color: #bbb;
+}
+div.list-section ul li div.value {
+  width: 30px;
+  font-size: 12px;
+  text-align: center;
+  border: 0;  
+  border-bottom: 1px solid black;
+  order: 2;
+}
+div.skillName {
+  text-transform: none;
+  font-size: 8px;
+  text-align: left;
+  order: 3;
+}
+div.list-section ul li input[type=checkbox] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  order: 1;
+}
+div.attr-applications div.list-section ul li input[type=checkbox]:checked {
+  background-color: black;
+}
+main > section div.passive-perception {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+main > section div.passive-perception input {
+  width: 30px;
+  height: 28px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+main > section div.otherprofs textarea {
+  height: 26em;
+}
+section.combat {
+  background-color: #eee;
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+}
+div.combatHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+div.armorclass > div, div.CMD > div, div.initiative > div, div.speed > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  flex-grow: 1;
+}
+div.armorclass > div > div.key, div.CMD > div > div.key, div.initiative > div > div.key, div.speed > div > div.key {
+  font-size: 8px;
+  width: 45px;
+  border: 1px solid black;
+  border-top: 0;
+  background-color: white;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 0 0 10px 10px;
+}
+div.armorclass > div > div.value, div.CMD > div > div.value, div.initiative > div > div.value, div.speed > div > div.value {
+  height: 60px;
+  width: 60px;
+  border-radius: 10px;
+  border: 1px solid black;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+div.hp {
+  display: flex;
+  flex-direction: row;
+}
+div.currentTotalHealth, div.otherHP{
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+}
+div.otherHP{
+  justify-content: space-around;
+}
+div.current {
+  background-color: white;
+  border: 1px solid black;
+  margin: 10px;
+  border-radius: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+div.maxHP {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+}
+div.maxHP div.key {
+  font-size: 10px;
+  color: #bbb;
+  margin: 0.25em;
+  text-transform: none;
+}
+div.maxHP >  div.value {
+  font-size: 12px;
+  flex-grow: 1;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  margin-right: 0.25em;
+  padding: 0 0.25em;
+  text-align: center;
+}
+div.current > input {
+  padding: 1em 0;
+  margin-top: 2px;
+  font-size: 20px;
+  border: 0;
+  width: 90%;
+  text-align: center;
+}
+div.current > label {
+  font-size: 10px;
+  padding-bottom: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+div.temporary {
+  margin: 10px;
+  margin-top: 0;
+  border: 1px solid black;
+  border-radius: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column-reverse;
+  background-color: white;
+  align-items: center;
+}
+div.temporary > input {
+  padding: 1em 0;
+  margin-top: 2px;
+  font-size: 20px;
+  border: 0;
+  text-align: center;
+  border: 0;
+  width: 90%;
+}
+div.temporary > label {
+  font-size: 10px;
+  padding-bottom: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+div.max {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+}
+div.max > div.value {
+  font-size: 10px;
+  text-transform: none;
+  color: #bbb;
+}
+div.max div.key {
+  width: 40%;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 12px;
+  text-align: center;
+}
+div.hitdice > div {
+  background-color: white;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+div.hitdice > div > div.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+  padding: 5px 0;
+}
+div.hitdice > div > div.total div.key {
+  font-size: 10px;
+  color: #bbb;
+  margin: 0.25em;
+  text-transform: none;
+}
+div.total >  div.value {
+  font-size: 12px;
+  flex-grow: 1;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  margin-right: 0.25em;
+  padding: 0 0.25em;
+  text-align: center;
+}
+div.remaining {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+div.remaining label {
+  text-align: center;
+  padding: 2px;
+  font-size: 10px;
+}
+div.hitdice > div > div.remaining input {
+  text-align: center;
+  border: 0;
+  flex-grow: 1;
+}
+div.deathsaves > div {
+  margin: 10px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+  min-width: 110px;
+}
+div.deathsaves > div > div.label {
+  text-align: center;
+}
+div.deathsaves > div > div.label label {
+  font-size: 10px;
+}
+div.marks {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+div.deathsuccesses, div.deathfails {
+  display: flex;
+  align-items: center;
+}
+div.deathsuccesses label, div.deathfails label {
+  font-size: 8px;
+  text-align: right;
+  flex: 1 25%;
+}
+div.bubbles {
+  flex: 1 40%;
+  margin-left: 5px;
+}
+div.bubbles input[type=checkbox] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+div.bubbles input[type=checkbox]:checked {
+  background-color: black;
+}
+section.attacksandspellcasting {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+section.attacksandspellcasting > div {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+section.attacksandspellcasting > div > label {
+  order: 3;
+  text-align: center;
+}
+section.attacksandspellcasting > div > table {
+  width: 100%;
+}
+section.attacksandspellcasting > div > table th {
+  font-size: 10px;
+  color: #ddd;
+}
+section.attacksandspellcasting > div > table div {
+  width: calc(100% - 4px);
+  border: 0;
+  background-color: #eee;
+  font-size: 10px;
+  padding: 3px;
+}
+div.atk{
+  min-width: 65px;
+}
+section.attacksandspellcasting > div > table input {
+  width: calc(100% - 4px);
+  border: 0;
+  background-color: #eee;
+  font-size: 10px;
+  padding: 3px;
+}
+section.toggles {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 5px;
+}
+section.toggles > form{
+  display: flex;
+  flex-direction: column;
+}
+section.toggles > form > div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+section.toggles > form > div > input{
+  display: flex;
+  justify-content: flex-end;
+}
+section.toggles > form > div > select{
+  font-size: 10px;
+}
+div.separator{
+  text-decoration: underline;
+  margin-top: 5px;
+}
+section.consumables {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+section.consumables > div {
+  background-color: white;
+  margin-top: 10px ;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+}
+section.consumables > div > div.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+  padding: 5px 0;
+}
+section.consumables > div > div.total div.key {
+  font-size: 10px;
+  color: #bbb;
+  margin: 0.25em;
+  text-transform: none;
+}
+section.consumables >  div.value {
+  font-size: 12px;
+  flex-grow: 1;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  margin-right: 0.25em;
+  padding: 0 0.25em;
+  text-align: center;
+}
+section.consumables label {
+  text-align: center;
+  padding: 2px;
+  font-size: 10px;
+}
+section.consumables > div > div.remaining input {
+  text-align: center;
+  border: 0;
+  flex-grow: 1;
+}
+main section.equipment {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+main section.equipment > div {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+main section.equipment > div > div.money ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+main section.equipment > div > div.money ul > li {
+  display: flex;
+  align-items: center;
+}
+main section.equipment > div > div.money ul > li label {
+  border: 1px solid black;
+  border-radius: 10px 0 0 10px;
+  border-right: 0;
+  width: 20px;
+  font-size: 8px;
+  text-align: center;
+  padding: 3px 0;
+}
+main section.equipment > div > div.money ul > li input {
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 40px;
+  padding: 10px 3px;
+  font-size: 12px;
+  text-align: center;
+}
+main section.equipment > div > label {
+  order: 3;
+  text-align: center;
+  flex: 100%;
+}
+main section.equipment > div > textarea {
+  flex: 1;
+  border: 0;
+}
+main section.flavor {
+  padding: 10px;
+  background: #bbb;
+  border-radius: 10px;
+}
+main section.flavor div {
+  background: white;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 5px;
+  border: 1px solid black;
+}
+main section.flavor div label {
+  text-align: center;
+  font-size: 10px;
+  margin-top: 3px;
+}
+main section.flavor div textarea {
+  border: 0;
+  border-radius: 0;
+  height: 4em;
+}
+main section.flavor div:first-child {
+  border-radius: 10px 10px 0 0;
+}
+main section.flavor div:not(:first-child) {
+  margin-top: 10px;
+}
+main section.flavor div:last-child {
+  border-radius: 0 0 10px 10px;
+}
+main section.features {
+  padding: 10px;
+}
+main section.features div {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+main section.features div label {
+  text-align: center;
+}
+main section.features div textarea {
+  border: 0;
+  padding: 5px;
+  height: 43em;
+}
+
+section.powerAttack {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.powerAttack > canvas {
+  padding: 10px;
+  width: 100%;
+}
+section.powerAttack > label {
+  order: 3;
+  text-align: center;
+}

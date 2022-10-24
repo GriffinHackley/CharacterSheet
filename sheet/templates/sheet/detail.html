@@ -1,0 +1,354 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'sheet/5eSheet.css'   %}">
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
+<header>
+  <section class="charname">
+    <div>{{character.name}}</div>
+  </section>
+  <section class="misc">
+    <ul>
+      <li>
+        <div class="field">Class & Level</div>
+        <div class="value">{{character.charClass}} {{character.level}}</div>
+      </li>
+      <li>
+        <div class="field">Background</div>
+        <div class="value">{{character.background}}</div>
+      </li>
+      <li>
+        <div class="field">Player Name</div>
+        <div class="value">{{character.playerName}}</div>
+      </li>
+      <li>
+        <div class="field">Race</div>
+        <div class="value">{{character.race}}</div>
+      </li>
+      <li>
+        <div class="field">Alignment</div>
+        <div class="value">{{character.alignment}}</div>
+      </li>
+      {% if character.config.edition == "Pathfinder" %}
+      <li>
+        <div class="field">Traits</div>
+        <div class="value">{{character.traits.0}}, {{character.traits.1}}</div>
+      </li>
+      {%endif%}
+    </ul>
+  </section>
+</header>
+
+<main>
+    <section class=attributes>
+      <div class=scores>
+          <ul>
+              {% for ability,score in character.abilityScores.items %}
+              <li>
+                  <div class="mod" id=strength>
+                      <div class="abilityName">{{ ability }}</div>
+                      <div class="abilityMod"> {{ character.abilityMod|get_item:ability }}</div>
+                  </div>
+                  <div class="abilityScore"><div class=score>{{ score }}</div></div>
+              </li>
+              {% endfor %}
+          </ul>      
+      </div>
+    </section>
+
+    <section class="attr-applications">
+      {% if character.config.edition == "5e" %}
+      <div class="inspiration box">
+        <div class="label-container">
+          <label for="inspiration">Inspiration</label>
+        </div>
+        <input name="inspiration" type="checkbox" />
+      </div>
+      <div class="proficiencybonus box">
+        <div class="label-container">
+          <label>Proficiency Bonus</label>
+        </div>
+        <div class="value">+2</div>
+      </div>
+      {% endif %}
+      <div class="saves list-section box">
+        <ul>
+          <!-- SAVING THROWS -->
+          {% for save,value in character.saves.items %}
+          <li>
+            <div class="saveName">{{save}}</div>
+            <div class="value">{{value.value}}</div>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="label">
+          Saving Throws
+        </div>
+      </div>
+      <div class="skills list-section box">
+        <ul>
+          <!-- SKILL LIST -->
+          {% for skill,value in character.skills.items %}
+          <li>
+            <div class="skillName"> {{skill}} <span class="skillAbility"> {{value.ability}} </span></div>
+            <div class="value"> {{value.value}} </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="label">
+          Skills
+        </div>
+      </div>
+    </section>
+
+    <section>
+        <section class="combat">
+          <div class="combatHeader">
+            
+            <div class="armorclass">
+              <div>
+                <div class="value">{{character.combat.AC}}</div>
+                <div class="key">Armor Class</div>
+              </div>
+            </div>
+
+            {% if character.config.edition == "Pathfinder" %}
+            <div class="CMD">
+              <div>
+                <div class="value">{{character.combat.AC}}</div>
+                <div class="key">CMD</div>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="initiative">
+              <div>
+                <div class="value">{{character.combat.Initiative}}</div>
+                <div class="key">Initiative</div>
+              </div>
+            </div>
+
+            <div class="speed">
+              <div>
+                <div class="value">{{character.combat.Speed}}</div>
+                <div class="key">Speed</div>
+              </div>
+            </div>
+
+          </div>
+          
+          <div class="hp">
+
+            <div class="otherHp">
+
+              <div class="hitdice">
+                <div>
+                  <div class="total">
+                    <div class="key">Total</div>
+                    <div class="value">{{character.level}}d{{character.hitDie}}</div>
+                  </div>
+                  <div class="remaining">
+                    <input name="remaininghd" type="text" />
+                    <label for="remaininghd">Hit Dice</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="deathsaves">
+                <div>
+                  <div class="label">
+                    <label>Death Saves</label>
+                  </div>
+                  <div class="marks">
+                    <div class="deathsuccesses">
+                      <label>Successes</label>
+                      <div class="bubbles">
+                        <input name="deathsuccess1" type="checkbox" />
+                        <input name="deathsuccess2" type="checkbox" />
+                        <input name="deathsuccess3" type="checkbox" />
+                      </div>
+                    </div>
+                    <div class="deathfails">
+                      <label>Failures</label>
+                      <div class="bubbles">
+                        <input name="deathfail1" type="checkbox" />
+                        <input name="deathfail2" type="checkbox" />
+                        <input name="deathfail3" type="checkbox" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="currentTotalHealth">
+              
+              <div class="current">
+
+                <div class="maxHP">
+                  <div class="key">Max HP</div>
+                  <div class="value">{{character.combat.HP}}</div>
+                </div>
+
+                  <input name="currenthp" type="text" />
+                  <label for="currenthp">Current Hit Points</label>
+                
+              </div>
+
+              <div class="temporary">
+                <label for="temphp">Temporary Hit Points</label>
+                <input name="temphp" type="text" />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="attacksandspellcasting">
+          <div>
+            <label>Attacks & Spellcasting</label>
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    Name
+                  </th>
+                  {% if character.config.edition == "Pathfinder" %}
+                  <th>
+                    Crit Range
+                  </th>                  
+                  {%endif%}
+                  <th>
+                    Atk Bonus
+                  </th>
+                  <th>
+                    Damage/Type
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for attack,value in character.combat.Attacks.items %}
+                <tr>
+                  <td>
+                    <div class="atk">{{attack}}</div>
+                  </td>
+                  {% if character.config.edition == "Pathfinder" %}
+                  <td>
+                    <div class="critRange">{{value.critRange}}/x{{value.critDamage}}</div>
+                  </td>
+                  {%endif%}
+                  <td>
+                    <div class="toHit">+{{value.toHit}}</div>
+                  </td>
+                  <td>
+                    <div class="damage">{{value.damage}}</div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <!-- <textarea></textarea> -->
+          </div>
+        </section>
+    </section>
+
+    <section>
+      <section class="equipment">
+        <div>
+          <label>Equipment</label>
+          <div class="money">
+            <ul>
+              <li>
+                <label for="cp">cp</label><input name="cp" />
+              </li>
+              <li>
+                <label for="sp">sp</label><input name="sp" />
+              </li>
+              <li>
+                <label for="ep">ep</label><input name="ep" />
+              </li>
+              <li>
+                <label for="gp">gp</label><input name="gp" />
+              </li>
+              <li>
+                <label for="pp">pp</label><input name="pp" />
+              </li>
+            </ul>
+          </div>
+          <textarea placeholder="Equipment list here"></textarea>
+        </div>
+      </section>
+
+      <section class="consumables">
+        {% for key,value in character.combat.Consumables.items %}
+        <div>
+          <div class="total">
+            <div class="key">Total</div>
+            <div class="value">{{value}}</div>
+          </div>
+          <div class="remaining">
+            <input name="remainingconsumable" type="text" />
+            <label for="remainingconsumable">{{key}}</label>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+
+      <section class="toggles">
+        <form action="" method="GET">
+          {% csrf_token %}
+          {% if character.config.edition == "Pathfinder" %}
+          <div class="separator">AC Type</div>
+          {{ forms.acType.as_div }}
+          {% endif %}
+          <div class="separator">Combat</div>
+          {{ forms.combat.as_div }}
+          <div class="separator">Spells</div>
+          {{ forms.spell.as_div }}
+          {% if character.config.edition == "Pathfinder" %}
+          <div class="separator">Skills</div>
+          {{ forms.skill.as_div }}
+          {% endif %}
+          <input type="submit" value="Submit">
+        </form>
+      </section>
+
+    </section>
+
+</main>
+
+<section class="flexPanel">
+  <section class="powerAttack">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <body>
+    <canvas id="powerAttackGraph"></canvas>
+    
+    <script>
+    var xValues = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
+  
+    new Chart("powerAttackGraph", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{ 
+          data: {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}},
+          borderColor: "blue",
+          fill: false
+        }, { 
+          data: {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}},
+          borderColor: "red",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {display: false},
+        animation: false
+      }
+    });
+    </script>
+    <label>Power Attack</label>
+  </section>
+</section>
