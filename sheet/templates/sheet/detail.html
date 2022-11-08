@@ -5,7 +5,8 @@
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
 
-<header>
+<section class="pageContainer">
+  <header>
   <section class="charname">
     <div>{{character.name}}</div>
   </section>
@@ -39,9 +40,9 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       {%endif%}
     </ul>
   </section>
-</header>
+  </header>
 
-<main>
+  <main>
     <section class=attributes>
       <div class=scores>
           <ul>
@@ -103,7 +104,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       </div>
     </section>
 
-    <section>
+    <section class="combatPane">
         <section class="combat">
           <div class="combatHeader">
             
@@ -255,8 +256,8 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         </section>
     </section>
 
-    <section>
-      <section class="equipment">
+    <section class="rightPane">
+      <!-- <section class="equipment">
         <div>
           <label>Equipment</label>
           <div class="money">
@@ -280,7 +281,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           </div>
           <textarea placeholder="Equipment list here"></textarea>
         </div>
-      </section>
+      </section> -->
 
       <section class="consumables">
         {% for key,value in character.combat.Consumables.items %}
@@ -318,37 +319,56 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 
     </section>
 
-</main>
+  </main>
 
-<section class="flexPanel">
-  <section class="powerAttack">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <body>
-    <canvas id="powerAttackGraph"></canvas>
-    
-    <script>
-    var xValues = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
-  
-    new Chart("powerAttackGraph", {
-      type: "line",
-      data: {
-        labels: xValues,
-        datasets: [{ 
-          data: {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}},
-          borderColor: "blue",
-          fill: false
-        }, { 
-          data: {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}},
-          borderColor: "red",
-          fill: false
-        }]
-      },
-      options: {
-        legend: {display: false},
-        animation: false
-      }
-    });
-    </script>
-    <label>Power Attack</label>
+  <section class="flexPanel">
+    <section class="powerAttack">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <body>
+      <canvas id="powerAttackGraph"></canvas>
+      
+      <script>
+      var xValues = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
+      
+      new Chart("powerAttackGraph", {
+        type: "line",
+        data: {
+          labels: xValues,
+          datasets: [{ 
+            label: "Normal",
+            data: {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}},
+            borderColor: "blue",
+            fill: false
+          }, { 
+            label: "Power Attack",
+            data: {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}},
+            borderColor: "red",
+            fill: false
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          legend: {display: true},
+          animation: false,
+          scales: {
+            xAxes : [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Target AC'
+              }
+            }],
+            yAxes : [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Average Damage'
+              }
+            }]
+          }
+        }
+      });
+      </script>
+    </section>
   </section>
 </section>

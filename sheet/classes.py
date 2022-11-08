@@ -62,9 +62,16 @@ class Warpiest(Class):
         return '1d6'
     
     def getConsumables(self, stats):
-        fervor = 3 + math.floor(self.level/2)
-        blessings = 3 + math.floor(stats['Wisdom']/2)
-        return {'Fervor': fervor, 'Blessings': blessings}
+        ret = {}
+        ret['Blessings'] = 3 + math.floor(stats['Wisdom']/2)
+        
+        if self.level >= 2:
+            ret['Fervor'] = 3 + math.floor(self.level/2)
+        
+        if self.level >= 4:
+            ret['Focus Weapon'] = self.level
+
+        return ret
 
 class Ranger(Class):
     proficiencies = {'skills': ['Insight', 'Stealth', 'Survival'], 'armor': ['Light', 'Medium'], 'weapons':['Simple', 'Martial'], 'tools':[], 'saving throws':['Strength', 'Dexterity']}
@@ -88,5 +95,5 @@ class Ranger(Class):
         return {'Favored Foe': favoredFoe, 'Hunter\'s Mark': huntersMark}
 
 classes = {}
-classes['Warpriest'] = Warpiest(3)
+classes['Warpriest'] = Warpiest(4)
 classes['Ranger']    = Ranger(4)

@@ -1,3 +1,8 @@
+section.pageContainer{
+  display: flex;
+  flex-direction: column;
+  height: 99%;
+}
 .hide {
   display: none !important;
 }
@@ -106,11 +111,9 @@ main {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-  flex-grow: 1;
 }
 main > section{
   margin-right: 5px;
-  flex-grow: 1;
 }
 div.label-container {
   position: relative;
@@ -193,7 +196,7 @@ div.abilityScore div.score {
   margin: -1px;
 }
 section.attr-applications{
-  min-width: 135px;
+  min-width: 145px;
   max-width: 150px;
 }
 div.proficiencybonus input {
@@ -295,11 +298,17 @@ main > section div.passive-perception input {
 main > section div.otherprofs textarea {
   height: 26em;
 }
+section.combatPane{
+  display: flex;
+  flex-direction: column;
+}
 section.combat {
   background-color: #eee;
   display: flex;
   border-radius: 10px;
   flex-direction: column;
+  flex-grow: 2;
+  justify-content: space-evenly;
 }
 div.combatHeader {
   display: flex;
@@ -526,11 +535,13 @@ section.attacksandspellcasting {
   border: 1px solid black;
   border-radius: 10px;
   margin-top: 10px;
+  margin-bottom: 10px;
+  flex-grow: 1;
 }
 section.attacksandspellcasting > div {
-  margin: 10px;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 section.attacksandspellcasting > div > label {
   order: 3;
@@ -538,6 +549,7 @@ section.attacksandspellcasting > div > label {
 }
 section.attacksandspellcasting > div > table {
   width: 100%;
+  flex-grow: 1;
 }
 section.attacksandspellcasting > div > table th {
   font-size: 10px;
@@ -560,24 +572,37 @@ section.attacksandspellcasting > div > table input {
   font-size: 10px;
   padding: 3px;
 }
+section.rightPane{
+  display: flex;
+  flex-direction: column;
+  max-width: 250px;
+}
 section.toggles {
+  display: flex;
   border: 1px solid black;
   border-radius: 10px;
   margin-top: 10px;
   padding: 5px;
+  flex-grow: 1;
 }
 section.toggles > form{
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
 }
 section.toggles > form > div{
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
+  justify-content: left;
 }
 section.toggles > form > div > input{
   display: flex;
   justify-content: flex-end;
+}
+section.toggles > form > div > label{
+  margin-left: 5px;
 }
 section.toggles > form > div > select{
   font-size: 10px;
@@ -589,7 +614,9 @@ div.separator{
 section.consumables {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  min-height: 175px;
 }
 section.consumables > div {
   background-color: white;
@@ -613,7 +640,7 @@ section.consumables > div > div.total div.key {
   text-transform: none;
 }
 section.consumables >  div.value {
-  font-size: 12px;
+  font-size: 15px;
   flex-grow: 1;
   border: 0;
   border-bottom: 1px solid #ddd;
@@ -627,6 +654,7 @@ section.consumables label {
   font-size: 10px;
 }
 section.consumables > div > div.remaining input {
+  font-size: 25px;
   text-align: center;
   border: 0;
   flex-grow: 1;
@@ -728,20 +756,24 @@ main section.features div textarea {
   height: 43em;
 }
 
-section.powerAttack {
+section.flexPanel {
+  display: flex;
   border: 1px solid black;
   border-radius: 10px;
-  margin-top: 10px;
-  width: 100%;
+  margin-top: 5px;
+
+  flex-grow: 1;
+  min-height: 500px;
+}
+section.powerAttack {
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
+  padding: 7px;
 }
 section.powerAttack > canvas {
-  padding: 10px;
   width: 100%;
-}
-section.powerAttack > label {
-  order: 3;
-  text-align: center;
+  height: 100%;
+  flex-grow: 1;
 }
