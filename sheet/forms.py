@@ -1,6 +1,16 @@
 from ast import arg
 from django import forms
 
+class GeneralHealthForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    currentHitDice = forms.CharField(required=False)
+    # currentDeathSaves = forms.CharField(required=False)
+    currentHealth = forms.CharField(required=False)
+    tempHealth = forms.CharField(required=False)
+
 class ACTypeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -5,45 +5,46 @@
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
 
-<section class="pageContainer">
-  <header>
-  <section class="charname">
-    <div>{{character.name}}</div>
-  </section>
-  <section class="misc">
-    <ul>
-      <li>
-        <div class="field">Class & Level</div>
-        <div class="value">{{character.charClass}} {{character.level}}</div>
-      </li>
-      <li>
-        <div class="field">Background</div>
-        <div class="value">{{character.background}}</div>
-      </li>
-      <li>
-        <div class="field">Player Name</div>
-        <div class="value">{{character.playerName}}</div>
-      </li>
-      <li>
-        <div class="field">Race</div>
-        <div class="value">{{character.race}}</div>
-      </li>
-      <li>
-        <div class="field">Alignment</div>
-        <div class="value">{{character.alignment}}</div>
-      </li>
-      {% if character.config.edition == "Pathfinder" %}
-      <li>
-        <div class="field">Traits</div>
-        <div class="value">{{character.traits.0}}, {{character.traits.1}}</div>
-      </li>
-      {%endif%}
-    </ul>
-  </section>
-  </header>
-
-  <main>
-    <section class=attributes>
+<form action="" method="GET">
+{% csrf_token %}
+  <section class="pageContainer">
+    <header>
+      <section class="charname">
+        <div>{{character.name}}</div>
+      </section>
+      <section class="misc">
+        <ul>
+          <li>
+            <div class="field">Class & Level</div>
+            <div class="value">{{character.charClass}} {{character.level}}</div>
+          </li>
+          <li>
+            <div class="field">Background</div>
+            <div class="value">{{character.background}}</div>
+          </li>
+          <li>
+            <div class="field">Player Name</div>
+            <div class="value">{{character.playerName}}</div>
+          </li>
+          <li>
+            <div class="field">Race</div>
+            <div class="value">{{character.race}}</div>
+          </li>
+          <li>
+            <div class="field">Alignment</div>
+            <div class="value">{{character.alignment}}</div>
+          </li>
+          {% if character.config.edition == "Pathfinder" %}
+          <li>
+            <div class="field">Traits</div>
+            <div class="value">{{character.traits.0}}, {{character.traits.1}}</div>
+          </li>
+          {%endif%}
+        </ul>
+      </section>
+    </header>
+    <main>
+      <section class=attributes>
       <div class=scores>
           <ul>
               {% for ability,score in character.abilityScores.items %}
@@ -57,130 +58,113 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
               {% endfor %}
           </ul>      
       </div>
-    </section>
+      </section>
 
-    <section class="attr-applications">
-      {% if character.config.edition == "5e" %}
-      <div class="inspiration">
-        <div class="labelBox">
-          <label for="inspiration">Inspiration</label>
+      <section class="attr-applications">
+        {% if character.config.edition == "5e" %}
+        <div class="inspiration">
+          <div class="labelBox">
+            <label for="inspiration">Inspiration</label>
+          </div>
+          <input name="inspiration" type="checkbox" />
         </div>
-        <input name="inspiration" type="checkbox" />
-      </div>
-      <div class="proficiencybonus">
-        <div class="labelBox">
-          <label>Proficiency Bonus</label>
+        <div class="proficiencybonus">
+          <div class="labelBox">
+            <label>Proficiency Bonus</label>
+          </div>
+          <div class="value">+2</div>
         </div>
-        <div class="value">+2</div>
-      </div>
-      {% endif %}
-      <div class="saves list-section">
-        <ul>
-          <!-- SAVING THROWS -->
-          {% for save,value in character.saves.items %}
-          <li>
-            <div class="saveName">{{save}}</div>
-            <div class="value">{{value.value}}</div>
-          </li>
-          {% endfor %}
-        </ul>
-        <div class="label">
-          Saving Throws
+        {% endif %}
+        <div class="saves list-section">
+          <ul>
+            <!-- SAVING THROWS -->
+            {% for save,value in character.saves.items %}
+            <li>
+              <div class="saveName">{{save}}</div>
+              <div class="value">{{value.value}}</div>
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="label">
+            Saving Throws
+          </div>
         </div>
-      </div>
-      <div class="skills list-section">
-        <ul>
-          <!-- SKILL LIST -->
-          {% for skill,value in character.skills.items %}
-          <li>
-            <div class="skillName"> {{skill}} <span class="skillAbility"> {{value.ability}} </span></div>
-            <div class="value"> {{value.value}} </div>
-          </li>
-          {% endfor %}
-        </ul>
-        <div class="label">
-          Skills
+        <div class="skills list-section">
+          <ul>
+            <!-- SKILL LIST -->
+            {% for skill,value in character.skills.items %}
+            <li>
+              <div class="skillName"> {{skill}} <span class="skillAbility"> {{value.ability}} </span></div>
+              <div class="value"> {{value.value}} </div>
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="label">
+            Skills
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="combatPane">
+      <section class="combatPane">
         <section class="combat">
           <div class="combatHeader">
             
             <div class="armorclass">
-              <div>
-                <div class="value">{{character.combat.AC}}</div>
-                <div class="key">Armor Class</div>
-              </div>
+              <div class="value">{{character.combat.AC}}</div>
+              <div class="key">Armor Class</div>
             </div>
 
             {% if character.config.edition == "Pathfinder" %}
             <div class="CMD">
-              <div>
-                <div class="value">{{character.combat.AC}}</div>
-                <div class="key">CMD</div>
-              </div>
+              <div class="value">{{character.combat.AC}}</div>
+              <div class="key">CMD</div>
             </div>
             {% endif %}
 
             <div class="initiative">
-              <div>
-                <div class="value">{{character.combat.Initiative}}</div>
-                <div class="key">Initiative</div>
-              </div>
+              <div class="value">{{character.combat.Initiative}}</div>
+              <div class="key">Initiative</div>
             </div>
 
             <div class="speed">
-              <div>
-                <div class="value">{{character.combat.Speed}}</div>
-                <div class="key">Speed</div>
-              </div>
+              <div class="value">{{character.combat.Speed}}</div>
+              <div class="key">Speed</div>
             </div>
 
           </div>
           
           <div class="hp">
-
             <div class="otherHp">
 
               <div class="hitdice">
-                <div>
-                  <div class="total">
-                    <div class="key">Total</div>
-                    <div class="value">{{character.level}}d{{character.hitDie}}</div>
-                  </div>
-                  <div class="remaining">
-                    <input name="remaininghd" type="text" />
-                    <label for="remaininghd">Hit Dice</label>
-                  </div>
+                <div class="totalHD">
+                  <div class="key">Total Hit Dice</div>
+                  <div class="value">{{character.level}}d{{character.hitDie}}</div>
                 </div>
+                {{ forms.health.currentHitDice }}
+                <label for="remaininghd">Hit Dice</label>
               </div>
 
               <div class="deathsaves">
-                <div>
-                  <div class="label">
-                    <label>Death Saves</label>
-                  </div>
-                  <div class="marks">
-                    <div class="deathsuccesses">
-                      <label>Successes</label>
-                      <div class="bubbles">
-                        <input name="deathsuccess1" type="checkbox" />
-                        <input name="deathsuccess2" type="checkbox" />
-                        <input name="deathsuccess3" type="checkbox" />
-                      </div>
+                <div class="marks">
+                  <div class="deathsuccesses">
+                    <label>Successes</label>
+                    <div class="bubbles">
+                      <input name="deathsuccess1" type="checkbox" />
+                      <input name="deathsuccess2" type="checkbox" />
+                      <input name="deathsuccess3" type="checkbox" />
                     </div>
-                    <div class="deathfails">
-                      <label>Failures</label>
-                      <div class="bubbles">
-                        <input name="deathfail1" type="checkbox" />
-                        <input name="deathfail2" type="checkbox" />
-                        <input name="deathfail3" type="checkbox" />
-                      </div>
+                  </div>
+                  <div class="deathfails">
+                    <label>Failures</label>
+                    <div class="bubbles">
+                      <input name="deathfail1" type="checkbox" />
+                      <input name="deathfail2" type="checkbox" />
+                      <input name="deathfail3" type="checkbox" />
                     </div>
                   </div>
                 </div>
+                <label>Death Saves</label>
               </div>
 
             </div>
@@ -188,20 +172,17 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             <div class="currentTotalHealth">
               
               <div class="current">
-
                 <div class="maxHP">
-                  <div class="key">Max HP</div>
+                  <div class="key">Max Hit Points</div>
                   <div class="value">{{character.combat.HP}}</div>
                 </div>
-
-                  <input name="currenthp" type="text" />
-                  <label for="currenthp">Current Hit Points</label>
-                
+                {{ forms.health.currentHealth }}
+                <label>Current Hit Points</label>
               </div>
 
               <div class="temporary">
+                {{ forms.health.tempHealth }}
                 <label for="temphp">Temporary Hit Points</label>
-                <input name="temphp" type="text" />
               </div>
             </div>
 
@@ -254,53 +235,51 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             <!-- <textarea></textarea> -->
           </div>
         </section>
-    </section>
-
-    <section class="rightPane">
-      <!-- <section class="equipment">
-        <div>
-          <label>Equipment</label>
-          <div class="money">
-            <ul>
-              <li>
-                <label for="cp">cp</label><input name="cp" />
-              </li>
-              <li>
-                <label for="sp">sp</label><input name="sp" />
-              </li>
-              <li>
-                <label for="ep">ep</label><input name="ep" />
-              </li>
-              <li>
-                <label for="gp">gp</label><input name="gp" />
-              </li>
-              <li>
-                <label for="pp">pp</label><input name="pp" />
-              </li>
-            </ul>
-          </div>
-          <textarea placeholder="Equipment list here"></textarea>
-        </div>
-      </section> -->
-
-      <section class="consumables">
-        {% for key,value in character.combat.Consumables.items %}
-        <div>
-          <div class="total">
-            <div class="key">Total</div>
-            <div class="value">{{value}}</div>
-          </div>
-          <div class="remaining">
-            <input name="remainingconsumable" type="text" />
-            <label for="remainingconsumable">{{key}}</label>
-          </div>
-        </div>
-        {% endfor %}
       </section>
 
-      <section class="toggles">
-        <form action="" method="GET">
-          {% csrf_token %}
+      <section class="rightPane">
+        <!-- <section class="equipment">
+          <div>
+            <label>Equipment</label>
+            <div class="money">
+              <ul>
+                <li>
+                  <label for="cp">cp</label><input name="cp" />
+                </li>
+                <li>
+                  <label for="sp">sp</label><input name="sp" />
+                </li>
+                <li>
+                  <label for="ep">ep</label><input name="ep" />
+                </li>
+                <li>
+                  <label for="gp">gp</label><input name="gp" />
+                </li>
+                <li>
+                  <label for="pp">pp</label><input name="pp" />
+                </li>
+              </ul>
+            </div>
+            <textarea placeholder="Equipment list here"></textarea>
+          </div>
+        </section> -->
+
+        <section class="consumables">
+          {% for key,value in character.combat.Consumables.items %}
+          <div>
+            <div class="total">
+              <div class="key">Total</div>
+              <div class="value">{{value}}</div>
+            </div>
+            <div class="remainingConsumable">
+              <input name="remainingConsumable" type="text" />
+              <label for="remainingConsumable">{{key}}</label>
+            </div>
+          </div>
+          {% endfor %}
+        </section>
+
+        <section class="toggles">
           {% if character.config.edition == "Pathfinder" %}
           <div class="separator">AC Type</div>
           {{ forms.acType.as_div }}
@@ -314,61 +293,61 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           {{ forms.skill.as_div }}
           {% endif %}
           <input type="submit" value="Submit">
-        </form>
+        </section>
+
       </section>
 
-    </section>
+    </main>
 
-  </main>
-
-  <section class="flexPanel">
-    <section class="powerAttack">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-      <body>
-      <canvas id="powerAttackGraph"></canvas>
-      
-      <script>
-      var xValues = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
-      
-      new Chart("powerAttackGraph", {
-        type: "line",
-        data: {
-          labels: xValues,
-          datasets: [{ 
-            label: "Normal",
-            data: {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}},
-            borderColor: "blue",
-            fill: false
-          }, { 
-            label: "Power Attack",
-            data: {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}},
-            borderColor: "red",
-            fill: false
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          legend: {display: true},
-          animation: false,
-          scales: {
-            xAxes : [{
-              display: true,
-              scaleLabel: {
-                display: true,
-                labelString: 'Target AC'
-              }
-            }],
-            yAxes : [{
-              display: true,
-              scaleLabel: {
-                display: true,
-                labelString: 'Average Damage'
-              }
+    <section class="flexPanel">
+      <section class="powerAttack">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <body>
+        <canvas id="powerAttackGraph"></canvas>
+        
+        <script>
+        var xValues = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
+        
+        new Chart("powerAttackGraph", {
+          type: "line",
+          data: {
+            labels: xValues,
+            datasets: [{ 
+              label: "Normal",
+              data: {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}},
+              borderColor: "blue",
+              fill: false
+            }, { 
+              label: "Power Attack",
+              data: {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}},
+              borderColor: "red",
+              fill: false
             }]
+          },
+          options: {
+            maintainAspectRatio: false,
+            legend: {display: true},
+            animation: false,
+            scales: {
+              xAxes : [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Target AC'
+                }
+              }],
+              yAxes : [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Average Damage'
+                }
+              }]
+            }
           }
-        }
-      });
-      </script>
+        });
+        </script>
+      </section>
     </section>
   </section>
-</section>
+</form>

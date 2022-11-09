@@ -319,14 +319,14 @@ div.combatHeader {
   align-items: center;
   flex-grow: 1;
 }
-div.armorclass > div, div.CMD > div, div.initiative > div, div.speed > div {
+div.armorclass, div.CMD, div.initiative, div.speed {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
   flex-grow: 1;
 }
-div.armorclass > div > div.key, div.CMD > div > div.key, div.initiative > div > div.key, div.speed > div > div.key {
+div.armorclass > div.key, div.CMD > div.key, div.initiative > div.key, div.speed > div.key {
   font-size: 8px;
   width: 45px;
   border: 1px solid black;
@@ -337,7 +337,7 @@ div.armorclass > div > div.key, div.CMD > div > div.key, div.initiative > div > 
   padding-bottom: 5px;
   border-radius: 0 0 10px 10px;
 }
-div.armorclass > div > div.value, div.CMD > div > div.value, div.initiative > div > div.value, div.speed > div > div.value {
+div.armorclass > div.value, div.CMD > div.value, div.initiative > div.value, div.speed > div.value {
   height: 60px;
   width: 60px;
   border-radius: 10px;
@@ -353,118 +353,39 @@ div.hp {
   flex-direction: row;
   flex-grow: 2;
 }
+div.hitDice, div.deathsaves, div.current, div.temporary{
+  background-color: white;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 10px 10px 10px 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+div.deathsaves {
+  min-width: 110px;
+}
 div.currentTotalHealth, div.otherHP{
   display: flex;
   width: 50%;
   flex-direction: column;
   justify-content: space-evenly;
 }
-div.current {
-  background-color: white;
-  border: 1px solid black;
-  margin: 10px;
-  border-radius: 10px 10px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-div.maxHP {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-around;
-}
-div.maxHP div.key {
-  font-size: 10px;
-  color: #bbb;
-  margin: 0.25em;
-  text-transform: none;
-}
-div.maxHP >  div.value {
-  font-size: 12px;
-  flex-grow: 1;
-  border: 0;
-  border-bottom: 1px solid #ddd;
-  margin-right: 0.25em;
-  padding: 0 0.25em;
-  text-align: center;
-}
-div.current > input {
-  padding: 1em 0;
-  margin-top: 2px;
-  font-size: 20px;
-  border: 0;
-  width: 90%;
-  text-align: center;
-}
-div.current > label {
-  font-size: 10px;
-  padding-bottom: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-div.temporary {
-  margin: 10px;
-  margin-top: 0;
-  border: 1px solid black;
-  border-radius: 10px 10px 10px 10px;
-  display: flex;
-  flex-direction: column-reverse;
-  background-color: white;
-  align-items: center;
-}
-div.temporary > input {
-  padding: 1em 0;
-  margin-top: 2px;
-  font-size: 20px;
-  border: 0;
-  text-align: center;
-  border: 0;
-  width: 90%;
-}
-div.temporary > label {
-  font-size: 10px;
-  padding-bottom: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-div.max {
-  display: flex;
-  justify-content: space-around;
-  align-items: baseline;
-}
-div.max > div.value {
-  font-size: 10px;
-  text-transform: none;
-  color: #bbb;
-}
-div.max div.key {
-  width: 40%;
-  border: 0;
-  border-bottom: 1px solid #ddd;
-  font-size: 12px;
-  text-align: center;
-}
-div.hitdice > div {
-  background-color: white;
-  margin: 10px;
-  border: 1px solid black;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-}
-div.hitdice > div > div.total {
+div.maxHP, div.totalHD {
   display: flex;
   align-items: baseline;
   justify-content: space-around;
   padding: 5px 0;
 }
-div.hitdice > div > div.total div.key {
+div.maxHP div.key, div.totalHD div.key {
   font-size: 10px;
   color: #bbb;
   margin: 0.25em;
   text-transform: none;
 }
-div.total >  div.value {
+div.maxHP div.value, div.totalHD div.value {
   font-size: 12px;
   flex-grow: 1;
   border: 0;
@@ -473,50 +394,42 @@ div.total >  div.value {
   padding: 0 0.25em;
   text-align: center;
 }
-div.remaining {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-div.remaining label {
-  text-align: center;
-  padding: 2px;
-  font-size: 10px;
-}
-div.hitdice > div > div.remaining input {
-  text-align: center;
+div.current input, div.temporary input, div.hitDice input {
+  padding: 1em 0;
+  margin-top: 2px;
+  font-size: 20px;
   border: 0;
-  flex-grow: 1;
-}
-div.deathsaves > div {
-  margin: 10px;
-  background: white;
-  border: 1px solid black;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column-reverse;
-  min-width: 110px;
-}
-div.deathsaves > div > div.label {
+  width: 90%;
   text-align: center;
 }
-div.deathsaves > div > div.label label {
+div.temporary input {
+  flex-grow: 1;
+}
+div.current label, div.temporary label, div.hitDice label, div.deathsaves label{
   font-size: 10px;
+  padding-bottom: 5px;
+  text-align: center;
+  font-weight: bold;
 }
 div.marks {
+  width: 100%;
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 div.deathsuccesses, div.deathfails {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 div.deathsuccesses label, div.deathfails label {
-  font-size: 8px;
+  font-size: 12px;
   text-align: right;
-  flex: 1 25%;
+  width: 50%;
+  margin-left: 5px;
 }
 div.bubbles {
   flex: 1 40%;
@@ -579,35 +492,6 @@ section.rightPane{
   flex-direction: column;
   max-width: 250px;
 }
-section.toggles {
-  display: flex;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 5px;
-  flex-grow: 1;
-}
-section.toggles > form{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  flex-grow: 1;
-}
-section.toggles > form > div{
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: left;
-}
-section.toggles > form > div > input{
-  display: flex;
-  justify-content: flex-end;
-}
-section.toggles > form > div > label{
-  margin-left: 5px;
-}
-section.toggles > form > div > select{
-  font-size: 10px;
-}
 div.separator{
   text-decoration: underline;
   margin-top: 5px;
@@ -640,7 +524,7 @@ section.consumables > div > div.total div.key {
   margin: 0.25em;
   text-transform: none;
 }
-section.consumables >  div.value {
+section.consumables > div > div.total > div.value {
   font-size: 15px;
   flex-grow: 1;
   border: 0;
@@ -654,11 +538,40 @@ section.consumables label {
   padding: 2px;
   font-size: 10px;
 }
-section.consumables > div > div.remaining input {
+div.remainingConsumable {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+div.remainingConsumable input {
+  width: 100%;
   font-size: 25px;
   text-align: center;
   border: 0;
   flex-grow: 1;
+}
+div.remainingConsumable label {
+  font-size: 10px;
+  font-weight: bold;
+}
+section.toggles {
+  display: flex;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+section.toggles > div{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: left;
+}
+section.toggles > div > label{
+  margin-left: 5px;
 }
 main section.equipment {
   border: 1px solid black;
@@ -756,7 +669,6 @@ main section.features div textarea {
   padding: 5px;
   height: 43em;
 }
-
 section.flexPanel {
   display: flex;
   border: 1px solid black;
