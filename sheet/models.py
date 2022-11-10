@@ -2,7 +2,7 @@ import math
 import re
 from django.db import models
 
-from sheet.forms import GeneralHealthForm, ACTypeForm, MyriilCombatForm, MyriilSpellForm, NailCombatForm, NailSkillForm, NailSpellForm
+from sheet.forms import ACTypeForm, MyriilCombatForm, MyriilSpellForm, NailCombatForm, NailSkillForm, NailSpellForm
 from .races import races
 from .classes import classes
 from .lists import Ability, skill_list_pathfinder, skill_list_5e, save_list_pathfinder, combat_list
@@ -31,11 +31,6 @@ class Character(models.Model):
     armor = models.JSONField()
     weapon = models.JSONField()
     skillRanks = models.JSONField()
-
-    currentHP = models.CharField(max_length=200)
-    currentTempHP = models.CharField(max_length=200)
-    currentHitDice = models.CharField(max_length=200)
-    currentConsumables = models.CharField(max_length=200)
     
     # @classmethod
     # def create(cls, edition, baseStats, name, charClass, level, race, background, playerName, alignment, traits, gold, skillRanks, weapon, armor):
@@ -359,19 +354,6 @@ class Character(models.Model):
                 ret['threshold'] = targetAC-1
         
         return ret
-    
-    def getForms(self, request):
-        ret = {}
-
-        generalHealthForm = GeneralHealthForm(request.GET)
-
-        if generalHealthForm.is_valid():
-            # toggles.update(generalHealthForm.cleaned_data)
-            print()
-
-        ret['health'] = generalHealthForm
-
-        return ret
 
     def decodeStats(self):
         stats = self.baseStats
@@ -556,7 +538,6 @@ class PathfinderCharacter(Character):
         return ret
 
     def getForms(self, request):
-        ret = super().getForms(request)
         combatForm = NailCombatForm(request.GET)
         spellForm  = NailSpellForm(request.GET)
         acTypeForm = ACTypeForm(request.GET)
@@ -574,6 +555,7 @@ class PathfinderCharacter(Character):
 
         self.toggles = toggles
 
+        ret = {}
         ret['acType'] = acTypeForm
         ret['combat'] = combatForm
         ret['spell']  = spellForm
@@ -709,7 +691,6 @@ class FifthEditionCharacter(Character):
         return ret
     
     def getForms(self, request):
-        ret = super().getForms(request)
         combatForm = MyriilCombatForm(request.GET)
         spellForm  = MyriilSpellForm(request.GET)
         
@@ -721,6 +702,7 @@ class FifthEditionCharacter(Character):
 
         self.toggles = toggles
 
+        ret = {}
         ret['combat'] = combatForm
         ret['spell'] = spellForm
 

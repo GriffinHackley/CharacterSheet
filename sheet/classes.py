@@ -92,7 +92,7 @@ class Ranger(Class):
     def getConsumables(self, stats, proficiencyBonus):
         huntersMark = stats['Wisdom']
         favoredFoe = proficiencyBonus
-        return {'Favored Foe': favoredFoe, 'Hunter\'s Mark': huntersMark}
+        return {'Favored Foe': favoredFoe, 'Hunters Mark': huntersMark}
 
 classes = {}
 classes['Warpriest'] = Warpiest(4)

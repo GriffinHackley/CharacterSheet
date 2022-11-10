@@ -4,6 +4,18 @@
 <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
+<script type = "text/javascript">
+function storeItem(key){
+  console.log(key)
+  localStorage.setItem(key, document.getElementById(key).value);
+  console.log("Storing " + key + " as " + document.getElementById(key).value)
+}
+
+function getItem(key){
+  document.getElementById(key).value = localStorage.getItem(key);
+  console.log("Getting " + key + " as " + document.getElementById(key).value)
+}
+</script>
 
 <form action="" method="GET">
 {% csrf_token %}
@@ -141,8 +153,9 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
                   <div class="key">Total Hit Dice</div>
                   <div class="value">{{character.level}}d{{character.hitDie}}</div>
                 </div>
-                {{ forms.health.currentHitDice }}
-                <label for="remaininghd">Hit Dice</label>
+                <input type="text" id="remainingHD" onChange="storeItem('remainingHD')"></input>
+                <script>getItem('remainingHD')</script>
+                <label for="remainingHD">Hit Dice</label>
               </div>
 
               <div class="deathsaves">
@@ -176,12 +189,14 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
                   <div class="key">Max Hit Points</div>
                   <div class="value">{{character.combat.HP}}</div>
                 </div>
-                {{ forms.health.currentHealth }}
+                <input type="text" id="currentHealth" onChange="storeItem('currentHealth')"></input>
+                <script>getItem('currentHealth')</script>
                 <label>Current Hit Points</label>
               </div>
 
               <div class="temporary">
-                {{ forms.health.tempHealth }}
+                <input type="text" id="temphp" onChange="storeItem('temphp')"></input>
+                <script>getItem('temphp')</script>
                 <label for="temphp">Temporary Hit Points</label>
               </div>
             </div>
@@ -272,7 +287,8 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
               <div class="value">{{value}}</div>
             </div>
             <div class="remainingConsumable">
-              <input name="remainingConsumable" type="text" />
+              <input name="remainingConsumable" type="text" id="{{key}}" onChange="storeItem('{{key}}')" />
+              <script>getItem('{{key}}')</script>
               <label for="remainingConsumable">{{key}}</label>
             </div>
           </div>
