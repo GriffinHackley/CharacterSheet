@@ -4,6 +4,7 @@
 <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
+<script type = "text/javascript" src="{% static 'sheet/ignoreLastPass.js' %}" async></script>
 <script type = "text/javascript" src="{% static 'sheet/localState.js' %}"></script>
 
 <form action="" method="GET">
@@ -142,8 +143,8 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
                   <div class="key">Total Hit Dice</div>
                   <div class="value">{{character.level}}d{{character.hitDie}}</div>
                 </div>
-                <input type="text" id="remainingHD" onChange="storeItem('remainingHD')"></input>
-                <script>getItem('remainingHD')</script>
+                <input type="text" id="remainingHD" onChange="storeItem('remainingHD', '{{character.name}}')"></input>
+                <script>getItem('remainingHD', '{{character.name}}')</script>
                 <label for="remainingHD">Hit Dice</label>
               </div>
 
@@ -178,14 +179,14 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
                   <div class="key">Max Hit Points</div>
                   <div class="value">{{character.combat.HP}}</div>
                 </div>
-                <input type="text" id="currentHealth" onChange="storeItem('currentHealth')"></input>
-                <script>getItem('currentHealth')</script>
+                <input type="text" id="currentHealth" onChange="storeItem('currentHealth', '{{character.name}}')"></input>
+                <script>getItem('currentHealth', '{{character.name}}')</script>
                 <label>Current Hit Points</label>
               </div>
 
               <div class="temporary">
-                <input type="text" id="temphp" onChange="storeItem('temphp')"></input>
-                <script>getItem('temphp')</script>
+                <input type="text" id="temphp" onChange="storeItem('temphp', '{{character.name}}')"></input>
+                <script>getItem('temphp', '{{character.name}}')</script>
                 <label for="temphp">Temporary Hit Points</label>
               </div>
             </div>
@@ -276,8 +277,8 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
               <div class="value">{{value}}</div>
             </div>
             <div class="remainingConsumable">
-              <input name="remainingConsumable" type="text" id="{{key}}" onChange="storeItem('{{key}}')" />
-              <script>getItem('{{key}}')</script>
+              <input name="remainingConsumable" type="text" id="{{key}}" onChange="storeItem('{{key}}', '{{character.name}}')" />
+              <script>getItem('{{key}}', '{{character.name}}')</script>
               <label for="remainingConsumable">{{key}}</label>
             </div>
           </div>
