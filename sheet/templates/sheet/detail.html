@@ -6,6 +6,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
 <script type = "text/javascript" src="{% static 'sheet/ignoreLastPass.js' %}" async></script>
 <script type = "text/javascript" src="{% static 'sheet/localState.js' %}"></script>
+<script type = "text/javascript" src="{% static 'sheet/tabs.js' %}"></script>
 
 <form action="" method="GET">
 {% csrf_token %}
@@ -306,60 +307,30 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </main>
 
     <section class="flexPanel">
-        <div class="tabHeader">
-          <button type="button" class="tabButton tabButton--active" data-for-tab="1">Spells</button>
-          <button type="button" class="tabButton" data-for-tab="2">Equipment</button>
-          <button type="button" class="tabButton" data-for-tab="3">Power Attack</button>
-        </div>
-        <div class="tabContent tabContent--active" data-tab="1">
-          <h2>this it tab 1</h2>
-        </div>
-        <div class="tabContent" data-tab="2">
-          <h2>this it tab 2</h2>
-        </div>
-        <div class="tabContent" data-tab="3">
-          <section class="powerAttack">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-            <body>
-            <canvas id="powerAttackGraph"></canvas>
-            <script type="text/javascript">
-              var xValues    = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
-              var normalData = {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}}
-              var powerData  = {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}}
-            </script>
-            <script  src="{% static 'sheet/powerAttackGraph.js' %}"></script>
-          </section>
-        </div>
-
-      <script>
-        function setupTabs(){
-          document.querySelectorAll(".tabButton").forEach(button => {
-            button.addEventListener("click", () => {
-              const sidebar = button.parentElement;
-              const tabsContainer = sidebar.parentElement;
-              const tabNumber = button.dataset.forTab;
-              
-              let queryString = '.tabContent[data-tab="' + tabNumber + '"]'
-              const tabToActivate = tabsContainer.querySelector(queryString)
-
-              sidebar.querySelectorAll(".tabButton").forEach(button => {
-                button.classList.remove("tabButton--active");
-              })
-
-              tabsContainer.querySelectorAll(".tabContent").forEach(tab => {
-                tab.classList.remove("tabContent--active");
-              })
-
-              button.classList.add("tabButton--active");
-              tabToActivate.classList.add("tabContent--active");
-            })
-          })
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-          setupTabs();
-        })
-      </script>
+      <div class="tabHeader">
+        <button type="button" class="tabButton tabButton--active" data-for-tab="1">Spells</button>
+        <button type="button" class="tabButton" data-for-tab="2">Equipment</button>
+        <button type="button" class="tabButton" data-for-tab="3">Power Attack</button>
+      </div>
+      <div class="tabContent tabContent--active" data-tab="1">
+        <h2>this it tab 1</h2>
+      </div>
+      <div class="tabContent" data-tab="2">
+        <h2>this it tab 2</h2>
+      </div>
+      <div class="tabContent" data-tab="3">
+        <section class="powerAttack">
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+          <body>
+          <canvas id="powerAttackGraph"></canvas>
+          <script type="text/javascript">
+            var xValues    = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
+            var normalData = {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}}
+            var powerData  = {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}}
+          </script>
+          <script  src="{% static 'sheet/powerAttackGraph.js' %}"></script>
+        </section>
+      </div>
     </section>
   </section>
 </form>
