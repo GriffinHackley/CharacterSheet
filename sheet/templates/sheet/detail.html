@@ -4,18 +4,7 @@
 <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
-<script type = "text/javascript">
-function storeItem(key){
-  console.log(key)
-  localStorage.setItem(key, document.getElementById(key).value);
-  console.log("Storing " + key + " as " + document.getElementById(key).value)
-}
-
-function getItem(key){
-  document.getElementById(key).value = localStorage.getItem(key);
-  console.log("Getting " + key + " as " + document.getElementById(key).value)
-}
-</script>
+<script type = "text/javascript" src="{% static 'sheet/localState.js' %}"></script>
 
 <form action="" method="GET">
 {% csrf_token %}
@@ -320,49 +309,12 @@ function getItem(key){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
         <body>
         <canvas id="powerAttackGraph"></canvas>
-        
-        <script>
-        var xValues = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
-        
-        new Chart("powerAttackGraph", {
-          type: "line",
-          data: {
-            labels: xValues,
-            datasets: [{ 
-              label: "Normal",
-              data: {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}},
-              borderColor: "blue",
-              fill: false
-            }, { 
-              label: "Power Attack",
-              data: {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}},
-              borderColor: "red",
-              fill: false
-            }]
-          },
-          options: {
-            maintainAspectRatio: false,
-            legend: {display: true},
-            animation: false,
-            scales: {
-              xAxes : [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Target AC'
-                }
-              }],
-              yAxes : [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Average Damage'
-                }
-              }]
-            }
-          }
-        });
+        <script type="text/javascript">
+          var xValues    = {{character.combat.PowerAttack.powerAttackGraph.AC|escapejs}}
+          var normalData = {{character.combat.PowerAttack.powerAttackGraph.normal|escapejs}}
+          var powerData  = {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}}
         </script>
+        <script  src="{% static 'sheet/powerAttackGraph.js' %}"></script>
       </section>
     </section>
   </section>
