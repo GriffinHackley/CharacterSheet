@@ -674,13 +674,40 @@ section.flexPanel {
   border-radius: 10px;
   margin-top: 10px;
   flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+}
+.tabHeader {
+  background-color: green;
+}
+.tabContent{
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: .8rem;
+  display: none;
+}
+.tabContent--active {
+  display: block;
+}
+.tabContent > :first-child {
+  /* margin-top: 0; */
+}
+.tabButton:active {
+  color: aqua;
+}
+.tabButton--active {
+  font-weight: bold;
 }
 section.powerAttack {
   display: flex;
   width: 100%;
+  height: 99%;
   flex-direction: column;
   align-items: center;
-  padding: 7px;
+  padding: 1px;
 }
 section.powerAttack > canvas {
   width: 100%;
