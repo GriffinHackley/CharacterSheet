@@ -1,27 +1,39 @@
-function setupTabs(){
+function setupTabs(tab){
+    //add event listener to switch tabs
     document.querySelectorAll(".tabButton").forEach(button => {
-      button.addEventListener("click", () => {
         const sidebar = button.parentElement;
         const tabsContainer = sidebar.parentElement;
         const tabNumber = button.dataset.forTab;
-        
+
         let queryString = '.tabContent[data-tab="' + tabNumber + '"]'
         const tabToActivate = tabsContainer.querySelector(queryString)
 
-        sidebar.querySelectorAll(".tabButton").forEach(button => {
-          button.classList.remove("tabButton--active");
+        button.addEventListener("click", () => {
+            sidebar.querySelectorAll(".tabButton").forEach(button => {
+              button.classList.remove("tabButton--active");
+            })
+
+            tabsContainer.querySelectorAll(".tabContent").forEach(tab => {
+              tab.classList.remove("tabContent--active");
+            })
+
+            button.classList.add("tabButton--active");
+            tabToActivate.classList.add("tabContent--active");
+
+            console.log("Storing active tab as " + tabNumber);
+            localStorage.setItem("activeTab", tabNumber)
         })
 
-        tabsContainer.querySelectorAll(".tabContent").forEach(tab => {
-          tab.classList.remove("tabContent--active");
-        })
-
-        button.classList.add("tabButton--active");
-        tabToActivate.classList.add("tabContent--active");
-      })
+        //Set active tab
+        if(tab == tabNumber){
+            console.log("Activating tab from localstorage to " + tab);
+            button.classList.add("tabButton--active");
+            tabToActivate.classList.add("tabContent--active");
+        }
     })
-  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    setupTabs();
+    activeTab = localStorage.getItem("activeTab")
+    setupTabs(activeTab);
 })
