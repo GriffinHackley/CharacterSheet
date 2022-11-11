@@ -94,6 +94,7 @@ class Character(models.Model):
         self.skills = self.calculateSkills()
         self.combat = self.calculateCombat()
         self.equipment = self.getEquipment()
+        self.spells = self.getSpells()
 
     def getModifiers(self):
         self.applyRace()
@@ -360,14 +361,7 @@ class Character(models.Model):
 
     def getEquipment(self):
         for item in self.equipment:
-            if type(self.equipment[item]) == str:
-                value = self.equipment[item]
-                self.equipment[item] = {}
-                self.equipment[item]['displayName'] = value
-            else:
-                self.equipment[item]['displayName'] = self.equipment[item]['name']
-
-            self.equipment[item]['displayName'] = "| " + self.equipment[item]['displayName']
+            self.equipment[item]['displayName'] = "| " + self.equipment[item]['name']
         
         return self.equipment
 
@@ -553,6 +547,10 @@ class PathfinderCharacter(Character):
 
         return ret
 
+    def getSpells(self):
+        ret = classes[self.charClass].getSpells(self.abilityMod, self.modList)
+        return ret
+
     def getForms(self, request):
         combatForm = NailCombatForm(request.GET)
         spellForm  = NailSpellForm(request.GET)
@@ -704,6 +702,10 @@ class FifthEditionCharacter(Character):
 
         ret["Consumables"] = classes[self.charClass].getConsumables(self.abilityMod, self.profBonus)
 
+        return ret
+
+    def getSpells(self):
+        ret = classes[self.charClass].getSpells(self.abilityMod, self.profBonus, self.modList)
         return ret
     
     def getForms(self, request):

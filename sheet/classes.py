@@ -73,6 +73,48 @@ class Warpiest(Class):
 
         return ret
 
+    def getSpells(self, stats, modList):
+        ret = {}
+
+        ability    = "Wisdom"
+        abilityMod = stats[ability]
+
+        ret['ability']    = ability
+        ret['abilityMod'] = abilityMod
+
+        ret['saveDC'] = 10 + abilityMod + modList.applyModifier("SpellSaveDC")
+
+        ret['level'] = {}
+        ret['level']['Cantrip'] = {}
+        ret['level']['1'] = {}
+        ret['level']['2'] = {}
+
+        ret['level']['1']['slots'] = 3
+        ret['level']['2']['slots'] = 1
+
+        #TODO: Implement this better
+        # Get bonus spells from ability score
+        ret['level']['1']['slots'] = ret['level']['1']['slots'] + 1
+        ret['level']['2']['slots'] = ret['level']['2']['slots'] + 1
+
+        ret['level']['Cantrip']['list'] = {
+            "Create Water" : {"source":"Warpriest: Spellcasting" , "timesPrepared":-1, "description":""},
+            "Detect Magic" : {"source":"Warpriest: Spellcasting" , "timesPrepared":-1, "description":""},
+            "Guidance"     : {"source":"Warpriest: Spellcasting" , "timesPrepared":-1, "description":""},
+            "Read Magic"   : {"source":"Warpriest: Spellcasting" , "timesPrepared":-1, "description":""},
+        }
+        ret['level']['1']['list'] = {
+            "Divine Favor"    : {"source":"Warpriest: Spellcasting" , "timesPrepared":2, "description":""},
+            "Shield of Faith" : {"source":"Warpriest: Spellcasting" , "timesPrepared":1, "description":""},
+            "Unprepared" : {"source":"Warpriest: Spellcasting" , "timesPrepared":1, "description":""},
+        }
+        ret['level']['2']['list'] = {
+            "Cats Grace" : {"source":"Warpriest: Spellcasting" , "timesPrepared":1, "description":""},
+            "Ironskin"     : {"source":"Warpriest: Spellcasting" , "timesPrepared":1, "description":""},
+        }
+
+        return ret
+
 class Ranger(Class):
     proficiencies = {'skills': ['Insight', 'Stealth', 'Survival'], 'armor': ['Light', 'Medium'], 'weapons':['Simple', 'Martial'], 'tools':[], 'saving throws':['Strength', 'Dexterity']}
     expertise = {'skills': ['Stealth']}
@@ -93,6 +135,33 @@ class Ranger(Class):
         huntersMark = stats['Wisdom']
         favoredFoe = proficiencyBonus
         return {'Favored Foe': favoredFoe, 'Hunters Mark': huntersMark}
+    
+    def getSpells(self, stats, profBonus, modList):
+        ret = {}
+        ability    = "Wisdom"
+        abilityMod = stats[ability]
+
+        ret['ability']    = ability
+        ret['abilityMod'] = abilityMod
+
+        ret['saveDC'] = 8 + abilityMod + profBonus + modList.applyModifier("SpellSaveDC")
+
+        ret['spellAttack'] = profBonus + abilityMod
+
+        ret['level'] = {}
+        ret['level']['1'] = {}
+
+        ret['level']['1']['slots'] = 3
+
+        ret['level']['1']['list'] = {
+            "Absorb Elements"   : {"source":"Ranger: Spellcasting"    , "timesPrepared":"-1", "description":""},
+            "Cure Wounds"       : {"source":"Ranger: Spellcasting"    , "timesPrepared":"-1", "description":""},
+            "Hunter\'s Mark"    : {"source":"Ranger: Spellcasting"    , "timesPrepared":"-1", "description":""},
+            "Disguise Self"     : {"source":"Ranger: Gloom Stalker"   , "timesPrepared":"-1", "description":""},
+            "Speak With Animals": {"source":"Ranger: Primal Awareness", "timesPrepared":"-1", "description":""},
+        }
+
+        return ret
 
 classes = {}
 classes['Warpriest'] = Warpiest(4)

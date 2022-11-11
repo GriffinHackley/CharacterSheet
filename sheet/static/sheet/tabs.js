@@ -3,9 +3,9 @@ function setupTabs(tab){
     document.querySelectorAll(".tabButton").forEach(button => {
         const sidebar = button.parentElement;
         const tabsContainer = sidebar.parentElement;
-        const tabNumber = button.dataset.forTab;
+        const tabName = button.dataset.forTab;
 
-        let queryString = '.tabContent[data-tab="' + tabNumber + '"]'
+        let queryString = '.tabContent[data-tab="' + tabName + '"]'
         const tabToActivate = tabsContainer.querySelector(queryString)
 
         button.addEventListener("click", () => {
@@ -17,15 +17,16 @@ function setupTabs(tab){
               tab.classList.remove("tabContent--active");
             })
 
+            console.log("Storing active tab as " + tabName);
+            localStorage.setItem("activeTab", tabName)
+
+            console.log("Activating tab: " + tabToActivate)
             button.classList.add("tabButton--active");
             tabToActivate.classList.add("tabContent--active");
-
-            console.log("Storing active tab as " + tabNumber);
-            localStorage.setItem("activeTab", tabNumber)
         })
 
         //Set active tab
-        if(tab == tabNumber){
+        if(tab == tabName){
             console.log("Activating tab from localstorage to " + tab);
             button.classList.add("tabButton--active");
             tabToActivate.classList.add("tabContent--active");

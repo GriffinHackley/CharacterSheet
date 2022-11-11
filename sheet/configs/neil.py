@@ -1,5 +1,5 @@
 def apply(character):
-    character.config = {"edition":"Pathfinder", "critType":'doubleAll'}
+    character.config = {"edition":"Pathfinder", "critType":'doubleAll', "castingType":"vancian"}
     character.edition = "Pathfinder"
     character.name = "Nail"
     character.baseStats = '14,16,14,12,16,8'
@@ -18,20 +18,20 @@ def apply(character):
         {"displayName":"Chakram", "name" : "Chakram (30ft.)", "bonus":0, "damageDie" : "1d8", "critRange":"20", "critDamage":2, "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Strength', 'tags':['ranged']},
     ]
     character.equipment = {
-        "head"     : "",
-        "headband" : "",
-        "eyes"     : "",
-        "shoulders": "",
-        "neck"     : "",
-        "chest"    : "",
-        "body"     : "",
+        "head"     : {"name":""},
+        "headband" : {"name":""},
+        "eyes"     : {"name":""},
+        "shoulders": {"name":""},
+        "neck"     : {"name":""},
+        "chest"    : {"name":""},
+        "body"     : {"name":""},
         "armor"    : {"name" : "Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []},
-        "belt"     : "",
-        "wrists"   : "",
-        "hands"    : "",
-        "ring1"    : "",
-        "ring2"    : "",
-        "feet"     : "",
+        "belt"     : {"name":""},
+        "wrists"   : {"name":""},
+        "hands"    : {"name":""},
+        "ring1"    : {"name":""},
+        "ring2"    : {"name":""},
+        "feet"     : {"name":""},
     }
     character.skillRanks = {
         'Heal'         : 1,
