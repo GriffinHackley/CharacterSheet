@@ -314,28 +314,33 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           <div class="equipmentRightPane">
             <div class="money">
               <div>
-                <div class="copper">
-                  <label for="cp">Copper</label>
-                  <input name="cp" />
+                <div class="copper" onChange="storeItem('copper', '{{character.name}}')">
+                  <label for="copper">Copper</label>
+                  <input name="copper" id="copper" />
+                  <script>getItem('copper', '{{character.name}}')</script>
                 </div>
-                <div class="silver">
-                  <label for="sp">Silver</label>
-                  <input name="sp" />
+                <div class="silver" onChange="storeItem('silver', '{{character.name}}')">
+                  <label for="silver">Silver</label>
+                  <input name="silver" id="silver" />
+                  <script>getItem('silver', '{{character.name}}')</script>
                 </div>
               </div>
               <div>
-                <div class="gold">
-                  <label for="gp">Gold</label>
-                  <input name="gp" />
+                <div class="gold" onChange="storeItem('gold', '{{character.name}}')">
+                  <label for="gold">Gold</label>
+                  <input name="gold" id="gold" />
+                  <script>getItem('gold', '{{character.name}}')</script>
                 </div>
-                <div class="platinum">
-                  <label for="pp">Platinum</label>
-                  <input name="pp" />
+                <div class="platinum" onChange="storeItem('platinum', '{{character.name}}')">
+                  <label for="platinum">Platinum</label>
+                  <input name="platinum" id="platinum" />
+                  <script>getItem('platinum', '{{character.name}}')</script>
                 </div>
               </div>
             </div>
+            <textarea class="extraEquipment" placeholder="Equipment list here" id="extraEquipment" onChange="storeItem('extraEquipment', '{{character.name}}')"></textarea>
+            <script>getItem('extraEquipment', '{{character.name}}')</script>
           </div>
-          {% comment %} <textarea placeholder="Equipment list here"></textarea> {% endcomment %}
         </section>
       </div>
       <div class="tabContent" data-tab="spells">
