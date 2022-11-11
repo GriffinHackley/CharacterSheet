@@ -97,6 +97,7 @@ class Character(models.Model):
         self.spells = self.getSpells()
 
     def getModifiers(self):
+        self.initModifiers()
         self.applyRace()
         self.applyClass()
         self.applyFeats()
@@ -140,6 +141,9 @@ class Character(models.Model):
         currentClass = classes[self.charClass]
         currentClass.appendModifiers(self.modList)
         self.hitDie = currentClass.hitDie
+
+        if 'dreadAmbusher' in self.toggles.keys() and self.toggles['dreadAmbusher']:
+            self.modList.addModifier(Modifier('1d8', "untyped", 'DamageDie', 'Dread Ambusher'))
                
     def applyFeats(self):
         ret = {}
@@ -153,21 +157,28 @@ class Character(models.Model):
                 ret['Sharpshooter'] = {'level':key, 'text':"Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls. Your ranged weapon attacks ignore half and three-quarters cover. Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage."}
 
     def applySpells(self):
+        if 'absorbElements' in self.toggles.keys() and self.toggles['absorbElements']:
+            self.modList.addModifier(Modifier('1d6', "elemental", 'Melee-DamageDie', 'Absorb Elements'))
+
+        if 'catsGrace' in self.toggles.keys() and self.toggles['catsGrace']:
+            self.modList.addModifier(Modifier(4, "enhancement", 'Dexterity', 'Cats Grace'))
+
         if 'divineFavor' in self.toggles.keys() and self.toggles['divineFavor']:
             self.modList.addModifier(Modifier(1, "luck", 'ToHit', 'Divine Favor'))
             self.modList.addModifier(Modifier(1, "luck", 'Damage', 'Divine Favor'))
         
+        if 'favoredFoe' in self.toggles.keys() and self.toggles['favoredFoe']:
+            self.modList.addModifier(Modifier('1d4', "untyped", 'DamageDie', 'Favored Foe'))
+        
+        if 'huntersMark' in self.toggles.keys() and self.toggles['huntersMark']:
+            self.modList.addModifier(Modifier('1d6', "untyped", 'DamageDie', 'Hunters Mark'))
+        
+        if 'ironSkin' in self.toggles.keys() and self.toggles['ironSkin']:
+            self.modList.applyModifierToModifier(Modifier(4, "enhancement", 'Natural Armor', 'Iron Skin'))
+
         if 'shieldOfFaith' in self.toggles.keys() and self.toggles['shieldOfFaith']:
             self.modList.addModifier(Modifier(2, "deflection", 'AC', 'Shield of Faith'))
 
-        if 'favoredFoe' in self.toggles.keys() and self.toggles['favoredFoe']:
-            self.modList.addModifier(Modifier('1d4', "untyped", 'DamageDie', 'Hunters Mark'))
-
-        if 'huntersMark' in self.toggles.keys() and self.toggles['huntersMark']:
-            self.modList.addModifier(Modifier('1d6', "untyped", 'DamageDie', 'Hunters Mark'))
-
-        if 'dreadAmbusher' in self.toggles.keys() and self.toggles['dreadAmbusher']:
-            self.modList.addModifier(Modifier('1d8', "untyped", 'DamageDie', 'Dread Ambusher'))
     
     def calculateInit(self):
         init = combat_list['Initiative']
@@ -244,7 +255,7 @@ class Character(models.Model):
         #Add weapon die to damage die
         damageDie = weapon['damageDie']
         [number,size] = damageDie.split('d')
-        allDie = self.modList.getDieModifier()
+        allDie = self.modList.getDieModifier(weapon['tags'])
         if size in allDie.keys():
             allDie[size] = allDie[size] + int(number)
         else:
@@ -530,11 +541,9 @@ class PathfinderCharacter(Character):
         self.bab = currentClass.bab
 
     def applyTraits(self):
-        # Fate's Favored
-        for key,value in self.modList.list.items():
-            for mod in value:
-                if mod.type == 'luck':
-                    mod.bonus += 1
+        #Fate's Favored
+        fatesFavored = Modifier(1, "untyped", 'luck', 'Fate\'s Favored')
+        self.modList.applyModifierToModifier(fatesFavored)
 
         # Anatomist
         modifier = Modifier(1, "untyped", 'ConfCrit', 'Anatomist')
@@ -550,6 +559,10 @@ class PathfinderCharacter(Character):
     def getSpells(self):
         ret = classes[self.charClass].getSpells(self.abilityMod, self.modList)
         return ret
+
+    def initModifiers(self):
+        naturalArmor = Modifier(0, "Natural Armor", 'AC', 'Iron Skin')
+        self.modList.addModifier(naturalArmor)
 
     def getForms(self, request):
         combatForm = NailCombatForm(request.GET)
@@ -613,6 +626,9 @@ class FifthEditionCharacter(Character):
             weaponRet = super().attackInit(weapon)
             
             weaponRet['toHit'] += self.profBonus
+
+            if "Melee" in weapon['tags']:
+                weaponRet['toHit'] += self.modList.applyModifier('ToHit-Melee')
 
             if "Ranged" in weapon['tags']:
                 weaponRet['toHit'] += self.modList.applyModifier('ToHit-Ranged')
@@ -707,6 +723,9 @@ class FifthEditionCharacter(Character):
     def getSpells(self):
         ret = classes[self.charClass].getSpells(self.abilityMod, self.profBonus, self.modList)
         return ret
+
+    def initModifiers(self):
+        pass
     
     def getForms(self, request):
         combatForm = MyriilCombatForm(request.GET)

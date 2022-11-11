@@ -286,6 +286,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         <button type="button" class="tabButton" data-for-tab="equipment">Equipment</button>
         <button type="button" class="tabButton" data-for-tab="spells">Spells</button>
         <button type="button" class="tabButton" data-for-tab="powerAttack">Power Attack</button>
+        <button type="button" class="tabButton" data-for-tab="flavor">Flavor</button>
       </div>
       <div class="tabContent" data-tab="features">
         <h2>Features</h2>
@@ -472,6 +473,11 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             var powerData  = {{character.combat.PowerAttack.powerAttackGraph.powerAttack|escapejs}}
           </script>
           <script  src="{% static 'sheet/powerAttackGraph.js' %}"></script>
+        </section>
+      </div>
+      <div class="tabContent" data-tab="flavor">
+        <section class="flavor">
+
         </section>
       </div>
     </section>

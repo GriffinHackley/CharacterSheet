@@ -42,11 +42,29 @@ class ModifierList():
         
         return total
 
-    def getDieModifier(self):
+    def applyModifierToModifier(self, modifier):
+        for key,value in self.list.items():
+            for mod in value:
+                if mod.type == modifier.stat:
+                    mod.bonus += modifier.bonus
+
+    def getDieModifier(self, tags):
         modifierName = 'DamageDie'
-        if (not modifierName in self.list):
+
+        tagModifier = ''
+
+        if 'Ranged' in tags:
+            tagModifier = 'Ranged-'+modifierName
+        elif 'Melee' in tags:
+            tagModifier = 'Melee-'+modifierName
+
+        allBonus = []
+        if (modifierName in self.list): 
+            allBonus = allBonus + self.list[modifierName]
+        elif (tagModifier in self.list):
+            allBonus = allBonus + self.list[tagModifier]
+        else:
             return {}
-        allBonus = self.list[modifierName]
 
         #Group bonuses by die size
         die = {}
