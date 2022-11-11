@@ -30,6 +30,7 @@ class Character(models.Model):
  
     armor = models.JSONField()
     weapon = models.JSONField()
+    equipment = models.JSONField()
     skillRanks = models.JSONField()
     
     # @classmethod
@@ -77,6 +78,7 @@ class Character(models.Model):
         self.skillRanks = character.skillRanks
         self.weapon = character.weapon
         self.armor = character.armor
+        self.equipment = character.equipment
 
         self.fullChar = character
 
@@ -91,6 +93,7 @@ class Character(models.Model):
         self.saves = self.calculateSaves()
         self.skills = self.calculateSkills()
         self.combat = self.calculateCombat()
+        self.equipment = self.getEquipment()
 
     def getModifiers(self):
         self.applyRace()
@@ -354,6 +357,19 @@ class Character(models.Model):
                 ret['threshold'] = targetAC-1
         
         return ret
+
+    def getEquipment(self):
+        for item in self.equipment:
+            if type(self.equipment[item]) == str:
+                value = self.equipment[item]
+                self.equipment[item] = {}
+                self.equipment[item]['displayName'] = value
+            else:
+                self.equipment[item]['displayName'] = self.equipment[item]['name']
+
+            self.equipment[item]['displayName'] = "| " + self.equipment[item]['displayName']
+        
+        return self.equipment
 
     def decodeStats(self):
         stats = self.baseStats

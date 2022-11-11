@@ -675,10 +675,11 @@ section.flexPanel {
   margin-top: 10px;
   flex-grow: 1;
   flex-direction: column;
-  align-items: center;
 }
 .tabHeader {
-  background-color: green;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
 }
 .tabContent{
   width: 100%;
@@ -700,6 +701,153 @@ section.flexPanel {
 }
 .tabButton--active {
   font-weight: bold;
+}
+section.equipment {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+div.itemSlots {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 3;
+  border-right: 1px solid black;
+}
+div.itemSlots > img {
+  height: 100%;
+}
+div.equipmentText{
+  padding-right: 5px;
+  white-space:nowrap;
+}
+p.equipmentSlot {
+  font-size: 20px;
+  position: relative;
+  text-decoration: underline;
+}
+p.head {
+  top: -1.6%;
+  color: #63cb2f;
+  text-decoration-color: #63cb2f;
+}
+p.headband {
+  top: -3.5%;
+  color: #177f00;
+  text-decoration-color: #177f00;
+}
+p.eyes {
+  top: -5.1%;
+  color: #23c590;
+  text-decoration-color: #23c590;
+}
+p.shoulders {
+  top: -2%;
+  color: #a41515;
+  text-decoration-color: #a41515;
+}
+p.neck {
+  top: -4.4%;
+  color: #ff7900;
+  text-decoration-color: #ff7900;
+}
+p.chest {
+  top: -6.5%;
+  color: #ff4a29;
+  text-decoration-color: #ff4a29;
+}
+p.body {
+  top: -8.7%;
+  color: #0b5bdf;
+  text-decoration-color: #0b5bdf;
+}
+p.armor {
+  top: -11.1%;
+  color: #98e21a;
+  text-decoration-color: #98e21a;
+}
+p.belt {
+  top: -8.4%;
+  color: #12c1ff;
+  text-decoration-color: #12c1ff;
+}
+p.wrists {
+  top: -8.8%;
+  color: #7a1acb;
+  text-decoration-color: #7a1acb;
+}
+p.hands {
+  top: -10.5%;
+  color: #b510c3;
+  text-decoration-color: #b510c3;
+}
+p.ring1 {
+  top: -12%;
+  color: #122da6;
+  text-decoration-color: #122da6;
+}
+p.ring2 {
+  top: -13.8%;
+  color: #0d22a1;
+  text-decoration-color: #0d22a1;
+}
+p.feet {
+  top: 5.8%;
+  color: #5aedff;
+  text-decoration-color: #5aedff;
+}
+section.equipment > textarea {
+  width: 100%;
+  flex-grow: 1;
+}
+div.equipmentRightPane{
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 20%;
+}
+div.money {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 5px;
+}
+div.money > div {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+div.money > div > div{
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  align-items: center;
+}
+div.money > div > div {
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 45px;
+}
+div.copper {
+  border: 3px solid #B87333;
+}
+div.silver {
+  border: 3px solid #C0C0C0;
+}
+div.gold {
+  border: 3px solid #FFD700;
+}
+div.platinum {
+  border: 3px solid #E5E4E2;
+}
+div.money > div > div > input{
+  width: 90%;
+  height: 60%;
+  border: 0px;
 }
 section.powerAttack {
   display: flex;

@@ -244,32 +244,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       </section>
 
       <section class="rightPane">
-        <!-- <section class="equipment">
-          <div>
-            <label>Equipment</label>
-            <div class="money">
-              <ul>
-                <li>
-                  <label for="cp">cp</label><input name="cp" />
-                </li>
-                <li>
-                  <label for="sp">sp</label><input name="sp" />
-                </li>
-                <li>
-                  <label for="ep">ep</label><input name="ep" />
-                </li>
-                <li>
-                  <label for="gp">gp</label><input name="gp" />
-                </li>
-                <li>
-                  <label for="pp">pp</label><input name="pp" />
-                </li>
-              </ul>
-            </div>
-            <textarea placeholder="Equipment list here"></textarea>
-          </div>
-        </section> -->
-
         <section class="consumables">
           {% for key,value in character.combat.Consumables.items %}
           <div>
@@ -308,15 +282,64 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 
     <section class="flexPanel">
       <div class="tabHeader">
-        <button type="button" class="tabButton" data-for-tab="spells">Spells</button>
+        <button type="button" class="tabButton" data-for-tab="features">Features</button>
         <button type="button" class="tabButton" data-for-tab="equipment">Equipment</button>
+        <button type="button" class="tabButton" data-for-tab="spells">Spells</button>
         <button type="button" class="tabButton" data-for-tab="powerAttack">Power Attack</button>
       </div>
-      <div class="tabContent" data-tab="spells">
-        <h2>this it tab 1</h2>
+      <div class="tabContent" data-tab="features">
+        <h2>Features</h2>
       </div>
       <div class="tabContent" data-tab="equipment">
-        <h2>this it tab 2</h2>
+        <section class="equipment">
+          <div class="itemSlots">
+            <img src="{% static "sheet/images/magicItemSlots.png" %}" alt="Uh Oh">
+            <div class="equipmentText">
+              <p class="equipmentSlot head"     > {{ character.equipment.head.displayName      }} </p>
+              <p class="equipmentSlot headband" > {{ character.equipment.headband.displayName  }} </p>
+              <p class="equipmentSlot eyes"     > {{ character.equipment.eyes.displayName      }} </p>
+              <p class="equipmentSlot shoulders"> {{ character.equipment.shoulders.displayName }} </p>
+              <p class="equipmentSlot neck"     > {{ character.equipment.neck.displayName      }} </p>
+              <p class="equipmentSlot chest"    > {{ character.equipment.chest.displayName     }} </p>
+              <p class="equipmentSlot body"     > {{ character.equipment.body.displayName      }} </p>
+              <p class="equipmentSlot armor"    > {{ character.equipment.armor.displayName     }} </p>
+              <p class="equipmentSlot belt"     > {{ character.equipment.belt.displayName      }} </p>
+              <p class="equipmentSlot wrists"   > {{ character.equipment.wrists.displayName    }} </p>
+              <p class="equipmentSlot hands"    > {{ character.equipment.hands.displayName     }} </p>
+              <p class="equipmentSlot ring1"    > {{ character.equipment.ring1.displayName     }} </p>
+              <p class="equipmentSlot ring2"    > {{ character.equipment.ring2.displayName     }} </p>
+              <p class="equipmentSlot feet"     > {{ character.equipment.feet.displayName      }} </p>
+            </div>
+          </div>
+          <div class="equipmentRightPane">
+            <div class="money">
+              <div>
+                <div class="copper">
+                  <label for="cp">Copper</label>
+                  <input name="cp" />
+                </div>
+                <div class="silver">
+                  <label for="sp">Silver</label>
+                  <input name="sp" />
+                </div>
+              </div>
+              <div>
+                <div class="gold">
+                  <label for="gp">Gold</label>
+                  <input name="gp" />
+                </div>
+                <div class="platinum">
+                  <label for="pp">Platinum</label>
+                  <input name="pp" />
+                </div>
+              </div>
+            </div>
+          </div>
+          {% comment %} <textarea placeholder="Equipment list here"></textarea> {% endcomment %}
+        </section>
+      </div>
+      <div class="tabContent" data-tab="spells">
+        <h2>Spells</h2>
       </div>
       <div class="tabContent" data-tab="powerAttack">
         <section class="powerAttack">

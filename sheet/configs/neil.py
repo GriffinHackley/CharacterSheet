@@ -17,6 +17,22 @@ def apply(character):
         {"name" : "Kukri", "bonus":0, "damageDie" : "1d4", "critRange":"18-20", "critDamage":2, "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Strength','tags':['TWF','Off-Hand'] },
         {"name" : "Chakram (30ft.)", "bonus":0, "damageDie" : "1d8", "critRange":"20", "critDamage":2, "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Strength', 'tags':['ranged']},
     ]
+    character.equipment = {
+        "head"     : "",
+        "headband" : "Headband of int",
+        "eyes"     : "This is a test",
+        "shoulders": "Juggernauts Pauldrons",
+        "neck"     : "Amulet of Natural Armor",
+        "chest"    : "Something I cant think f",
+        "body"     : "This is another test",
+        "armor"    : {"name" : "Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []},
+        "belt"     : "Belt of dex",
+        "wrists"   : "bracesr of something",
+        "hands"    : "handwraps of [unching",
+        "ring1"    : "ring of invisilibty",
+        "ring2"    : "another ring of invis",
+        "feet"     : "boots of speed",
+    }
     character.skillRanks = {
         'Heal'         : 1,
         'Handle Animal': 1,

@@ -15,5 +15,21 @@ def apply(character):
         {"name" : "Shortsword" , "bonus":0 , "damageDie" : "1d6",  "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Finesse","Light"], 'tags':["Melee", "TWF", "Main"]},
         {"name" : "Shortsword" , "bonus":0 , "damageDie" : "1d6",  "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Finesse","Light"], 'tags':["Melee", "TWF", "Off-Hand"]},
     ]
+    character.equipment = {
+        "head"     : "test",
+        "headband" : "t",
+        "eyes"     : "t",
+        "shoulders": "t",
+        "neck"     : "t",
+        "chest"    : "t",
+        "body"     : "t",
+        "armor"    : {"name" : "Studded Leather", "armorBonus" : 2, "ability":"Dex", "maxAbility": 20, "armorCheck" : 0, "spellFailure" : 0, "modifiers": []},
+        "belt"     : "t",
+        "wrists"   : "t",
+        "hands"    : "t",
+        "ring1"    : "t",
+        "ring2"    : "t",
+        "feet"     : "t",
+    }
 
     return character
