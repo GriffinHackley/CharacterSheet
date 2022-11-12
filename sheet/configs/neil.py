@@ -24,7 +24,7 @@ def apply(character):
         "shoulders": {"name":""},
         "neck"     : {"name":""},
         "chest"    : {"name":""},
-        "body"     : {"name":""},
+        "body"     : {"name":"Quick Runners Shirt"},
         "armor"    : {"name" : "Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []},
         "belt"     : {"name":""},
         "wrists"   : {"name":""},

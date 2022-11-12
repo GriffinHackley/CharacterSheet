@@ -382,6 +382,7 @@ class Character(models.Model):
         ret['class'] = {}
 
         return ret
+
     def decodeStats(self):
         stats = self.baseStats
         return stats.split(",")
@@ -570,93 +571,6 @@ class PathfinderCharacter(Character):
         naturalArmor = Modifier(0, "Natural Armor", 'AC', 'Iron Skin')
         self.modList.addModifier(naturalArmor)
 
-    # def getFeatures(self):
-    #     baseURL='https://www.d20pfsrd.com/classes/hybrid-classes/warpriest/'
-    #     page = requests.get(baseURL)
-
-    #     soup = BeautifulSoup(page.content, "html.parser")
-    #     ret = {}
-
-    #     subclasses = "Ranger Conclave"
-    #     subclassName = "Gloom Stalker"
-
-    #     excludeList = ["Bonus feat"]
-
-    #     featureTable = soup.find('table')
-    #     levels = featureTable.findAll("tr")
-    #     for level in levels:
-    #         if not hasattr(level, 'name'):
-    #             break
-
-    #         entries = level.findAll("td")
-    #         if len(entries) == 0:
-    #             continue
-
-    #         #Look at first column for level number and keep only the number
-    #         tableLevel = entries[0]
-    #         tableLevel = tableLevel.text.strip()
-    #         tableLevel = tableLevel.split('s')[0]
-    #         tableLevel = tableLevel.split('n')[0]
-    #         tableLevel = tableLevel.split('r')[0]
-    #         tableLevel = tableLevel.split('t')[0]
-
-    #         if int(tableLevel) > self.level:
-    #             break
-
-    #         ret[tableLevel] = {}
-
-    #         #Look at x column for the list of features
-    #         features = entries[5]
-    #         features = features.text.strip()
-    #         features = features.split(', ')
-
-    #         allFeatures = soup.findAll('h4')
-
-    #         for feature in features:
-    #             ret[tableLevel][feature] = {}
-    #             #Search for feature with that name
-    #             for currentFeature in allFeatures:
-    #                 featureName = currentFeature.text.replace(' (Su)','')
-    #                 featureName = currentFeature.text.replace(' (Ex)','')
-
-    #                 if featureName == feature:
-    #                     # if excludeList.contains(feature):
-    #                     #     #Exclude items from excludelist
-    #                     #     break
-    #                     currentFeature = currentFeature.next_sibling
-    #                     content = []
-    #                     while True:
-    #                         if not hasattr(currentFeature, 'name'):
-    #                             break
-    #                         if currentFeature.name == "h4":
-    #                             break
-    #                         elif currentFeature.name == "table":
-    #                             table = []
-    #                             for row in currentFeature.contents:
-    #                                 if hasattr(row, 'tag'):
-    #                                     line = row.contents
-    #                                     rowRet = []
-    #                                     for item in line:
-    #                                         if hasattr(item, 'tag'):
-    #                                             if len(item) > 0:
-    #                                                 if hasattr(item.contents[0],'a'):
-    #                                                     rowRet.append({"tag":item.name, "content":item.contents[0].text})
-    #                                                 else:
-    #                                                     rowRet.append({"tag":item.name, "content":item.contents[0]})
-    #                                     table.append({"tag":row.name, "content":rowRet})
-    #                             content.append({"tag":currentFeature.name, "content": table})
-    #                             oldFeature = currentFeature
-    #                             currentFeature = currentFeature.next_sibling
-    #                             oldFeature.replaceWith('')
-    #                             print("here")
-    #                         else:
-    #                             content.append({"tag":currentFeature.name, "content": currentFeature.text})
-    #                             oldFeature = currentFeature
-    #                             currentFeature = currentFeature.next_sibling
-    #                             oldFeature.replaceWith('')
-    #                     ret[tableLevel][feature]['description'] = content
-    #     return ret
-
     def getForms(self, request):
         combatForm = NailCombatForm(request.GET)
         spellForm  = NailSpellForm(request.GET)
@@ -819,87 +733,6 @@ class FifthEditionCharacter(Character):
 
     def initModifiers(self):
         pass
-    
-    # def getFeatures(self):
-    #     baseURL='http://dnd5e.wikidot.com/ranger'
-    #     page = requests.get(baseURL)
-
-    #     soup = BeautifulSoup(page.content, "html.parser")
-    #     ret = {}
-
-    #     subclasses = "Ranger Conclave"
-    #     subclassName = "Gloom Stalker"
-
-    #     featureTable = soup.find('table', attrs = {'class':'wiki-content-table'})
-    #     levels = featureTable.findAll("tr")
-    #     for level in levels:
-    #         if not hasattr(level, 'name'):
-    #             break
-
-    #         entries = level.findAll("td")
-    #         if len(entries) == 0:
-    #             continue
-
-    #         tableLevel = entries[0]
-    #         tableLevel = tableLevel.text.strip()
-    #         tableLevel = tableLevel.split('s')[0]
-    #         tableLevel = tableLevel.split('n')[0]
-    #         tableLevel = tableLevel.split('r')[0]
-    #         tableLevel = tableLevel.split('t')[0]
-
-    #         if int(tableLevel) > self.level:
-    #             break
-
-    #         ret[tableLevel] = {}
-
-    #         features = entries[2]
-    #         features = features.text.strip()
-    #         features = features.split(', ')
-
-    #         allFeatures = soup.findAll('h3')
-
-    #         for feature in features:
-    #             ret[tableLevel][feature] = {}
-    #             #Search for feature with that name
-    #             for currentFeature in allFeatures:
-    #                 if currentFeature.text == feature:
-    #                     if feature == subclasses:
-    #                         #Get subclass feature
-    #                         break
-    #                     currentFeature = currentFeature.next_sibling
-    #                     content = []
-    #                     while True:
-    #                         if not hasattr(currentFeature, 'name'):
-    #                             break
-    #                         if currentFeature.name == "h3":
-    #                             break
-    #                         elif currentFeature.name == "table":
-    #                             table = []
-    #                             for row in currentFeature.contents:
-    #                                 if hasattr(row, 'tag'):
-    #                                     line = row.contents
-    #                                     rowRet = []
-    #                                     for item in line:
-    #                                         if hasattr(item, 'tag'):
-    #                                             if len(item) > 0:
-    #                                                 if hasattr(item.contents[0],'a'):
-    #                                                     rowRet.append({"tag":item.name, "content":item.contents[0].text})
-    #                                                 else:
-    #                                                     rowRet.append({"tag":item.name, "content":item.contents[0]})
-    #                                     table.append({"tag":row.name, "content":rowRet})
-    #                             content.append({"tag":currentFeature.name, "content": table})
-    #                             oldFeature = currentFeature
-    #                             currentFeature = currentFeature.next_sibling
-    #                             oldFeature.replaceWith('')
-    #                             print("here")
-    #                         else:
-    #                             content.append({"tag":currentFeature.name, "content": currentFeature.text})
-    #                             oldFeature = currentFeature
-    #                             currentFeature = currentFeature.next_sibling
-    #                             oldFeature.replaceWith('')
-    #                     # description = content.split("\n")
-    #                     ret[tableLevel][feature]['description'] = content
-    #     return ret
 
     def getForms(self, request):
         combatForm = MyriilCombatForm(request.GET)
