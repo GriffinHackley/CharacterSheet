@@ -286,7 +286,43 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         <button type="button" class="tabButton" data-for-tab="flavor">Flavor</button>
       </div>
       <div class="tabContent" data-tab="features">
-        <h2>Features</h2>
+        {% comment %} Attempt at web scraper to display class features {% endcomment %}
+        {% comment %} {% for level, features in character.features.items %}
+          <h2>{{level}}</h2>
+          {% for feature, description in features.items %}
+            <h2>{{feature}}</h2>
+            {% for description,lines in description.items %}
+              {% for line in lines %}
+                {% if line.tag == None %}
+                {% elif line.tag == 'p' %}
+                  <p>{{line.content}}</p>
+                {% elif line.tag == 'h6' %}
+                  <h3>{{line.content}}</h3>
+                {% elif line.tag == 'ul' %}
+                  <ul>{{line.content}}</ul>
+                {% elif line.tag == 'table' %}
+                  <table>
+                    {% for row in line.content %}
+                      <tr>
+                        {% for item in row.content %}
+                          {% if item.tag == "th" %}
+                            <th>{{item.content}}</th>
+                          {% elif item.tag == "td" %}
+                            <td>
+                              {{item.content}}
+                            </td>
+                          {% endif %}
+                        {% endfor %}
+                      </tr>
+                    {% endfor %}
+                  </table>
+                {% else %}
+                  {{line}}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endfor %}
+        {% endfor %} {% endcomment %}
       </div>
       <div class="tabContent" data-tab="equipment">
         <section class="equipment">
