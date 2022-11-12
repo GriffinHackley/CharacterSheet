@@ -495,6 +495,7 @@ div.separator{
 section.consumables {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
   justify-content: space-evenly;
   flex-wrap: wrap;
 }
@@ -506,7 +507,7 @@ section.consumables > div {
   display: flex;
   flex-direction: column;
   width: 45%;
-  min-height: 90px;
+  min-height: 75px;
 }
 section.consumables > div > div.total {
   display: flex;
@@ -556,7 +557,7 @@ section.toggles {
   border: 1px solid black;
   border-radius: 10px;
   padding: 5px;
-  flex-grow: 1;
+  flex-grow: 6;
   flex-direction: column;
   justify-content: space-evenly;
 }

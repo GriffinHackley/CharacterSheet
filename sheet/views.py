@@ -16,8 +16,12 @@ def index(request):
 def detail(request, character_id):
     character = get_object_or_404(Character, pk=character_id)
 
-    # character = neil.apply(character)
-    # character = myriil.apply(character)
+    if character.id == 1:
+        # character = myriil.apply(character)
+        pass
+    elif character.id == 3:
+        # character = neil.apply(character)
+        pass
 
     if character.config['edition'] == '5e':
         character = FifthEditionCharacter().fromCharacter(character)
