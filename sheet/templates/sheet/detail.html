@@ -48,7 +48,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </header>
     <main>
       <section class=attributes>
-      <div class=scores>
+        <div class=scores>
           <ul>
               {% for ability,score in character.abilityScores.items %}
               <li>
@@ -60,22 +60,22 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
               </li>
               {% endfor %}
           </ul>      
-      </div>
+        </div>
       </section>
 
       <section class="attr-applications">
         {% if character.config.edition == "5e" %}
         <div class="inspiration">
+          <input name="inspiration" type="checkbox" />
           <div class="labelBox">
             <label for="inspiration">Inspiration</label>
           </div>
-          <input name="inspiration" type="checkbox" />
         </div>
         <div class="proficiencybonus">
+          <div class="value">+2</div>
           <div class="labelBox">
             <label>Proficiency Bonus</label>
           </div>
-          <div class="value">+2</div>
         </div>
         {% endif %}
         <div class="saves list-section">
@@ -88,23 +88,20 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             </li>
             {% endfor %}
           </ul>
-          <div class="label">
-            Saving Throws
-          </div>
+          <div class="label"> Saving Throws </div>
         </div>
         <div class="skills list-section">
-          <ul>
-            <!-- SKILL LIST -->
-            {% for skill,value in character.skills.items %}
-            <li>
-              <div class="skillName"> {{skill}} <span class="skillAbility"> {{value.ability}} </span></div>
+          <!-- SKILL LIST -->
+          {% for skill,value in character.skills.items %}
+            <div class="skill">
               <div class="value"> {{value.value}} </div>
-            </li>
-            {% endfor %}
-          </ul>
-          <div class="label">
-            Skills
-          </div>
+              <div class="skillText"> 
+                <span class="skillName"> {{skill}} </span>
+                <span class="skillAbility"> {{value.ability}} </span>
+              </div>
+            </div>
+          {% endfor %}
+          <div class="label"> Skills </div>
         </div>
       </section>
 

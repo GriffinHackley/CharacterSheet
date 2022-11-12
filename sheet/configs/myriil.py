@@ -1,6 +1,6 @@
 def apply(character):
     character.config = {"edition":"5e", "critType":'maxDie',"castingType":"prepared"}
-    character.name = "Myriil"
+    character.name = "Myriil Taegen"
     character.baseStats = '8,17,14,10,15,8'
     character.alignment = "Lawful Neutral"
     character.charClass = "Ranger"
