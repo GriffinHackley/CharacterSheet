@@ -47,6 +47,11 @@ class HalfOrc(Race):
 
         return super().appendModifiers(modList)
 
+    def getFeatures(self):
+        ret = {}
+        
+        return ret
+
 class ShadarKai(Race):
     def __init__(self, primaryAbility, secondaryAbility='None', size='M', speed=30, languages=[], features=[]):
         super().__init__(primaryAbility=primaryAbility, secondaryAbility=secondaryAbility, name="ShadarKai", size=size, speed=speed, languages=["Common", languages], features=[{"darkvision":"See in the dark up to 60 feet."}])

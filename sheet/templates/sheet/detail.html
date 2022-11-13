@@ -279,18 +279,18 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 
     <section class="flexPanel">
       <div class="flexHeader tabHeader">
-        <button type="button" class="tabButton" data-for-tab="main-features">Features</button>
-        <button type="button" class="tabButton" data-for-tab="main-equipment">Equipment</button>
-        <button type="button" class="tabButton" data-for-tab="main-proficiencies">Proficiencies</button>
-        <button type="button" class="tabButton" data-for-tab="main-spells">Spells</button>
-        <button type="button" class="tabButton" data-for-tab="main-powerAttack">Power Attack</button>
-        <button type="button" class="tabButton" data-for-tab="main-flavor">Flavor</button>
+        <button type="button" id="featuresButton" class="tabButton" data-for-tab="main-features">Features</button>
+        <button type="button" id="equipmentButton" class="tabButton" data-for-tab="main-equipment">Equipment</button>
+        <button type="button" id="proficienciesButton" class="tabButton" data-for-tab="main-proficiencies">Proficiencies</button>
+        <button type="button" id="spellsButton" class="tabButton" data-for-tab="main-spells">Spells</button>
+        <button type="button" id="powerAttackButton" class="tabButton" data-for-tab="main-powerAttack">Power Attack</button>
+        <button type="button" id="flavorButton" class="tabButton" data-for-tab="main-flavor">Flavor</button>
       </div>
       <div class="tabContent" data-tab="main-features">
         <section class="features">
           <div class="featureHeader tabHeader">
             {% for featureType in character.features %}
-              <button type="button" class="tabButton" data-for-tab="feature-{{featureType}}">{{featureType}}</button>
+              <button type="button" id="{{featureType}}Button" class="tabButton" data-for-tab="feature-{{featureType}}">{{featureType}}</button>
             {% endfor %}
           </div>
           {% for featureType,features in character.features.items %}
