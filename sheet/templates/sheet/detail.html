@@ -1,10 +1,10 @@
 {% load static %}
+{% load sheetTags %}
 <link rel="stylesheet" href="{% static 'sheet/5eSheet.css'   %}">
 
 <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
-<script type = "text/javascript" src="{% static 'sheet/ignoreLastPass.js' %}" async></script>
 <script type = "text/javascript" src="{% static 'sheet/localState.js' %}"></script>
 <script type = "text/javascript" src="{% static 'sheet/tabs.js' %}"></script>
 
@@ -19,7 +19,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         <ul>
           <li>
             <div class="field">Class & Level</div>
-            <div class="value">{{character.charClass}} {{character.level}}</div>
+            <div class="value">{{character.charClass.name}} {{character.level}}</div>
           </li>
           <li>
             <div class="field">Background</div>
@@ -278,7 +278,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </main>
 
     <section class="flexPanel">
-      <div class="tabHeader">
+      <div class="flexHeader tabHeader">
         <button type="button" class="tabButton" data-for-tab="features">Features</button>
         <button type="button" class="tabButton" data-for-tab="equipment">Equipment</button>
         <button type="button" class="tabButton" data-for-tab="spells">Spells</button>
@@ -286,7 +286,35 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         <button type="button" class="tabButton" data-for-tab="flavor">Flavor</button>
       </div>
       <div class="tabContent" data-tab="features">
-        <h2>Features</h2>
+        <section class="features">
+          <div class="featureHeader tabHeader">
+            {% for featureType in character.features %}
+              <button type="button">{{featureType}}</button>
+            {% endfor %}
+          </div>
+          {% for featureType,features in character.features.items %}
+            <div class="featureType">
+              <div class="feature">
+                {% for feature,description in features.items %}
+                  <button type="button" class="featureName collapsible">{{feature}}</button>
+                  <div class="featureDescription collapsing">
+                    {% for line in description %}
+                      {% if line.type == "normal" %}
+                        {% with line.text|split as test %}
+                          {% for item in test %}
+                            <p>{{item}}</p>
+                          {% endfor %}
+                        {% endwith %}
+                      {% elif line.type == "heading" %}
+                        <h4>{{line.text}}</h4>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </section>
       </div>
       <div class="tabContent" data-tab="equipment">
         <section class="equipment">
@@ -480,3 +508,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </section>
   </section>
 </form>
+
+<script type = "text/javascript" src="{% static 'sheet/ignoreLastPass.js' %}"></script>
+<script type = "text/javascript" src="{% static 'sheet/collapse.js' %}" ></script>

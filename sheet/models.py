@@ -87,7 +87,6 @@ class Character(models.Model):
     def build(self):
         self.modList = ModifierList()
         self.getModifiers()
-
         self.calculateStats()
         self.cleanModifiers()
         self.saves = self.calculateSaves()
@@ -139,9 +138,9 @@ class Character(models.Model):
         return ret
 
     def applyClass(self):
-        currentClass = classes[self.charClass]
-        currentClass.appendModifiers(self.modList)
-        self.hitDie = currentClass.hitDie
+        self.charClass = classes[self.charClass]
+        self.charClass.appendModifiers(self.modList)
+        self.hitDie = self.charClass.hitDie
 
         if 'dreadAmbusher' in self.toggles.keys() and self.toggles['dreadAmbusher']:
             self.modList.addModifier(Modifier('1d8', "untyped", 'DamageDie', 'Dread Ambusher'))
@@ -379,7 +378,10 @@ class Character(models.Model):
     def getFeatures(self):
         ret = {}
 
-        ret['class'] = {}
+        ret['Class'] = self.charClass.getClassFeatures()
+        ret['Feats'] = {}
+        ret['Race']  = {}
+        ret['Items'] = {}
 
         return ret
 
@@ -432,7 +434,7 @@ class PathfinderCharacter(Character):
             name = weapon['name']
 
             if 'Kukri' in name:
-                weapon['damageDie'] = classes[self.charClass].sacredWeapon
+                weapon['damageDie'] = self.charClass.sacredWeapon
             
             weaponRet = super().attackInit(weapon)
 
@@ -542,10 +544,9 @@ class PathfinderCharacter(Character):
 
     def applyClass(self):
         super().applyClass()
-        currentClass = classes[self.charClass]
-        self.classSkills = self.classSkills + currentClass.classSkills
-        self.skillPerLevel = currentClass.skillPerLevel
-        self.bab = currentClass.bab
+        self.classSkills = self.classSkills + self.charClass.classSkills
+        self.skillPerLevel = self.charClass.skillPerLevel
+        self.bab = self.charClass.bab
 
     def applyTraits(self):
         #Fate's Favored
@@ -559,12 +560,12 @@ class PathfinderCharacter(Character):
     def calculateCombat(self):
         ret = super().calculateCombat()
         
-        ret["Consumables"] = classes[self.charClass].getConsumables(self.abilityMod)
+        ret["Consumables"] = self.charClass.getConsumables(self.abilityMod)
 
         return ret
 
     def getSpells(self):
-        ret = classes[self.charClass].getSpells(self.abilityMod, self.modList)
+        ret = self.charClass.getSpells(self.abilityMod, self.modList)
         return ret
 
     def initModifiers(self):
@@ -699,7 +700,7 @@ class FifthEditionCharacter(Character):
 
             if key in self.proficiencies['skills']:
                 statBonus += self.profBonus
-                if key in classes[self.charClass].expertise['skills']:
+                if key in self.charClass.expertise['skills']:
                     statBonus += self.profBonus
 
             ret[key] = {'ability':ability, 'value':statBonus}
@@ -712,7 +713,7 @@ class FifthEditionCharacter(Character):
     
     def applyClass(self):
         super().applyClass()
-        currentClass = classes[self.charClass]
+        currentClass = self.charClass
         currentClass.addProficiencies(self.proficiencies)
         self.profBonus = self.getProfBonus()
 
@@ -723,12 +724,12 @@ class FifthEditionCharacter(Character):
     def calculateCombat(self):
         ret = super().calculateCombat()
 
-        ret["Consumables"] = classes[self.charClass].getConsumables(self.abilityMod, self.profBonus)
+        ret["Consumables"] = self.charClass.getConsumables(self.abilityMod, self.profBonus)
 
         return ret
 
     def getSpells(self):
-        ret = classes[self.charClass].getSpells(self.abilityMod, self.profBonus, self.modList)
+        ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)
         return ret
 
     def initModifiers(self):
