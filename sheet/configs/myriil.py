@@ -6,7 +6,7 @@ def apply(character):
     character.charClass = "Ranger"
     character.level = 4
     character.background = "Spy"
-    character.feats = {"Level 4:":"Elven Accuracy", "Gloomstalker Bow":"Sharpshooter"}
+    character.feats = {"Elven Accuracy":"Level 4:", "Sharpshooter":"Gloomstalker Bow"}
     character.race = "Shadar-Kai"
     character.playerName = "Griffin"
     character.armor = {"name" : "Studded Leather", "armorBonus" : 2, "ability":"Dex", "maxAbility": 20, "armorCheck" : 0, "spellFailure" : 0, "modifiers": []}

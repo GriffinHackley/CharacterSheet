@@ -147,14 +147,25 @@ class Character(models.Model):
                
     def applyFeats(self):
         ret = {}
-        
-        for key, item in self.feats.items():
-            if item == "Elven Accuracy":
-                self.modList.addModifier(Modifier(1, "untyped", 'Dexterity', 'Elven Accuracy'))
-                ret['Elven Accuracy'] = {'level':key, 'text':'Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.'}
 
-            if item == "Sharpshooter":
-                ret['Sharpshooter'] = {'level':key, 'text':"Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls. Your ranged weapon attacks ignore half and three-quarters cover. Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage."}
+        # TODO: ADD source back
+        for key, source in self.feats.items():
+            if key == "Elven Accuracy":
+                self.modList.addModifier(Modifier(1, "untyped", 'Dexterity', 'Elven Accuracy'))
+                ret['Elven Accuracy'] = [
+{"type": "normal", "text":"""
+Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.
+"""}]
+            if key == "Sharpshooter":
+                ret['Sharpshooter'] = [
+{"type": "normal", "text":"""
+Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.
+
+Your ranged weapon attacks ignore half and three-quarters cover.
+
+Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.
+"""}]
+        self.feats = ret
 
     def applySpells(self):
         if 'absorbElements' in self.toggles.keys() and self.toggles['absorbElements']:
@@ -379,11 +390,18 @@ class Character(models.Model):
         ret = {}
 
         ret['Class'] = self.charClass.getClassFeatures()
-        ret['Feats'] = {}
-        ret['Race']  = {}
+        ret['Feats'] = self.getFeats()
+        ret['Race']  = self.race.getFeatures()
         ret['Items'] = {}
 
+        from pprint import pprint
+
+        # pprint(ret)
+
         return ret
+
+    def getFeats(self):
+        return self.feats
 
     def decodeStats(self):
         stats = self.baseStats
@@ -539,8 +557,9 @@ class PathfinderCharacter(Character):
             return ret
 
     def applyRace(self):
-        races[self.race].appendModifiers(self.modList)
-        self.classSkills = self.classSkills + races[self.race].classSkills
+        self.race = races[self.race]
+        self.race.appendModifiers(self.modList)
+        self.classSkills = self.classSkills + self.race.classSkills
 
     def applyClass(self):
         super().applyClass()
@@ -708,8 +727,9 @@ class FifthEditionCharacter(Character):
         return ret
     
     def applyRace(self):
-        races[self.race].appendModifiers(self.modList)
-        races[self.race].addProficiencies(self.proficiencies)
+        self.race = races[self.race]
+        self.race.appendModifiers(self.modList)
+        self.race.addProficiencies(self.proficiencies)
     
     def applyClass(self):
         super().applyClass()

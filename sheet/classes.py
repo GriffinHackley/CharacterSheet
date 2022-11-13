@@ -465,7 +465,7 @@ At 20th level, you become an unparalleled hunter of your enemies. Once on each o
             ret['Spellcasting'] = spellcasting
 
         if self.level >= 3:
-             ret['Primal Awareness'] = primalAwareness
+            ret['Primal Awareness'] = primalAwareness
 
         if self.level >= 4:
             ret['Martial Versatility'] = martialVersatility

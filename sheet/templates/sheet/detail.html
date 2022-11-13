@@ -31,7 +31,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           </li>
           <li>
             <div class="field">Race</div>
-            <div class="value">{{character.race}}</div>
+            <div class="value">{{character.race.name}}</div>
           </li>
           <li>
             <div class="field">Alignment</div>
@@ -279,23 +279,24 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 
     <section class="flexPanel">
       <div class="flexHeader tabHeader">
-        <button type="button" class="tabButton" data-for-tab="features">Features</button>
-        <button type="button" class="tabButton" data-for-tab="equipment">Equipment</button>
-        <button type="button" class="tabButton" data-for-tab="spells">Spells</button>
-        <button type="button" class="tabButton" data-for-tab="powerAttack">Power Attack</button>
-        <button type="button" class="tabButton" data-for-tab="flavor">Flavor</button>
+        <button type="button" class="tabButton" data-for-tab="main-features">Features</button>
+        <button type="button" class="tabButton" data-for-tab="main-equipment">Equipment</button>
+        <button type="button" class="tabButton" data-for-tab="main-proficiencies">Proficiencies</button>
+        <button type="button" class="tabButton" data-for-tab="main-spells">Spells</button>
+        <button type="button" class="tabButton" data-for-tab="main-powerAttack">Power Attack</button>
+        <button type="button" class="tabButton" data-for-tab="main-flavor">Flavor</button>
       </div>
-      <div class="tabContent" data-tab="features">
+      <div class="tabContent" data-tab="main-features">
         <section class="features">
           <div class="featureHeader tabHeader">
             {% for featureType in character.features %}
-              <button type="button">{{featureType}}</button>
+              <button type="button" class="tabButton" data-for-tab="feature-{{featureType}}">{{featureType}}</button>
             {% endfor %}
           </div>
           {% for featureType,features in character.features.items %}
-            <div class="featureType">
-              <div class="feature">
-                {% for feature,description in features.items %}
+            <div class="featureType tabContent" data-tab="feature-{{featureType}}">
+              {% for feature,description in features.items %}
+                <div class="feature">
                   <button type="button" class="featureName collapsible">{{feature}}</button>
                   <div class="featureDescription collapsing">
                     {% for line in description %}
@@ -310,13 +311,13 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
                       {% endif %}
                     {% endfor %}
                   </div>
-                {% endfor %}
-              </div>
+                </div>
+              {% endfor %}
             </div>
           {% endfor %}
         </section>
       </div>
-      <div class="tabContent" data-tab="equipment">
+      <div class="tabContent" data-tab="main-equipment">
         <section class="equipment">
           <div class="itemSlots">
             <img src="{% static "sheet/images/magicItemSlots.png" %}" alt="Uh Oh">
@@ -369,7 +370,12 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           </div>
         </section>
       </div>
-      <div class="tabContent" data-tab="spells">
+      <div class="tabContent" data-tab="main-proficiencies">
+        <section class="flavor">
+
+        </section>
+      </div>
+      <div class="tabContent" data-tab="main-spells">
         <section class="spellsContainer">
           <div class="spellHeader">
           <div class="spellAbility spellHeaderItem">
@@ -487,7 +493,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           </div>
         </section>
       </div>
-      <div class="tabContent" data-tab="powerAttack">
+      <div class="tabContent" data-tab="main-powerAttack">
         <section class="powerAttack">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
           <body>
@@ -500,7 +506,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           <script  src="{% static 'sheet/powerAttackGraph.js' %}"></script>
         </section>
       </div>
-      <div class="tabContent" data-tab="flavor">
+      <div class="tabContent" data-tab="main-flavor">
         <section class="flavor">
 
         </section>

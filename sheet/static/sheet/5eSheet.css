@@ -261,9 +261,6 @@ div.skill{
   flex-direction: row;
   flex-grow: 1;
 }
-div.skill:first-child {
-  /* background-color: blue; */
-}
 div.skillText {
   display: flex;
   flex-direction: row;
@@ -661,7 +658,7 @@ div.flexHeader > button:last-child {
   display: none;
 }
 .tabContent--active {
-  display: block;
+  display: flex;
 }
 .tabButton:active {
   color: red;
@@ -675,6 +672,7 @@ section.features{
   justify-content: flex-start;
   align-items: center;
   height: 100%;
+  width: 100%;
 }
 div.featureHeader {
   display: flex;
@@ -684,14 +682,19 @@ div.featureHeader {
   margin-bottom: 5px;
 }
 div.featureType {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
+  flex-grow: 1;
 }
 div.feature {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
   align-items: center;
+  width: 100%;
 }
 /* Accent */
 button.collapsible {
