@@ -371,8 +371,47 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         </section>
       </div>
       <div class="tabContent" data-tab="main-proficiencies">
-        <section class="flavor">
-
+        <section class="proficiencies">
+          <div class="skillProficiencies">
+            <h2>Skills</h2>
+            <div class="skillProfList">
+              {% if character.config.edition == "Pathfinder" %}
+                pathfinder
+              {% else %}
+                {% for skill in character.proficiencies.skills %}
+                  <p>{{skill}}</p>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+          {% if character.config.edition == "5e" %}
+            <div class="savesProficiencies">
+              <h2>Saving Throws</h2>
+              {% for save in character.proficiencies.savingThrows %}
+                  <p>{{save}}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="weaponProficiencies">
+            <h2>Weapons</h2>
+            {% for weapon in character.proficiencies.weapons %}
+                  <p>{{weapon}}</p>
+              {% endfor %}
+          </div>
+          <div class="armorProficiencies">
+            <h2>Armor</h2>
+            {% for type in character.proficiencies.armor %}
+                  <p>{{type}}</p>
+              {% endfor %}
+          </div>
+          {% if character.config.edition == "5e" %}
+            <div class="toolsProficiencies">
+              <h2>Tools</h2>
+              {% for tool in character.proficiencies.tools %}
+                <p>{{tool}}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
         </section>
       </div>
       <div class="tabContent" data-tab="main-spells">

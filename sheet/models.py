@@ -165,6 +165,44 @@ Your ranged weapon attacks ignore half and three-quarters cover.
 
 Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.
 """}]
+
+            if key == "Two-Weapon Fighting":
+                ret['Two-Weapon Fighting'] = [
+{"type": "heading", "text":"""
+Benefit:
+"""},
+{"type": "normal", "text":"""
+Your penalties on attack rolls for fighting with two weapons are reduced. The penalty for your primary hand lessens by 2 and the one for your off hand lessens by 6.
+"""},
+{"type": "heading", "text":"""
+Normal:
+"""},
+{"type": "normal", "text":"""
+If you wield a second weapon in your off hand, you can get one extra attack per round with that weapon. When fighting in this way you suffer a –6 penalty with your regular attack or attacks with your primary hand and a –10 penalty to the attack with your off hand. If your off-hand weapon is light, the penalties are reduced by 2 each. An unarmed strike is always considered light.
+"""},]
+
+            if key == "Butterfly Sting":
+                ret['Butterfly Sting'] = [
+{"type": "normal", "text":"""
+When you confirm a critical hit against a creature, you can choose to forgo the effect of the critical hit and grant a critical hit to the next ally who hits the creature with a melee attack before the start of your next turn. Your attack only deals normal damage, and the next ally automatically confirms the hit as a critical.
+"""},]
+
+            if key == "Combat Reflexes":
+                ret['Combat Reflexes'] = [
+{"type": "heading", "text":"""
+Benefit:
+"""},
+{"type": "normal", "text":"""
+You may make a number of additional attacks of opportunity per round equal to your Dexterity bonus. With this feat, you may also make attacks of opportunity while flat-footed.
+"""},
+{"type": "heading", "text":"""
+Normal
+"""},
+{"type": "normal", "text":"""
+A character without this feat can make only one attack of opportunity per round and can’t make attacks of opportunity while flat-footed.
+"""},
+]
+
         self.feats = ret
 
     def applySpells(self):
@@ -394,10 +432,6 @@ Before you make an attack with a ranged weapon that you are proficient with, you
         ret['Race']  = self.race.getFeatures()
         ret['Items'] = {}
 
-        from pprint import pprint
-
-        # pprint(ret)
-
         return ret
 
     def getFeats(self):
@@ -620,7 +654,7 @@ class PathfinderCharacter(Character):
 class FifthEditionCharacter(Character):
     def build(self):
         self.skillList = skill_list_5e
-        self.proficiencies = {'skills': [], 'armor': [], 'weapons':[], 'tools':[], 'saving throws':[]}       
+        self.proficiencies = {'skills': [], 'armor': [], 'weapons':[], 'tools':[], 'savingThrows':[]}       
         self.expertise = {'skills':[], 'tools':[]}
 
         super().build() 
@@ -640,7 +674,7 @@ class FifthEditionCharacter(Character):
     
             saveName = ability.name + ' Saving Throw'
             statBonus += self.modList.applyModifier(saveName)
-            if ability.name in self.proficiencies['saving throws']:
+            if ability.name in self.proficiencies['savingThrows']:
                 statBonus += self.profBonus
             ret[ability.name] = {'ability':ability, 'value':statBonus}
     

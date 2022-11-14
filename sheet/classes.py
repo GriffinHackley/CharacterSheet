@@ -41,7 +41,7 @@ class Class():
             proficiencyList['armor'] = proficiencyList['armor'] + self.proficiencies['armor']
             proficiencyList['weapons'] = proficiencyList['weapons'] + self.proficiencies['weapons']
             proficiencyList['tools'] = proficiencyList['tools'] + self.proficiencies['tools']
-            proficiencyList['saving throws'] = proficiencyList['saving throws'] + self.proficiencies['saving throws']
+            proficiencyList['savingThrows'] = proficiencyList['savingThrows'] + self.proficiencies['savingThrows']
     
 class Warpiest(Class):    
     skillPerLevel = 2
@@ -277,7 +277,7 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
         return ret
 
 class Ranger(Class):
-    proficiencies = {'skills': ['Insight', 'Stealth', 'Survival'], 'armor': ['Light', 'Medium'], 'weapons':['Simple', 'Martial'], 'tools':[], 'saving throws':['Strength', 'Dexterity']}
+    proficiencies = {'skills': ['Insight', 'Stealth', 'Survival'], 'armor': ['Light', 'Medium'], 'weapons':['Simple', 'Martial'], 'tools':[], 'savingThrows':['Strength', 'Dexterity']}
     expertise = {'skills': ['Stealth']}
 
     def __init__(self, level):

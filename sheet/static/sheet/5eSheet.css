@@ -882,10 +882,21 @@ textarea.extraEquipment {
   width: 100%;
   flex-grow: 1;
 }
+section.proficiencies {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
+}
+div.skillProficiencies, div.savesProficiencies, div.weaponProficiencies, div.armorProficiencies, div.toolsProficiencies{
+  flex-grow: 1;
+}
 section.spellsContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
 div.spellHeader {
   display: flex;
