@@ -37,6 +37,16 @@ class NailSkillForm(forms.Form):
 
     scavenger = forms.BooleanField(label='Scavenger', required=False)
 
+class SacredWeaponForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    choices = [('Main Hand', 'Main Hand'), ('Off Hand','Off Hand')]
+    weaponChoice = forms.ChoiceField(choices=choices, label='Weapon', required=False)
+    keen = forms.BooleanField(label='Keen', required=False)
+    elemental = forms.BooleanField(label='Elemental Damage', required=False)
+
 class MyriilCombatForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

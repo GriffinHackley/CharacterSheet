@@ -889,7 +889,8 @@ section.proficiencies {
   height: 100%;
   width: 100%;
 }
-div.skillProficiencies, div.savesProficiencies, div.weaponProficiencies, div.armorProficiencies, div.toolsProficiencies{
+div.skillProficiencies, div.savesProficiencies, 
+div.weaponProficiencies, div.armorProficiencies, div.toolsProficiencies{
   flex-grow: 1;
 }
 section.spellsContainer {

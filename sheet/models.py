@@ -2,7 +2,7 @@ import math
 import re
 from django.db import models
 
-from sheet.forms import ACTypeForm, MyriilCombatForm, MyriilSpellForm, NailCombatForm, NailSkillForm, NailSpellForm
+from sheet.forms import ACTypeForm, MyriilCombatForm, MyriilSpellForm, NailCombatForm, NailSkillForm, NailSpellForm, SacredWeaponForm
 from .races import races
 from .classes import classes
 from .lists import Ability, skill_list_pathfinder, skill_list_5e, save_list_pathfinder, combat_list
@@ -168,15 +168,12 @@ Before you make an attack with a ranged weapon that you are proficient with, you
 
             if key == "Two-Weapon Fighting":
                 ret['Two-Weapon Fighting'] = [
-{"type": "heading", "text":"""
-Benefit:
-"""},
+{"type": "heading", "text":"Benefit:"},
 {"type": "normal", "text":"""
 Your penalties on attack rolls for fighting with two weapons are reduced. The penalty for your primary hand lessens by 2 and the one for your off hand lessens by 6.
 """},
-{"type": "heading", "text":"""
-Normal:
-"""},
+
+{"type": "heading", "text":"Normal:"},
 {"type": "normal", "text":"""
 If you wield a second weapon in your off hand, you can get one extra attack per round with that weapon. When fighting in this way you suffer a –6 penalty with your regular attack or attacks with your primary hand and a –10 penalty to the attack with your off hand. If your off-hand weapon is light, the penalties are reduced by 2 each. An unarmed strike is always considered light.
 """},]
@@ -189,15 +186,12 @@ When you confirm a critical hit against a creature, you can choose to forgo the 
 
             if key == "Combat Reflexes":
                 ret['Combat Reflexes'] = [
-{"type": "heading", "text":"""
-Benefit:
-"""},
+{"type": "heading", "text":"Benefit:"},
 {"type": "normal", "text":"""
 You may make a number of additional attacks of opportunity per round equal to your Dexterity bonus. With this feat, you may also make attacks of opportunity while flat-footed.
 """},
-{"type": "heading", "text":"""
-Normal
-"""},
+
+{"type": "heading", "text":"Normal"},
 {"type": "normal", "text":"""
 A character without this feat can make only one attack of opportunity per round and can’t make attacks of opportunity while flat-footed.
 """},
@@ -430,7 +424,7 @@ A character without this feat can make only one attack of opportunity per round 
         ret['Class'] = self.charClass.getClassFeatures()
         ret['Feats'] = self.getFeats()
         ret['Race']  = self.race.getFeatures()
-        ret['Items'] = {}
+        ret['Misc.'] = self.getMiscFeatures()
 
         return ret
 
@@ -621,15 +615,21 @@ class PathfinderCharacter(Character):
         ret = self.charClass.getSpells(self.abilityMod, self.modList)
         return ret
 
+    def getMiscFeatures(self):
+        ret = {}
+
+        return ret
+
     def initModifiers(self):
         naturalArmor = Modifier(0, "Natural Armor", 'AC', 'Iron Skin')
         self.modList.addModifier(naturalArmor)
 
     def getForms(self, request):
-        combatForm = NailCombatForm(request.GET)
-        spellForm  = NailSpellForm(request.GET)
-        acTypeForm = ACTypeForm(request.GET)
-        skillForm  = NailSkillForm(request.GET)
+        combatForm       = NailCombatForm(request.GET)
+        spellForm        = NailSpellForm(request.GET)
+        acTypeForm       = ACTypeForm(request.GET)
+        skillForm        = NailSkillForm(request.GET)
+        sacredWeaponForm = SacredWeaponForm(request.GET)
         
         toggles = {}
         if combatForm.is_valid():
@@ -644,10 +644,11 @@ class PathfinderCharacter(Character):
         self.toggles = toggles
 
         ret = {}
-        ret['acType'] = acTypeForm
-        ret['combat'] = combatForm
-        ret['spell']  = spellForm
-        ret['skill']  = skillForm
+        ret['acType']        = acTypeForm
+        ret['combat']        = combatForm
+        ret['spell']         = spellForm
+        ret['skill']         = skillForm
+        ret['sacredWeapon']  = sacredWeaponForm
 
         return ret
 
@@ -784,6 +785,17 @@ class FifthEditionCharacter(Character):
 
     def getSpells(self):
         ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)
+        return ret
+
+    def getMiscFeatures(self):
+        ret = {}
+
+        ret['Wanderer'] = [
+{"type": "normal", "text":"""
+You have an excellent memory for maps and geography, and you can always recall the general layout of terrain, settlements, and other features around you. In addition, you can find food and fresh water for yourself and up to five other people each day, provided that the land offers berries, small game, water, and so forth.
+"""},
+]
+
         return ret
 
     def initModifiers(self):

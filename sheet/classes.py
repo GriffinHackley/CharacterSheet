@@ -74,28 +74,19 @@ Like other spellcasters, a warpriest can cast only a certain number of spells of
 Warpriests meditate or pray for their spells. Each warpriest must choose a time when he must spend 1 hour each day in quiet contemplation or supplication to regain his daily allotment of spells. A warpriest can prepare and cast any spell on the cleric spell list, provided that he can cast spells of that level, but he must choose which spells to prepare during his daily meditation.
 """},
 
-{"type": "heading", "text":"""
-Orisons:
-"""},
-
+{"type": "heading", "text":"Orisons:"},
 {"type": "normal", "text":"""
 Warpriests can prepare a number of orisons, or 0-level spells, each day as noted on Table Warpriest. These spells are cast as any other spell, but aren’t expended when cast and can be used again.
 """},
 
-{"type": "heading", "text":"""
-Spontaneous Casting:
-"""},
-
+{"type": "heading", "text":"Spontaneous Casting:"},
 {"type": "normal", "text":"""
 A good warpriest (or a neutral warpriest of a good deity) can channel stored spell energy into healing spells that he did not prepare ahead of time. The warpriest can expend any prepared spell that isn’t an orison to cast any cure spell of the same spell level or lower. A cure spell is any spell with “cure” in its name.
 
 A warpriest that is neither good nor evil and whose deity is neither good nor evil chooses whether he can convert spells into either cure spells or inflict spells. Once this choice is made, it cannot be changed. This choice also determines whether the warpriest channels positive or negative energy (see Channel Energy, below).
 """},
 
-{"type": "heading", "text":"""
-Chaotic, Evil, Good, and Lawful Spells:
-"""},
-
+{"type": "heading", "text":"Chaotic, Evil, Good, and Lawful Spells:"},
 {"type": "normal", "text":"""
 A warpriest cannot cast spells of an alignment opposed to his own or his deity’s (if he has a deity). Spells associated with particular alignments are indicated by the chaotic, evil, good, and lawful descriptors in their spell descriptions.
 """}]
@@ -308,10 +299,7 @@ This feature's extra damage increases when you reach certain levels in this clas
 You are an unsurpassed explorer and survivor, both in the wilderness and in dealing with others on your travels. You gain the Canny benefit below, and you gain an additional benefit when you reach 6th level and 10th level in this class.
 """}, 
 
-{"type": "heading", "text":"""
-Canny:
-"""},
-
+{"type": "heading", "text":"Canny:"},
 {"type": "normal", "text":"""
 Your proficiency bonus is doubled for any ability check you make using stealth.
 
@@ -320,18 +308,14 @@ You can also speak, read, and write 2 additional languages of your choice.
 
         if self.level >= 6:
             deftExplorer.append(
-{"type": "heading", "text":"""
-Roving:
-"""})
+{"type": "heading", "text":"Roving:"})
             deftExplorer.append(
 {"type": "normal", "text":"""
 Your walking speed increases by 5, and you gain a climbing speed and a swimming speed equal to your walking speed.
 """})
         if self.level >= 10:
             deftExplorer.append(
-{"type": "heading", "text":"""
-Tireless:
-"""})
+{"type": "heading", "text":"Tireless:"})
 
             deftExplorer.append(
 {"type": "normal", "text":"""
@@ -345,10 +329,7 @@ In addition, whenever you finish a short rest, your exhaustion level, if any, is
 At 2nd level, you adopt a particular style of fighting as your specialty. You can't take a Fighting Style option more than once, even if you later get to choose again.
 """},
 
-{"type": "heading", "text":"""
-Archery:
-"""},
-
+{"type": "heading", "text":"Archery:"},
 {"type": "normal", "text":"""
 You gain a +2 bonus to attack rolls you make with ranged weapons.
 """}]
@@ -358,20 +339,14 @@ You gain a +2 bonus to attack rolls you make with ranged weapons.
 By the time you reach 2nd level, you have learned to use the magical essence of nature to cast spells, much as a druid does.
 """},
 
-{"type": "heading", "text":"""
-Spell Slots
-"""},
-
+{"type": "heading", "text":"Spell Slots"},
 {"type": "normal", "text":"""
 The Ranger table shows how many spell slots you have to cast your ranger spells of 1st level and higher. To cast one of these spells, you must expend a slot of the spell's level or higher. You regain all expended spell slots when you finish a long rest.
 
 For example, if you know the 1st-level spell Animal Friendship and have a 1st-level and a 2nd-level spell slot available, you can cast Animal Friendship using either slot.
 """},
 
-{"type": "heading", "text":"""
-Spells Known of 1st Level and Higher
-"""},
-
+{"type": "heading", "text":"Spells Known of 1st Level and Higher"},
 {"type": "normal", "text":"""
 You know two 1st-level spells of your choice from the ranger spell list.
 
@@ -380,10 +355,7 @@ The Spells Known column of the Ranger table shows when you learn more ranger spe
 Additionally, when you gain a level in this class, you can choose one of the ranger spells you know and replace it with another spell from the ranger spell list, which also must be of a level for which you have spell slots.
 """},
 
-{"type": "heading", "text":"""
-Spellcasting Ability
-"""},
-
+{"type": "heading", "text":"Spellcasting Ability"},
 {"type": "normal", "text":"""
 Wisdom is your spellcasting ability for your ranger spells, since your magic draws on your attunement to nature. You use your Wisdom whenever a spell refers to your spellcasting ability. In addition, you use your Wisdom modifier when setting the saving throw DC for a ranger spell you cast and when making an attack roll with one.
 
@@ -392,10 +364,7 @@ Spell save DC = 8 + your proficiency bonus + your Wisdom modifier
 Spell attack modifier = your proficiency bonus + your Wisdom modifier
 """},
 
-{"type": "heading", "text":"""
-Spellcasting Focus
-"""},
-
+{"type": "heading", "text":"Spellcasting Focus"},
 {"type": "normal", "text":"""
 At 2nd level, you can use a druidic focus as a spellcasting focus for your ranger spells. A druidic focus might be a sprig of mistletoe or holly, a wand or rod made of yew or another special wood, a staff drawn whole from a living tree, or an object incorporating feathers, fur, bones, and teeth from sacred animals.
 """}]

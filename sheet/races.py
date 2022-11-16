@@ -51,21 +51,15 @@ class HalfOrc(Race):
         ret = {}
 
         ret['Attributes'] = [
-{"type": "heading", "text":"""
-Creature Type:
-"""},
+{"type": "heading", "text":"Creature Type:"},
 {"type": "normal", "text":"""
 Half-orcs are Humanoid creatures with both the human and orc subtypes.
 """},
-{"type": "heading", "text":"""
-Size:
-"""},
+{"type": "heading", "text":"Size:"},
 {"type": "normal", "text":"""
 Half-orcs are Medium creatures and thus have no bonuses or penalties due to their size.
 """},
-{"type": "heading", "text":"""
-Base Speed:
-"""},
+{"type": "heading", "text":"Base Speed:"},
 {"type": "normal", "text":"""
 Half-orcs have a base speed of 30 feet.
 """},
@@ -129,21 +123,15 @@ class ShadarKai(Race):
         ret = {}
 
         ret['Attributes'] = [
-{"type": "heading", "text":"""
-Creature Type:
-"""},
+{"type": "heading", "text":"Creature Type:"},
 {"type": "normal", "text":"""
 You are a Humanoid. You are also considered an elf for any prerequisite or effect that requires you to be an elf.
 """},
-{"type": "heading", "text":"""
-Size:
-"""},
+{"type": "heading", "text":"Size:"},
 {"type": "normal", "text":"""
 You are Medium
 """},
-{"type": "heading", "text":"""
-Speed:
-"""},
+{"type": "heading", "text":"Speed:"},
 {"type": "normal", "text":"""
 Your walking speed is 30 feet.
 """},
