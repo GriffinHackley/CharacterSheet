@@ -2,11 +2,10 @@
 {% load sheetTags %}
 <link rel="stylesheet" href="{% static 'sheet/5eSheet.css'   %}">
 
-<script
-src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script type = "text/javascript" src="{% static 'sheet/localState.js' %}"></script>
 <script type = "text/javascript" src="{% static 'sheet/tabs.js' %}"></script>
+<script>init("{{character.name}}")</script>
 
 <form action="" method="GET">
 {% csrf_token %}

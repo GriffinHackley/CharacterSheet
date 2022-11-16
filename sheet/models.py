@@ -559,7 +559,8 @@ class PathfinderCharacter(Character):
             skillRanksUsed  = 0
 
             if self.toggles['scavenger']:
-                self.modList.addModifier(Modifier(2,"racial", 'Perception', 'Scavenger'))
+                self.modList.addModifier(Modifier(2, "racial", 'Perception', 'Scavenger'))
+                self.modList.addModifier(Modifier(2, "racial", 'Appraise', 'Scavenger'))
 
             for key, value in list.items():
                 statBonus = value['value']

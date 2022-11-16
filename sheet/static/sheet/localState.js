@@ -24,7 +24,6 @@ function getItem(key, name) {
             value = true
         }
         element.checked = value
-        console.log("---->" + element.checked);
     } else {
         element.value = value
     }
