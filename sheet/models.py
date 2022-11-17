@@ -146,6 +146,10 @@ class Character(models.Model):
 
         if 'dreadAmbusher' in self.toggles.keys() and self.toggles['dreadAmbusher']:
             self.modList.addModifier(Modifier('1d8', "untyped", 'DamageDie', 'Dread Ambusher'))
+        
+        if 'elemental' in self.toggles.keys() and self.toggles['elemental']:
+            if 'focusWeapon' in self.toggles.keys() and self.toggles['focusWeapon']:
+                self.modList.addModifier(Modifier('1d6', "elemental", 'Main-DamageDie', 'Focus Weapon'))
                
     def applyFeats(self):
         ret = {}
@@ -432,16 +436,11 @@ A character without this feat can make only one attack of opportunity per round 
 
     def cleanProficiencies(self):
         ret = {}
-        print(self.proficiencies)
         for item, value in self.proficiencies.items():
-            print(item)
             if item == "armor" or item=="weapons":
-                print("Here:" + item)
                 ret[item] = value
             else:
                 ret[item] = sorted(value)
-
-        print(ret)
 
         return ret
 
@@ -496,6 +495,19 @@ class PathfinderCharacter(Character):
         for weapon in self.weapon:
             name = weapon['name']
 
+            critRange = weapon['critRange']
+
+            if self.toggles['focusWeapon']:
+                if 'Main' in weapon['tags']:
+                    if self.toggles['keen']:
+                        critRange = critRange.split('-')
+                        range = 20 - int(critRange[0])
+                        range = range*2
+                        critRange = str(20-range-1) + "-20"
+
+                    if self.toggles['elemental']:
+                        print(weapon)
+
             if 'Kukri' in name:
                 weapon['damageDie'] = self.charClass.sacredWeapon
             
@@ -536,11 +548,13 @@ class PathfinderCharacter(Character):
                 weaponRet['damageMod'] += int(math.floor(self.abilityMod[damageStat]/2))
             else:
                 weaponRet['damageMod'] += self.abilityMod[damageStat]
-            
+
+            print(weaponRet)
+
             weaponRet = super().calculateAttack(weaponRet, weapon, hitPenalty, damageBonus)
           
             weaponRet['name']      = name
-            weaponRet['critRange'] = weapon['critRange']
+            weaponRet['critRange'] = critRange
             weaponRet['critDamage'] = weapon['critDamage']
 
             ret[name] = weaponRet
@@ -665,6 +679,8 @@ class PathfinderCharacter(Character):
             toggles.update(acTypeForm.cleaned_data)
         if skillForm.is_valid():
             toggles.update(skillForm.cleaned_data)
+        if sacredWeaponForm.is_valid():
+            toggles.update(sacredWeaponForm.cleaned_data)
 
         self.toggles = toggles
 

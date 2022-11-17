@@ -51,20 +51,25 @@ class ModifierList():
     def getDieModifier(self, tags):
         modifierName = 'DamageDie'
 
-        tagModifier = ''
+        modifierList = []
+        modifierList.append(modifierName)
 
+        #Add all applicable tags to list of tags to apply
         if 'Ranged' in tags:
-            tagModifier = 'Ranged-'+modifierName
+            modifierList.append('Ranged-'+modifierName)
         elif 'Melee' in tags:
-            tagModifier = 'Melee-'+modifierName
+            modifierList.append('Melee-'+modifierName)
+        
+        if 'Main' in tags:
+            modifierList.append('Main-'+modifierName)
+        elif 'Off-Hand' in tags:
+            modifierList.append('Off-Hand-'+modifierName)
 
+        #Add all applicable bonus' to list
         allBonus = []
-        if (modifierName in self.list): 
-            allBonus = allBonus + self.list[modifierName]
-        elif (tagModifier in self.list):
-            allBonus = allBonus + self.list[tagModifier]
-        else:
-            return {}
+        for modifier in modifierList:
+            if modifier in self.list:
+                allBonus = allBonus + self.list[modifier]
 
         #Group bonuses by die size
         die = {}
@@ -72,7 +77,11 @@ class ModifierList():
             temp = []
             [number,size] = bonus.bonus.split('d')
             temp.append(int(number))
-            die[size] = temp
+
+            if size in die.keys():
+                die[size] = die[size] + temp
+            else:
+                die[size] = temp
         
         #Add all values per die size
         for size,numbers in die.items():

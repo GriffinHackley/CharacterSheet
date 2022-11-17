@@ -541,11 +541,12 @@
         <div class="tabContent" data-tab="main-sacredWeapon">
           <section class="sacredWeapon">
             {{ forms.sacredWeapon.as_div }}
-            {% for weapon in character.weapon %}
-              {% comment %} <div>{{weapon.displayName}}</div>
-              <div>{{weapon}}</div> {% endcomment %}
-
-            {% endfor %}
+            <p>Focus Weapon gives a +x enchantment bonus</p>
+            <p>You have used x of the +x bonus</p>
+            {% comment %} {% for weapon in character.weapon %}
+              <div>{{weapon.displayName}}</div>
+              <div>{{weapon}}</div>
+            {% endfor %} {% endcomment %}
           </section>
         </div>
       {% endif %}

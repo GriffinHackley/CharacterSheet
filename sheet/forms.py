@@ -42,8 +42,8 @@ class SacredWeaponForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
 
-    choices = [('Main Hand', 'Main Hand'), ('Off Hand','Off Hand')]
-    weaponChoice = forms.ChoiceField(choices=choices, label='Weapon', required=False)
+    # choices = [('Main Hand', 'Main Hand'), ('Off Hand','Off Hand')]
+    # weaponChoice = forms.ChoiceField(choices=choices, label='Weapon', required=False)
     keen = forms.BooleanField(label='Keen', required=False)
     elemental = forms.BooleanField(label='Elemental Damage', required=False)
 
