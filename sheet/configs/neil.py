@@ -25,7 +25,7 @@ def apply(character):
         "neck"     : {"name":""},
         "chest"    : {"name":""},
         "body"     : {"name":"Quick Runners Shirt"},
-        "armor"    : {"name" : "Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []},
+        "armor"    : {"name":"Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []},
         "belt"     : {"name":""},
         "wrists"   : {"name":""},
         "hands"    : {"name":""},
@@ -39,6 +39,24 @@ def apply(character):
         'Perception'   : 3,
         'Stealth'      : 3,
         'Survival'     : 1,
+    }
+
+    character.flavor = {
+        "backstory":"""
+            Neil's grandfather was an adventurer. When his grandfather cam e back from his escapades, he would regale Neil and his brother Tamir with the stories. His grandfather found many treasures throughout his years and passed a few along to his grandsons. He gifted Neil a sacred knife of the goddess Sheredin. Legend had it that the knife would protect the wielder and guide them to true freedom. 
+            Eventually, their grandfather went out in search of the secret to immortality. He never came back. So the brothers set out to find their grandfather. Their best idea was to try and follow the path their grandfather had been following, the path to immortality. Of the two brothers, the idea of immortality intrigued Neil more than Tamir. Immortality was the ultimate freedom, the ability to live forever and pursue any goal you desired without the fear of running out of time.
+            After searching for many years, their grandfathers trail has gone cold. They have not given up on finding him, but the goal has ended up slipping down their list of priorities as time has gone on.
+        """,
+        "personalityTraits":"""
+            Blessed by Sheredin with good looks but not the personality to use them
+        """,
+        "flaws":"""
+            
+        """,
+        "bonds":"""
+            Devoted to his goddess, Sheredin
+            Fiercly loyal to his brother, Tamir
+        """
     }
 
     return character

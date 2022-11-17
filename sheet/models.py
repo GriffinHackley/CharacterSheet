@@ -10,8 +10,6 @@ from .modifiers import Modifier, ModifierList
 from django.template.defaulttags import register
 
 class Character(models.Model):  
-    config = models.CharField(max_length=200)
-
     baseStats = models.CharField(max_length=200)
 
     name = models.CharField(max_length=200)
@@ -24,19 +22,19 @@ class Character(models.Model):
     background = models.CharField(max_length=200)
     playerName = models.CharField(max_length=200)
 
-    gold = models.IntegerField()
-
     config = models.JSONField()
  
     armor = models.JSONField()
     weapon = models.JSONField()
     equipment = models.JSONField()
     skillRanks = models.JSONField()
+
+    flavor = models.JSONField()
     
-    # @classmethod
-    # def create(cls, edition, baseStats, name, charClass, level, race, background, playerName, alignment, traits, gold, skillRanks, weapon, armor):
-    #     character = cls(1, edition, baseStats, name, charClass, level, race, background, playerName, alignment, traits, gold, skillRanks, weapon, armor)
-    #     return character
+    @classmethod
+    def create(cls):
+        character = cls(2, '', '', '', '', 1, '', '', '', '', '', '', '', '', '', '', '')
+        return character
     
     @register.filter
     def get_item(dictionary, key):
@@ -58,8 +56,6 @@ class Character(models.Model):
         return self.name
 
     def fromCharacter(self, character):
-        self.config = character.config
-
         self.baseStats = character.baseStats
 
         self.name = character.name
@@ -70,8 +66,6 @@ class Character(models.Model):
         self.feats = character.feats
         self.playerName = character.playerName
         self.alignment = character.alignment
-        
-        self.gold = character.gold
 
         self.config = character.config
 
@@ -79,6 +73,8 @@ class Character(models.Model):
         self.weapon = character.weapon
         self.armor = character.armor
         self.equipment = character.equipment
+
+        # self.flavor = character.flavor
 
         self.fullChar = character
 
@@ -137,6 +133,11 @@ class Character(models.Model):
         # critChance = self.calculateCritChance(ret["Attacks"])
 
         return ret
+
+    def applyRace(self):
+        self.race = races[self.race]
+        self.race.appendModifiers(self.modList)
+        self.race.addProficiencies(self.proficiencies)
 
     def applyClass(self):
         self.charClass = classes[self.charClass]
@@ -440,6 +441,9 @@ A character without this feat can make only one attack of opportunity per round 
             if item == "armor" or item=="weapons":
                 ret[item] = value
             else:
+                # print(ret)
+                # print(ret[item])
+                # print(value)
                 ret[item] = sorted(value)
 
         return ret
@@ -461,7 +465,7 @@ A character without this feat can make only one attack of opportunity per round 
 class PathfinderCharacter(Character):
     def build(self):
         self.skillList = skill_list_pathfinder
-        self.proficiencies = {'armor': [], 'weapons':[], 'tools':[]}       
+        self.proficiencies = {'armor': [], 'weapons':[], 'tools':[], 'languages':[]}       
         self.classSkills = []
         
         super().build()
@@ -505,9 +509,6 @@ class PathfinderCharacter(Character):
                         range = range*2
                         critRange = str(20-range-1) + "-20"
 
-                    if self.toggles['elemental']:
-                        print(weapon)
-
             if 'Kukri' in name:
                 weapon['damageDie'] = self.charClass.sacredWeapon
             
@@ -548,8 +549,6 @@ class PathfinderCharacter(Character):
                 weaponRet['damageMod'] += int(math.floor(self.abilityMod[damageStat]/2))
             else:
                 weaponRet['damageMod'] += self.abilityMod[damageStat]
-
-            print(weaponRet)
 
             weaponRet = super().calculateAttack(weaponRet, weapon, hitPenalty, damageBonus)
           
@@ -615,11 +614,6 @@ class PathfinderCharacter(Character):
                 ret[key] = {'ability':ability, 'value':statBonus}
 
             return ret
-
-    def applyRace(self):
-        self.race = races[self.race]
-        self.race.appendModifiers(self.modList)
-        self.classSkills = self.classSkills + self.race.classSkills
 
     def applyClass(self):
         super().applyClass()
@@ -696,7 +690,7 @@ class PathfinderCharacter(Character):
 class FifthEditionCharacter(Character):
     def build(self):
         self.skillList = skill_list_5e
-        self.proficiencies = {'skills': [], 'armor': [], 'weapons':[], 'tools':[], 'savingThrows':[]}       
+        self.proficiencies = {'skills': [], 'languages':[], 'armor': [], 'weapons':[], 'tools':[], 'savingThrows':[]}       
         self.expertise = {'skills':[], 'tools':[]}
 
         super().build() 
@@ -801,11 +795,6 @@ class FifthEditionCharacter(Character):
             ret[key] = {'ability':ability, 'value':statBonus}
         
         return ret
-    
-    def applyRace(self):
-        self.race = races[self.race]
-        self.race.appendModifiers(self.modList)
-        self.race.addProficiencies(self.proficiencies)
     
     def applyClass(self):
         super().applyClass()

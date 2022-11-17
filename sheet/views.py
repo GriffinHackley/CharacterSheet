@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse
 
 from .models import Character, PathfinderCharacter, FifthEditionCharacter
 from .configs import neil, myriil
@@ -17,10 +18,10 @@ def detail(request, character_id):
     character = get_object_or_404(Character, pk=character_id)
 
     if character.id == 1:
-        # character = myriil.apply(character)
+        character = myriil.apply(character)
         pass
-    elif character.id == 3:
-        # character = neil.apply(character)
+    elif character.id == 2:
+        character = neil.apply(character)
         pass
 
     if character.config['edition'] == '5e':
@@ -34,14 +35,12 @@ def detail(request, character_id):
     character.build()
     character.fullChar.save()
 
-    print(character.combat['PowerAttack'])
-
     return render(request, 'sheet/detail.html', {'character': character, 'skill_list': character.skillList, 'forms':forms })
 
 def create(request):
     # TODO: Implement this
-    # test = Character.create("5e", '8,17,14,10,16,8', "Myriil", "Ranger", 4, "Shadar-Kai", 'Spy', "Griffin", "Neutral Good", [], 0, {}, {}, {})
-    # test.save()
+    test = Character.create()
+    test.save()
     return HttpResponse("Created")
 
 def delete(request, character_id):

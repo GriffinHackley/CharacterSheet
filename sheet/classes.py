@@ -37,6 +37,7 @@ class Class():
     def addProficiencies(self, proficiencyList):
         proficiencyList['armor'] = proficiencyList['armor'] + self.proficiencies['armor']
         proficiencyList['weapons'] = proficiencyList['weapons'] + self.proficiencies['weapons']
+        proficiencyList['languages'] = proficiencyList['languages'] + self.proficiencies['languages']
         if self.edition == "5e":
             proficiencyList['skills'] = proficiencyList['skills'] + self.proficiencies['skills']
             proficiencyList['tools'] = proficiencyList['tools'] + self.proficiencies['tools']
@@ -45,7 +46,7 @@ class Class():
 class Warpiest(Class):    
     skillPerLevel = 2
     sacredWeapon  = ''
-    proficiencies = {'armor': ['Light', 'Medium', 'Heavy', 'Shields (except tower shields)'], 'weapons':['Simple', 'Martial']}
+    proficiencies = {'armor': ['Light', 'Medium', 'Heavy', 'Shields (except tower shields)'], 'weapons':['Simple', 'Martial'],'languages':[]}
     classSkills   = ['Climb', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal', 'Intimidate', 'Knowledge (Engineering)', 
                      'Knowledge(Religion)', 'Profession', 'Ride', 'Sense Motive', 'Spellcraft', 'Survival', 'Swim']
 
@@ -268,7 +269,7 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
         return ret
 
 class Ranger(Class):
-    proficiencies = {'skills': ['Insight', 'Stealth', 'Survival'], 'armor': ['Light', 'Medium'], 'weapons':['Simple', 'Martial'], 'tools':[], 'savingThrows':['Strength', 'Dexterity']}
+    proficiencies = {'skills': ['Insight', 'Stealth', 'Survival'], 'languages':['Draconic', 'Sylvan'], 'armor': ['Light', 'Medium'], 'weapons':['Simple', 'Martial'], 'tools':[], 'savingThrows':['Strength', 'Dexterity']}
     expertise = {'skills': ['Stealth']}
 
     def __init__(self, level):
@@ -303,7 +304,7 @@ You are an unsurpassed explorer and survivor, both in the wilderness and in deal
 {"type": "normal", "text":"""
 Your proficiency bonus is doubled for any ability check you make using stealth.
 
-You can also speak, read, and write 2 additional languages of your choice.
+You can also speak, read, and write Draconic and Sylvan
 """}]
 
         if self.level >= 6:

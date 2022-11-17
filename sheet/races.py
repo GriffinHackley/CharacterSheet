@@ -46,6 +46,18 @@ class HalfOrc(Race):
             modList.addModifier(mod)
 
         return super().appendModifiers(modList)
+    
+    def addProficiencies(self, proficiencyList):
+        proficiencies = [{'languages':['Common', 'Orc']}]
+
+        for proficiency in proficiencies:
+            for key,value in proficiency.items():
+                if key in proficiencyList.keys():
+                    proficiencyList[key] = value
+                else:
+                    print(proficiencyList)
+                    proficiencyList[key] = proficiencyList[key] + value
+
 
     def getFeatures(self):
         ret = {}
@@ -111,11 +123,17 @@ class ShadarKai(Race):
         return super().appendModifiers(modList)
 
     def addProficiencies(self, proficiencyList):
-        proficiencies = [{'skills': 'Perception'}, {'tools': 'test'}, {'tools': 'test'}]
+        proficiencies = [{'skills': ['Perception']}, {'languages':['Common', 'Elven']}, {'tools': ['test1','test2']}]
 
         for proficiency in proficiencies:
             for key,value in proficiency.items():
-                proficiencyList[key].append(value)
+                if key in proficiencyList.keys():
+                    proficiencyList[key] = value
+                else:
+                    print(proficiencyList)
+                    proficiencyList[key] = proficiencyList[key] + value
+
+        print(proficiencyList)
 
         super().addProficiencies(proficiencyList)
 

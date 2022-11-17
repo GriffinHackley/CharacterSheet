@@ -32,4 +32,24 @@ def apply(character):
         "feet"     : {"name":""},
     }
 
+    character.flavor = {
+        "backstory":"""
+            A 527-year-old shadar kai sent by the Raven Queen to stop Strahd and his abominations. When he was sent on this mission he was given a weapon from the Raven Queen
+            He knows the true signs of the adventures who will defeat Strahd. He knows they have not come until he meets the current party.
+            Before the party came, the townspeople came to him, adamant that they would take on Strahd, they begged Myriil to teach them to fight. He knew they would not defeat him. They were nowhere close to the prophecies he has heard. The townspeople were determined. He trained them as well as he could so they could stand as good of a chance as possible. At least they could have a chance of dying with dignity, with a weapon in their hand, standing their ground.
+            The night they planned to execute the Attack on Ravenloft, Myriil left the town, knowing he would not be able to live with the guilt of seeing the aftermath of the attack.
+        """,
+        "personalityTraits":"""
+            Only satisfied with perfection, sometimes even that isnt enough
+            Grouchy
+        """,
+        "flaws":"""
+            Grouchy
+        """,
+        "bonds":"""
+            Devoted to his goddess, The Raven Queen
+            Will do almost anything to help the party defeat Strahd
+        """
+    }
+
     return character
