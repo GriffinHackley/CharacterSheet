@@ -34,6 +34,8 @@ def detail(request, character_id):
     character.build()
     character.fullChar.save()
 
+    print(character.combat['PowerAttack'])
+
     return render(request, 'sheet/detail.html', {'character': character, 'skill_list': character.skillList, 'forms':forms })
 
 def create(request):
