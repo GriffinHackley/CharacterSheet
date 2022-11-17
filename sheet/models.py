@@ -95,6 +95,7 @@ class Character(models.Model):
         self.equipment = self.getEquipment()
         self.spells = self.getSpells()
         self.features = self.getFeatures()
+        self.proficiencies = self.cleanProficiencies()
 
     def getModifiers(self):
         self.initModifiers()
@@ -140,6 +141,7 @@ class Character(models.Model):
     def applyClass(self):
         self.charClass = classes[self.charClass]
         self.charClass.appendModifiers(self.modList)
+        self.charClass.addProficiencies(self.proficiencies)
         self.hitDie = self.charClass.hitDie
 
         if 'dreadAmbusher' in self.toggles.keys() and self.toggles['dreadAmbusher']:
@@ -428,6 +430,21 @@ A character without this feat can make only one attack of opportunity per round 
 
         return ret
 
+    def cleanProficiencies(self):
+        ret = {}
+        print(self.proficiencies)
+        for item, value in self.proficiencies.items():
+            print(item)
+            if item == "armor" or item=="weapons":
+                print("Here:" + item)
+                ret[item] = value
+            else:
+                ret[item] = sorted(value)
+
+        print(ret)
+
+        return ret
+
     def getFeats(self):
         return self.feats
 
@@ -621,6 +638,13 @@ class PathfinderCharacter(Character):
 
         return ret
 
+    def cleanProficiencies(self):
+        self.proficiencies['skills'] = self.classSkills
+        
+        ret = super().cleanProficiencies()
+
+        return ret
+
     def initModifiers(self):
         naturalArmor = Modifier(0, "Natural Armor", 'AC', 'Iron Skin')
         self.modList.addModifier(naturalArmor)
@@ -769,8 +793,6 @@ class FifthEditionCharacter(Character):
     
     def applyClass(self):
         super().applyClass()
-        currentClass = self.charClass
-        currentClass.addProficiencies(self.proficiencies)
         self.profBonus = self.getProfBonus()
 
     def applyBackground(self):

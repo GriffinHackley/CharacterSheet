@@ -884,13 +884,35 @@ textarea.extraEquipment {
 }
 section.proficiencies {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
+  height: 100%;
+  /* background-color: green; */
+}
+div.profContainer {
+  display: flex;
+  flex-direction: row;
 }
 div.skillProficiencies, div.savesProficiencies, 
 div.weaponProficiencies, div.armorProficiencies, div.toolsProficiencies{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 5px;
+}
+h2.proficiencyHeader {
+  text-decoration: underline;
+}
+textarea.profText{
+  align-self: center;
+  width: 99%;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
   flex-grow: 1;
 }
 section.spellsContainer {

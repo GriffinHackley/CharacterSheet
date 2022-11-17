@@ -35,16 +35,17 @@ class Class():
             modList.addModifier(Modifier(self.will,"untyped", 'Will'     , self.name+' Will'))
     
     def addProficiencies(self, proficiencyList):
+        proficiencyList['armor'] = proficiencyList['armor'] + self.proficiencies['armor']
+        proficiencyList['weapons'] = proficiencyList['weapons'] + self.proficiencies['weapons']
         if self.edition == "5e":
             proficiencyList['skills'] = proficiencyList['skills'] + self.proficiencies['skills']
-            proficiencyList['armor'] = proficiencyList['armor'] + self.proficiencies['armor']
-            proficiencyList['weapons'] = proficiencyList['weapons'] + self.proficiencies['weapons']
             proficiencyList['tools'] = proficiencyList['tools'] + self.proficiencies['tools']
             proficiencyList['savingThrows'] = proficiencyList['savingThrows'] + self.proficiencies['savingThrows']
     
 class Warpiest(Class):    
     skillPerLevel = 2
     sacredWeapon  = ''
+    proficiencies = {'armor': ['Light', 'Medium', 'Heavy', 'Shields (except tower shields)'], 'weapons':['Simple', 'Martial']}
     classSkills   = ['Climb', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal', 'Intimidate', 'Knowledge (Engineering)', 
                      'Knowledge(Religion)', 'Profession', 'Ride', 'Sense Motive', 'Spellcraft', 'Survival', 'Swim']
 
