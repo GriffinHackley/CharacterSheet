@@ -74,7 +74,7 @@ class Character(models.Model):
         self.armor = character.armor
         self.equipment = character.equipment
 
-        # self.flavor = character.flavor
+        self.flavor = character.flavor
 
         self.fullChar = character
 
@@ -441,9 +441,6 @@ A character without this feat can make only one attack of opportunity per round 
             if item == "armor" or item=="weapons":
                 ret[item] = value
             else:
-                # print(ret)
-                # print(ret[item])
-                # print(value)
                 ret[item] = sorted(value)
 
         return ret
