@@ -43,6 +43,9 @@ def apply(character):
             Only satisfied with perfection, sometimes even that isnt enough
             Grouchy
         """,
+        "ideals":"""
+            I will refine my mind and body in pursuit of perfection
+        """,
         "flaws":"""
             Grouchy
         """,

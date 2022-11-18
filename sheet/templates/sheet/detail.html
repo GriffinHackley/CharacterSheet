@@ -605,6 +605,14 @@
                 {% endfor %}
               {% endwith %}
             </div>
+            <div class="ideals">
+                <h2>Ideals</h2>
+                {% with character.flavor.ideals|split as lines %}
+                  {% for line in lines %}
+                    <p>{{line}}</p>
+                  {% endfor %}
+                {% endwith %}
+              </div>
             <div class="bonds">
               <h2>Bonds</h2>
               {% with character.flavor.bonds|split as lines %}

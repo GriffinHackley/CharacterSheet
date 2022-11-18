@@ -134,6 +134,9 @@ class Character(models.Model):
         if "Longbow" in ret["Attacks"]:
             ret["PowerAttack"] = ret["Attacks"]["Longbow"]
 
+        if "Rapier" in ret["Attacks"]:
+            ret["PowerAttack"] = ret["Attacks"]["Rapier"]
+
         # critChance = self.calculateCritChance(ret["Attacks"])
 
         return ret
@@ -344,13 +347,19 @@ class Character(models.Model):
         criticalDamage = 0
         averageDamage = 0
         for dieSize in sortedDieSize:
+            damageDie = allDie[dieSize]
+
+            if self.toggles['critical']:
+                if self.config['critType'] == 'doubleDice' or self.config['critType'] == 'doubleAll':
+                    damageDie = damageDie*2
+            
             if firstLetter:
                 firstLetter = False
-                damageDice = str(allDie[dieSize]) + 'd' + dieSize
+                damageDice = str(damageDie) + 'd' + dieSize
             else:
-                damageDice = damageDice + '+' + str(allDie[dieSize]) + 'd' + dieSize
+                damageDice = damageDice + '+' + str(damageDie) + 'd' + dieSize
             
-            #TODO: Implement double dice
+            #Calculate critical damage
             if self.config['critType'] == 'maxDie':
                 criticalDamage += allDie[dieSize]*int(dieSize)
             elif self.config['critType'] == 'doubleDice':
@@ -371,11 +380,10 @@ class Character(models.Model):
         if self.toggles['critical']:
             if self.config['critType'] == 'maxDie':
                 damage = damageDice + f'+{int(damageMod+criticalDamage)} '+ weapon['damageType']
-            elif self.config['critType'] == 'doubleDice':
-                damage = damageDice +  f'+{damageMod} '+ weapon['damageType']
             elif self.config['critType'] == 'doubleAll':
-                #TODO: Implement
-                damage = damageDice +  f'+{damageMod} '+ weapon['damageType']
+                damage = damageDice + f'+{2*damageMod} '+ weapon['damageType']
+            else:
+                damage = damageDice + f'+{damageMod} '+ weapon['damageType']
         else:
             damage = damageDice + f'+{damageMod} '+ weapon['damageType']
 
@@ -392,7 +400,7 @@ class Character(models.Model):
 
     def calculatePowerAttack(self, toHit, damage, critDamage, hitPenalty, damageBonus):
         if "advantage" in self.toggles.keys() and self.toggles["advantage"]:
-            if 'Elven Accuracy' in self.feats.values():
+            if 'Elven Accuracy' in self.feats.keys():
                 timesRolling = 3
             else:
                 timesRolling = 2

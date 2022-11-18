@@ -1028,14 +1028,14 @@ div.backstory > h2{
   text-decoration: underline;
   align-self: center;
 }
-div.backstory, div.personalityTraits, div.bonds, div.flaws{
+div.backstory, div.personalityTraits, div.bonds, div.flaws, div.ideals{
   display: flex;
   flex-direction: column;
   border: 1px solid black;
   border-radius: 10px;
   padding: 5px;
 }
-div.personalityTraits, div.bonds, div.flaws{
+div.personalityTraits, div.bonds, div.flaws, div.ideals{
   flex-grow: 1;
   margin-bottom: 5px;
 }

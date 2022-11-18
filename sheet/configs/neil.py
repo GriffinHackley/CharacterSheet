@@ -51,7 +51,12 @@ def apply(character):
             Blessed by Sheredin with good looks but not the personality to use them
         """,
         "flaws":"""
-            
+            I do not think before I act.
+            Sometimes I trust my goddess too much to guide me
+        """,
+        "ideals":"""
+            I will search for freedom in whatever forms I can.
+            The ultimate freedom is immortality
         """,
         "bonds":"""
             Devoted to his goddess, Sheredin

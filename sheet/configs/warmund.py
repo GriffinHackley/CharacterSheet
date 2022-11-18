@@ -6,7 +6,7 @@ def apply(character):
     character.charClass = "Wizard"
     character.level = 3
     character.background = "Sage"
-    character.feats = {}
+    character.feats = {"Elven Accuracy":"Level 4:"}
     character.race = "Harengon"
     character.playerName = "Griffin"
     character.armor = {"name" : "Leather", "armorBonus" : 1, "ability":"Dex", "maxAbility": 20, "armorCheck" : 0, "spellFailure" : 0, "modifiers": []}
@@ -33,21 +33,22 @@ def apply(character):
 
     character.flavor = {
         "backstory":"""
-            A 527-year-old shadar kai sent by the Raven Queen to stop Strahd and his abominations. When he was sent on this mission he was given a weapon from the Raven Queen
-            He knows the true signs of the adventures who will defeat Strahd. He knows they have not come until he meets the current party.
-            Before the party came, the townspeople came to him, adamant that they would take on Strahd, they begged Myriil to teach them to fight. He knew they would not defeat him. They were nowhere close to the prophecies he has heard. The townspeople were determined. He trained them as well as he could so they could stand as good of a chance as possible. At least they could have a chance of dying with dignity, with a weapon in their hand, standing their ground.
-            The night they planned to execute the Attack on Ravenloft, Myriil left the town, knowing he would not be able to live with the guilt of seeing the aftermath of the attack.
+            When Warmund was young, he was bullied for being different. No one in his small town, Yrossa, had ever met a Harengon before. After years of being picked on, he developed a power complex, he wanted power so that no one would ever be able to look down on him again. He began studying magic as a means to obtain more power.
+            When Warmund went to the Witchlight Carnival, because of the strange fey magic, his handwriting was stolen by some kind of Shadow Balerina. Whenever he tries to write anything, Warmund can read it just fine. However, anyone else trying to read Warmund's writing will find a jumble of untranslatable symbols.
+            He studied diligently and was eventually admitted into the Soltryce Academy where he was permitted to study magic. Trent Ikithon took notice of Warmund because of his peculiar aliment. The symbols that Warmund writes with bear a strange resemblance to the magical encryption on the Tome of Bladesinging. Trent Ikithon recruits Warmund to become a Volstrucker and learn under his tutelage.
+            Warmund was sent by Trent Ikithon to the Witchlight Carnival to learn the secrets of the fey magics. As part of this process, Warmund hopes that he will be able to cure himself of his ailment but more importantly decipher the secrets in the Tome of Bladesinging. Warmund has since learned the fundamentals of Bladesinging
         """,
         "personalityTraits":"""
-            Only satisfied with perfection, sometimes even that isnt enough
-            Grouchy
+            I'm convinced people are always trying to steal my secrets.
         """,
         "flaws":"""
-            Grouchy
+            I overlook obvious solutions in favor of more complicated ones.
+        """,
+        "ideals":"""
+            Knowledge. The path to power and self-improvement is through knowledge.
         """,
         "bonds":"""
-            Devoted to his goddess, The Raven Queen
-            Will do almost anything to help the party defeat Strahd
+            I have an ancient text that holds awesome secrets. I must study it and learn what it has to teach me.
         """
     }
 
