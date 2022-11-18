@@ -219,7 +219,7 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
 
         return ret
     
-    def getConsumables(self, stats):
+    def getConsumables(self, stats, profBonus):
         ret = {}
         ret['Blessings'] = 3 + math.floor(stats['Wisdom']/2)
         
@@ -705,7 +705,12 @@ class Wizard(Class):
         return ret
 
     def getConsumables(self, stats, proficiencyBonus):
-        return {}
+        ret = {}
+
+        ret['Arcane Recovery'] = 1
+        ret['Bladesong'] = proficiencyBonus
+
+        return ret
     
     def getSpells(self, stats, profBonus, modList):
         ret = {}
@@ -735,14 +740,14 @@ class Wizard(Class):
         }
 
         ret['level']['1']['list'] = {
-            "Absorb Elements"   : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
+            "Absorb Elements"   : {"source":"Wizard: Spellcasting"    , "timesPrepared":"1" , "description":""},
             "Detect Magic"      : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Feather Fall"      : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
+            "Feather Fall"      : {"source":"Wizard: Spellcasting"    , "timesPrepared":"1" , "description":""},
             "Find Familiar"     : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
             "Identify"          : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Jump"              : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Shield"            : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Silvery Barbs"     : {"source":"Wizard: Spellcasting"    , "timesPrepared":"-1", "description":""},
+            "Jump"              : {"source":"Wizard: Spellcasting"    , "timesPrepared":"1" , "description":""},
+            "Shield"            : {"source":"Wizard: Spellcasting"    , "timesPrepared":"1" , "description":""},
+            "Silvery Barbs"     : {"source":"Wizard: Spellcasting"    , "timesPrepared":"1" , "description":""},
         }
 
         ret['level']['2']['list'] = {

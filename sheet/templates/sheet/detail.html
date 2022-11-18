@@ -426,64 +426,63 @@
       <div class="tabContent" data-tab="main-spells">
         <section class="spellsContainer">
           <div class="spellHeader">
-          <div class="spellAbility spellHeaderItem">
-            <div class="value">{{character.spells.ability}}</div>
-            <div class="key">Spell Ability</div>
-          </div>
-
-          {% if character.config.edition == "Pathfinder" %}
-            <div class="casterLevel spellHeaderItem">
-              <div class="value">{{character.level}}</div>
-              <div class="key">Caster Level</div>
+            <div class="spellAbility spellHeaderItem">
+              <div class="value">{{character.spells.ability}}</div>
+              <div class="key">Spell Ability</div>
             </div>
-          {% endif %}
 
-          {% if character.config.edition == "5e" %}
-            <div class="spellModifier spellHeaderItem">
-              <div class="value">{{character.spells.abilityMod}}</div>
-              <div class="key">Spell Modifier</div>
-            </div>
-          {% endif %}
-
-          {% comment %} If pathfinder character calculate DC for each spell level the character can cast {% endcomment %}
-          {% if character.config.edition == "Pathfinder" %}
-            {% for key in character.spells.level %}
-              {% if key == "Cantrip" %}
-              {% endif %}
-              <div class="saveDC spellHeaderItem">
-                {% if key == "Cantrip" %}
-                  <div class="value">{{character.spells.saveDC}}</div>
-                  <div class="key">{{key}} </br> Save DC</div>
-                {% else %}
-                  <div class="value">{{character.spells.saveDC|add:key}}</div>
-                  <div class="key">Level {{key}} </br> Save DC</div>
-                {% endif %}
+            {% if character.config.edition == "Pathfinder" %}
+              <div class="casterLevel spellHeaderItem">
+                <div class="value">{{character.level}}</div>
+                <div class="key">Caster Level</div>
               </div>
-            {% endfor %}
-          {% else %}
-            <div class="saveDC spellHeaderItem">
-              <div class="value">{{character.spells.saveDC}}</div>
-              <div class="key">Save DC</div>
-            </div>
-          {% endif %}
+            {% endif %}
 
-          </div>
+            {% if character.config.edition == "5e" %}
+              <div class="spellModifier spellHeaderItem">
+                <div class="value">{{character.spells.abilityMod}}</div>
+                <div class="key">Spell Modifier</div>
+              </div>
+            {% endif %}
 
-          <div class="spellList">
+            {% comment %} If pathfinder character calculate DC for each spell level the character can cast {% endcomment %}
+            {% if character.config.edition == "Pathfinder" %}
+              {% for key in character.spells.level %}
+                {% if key == "Cantrip" %}
+                {% endif %}
+                <div class="saveDC spellHeaderItem">
+                  {% if key == "Cantrip" %}
+                    <div class="value">{{character.spells.saveDC}}</div>
+                    <div class="key">{{key}} </br> Save DC</div>
+                  {% else %}
+                    <div class="value">{{character.spells.saveDC|add:key}}</div>
+                    <div class="key">Level {{key}} </br> Save DC</div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="saveDC spellHeaderItem">
+                <div class="value">{{character.spells.saveDC}}</div>
+                <div class="key">Save DC</div>
+              </div>
+            {% endif %}
+        </div>
+
+        <div class="spellList">
             {% for spellLevel, value in character.spells.level.items %}
-              {% if character.config.castingType == "vancian" %}
-                <div class="spellLevel">
-                  <div class="spellLevelHeader">
-                    <div>
-                      Level: {{spellLevel}}
-                    </div>
-                    {% if not spellLevel == "Cantrip" %}
-                      <div class="spellSlots">
-                        Slots: {{value.slots}}
+                {% if character.config.castingType == "vancian" %}
+                    <div class="spellLevel">
+                      <div class="spellLevelHeader">
+                        <div>
+                          Level: {{spellLevel}}
+                        </div>
+                        {% if not spellLevel == "Cantrip" %}
+                          <div class="spellSlots">
+                            Slots: {{value.slots}}
+                          </div>
+                        {% endif %}
                       </div>
-                    {% endif %}
-                  </div>
-                  {% for spell,value in value.list.items %}
+                      {% for spell,value in value.list.items %}
                     {% if spellLevel == "Cantrip" %}
                       <div class="spellName">
                         {{spell}}
@@ -507,38 +506,62 @@
                         <script>getItem('{{spell}}-{{forloop.counter}}', '{{character.name}}')</script>
                       {% endif %}
                     {% endif %}
-                  {% endfor %}
-                </div>
-              {% endif %}
-
-              {% comment %} Seperate out vancian vs. prepared casting {% endcomment %}
-
-              {% if character.config.castingType == "prepared" %}
-                <div class="spellLevel">
-                  <div class="spellLevelHeader">
-                    <div>
-                      Level: {{spellLevel}}
+                      {% endfor %}
                     </div>
-                    {% if not spellLevel == "Cantrip" %}
-                      <div class="spellSlots">
-                        Total Slots: {{value.slots}}
+                {% endif %}
+
+                {% comment %} Seperate out vancian vs. prepared casting {% endcomment %}
+                {% if character.config.castingType == "prepared" %}
+                  <div class="spellLevel">
+                    <div class="spellLevelHeader">
+                      <div>
+                        Level: {{spellLevel}}
                       </div>
-                      <div class="slotsUsed">
-                        Slots Used: 
-                        <input type="text" id="slotsUsed-{{spellLevel}}" onChange="storeItem('slotsUsed-{{spellLevel}}', '{{character.name}}')">
-                        <script>getItem('slotsUsed-{{spellLevel}}', '{{character.name}}')</script>
+                      {% if not spellLevel == "Cantrip" %}
+                          <div class="spellSlots">
+                            Total Slots: {{value.slots}}
+                          </div>
+                          <div class="slotsLeft">
+                            Slots Left: 
+                            <input type="text" id="slotsLeft-{{spellLevel}}" onChange="storeItem('slotsLeft-{{spellLevel}}', '{{character.name}}')">
+                            <script>getItem('slotsLeft-{{spellLevel}}', '{{character.name}}')</script>
+                          </div>
+                      {% endif %}
+                    </div>
+                    {% for spell,value in value.list.items %}
+                      <div class="spellName">
+                        {{spell}}
                       </div>
-                    {% endif %}
+                    {% endfor %}
                   </div>
-                  {% for spell,value in value.list.items %}
-                    <div class="spellName">
-                      {{spell}}
+                {% endif %}
+
+                {% if character.config.castingType == "known" %}
+                  <div class="spellLevel">
+                    <div class="spellLevelHeader">
+                      <div>
+                        Level: {{spellLevel}}
+                      </div>
+                      {% if not spellLevel == "Cantrip" %}
+                          <div class="spellSlots">
+                            Total Slots: {{value.slots}}
+                          </div>
+                          <div class="slotsLeft">
+                            Slots Left: 
+                            <input type="text" id="slotsLeft-{{spellLevel}}" onChange="storeItem('slotsLeft-{{spellLevel}}', '{{character.name}}')">
+                            <script>getItem('slotsLeft-{{spellLevel}}', '{{character.name}}')</script>
+                          </div>
+                      {% endif %}
                     </div>
-                  {% endfor %}
-                </div>
-              {% endif %}
+                    {% for spell,value in value.list.items %}
+                      <div class="spellName">
+                        {{spell}}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
             {% endfor %}
-          </div>
+        </div>
         </section>
       </div>
       {% if character.name == "Nail" %}

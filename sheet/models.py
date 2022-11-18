@@ -124,6 +124,7 @@ class Character(models.Model):
         ret["HP"]          = self.calculateHP()
         ret["AC"]          = self.calculateAC()
         ret["Attacks"]     = self.calculateAttacks()
+        ret["Consumables"] = self.getConsumables()
 
         if "Main Kukri" in ret["Attacks"]:
             ret["PowerAttack"] = ret["Attacks"]["Main Kukri"]
@@ -132,6 +133,14 @@ class Character(models.Model):
             ret["PowerAttack"] = ret["Attacks"]["Longbow"]
 
         # critChance = self.calculateCritChance(ret["Attacks"])
+
+        return ret
+
+    def getConsumables(self):
+        ret = {}
+
+        ret.update(self.charClass.getConsumables(self.abilityMod, self.profBonus))
+        ret.update(self.race.getConsumables(self.profBonus))
 
         return ret
 
@@ -454,7 +463,8 @@ class PathfinderCharacter(Character):
         self.skillList = skill_list_pathfinder
         self.proficiencies = {'armor': [], 'weapons':[], 'tools':[], 'languages':[]}       
         self.classSkills = []
-        
+        self.profBonus = 0
+
         super().build()
 
         self.sacredWeapon = self.getSacredWeapon()
@@ -633,13 +643,6 @@ class PathfinderCharacter(Character):
         modifier = Modifier(1, "untyped", 'ConfCrit', 'Anatomist')
         self.modList.addModifier(modifier)
 
-    def calculateCombat(self):
-        ret = super().calculateCombat()
-        
-        ret["Consumables"] = self.charClass.getConsumables(self.abilityMod)
-
-        return ret
-
     def getSpells(self):
         ret = self.charClass.getSpells(self.abilityMod, self.modList)
         return ret
@@ -813,13 +816,6 @@ class FifthEditionCharacter(Character):
         if self.background == "Sage":
             self.proficiencies['skills'] = self.proficiencies['skills'] + ['Acrobatics', 'History']
             self.proficiencies['languages'] = self.proficiencies['languages'] + ['Draconic', 'Elvish']
-
-    def calculateCombat(self):
-        ret = super().calculateCombat()
-
-        ret["Consumables"] = self.charClass.getConsumables(self.abilityMod, self.profBonus)
-
-        return ret
 
     def getSpells(self):
         ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)

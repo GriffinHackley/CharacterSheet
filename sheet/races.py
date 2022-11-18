@@ -20,6 +20,9 @@ class Race():
         for proficiency in self.proficiencies:
             for key,value in proficiency.items():
                 proficiencyList[key].append(value)
+
+    def getConsumables(self, profBonus):
+        return {}
     
     def __init__(self, name, primaryAbility, secondaryAbility='None', size='M', speed=30, languages=[], features=[]):
         self.name             = name
@@ -189,6 +192,13 @@ class Harengon(Race):
                     proficiencyList[key] = proficiencyList[key] + value
 
         super().addProficiencies(proficiencyList)
+
+    def getConsumables(self, profBonus):
+        ret = {}
+
+        ret['Rabbit Hop'] = profBonus
+
+        return ret
 
     def getFeatures(self):
         ret = {}
