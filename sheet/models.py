@@ -466,6 +466,9 @@ class PathfinderCharacter(Character):
         self.classSkills = []
         
         super().build()
+
+        self.sacredWeapon = self.getSacredWeapon()
+        print(self.sacredWeapon)
     
     def fromCharacter(self, character):
         self.traits = character.traits
@@ -507,7 +510,7 @@ class PathfinderCharacter(Character):
                         critRange = str(20-range-1) + "-20"
 
             if 'Kukri' in name:
-                weapon['damageDie'] = self.charClass.sacredWeapon
+                weapon['damageDie'] = self.charClass.sacredWeapon['damageDie']
             
             weaponRet = super().attackInit(weapon)
 
@@ -554,6 +557,19 @@ class PathfinderCharacter(Character):
             weaponRet['critDamage'] = weapon['critDamage']
 
             ret[name] = weaponRet
+        return ret
+    
+    def getSacredWeapon(self):
+        ret = self.charClass.sacredWeapon
+
+        enhanceUsed = 0
+        if self.toggles['elemental']:
+            enhanceUsed = enhanceUsed + 1
+        if self.toggles['keen']:
+            enhanceUsed = enhanceUsed+1
+
+        ret['enhanceUsed'] = enhanceUsed
+
         return ret
 
     def calculateAC(self):
@@ -653,6 +669,8 @@ class PathfinderCharacter(Character):
     def initModifiers(self):
         naturalArmor = Modifier(0, "Natural Armor", 'AC', 'Iron Skin')
         self.modList.addModifier(naturalArmor)
+    
+
 
     def getForms(self, request):
         combatForm       = NailCombatForm(request.GET)

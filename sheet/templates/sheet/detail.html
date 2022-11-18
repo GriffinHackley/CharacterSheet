@@ -393,14 +393,6 @@
                 <p>{{type}}</p>
               {% endfor %}
             </div>
-            {% if character.config.edition == "5e" %}
-              <div class="savesProficiencies">
-                <h2 class="proficiencyHeader">Saving Throws</h2>
-                {% for save in character.proficiencies.savingThrows %}
-                    <p>{{save}}</p>
-                {% endfor %}
-              </div>
-            {% endif %}
             <div class="weaponProficiencies">
               <h2 class="proficiencyHeader">Weapons</h2>
               {% for weapon in character.proficiencies.weapons %}
@@ -414,12 +406,18 @@
               {% endfor %}
             </div>
             {% if character.config.edition == "5e" %}
-              <div class="toolsProficiencies">
-                <h2 class="proficiencyHeader">Tools</h2>
-                {% for tool in character.proficiencies.tools %}
-                  <p>{{tool}}</p>
-                {% endfor %}
-              </div>
+                <div class="savesProficiencies">
+                    <h2 class="proficiencyHeader">Saving Throws</h2>
+                    {% for save in character.proficiencies.savingThrows %}
+                        <p>{{save}}</p>
+                    {% endfor %}
+                </div>
+                <div class="toolsProficiencies">
+                    <h2 class="proficiencyHeader">Tools</h2>
+                    {% for tool in character.proficiencies.tools %}
+                    <p>{{tool}}</p>
+                    {% endfor %}
+                </div>
             {% endif %}
           </div>
           <textarea class="profText"></textarea>
@@ -547,12 +545,8 @@
         <div class="tabContent" data-tab="main-sacredWeapon">
           <section class="sacredWeapon">
             {{ forms.sacredWeapon.as_div }}
-            <p>Focus Weapon gives a +x enchantment bonus</p>
-            <p>You have used x of the +x bonus</p>
-            {% comment %} {% for weapon in character.weapon %}
-              <div>{{weapon.displayName}}</div>
-              <div>{{weapon}}</div>
-            {% endfor %} {% endcomment %}
+            <p>Focus Weapon gives a +{{character.sacredWeapon.totalEnhance}} enchantment bonus</p>
+            <p>You have used {{character.sacredWeapon.enhanceUsed}} of the +{{character.sacredWeapon.totalEnhance}} bonus</p>
           </section>
         </div>
       {% endif %}

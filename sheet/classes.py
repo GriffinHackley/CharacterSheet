@@ -212,7 +212,12 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
         return ret
 
     def getSacredWeapon(self):
-        return '1d6'
+        ret = {}
+
+        ret['damageDie'] = '1d6'
+        ret['totalEnhance'] = 1
+
+        return ret
     
     def getConsumables(self, stats):
         ret = {}
