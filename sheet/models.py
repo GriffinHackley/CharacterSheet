@@ -33,7 +33,8 @@ class Character(models.Model):
     
     @classmethod
     def create(cls):
-        character = cls(2, '', '', '', '', 1, '', '', '', '', '', '', '', '', '', '', '')
+        #Change the first number. Its the character id
+        character = cls(4, '', '', '', '', 1, '', '', '', '', '', '', '', '', '', '', '')
         return character
     
     @register.filter
@@ -101,7 +102,7 @@ class Character(models.Model):
         self.applySpells()
 
     def cleanModifiers(self):
-        self.modList.cleanModifiers(self.abilityMod)
+        self.modList.cleanModifiers(self.abilityMod, self.profBonus)
 
     def calculateStats(self):
         stats = self.decodeStats()
@@ -160,49 +161,38 @@ class Character(models.Model):
             if key == "Elven Accuracy":
                 self.modList.addModifier(Modifier(1, "untyped", 'Dexterity', 'Elven Accuracy'))
                 ret['Elven Accuracy'] = [
-{"type": "normal", "text":"""
-Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.
-"""}]
+                    {"type": "normal", "text":"Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once."}]
             if key == "Sharpshooter":
                 ret['Sharpshooter'] = [
-{"type": "normal", "text":"""
-Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.
+                    {"type": "normal", "text":"""
+                    Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.
 
-Your ranged weapon attacks ignore half and three-quarters cover.
+                    Your ranged weapon attacks ignore half and three-quarters cover.
 
-Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.
-"""}]
+                    Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.
+                    """}]
 
             if key == "Two-Weapon Fighting":
                 ret['Two-Weapon Fighting'] = [
-{"type": "heading", "text":"Benefit:"},
-{"type": "normal", "text":"""
-Your penalties on attack rolls for fighting with two weapons are reduced. The penalty for your primary hand lessens by 2 and the one for your off hand lessens by 6.
-"""},
+                    {"type": "heading", "text":"Benefit:"},
+                    {"type": "normal", "text":"Your penalties on attack rolls for fighting with two weapons are reduced. The penalty for your primary hand lessens by 2 and the one for your off hand lessens by 6."},
 
-{"type": "heading", "text":"Normal:"},
-{"type": "normal", "text":"""
-If you wield a second weapon in your off hand, you can get one extra attack per round with that weapon. When fighting in this way you suffer a –6 penalty with your regular attack or attacks with your primary hand and a –10 penalty to the attack with your off hand. If your off-hand weapon is light, the penalties are reduced by 2 each. An unarmed strike is always considered light.
-"""},]
+                    {"type": "heading", "text":"Normal:"},
+                    {"type": "normal", "text":"If you wield a second weapon in your off hand, you can get one extra attack per round with that weapon. When fighting in this way you suffer a –6 penalty with your regular attack or attacks with your primary hand and a –10 penalty to the attack with your off hand. If your off-hand weapon is light, the penalties are reduced by 2 each. An unarmed strike is always considered light."},
+                ]
 
             if key == "Butterfly Sting":
                 ret['Butterfly Sting'] = [
-{"type": "normal", "text":"""
-When you confirm a critical hit against a creature, you can choose to forgo the effect of the critical hit and grant a critical hit to the next ally who hits the creature with a melee attack before the start of your next turn. Your attack only deals normal damage, and the next ally automatically confirms the hit as a critical.
-"""},]
+                    {"type": "normal", "text":"When you confirm a critical hit against a creature, you can choose to forgo the effect of the critical hit and grant a critical hit to the next ally who hits the creature with a melee attack before the start of your next turn. Your attack only deals normal damage, and the next ally automatically confirms the hit as a critical."},]
 
             if key == "Combat Reflexes":
                 ret['Combat Reflexes'] = [
-{"type": "heading", "text":"Benefit:"},
-{"type": "normal", "text":"""
-You may make a number of additional attacks of opportunity per round equal to your Dexterity bonus. With this feat, you may also make attacks of opportunity while flat-footed.
-"""},
+                    {"type": "heading", "text":"Benefit:"},
+                    {"type": "normal", "text":"You may make a number of additional attacks of opportunity per round equal to your Dexterity bonus. With this feat, you may also make attacks of opportunity while flat-footed."},
 
-{"type": "heading", "text":"Normal"},
-{"type": "normal", "text":"""
-A character without this feat can make only one attack of opportunity per round and can’t make attacks of opportunity while flat-footed.
-"""},
-]
+                    {"type": "heading", "text":"Normal"},
+                    {"type": "normal", "text":"A character without this feat can make only one attack of opportunity per round and can’t make attacks of opportunity while flat-footed."},
+                ]
 
         self.feats = ret
 
@@ -816,8 +806,13 @@ class FifthEditionCharacter(Character):
         self.profBonus = self.getProfBonus()
 
     def applyBackground(self):
-        self.proficiencies['skills'] = self.proficiencies['skills'] + ['Acrobatics', 'Sleight of Hand']
-        self.proficiencies['tools'] = self.proficiencies['tools'] + ['Thieves\' Tools']
+        if self.background == "Spy":
+            self.proficiencies['skills'] = self.proficiencies['skills'] + ['Acrobatics', 'Sleight of Hand']
+            self.proficiencies['tools'] = self.proficiencies['tools'] + ['Thieves\' Tools']
+
+        if self.background == "Sage":
+            self.proficiencies['skills'] = self.proficiencies['skills'] + ['Acrobatics', 'History']
+            self.proficiencies['languages'] = self.proficiencies['languages'] + ['Draconic', 'Elvish']
 
     def calculateCombat(self):
         ret = super().calculateCombat()

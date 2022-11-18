@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 
 from .models import Character, PathfinderCharacter, FifthEditionCharacter
-from .configs import neil, myriil
+from .configs import neil, myriil, warmund
 
 
 def index(request):
@@ -23,6 +23,8 @@ def detail(request, character_id):
     elif character.id == 2:
         character = neil.apply(character)
         pass
+    elif character.id == 3:
+        character = warmund.apply(character)
 
     if character.config['edition'] == '5e':
         character = FifthEditionCharacter().fromCharacter(character)

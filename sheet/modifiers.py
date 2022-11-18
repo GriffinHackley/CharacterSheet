@@ -24,13 +24,15 @@ class ModifierList():
         
         self.list[modifier.stat].append(modifier)
 
-    def cleanModifiers(self, stats):
+    def cleanModifiers(self, stats, profBonus):
         # Search through modlist and find any bonus that is not already an int
         for modifier in self.list:
             for bonus in self.list[modifier]:
                 if not type(bonus.bonus) == int:
                     if bonus.bonus in stats:
                         bonus.bonus = stats[bonus.bonus]
+                    if bonus.bonus == "Proficiency Bonus":
+                        bonus.bonus = profBonus
     
     def applyModifier(self, modifierName):
         if (not modifierName in self.list):
