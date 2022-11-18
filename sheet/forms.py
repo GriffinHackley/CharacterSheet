@@ -65,3 +65,21 @@ class MyriilSpellForm(forms.Form):
 
     absorbElements = forms.BooleanField(label='Absorb Elements', required=False)
     huntersMark = forms.BooleanField(label='Hunters Mark', required=False)
+
+class WarmundCombatForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    advantage = forms.BooleanField(label='Advantage', required=False)
+    bladesong = forms.BooleanField(label='Bladesong', required=False)
+    critical = forms.BooleanField(label='Critical', required=False)
+
+class WarmundSpellForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    absorbElements = forms.BooleanField(label='Absorb Elements', required=False)
+    boomingBlade = forms.BooleanField(label='Booming Blade', required=False)
+    shield = forms.BooleanField(label='Shield', required=False)

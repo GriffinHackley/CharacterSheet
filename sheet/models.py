@@ -2,7 +2,9 @@ import math
 import re
 from django.db import models
 
-from sheet.forms import ACTypeForm, MyriilCombatForm, MyriilSpellForm, NailCombatForm, NailSkillForm, NailSpellForm, SacredWeaponForm
+from sheet.forms import ACTypeForm, NailCombatForm, NailSkillForm, NailSpellForm, SacredWeaponForm
+from sheet.forms import MyriilCombatForm, MyriilSpellForm 
+from sheet.forms import WarmundCombatForm, WarmundSpellForm
 from .races import races
 from .classes import classes
 from .lists import Ability, skill_list_pathfinder, skill_list_5e, save_list_pathfinder, combat_list
@@ -161,7 +163,12 @@ class Character(models.Model):
         if 'elemental' in self.toggles.keys() and self.toggles['elemental']:
             if 'focusWeapon' in self.toggles.keys() and self.toggles['focusWeapon']:
                 self.modList.addModifier(Modifier('1d6', "elemental", 'Main-DamageDie', 'Focus Weapon'))
-               
+        
+        if 'bladesong' in self.toggles.keys() and self.toggles['bladesong']:
+            self.modList.addModifier(Modifier('Intelligence', "untyped", 'AC', 'Bladesong'))
+            self.modList.addModifier(Modifier(10, "untyped", 'Speed', 'Bladesong'))
+            pass
+
     def applyFeats(self):
         ret = {}
 
@@ -209,6 +216,9 @@ class Character(models.Model):
         if 'absorbElements' in self.toggles.keys() and self.toggles['absorbElements']:
             self.modList.addModifier(Modifier('1d6', "elemental", 'Melee-DamageDie', 'Absorb Elements'))
 
+        if 'boomingBlade' in self.toggles.keys() and self.toggles['boomingBlade']:
+            self.modList.addModifier(Modifier('0d8', "untyped", 'DamageDie', 'Booming Blade'))
+
         if 'catsGrace' in self.toggles.keys() and self.toggles['catsGrace']:
             self.modList.addModifier(Modifier(4, "enhancement", 'Dexterity', 'Cats Grace'))
 
@@ -225,6 +235,9 @@ class Character(models.Model):
         if 'ironSkin' in self.toggles.keys() and self.toggles['ironSkin']:
             self.modList.applyModifierToModifier(Modifier(4, "enhancement", 'Natural Armor', 'Iron Skin'))
 
+        if 'shield' in self.toggles.keys() and self.toggles['shield']:
+            self.modList.addModifier(Modifier(5, "untyped", 'AC', 'Shield'))
+
         if 'shieldOfFaith' in self.toggles.keys() and self.toggles['shieldOfFaith']:
             self.modList.addModifier(Modifier(2, "deflection", 'AC', 'Shield of Faith'))
 
@@ -237,7 +250,11 @@ class Character(models.Model):
         return bonus
     
     def calculateSpeed(self):
-        return 30
+        speed = self.race.speed
+
+        speed += self.modList.applyModifier('Speed')
+
+        return speed
 
     def calculateHP(self):
         #Level one max die
@@ -346,7 +363,7 @@ class Character(models.Model):
 
         #Power Attack
         powerAttackGraph = self.calculatePowerAttack(toHit, averageDamage, criticalDamage, hitPenalty, damageBonus)
-        if self.toggles['powerAttack']:
+        if 'powerAttack' in self.toggles and self.toggles['powerAttack']:
             toHit = toHit - hitPenalty
             damageMod = damageMod + damageBonus
 
@@ -468,7 +485,6 @@ class PathfinderCharacter(Character):
         super().build()
 
         self.sacredWeapon = self.getSacredWeapon()
-        print(self.sacredWeapon)
     
     def fromCharacter(self, character):
         self.traits = character.traits
@@ -836,8 +852,14 @@ You have an excellent memory for maps and geography, and you can always recall t
         pass
 
     def getForms(self, request):
-        combatForm = MyriilCombatForm(request.GET)
-        spellForm  = MyriilSpellForm(request.GET)
+        if self.name == "Myriil Taegen":
+            combatForm = MyriilCombatForm(request.GET)
+            spellForm  = MyriilSpellForm(request.GET)
+
+        if self.name == "Warmund":
+            combatForm = WarmundCombatForm(request.GET)
+            spellForm  = WarmundSpellForm(request.GET)
+
         
         toggles = {}
         if combatForm.is_valid():
