@@ -1,3 +1,17 @@
+/* Accent */
+span.hintBox {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: lightblue;
+    color: red;
+}
+span.hintBox:hover span.hintText{
+    background-color: blue;
+}
+
+
 section.pageContainer{
   display: flex;
   flex-direction: column;
