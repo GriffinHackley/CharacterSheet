@@ -1,17 +1,51 @@
 /* Accent */
-span.hintBox {
+.tooltip{
+    position: relative;
+}
+.tooltip::after, .tooltip::before{
+    --scale: 0;
+    --arrowSize: 10px;
+    --accentColor: lightblue;
+    
     position: absolute;
+    top: -.25rem;
+    transition: 50ms transform;
+    transform-origin: bottom center;
     left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    background-color: lightblue;
-    color: red;
 }
-span.hintBox:hover span.hintText{
-    background-color: blue;
+.shiftedRight::after, .shiftedRight::before{
+    transform: translateX(-15%) translateY(var(--translate-y, 0)) scale(var(--scale));
 }
 
+.centered::after, .centered::before{
+    transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
+}
 
+.shiftedLeft::after, .shiftedLeft::before{
+    transform: translateX(-75%) translateY(var(--translate-y, 0)) scale(var(--scale));
+}
+.tooltip::before{
+    --translate-y: calc(-100% - var(--arrowSize));
+
+    content: attr(data-tooltip);
+    border-radius: 10px;
+    text-align: center;
+    padding: .5rem;
+    color: white;
+    background: var(--accentColor);
+    width: max-content;
+}
+.tooltip:active::before, .tooltip:active::after{
+    --scale: 1;
+}
+.tooltip::after{
+    --translate-y: calc(-1* var(--arrowSize));
+
+    content:'';
+    border: var(--arrowSize) solid transparent;
+    transform-origin: top center;
+    border-top-color: var(--accentColor);
+}
 section.pageContainer{
   display: flex;
   flex-direction: column;

@@ -113,10 +113,17 @@ class Character(models.Model):
         self.abilityMod = {}
 
         for ability in Ability:
-            self.abilityScores[ability.name] = int(stats[ability.value])
-            bonus = self.modList.applyModifier(ability.name)
-            self.abilityScores[ability.name] += bonus
-            self.abilityMod[ability.name] = math.floor(self.abilityScores[ability.name]/2)-5    
+            self.abilityScores[ability.name] = {}
+            base = int(stats[ability.value])
+            bonus,source = self.modList.applyModifier(ability.name)
+
+            # Add base score and sort sources from highest to lowest
+            source['Base'] = base
+            source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+            self.abilityScores[ability.name]['value'] = base+bonus
+            self.abilityScores[ability.name]['source'] = source
+            self.abilityMod[ability.name] = math.floor(self.abilityScores[ability.name]['value']/2)-5  
   
     def calculateCombat(self):
         ret = {}
@@ -248,14 +255,16 @@ class Character(models.Model):
         init = combat_list['Initiative']
         ability = self.convertEnum(init['ability'])
         bonus = self.abilityMod[ability]
-        bonus += self.modList.applyModifier('Initiative')
+        modifier,source = self.modList.applyModifier('Initiative')
+        bonus += modifier
 
         return bonus
     
     def calculateSpeed(self):
         speed = self.race.speed
 
-        speed += self.modList.applyModifier('Speed')
+        bonus, source = self.modList.applyModifier('Speed')
+        speed += bonus
 
         return speed
 
@@ -312,12 +321,14 @@ class Character(models.Model):
         toHit  = 0
         toHit += self.abilityMod[attackStat]
         toHit += weapon['bonus']
-        toHit += self.modList.applyModifier('ToHit')
+        bonus, source = self.modList.applyModifier('ToHit')
+        toHit += bonus
         
         #Base Damage
         damageMod = 0
         damageMod += weapon['bonus']
-        damageMod += self.modList.applyModifier('Damage')
+        bonus, source = self.modList.applyModifier('Damage')
+        damageMod += bonus
 
 
         #Add weapon die to damage die
@@ -512,7 +523,8 @@ class PathfinderCharacter(Character):
 
             ability = self.convertEnum(value['ability'])
             statBonus += self.abilityMod[ability]
-            statBonus += self.modList.applyModifier(key)
+            bonus,source = self.modList.applyModifier(key)
+            statBonus += bonus
             ret[key] = {'ability':ability, 'value':statBonus}
         
         return ret
@@ -547,8 +559,11 @@ class PathfinderCharacter(Character):
 
             #Kukri
             if 'Kukri' in name:
-                weaponRet['toHit'] += self.modList.applyModifier('ToHit-Kukri')
-                weaponRet['damageMod'] += self.modList.applyModifier('Damage-Kukri')
+                bonus, source = self.modList.applyModifier('ToHit-Kukri')
+                weaponRet['toHit'] += bonus
+
+                bonus, source = self.modList.applyModifier('Damage-Kukri')
+                weaponRet['damageMod'] += bonus
 
             if 'TWF' in weapon['tags']:
                 if 'Main' in weapon['tags']:
@@ -614,7 +629,8 @@ class PathfinderCharacter(Character):
         elif self.toggles['acType'] == "Flat-Footed":
             total += self.modList.applyModifierWithFilters('AC',['Dodge'])
         else:
-            total += self.modList.applyModifier('AC')
+            bonus, source = self.modList.applyModifier('AC')
+            total += bonus
 
         return total
 
@@ -634,7 +650,8 @@ class PathfinderCharacter(Character):
 
                 ability = self.convertEnum(value['ability'])
                 statBonus += self.abilityMod[ability]
-                statBonus += self.modList.applyModifier(key)
+                bonus,source = self.modList.applyModifier(key)
+                statBonus += bonus
 
                 if value['acp']:
                     statBonus -= self.armor['armorCheck']
@@ -686,8 +703,6 @@ class PathfinderCharacter(Character):
     def initModifiers(self):
         naturalArmor = Modifier(0, "Natural Armor", 'AC', 'Iron Skin')
         self.modList.addModifier(naturalArmor)
-    
-
 
     def getForms(self, request):
         combatForm       = NailCombatForm(request.GET)
@@ -741,7 +756,8 @@ class FifthEditionCharacter(Character):
             statBonus = self.abilityMod[ability.name]
     
             saveName = ability.name + ' Saving Throw'
-            statBonus += self.modList.applyModifier(saveName)
+            bonus, source = self.modList.applyModifier(saveName)
+            statBonus += bonus
             if ability.name in self.proficiencies['savingThrows']:
                 statBonus += self.profBonus
             ret[ability.name] = {'ability':ability, 'value':statBonus}
@@ -757,10 +773,12 @@ class FifthEditionCharacter(Character):
             weaponRet['toHit'] += self.profBonus
 
             if "Melee" in weapon['tags']:
-                weaponRet['toHit'] += self.modList.applyModifier('ToHit-Melee')
+                bonus, source = self.modList.applyModifier('ToHit-Melee')
+                weaponRet['toHit'] += bonus
 
             if "Ranged" in weapon['tags']:
-                weaponRet['toHit'] += self.modList.applyModifier('ToHit-Ranged')
+                bonus, source = self.modList.applyModifier('ToHit-Ranged')
+                weaponRet['toHit'] += bonus
 
                 #Parse range increments from weapon properties
                 reg = re.compile(r'Range\(([0-9]+)\/([0-9]+)\)')
@@ -801,7 +819,8 @@ class FifthEditionCharacter(Character):
         else:
             total += self.abilityMod[ability]
         
-        total += self.modList.applyModifier('AC')
+        bonus, source = self.modList.applyModifier('AC')
+        total += bonus
 
         return total
     
@@ -817,7 +836,8 @@ class FifthEditionCharacter(Character):
 
             ability = self.convertEnum(value['ability'])
             statBonus += self.abilityMod[ability]
-            statBonus += self.modList.applyModifier(key)
+            bonus, source = self.modList.applyModifier(key)
+            statBonus += bonus
 
             if key in self.proficiencies['skills']:
                 statBonus += self.profBonus

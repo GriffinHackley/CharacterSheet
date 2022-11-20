@@ -240,7 +240,8 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
         ret['ability']    = ability
         ret['abilityMod'] = abilityMod
 
-        ret['saveDC'] = 10 + abilityMod + modList.applyModifier("SpellSaveDC")
+        bonus, source = modList.applyModifier("SpellSaveDC")
+        ret['saveDC'] = 10 + abilityMod + bonus
 
         ret['level'] = {}
         ret['level']['Cantrip'] = {}
@@ -508,7 +509,9 @@ At 20th level, you become an unparalleled hunter of your enemies. Once on each o
         ret['ability']    = ability
         ret['abilityMod'] = abilityMod
 
-        ret['saveDC'] = 8 + abilityMod + profBonus + modList.applyModifier("SpellSaveDC")
+        bonus, source = modList.applyModifier("SpellSaveDC")
+
+        ret['saveDC'] = 8 + abilityMod + profBonus + bonus
 
         ret['spellAttack'] = profBonus + abilityMod
 

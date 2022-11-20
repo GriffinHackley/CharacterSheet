@@ -36,13 +36,15 @@ class ModifierList():
     
     def applyModifier(self, modifierName):
         if (not modifierName in self.list):
-            return 0
+            return (0,{})
         allBonus = self.list[modifierName]
         total = 0
+        source = {}
         for bonus in allBonus:
+            source[bonus.source] = bonus.bonus
             total += bonus.bonus
-        
-        return total
+
+        return (total, source)
 
     def applyModifierToModifier(self, modifier):
         for key,value in self.list.items():
