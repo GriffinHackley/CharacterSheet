@@ -78,10 +78,13 @@ class ModifierList():
 
         #Group bonuses by die size
         die = {}
+        source = {}
         for bonus in allBonus:
             temp = []
             [number,size] = bonus.bonus.split('d')
             temp.append(int(number))
+
+            source[bonus.source] = bonus.bonus 
 
             if size in die.keys():
                 die[size] = die[size] + temp
@@ -92,7 +95,7 @@ class ModifierList():
         for size,numbers in die.items():
             die[size] = sum(numbers)
         
-        return die
+        return (die,source)
     
     def applyModifierWithFilters(self, modifierName, filters):
         if (not modifierName in self.list):

@@ -329,48 +329,60 @@ class Character(models.Model):
 
     def attackInit(self, weapon):
         #Base to Hit
-        attackStat = weapon['toHitAbility']
-        toHit  = 0
-        toHit += self.abilityMod[attackStat]
-        toHit += weapon['bonus']
-        bonus, source = self.modList.applyModifier('ToHit')
+        bonus, toHitSource = self.modList.applyModifier('ToHit')
+
+        toHit = 0
         toHit += bonus
+        attackStat = weapon['toHitAbility']
+        toHit += self.abilityMod[attackStat]
+        toHitSource[attackStat] = self.abilityMod[attackStat]
+        
+        if weapon['bonus'] > 0:
+            toHit += weapon['bonus']
+            toHitSource['Enchant'] = weapon['bonus']
         
         #Base Damage
         damageMod = 0
         damageMod += weapon['bonus']
-        bonus, source = self.modList.applyModifier('Damage')
+        bonus, damageSource = self.modList.applyModifier('Damage')
         damageMod += bonus
 
 
         #Add weapon die to damage die
+        allDie, dieSource = self.modList.getDieModifier(weapon['tags'])
+
+        dieSource["Weapon Die"] = weapon['damageDie']
         damageDie = weapon['damageDie']
         [number,size] = damageDie.split('d')
-        allDie = self.modList.getDieModifier(weapon['tags'])
         if size in allDie.keys():
             allDie[size] = allDie[size] + int(number)
         else:
             allDie[size] = int(number)
 
         ret = {}
-        ret['toHit'] = toHit
-        ret['damageMod'] = damageMod
-        ret['allDie'] = allDie
+        ret['toHit'] = {'value':toHit, 'source':toHitSource}
+        ret['damageMod'] = {'value':damageMod, 'source':damageSource}
+        ret['allDie'] = {'value':allDie, 'source':dieSource}
 
         return ret
     
     def calculateAttack(self, attack, weapon, hitPenalty, damageBonus):
-        toHit = attack['toHit']
-        damageMod = attack['damageMod']
+        toHit = attack['toHit']['value']
+        toHitSource = attack['toHit']['source']
+
+        damageMod = attack['damageMod']['value']
+        damageSource = attack['damageMod']['source']
+
         allDie = attack['allDie']
+        dieSource = attack['allDie']['source']
 
         #Format Damage Dice
         firstLetter = True
-        sortedDieSize = reversed(sorted(list(allDie.keys()))) # Order from highest to smallest die size
+        sortedDieSize = reversed(sorted(list(allDie['value'].keys()))) # Order from highest to smallest die size
         criticalDamage = 0
         averageDamage = 0
         for dieSize in sortedDieSize:
-            damageDie = allDie[dieSize]
+            damageDie = allDie['value'][dieSize]
 
             if self.toggles['critical']:
                 if self.config['critType'] == 'doubleDice' or self.config['critType'] == 'doubleAll':
@@ -384,12 +396,12 @@ class Character(models.Model):
             
             #Calculate critical damage
             if self.config['critType'] == 'maxDie':
-                criticalDamage += allDie[dieSize]*int(dieSize)
+                criticalDamage += allDie['value'][dieSize]*int(dieSize)
             elif self.config['critType'] == 'doubleDice':
-                criticalDamage += allDie[dieSize]*((int(dieSize)/2)+.5)
+                criticalDamage += allDie['value'][dieSize]*((int(dieSize)/2)+.5)
             if self.config['critType'] == 'doubleDice':
                 pass
-            averageDamage += allDie[dieSize]*((int(dieSize)/2)+.5)
+            averageDamage += allDie['value'][dieSize]*((int(dieSize)/2)+.5)
         
         averageDamage += damageMod
 
@@ -397,7 +409,10 @@ class Character(models.Model):
         powerAttackGraph = self.calculatePowerAttack(toHit, averageDamage, criticalDamage, hitPenalty, damageBonus)
         if 'powerAttack' in self.toggles and self.toggles['powerAttack']:
             toHit = toHit - hitPenalty
+            toHitSource["Power Attk."] = -hitPenalty
+
             damageMod = damageMod + damageBonus
+            damageSource["Power Attk."] = damageBonus
 
         #If critical, add extra critical damage
         if self.toggles['critical']:
@@ -410,10 +425,17 @@ class Character(models.Model):
         else:
             damage = damageDice + f'+{damageMod} '+ weapon['damageType']
 
+        toHitSource = {k: v for k, v in sorted(toHitSource.items(), reverse=True, key=lambda item: item[1])}
+        damageSource = {k: v for k, v in sorted(damageSource.items(), reverse=True, key=lambda item: item[1])}
+
+        dieSource = dict(reversed(sorted(dieSource.items(), key=lambda x:x[1])))
+
+        dieSource.update(damageSource)
+
         ret = {}
         ret['name']             = weapon['name']
-        ret['toHit']            = toHit
-        ret['damage']           = damage
+        ret['toHit']            = {'value':toHit, 'source':toHitSource}
+        ret['damage']           = {'value':damage, 'source':dieSource}
         ret['damageMod']        = damageMod
         ret['averageDamage']    = averageDamage
         ret['bonusCritDamage']  = criticalDamage
@@ -567,7 +589,9 @@ class PathfinderCharacter(Character):
             weaponRet = super().attackInit(weapon)
 
             if self.toggles['confCrit']:
-                weaponRet['toHit'] += self.modList.applyModifier('ConfCrit')
+                bonus, source = self.modList.applyModifier('ConfCrit')
+                weaponRet['toHit']['value'] += bonus
+                weaponRet['toHit']['source'].update(source)
 
             #Power Attack
             hitPenalty  = 1 + math.floor(self.bab/4)
@@ -576,10 +600,12 @@ class PathfinderCharacter(Character):
             #Kukri
             if 'Kukri' in name:
                 bonus, source = self.modList.applyModifier('ToHit-Kukri')
-                weaponRet['toHit'] += bonus
+                weaponRet['toHit']['value'] += bonus
+                weaponRet['toHit']['source'].update(source)
 
                 bonus, source = self.modList.applyModifier('Damage-Kukri')
-                weaponRet['damageMod'] += bonus
+                weaponRet['damageMod']['value'] += bonus
+                weaponRet['damageMod']['source'].update(source)
 
             if 'TWF' in weapon['tags']:
                 if 'Main' in weapon['tags']:
@@ -593,17 +619,16 @@ class PathfinderCharacter(Character):
             if self.toggles['twf']:
                 damageBonus = math.floor(damageBonus/2)
                 if ('Off-Hand' in weapon['tags']) or ('Main' in weapon['tags']):
-                    weaponRet['toHit'] -= 2
-            else:
-                pass
+                    weaponRet['toHit']['value'] -= 2
+                    weaponRet['toHit']['source']['TWF'] = -2
 
             #If weapon is offhand, add half the ability mod
             #If not add the full ability mod
             damageStat = weapon['damageAbility']
             if 'Off-Hand' in weapon['tags']:
-                weaponRet['damageMod'] += int(math.floor(self.abilityMod[damageStat]/2))
+                weaponRet['damageMod']['value'] += int(math.floor(self.abilityMod[damageStat]/2))
             else:
-                weaponRet['damageMod'] += self.abilityMod[damageStat]
+                weaponRet['damageMod']['value'] += self.abilityMod[damageStat]
 
             weaponRet = super().calculateAttack(weaponRet, weapon, hitPenalty, damageBonus)
           
@@ -698,8 +723,6 @@ class PathfinderCharacter(Character):
                 self.modList.addModifier(Modifier(2, "racial", 'Appraise', 'Scavenger'))
 
             for key, value in list.items():
-                if key == "Knowledge":
-                    print("yes")
                 bonus,source = self.modList.applyModifier(key)
                 statBonus = 0
                 statBonus += bonus
@@ -848,15 +871,18 @@ class FifthEditionCharacter(Character):
         for weapon in self.weapon:
             weaponRet = super().attackInit(weapon)
             
-            weaponRet['toHit'] += self.profBonus
+            weaponRet['toHit']['value'] += self.profBonus
+            weaponRet['toHit']['source']['Prof.'] = self.profBonus
 
             if "Melee" in weapon['tags']:
                 bonus, source = self.modList.applyModifier('ToHit-Melee')
-                weaponRet['toHit'] += bonus
+                weaponRet['toHit']['value'] += bonus
+                weaponRet['toHit']['source'].update(source)
 
             if "Ranged" in weapon['tags']:
                 bonus, source = self.modList.applyModifier('ToHit-Ranged')
-                weaponRet['toHit'] += bonus
+                weaponRet['toHit']['value'] += bonus
+                weaponRet['toHit']['source'].update(source)
 
                 #Parse range increments from weapon properties
                 reg = re.compile(r'Range\(([0-9]+)\/([0-9]+)\)')
@@ -868,14 +894,16 @@ class FifthEditionCharacter(Character):
             damageStat = weapon['damageAbility']
             if 'TWF' in weapon['tags']:
                 if 'Main' in weapon['tags']:
-                    weaponRet['damageMod'] += self.abilityMod[damageStat]
+                    weaponRet['damageMod']['value'] += self.abilityMod[damageStat]
+                    weaponRet['damageMod']['source'][damageStat] = self.abilityMod[damageStat]
                     name = 'Main ' + weapon['name']
                 elif 'Off-Hand' in weapon['tags']:
                     name = 'Off-Hand ' + weapon['name']
                 else:
                     raise Exception('The TWF tag was on this weapon but neither the Main or Off-Hand tags were found')
             else:
-                weaponRet['damageMod'] += self.abilityMod[damageStat]
+                weaponRet['damageMod']['value'] += self.abilityMod[damageStat]
+                weaponRet['damageMod']['source'][damageStat] = self.abilityMod[damageStat]
                 name = weapon['name']       
             
             weaponRet['name'] = name

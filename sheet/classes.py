@@ -526,7 +526,6 @@ At 20th level, you become an unparalleled hunter of your enemies. Once on each o
         source[ability] = abilityMod
         source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
         ret['spellAttack'] = {'value':profBonus + abilityMod, 'source':source}
-        print(ret['spellAttack']['value'])
 
         ret['level'] = {}
         ret['level']['1'] = {}
