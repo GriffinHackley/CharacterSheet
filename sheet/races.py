@@ -35,13 +35,13 @@ class Race():
 
 class HalfOrc(Race):
     def __init__(self, primaryAbility, secondaryAbility='None'):
+        self.classSkills = ["Stealth", "Perception"]
         super().__init__(primaryAbility=primaryAbility, secondaryAbility=secondaryAbility, name="Half-Orc",  size='M', speed=30, languages=["Common", "Orc"], features=[{"darkvision":"Half-orcs can see in the dark up to 60 feet."}])
 
     def appendModifiers(self, modList: ModifierList):
         modList.addModifier(Modifier(1,"luck", 'Fortitude', 'Sacred Tattoo'))
         modList.addModifier(Modifier(1,"luck", 'Reflex', 'Sacred Tattoo'))
         modList.addModifier(Modifier(1,"luck", 'Will', 'Sacred Tattoo'))
-        modList.addModifier(Modifier(2,"racial", 'Appraise', 'Scavenger'))
 
         self.classSkills = ['Stealth', 'Perception']
         

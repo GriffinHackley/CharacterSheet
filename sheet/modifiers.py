@@ -37,6 +37,7 @@ class ModifierList():
     def applyModifier(self, modifierName):
         if (not modifierName in self.list):
             return (0,{})
+        
         allBonus = self.list[modifierName]
         total = 0
         source = {}
@@ -95,12 +96,15 @@ class ModifierList():
     
     def applyModifierWithFilters(self, modifierName, filters):
         if (not modifierName in self.list):
-            return 0
+            return (0,{})
+        
         allBonus = self.list[modifierName]
         total = 0
+        source = {}
         for bonus in allBonus:
-            if not bonus.type in filters:    
+            if not bonus.type in filters:
+                source[bonus.source] = bonus.bonus 
                 total += bonus.bonus
         
-        return total
+        return (total,source)
 

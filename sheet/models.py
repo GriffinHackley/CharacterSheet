@@ -1,15 +1,18 @@
 import math
 import re
-from django.db import models
 
-from sheet.forms import ACTypeForm, NailCombatForm, NailSkillForm, NailSpellForm, SacredWeaponForm
-from sheet.forms import MyriilCombatForm, MyriilSpellForm 
-from sheet.forms import WarmundCombatForm, WarmundSpellForm
-from .races import races
-from .classes import classes
-from .lists import Ability, skill_list_pathfinder, skill_list_5e, save_list_pathfinder, combat_list
-from .modifiers import Modifier, ModifierList
+from django.db import models
 from django.template.defaulttags import register
+
+from sheet.forms import (ACTypeForm, MyriilCombatForm, MyriilSpellForm,
+                         NailCombatForm, NailSkillForm, NailSpellForm,
+                         SacredWeaponForm, WarmundCombatForm, WarmundSpellForm)
+
+from .classes import classes
+from .lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
+                    skill_list_pathfinder)
+from .modifiers import Modifier, ModifierList
+from .races import races
 
 class Character(models.Model):  
     baseStats = models.CharField(max_length=200)
@@ -252,21 +255,30 @@ class Character(models.Model):
             self.modList.addModifier(Modifier(2, "deflection", 'AC', 'Shield of Faith'))
 
     def calculateInit(self):
+        modifier,source = self.modList.applyModifier('Initiative')
+
         init = combat_list['Initiative']
         ability = self.convertEnum(init['ability'])
         bonus = self.abilityMod[ability]
-        modifier,source = self.modList.applyModifier('Initiative')
+        source[ability] = self.abilityMod[ability]
+
         bonus += modifier
 
-        return bonus
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+        return {'value':bonus, 'source':source}
     
     def calculateSpeed(self):
+        bonus, source = self.modList.applyModifier('Speed')
+        
+        source['Base'] = self.race.speed
         speed = self.race.speed
 
-        bonus, source = self.modList.applyModifier('Speed')
         speed += bonus
 
-        return speed
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+        return {'value':speed, 'source':source}
 
     def calculateHP(self):
         #Level one max die
@@ -519,13 +531,17 @@ class PathfinderCharacter(Character):
         list = save_list_pathfinder
 
         for key, value in list.items():
-            statBonus = value['value']
+            bonus,source = self.modList.applyModifier(key)
+            statBonus = 0
+            statBonus += bonus
 
             ability = self.convertEnum(value['ability'])
             statBonus += self.abilityMod[ability]
-            bonus,source = self.modList.applyModifier(key)
-            statBonus += bonus
-            ret[key] = {'ability':ability, 'value':statBonus}
+            source[ability] = self.abilityMod[ability]
+
+            source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+            ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
         
         return ret
     
@@ -611,28 +627,64 @@ class PathfinderCharacter(Character):
 
         return ret
 
+    def calculateCombat(self):
+        ret = super().calculateCombat()
+
+        ret["CMD"] = self.calculateCMD()
+
+        return ret
+
     def calculateAC(self):
+        if self.toggles['acType'] == "Touch":
+            bonus, source = self.modList.applyModifierWithFilters('AC',['Natural Armor'])
+        elif self.toggles['acType'] == "Flat-Footed":
+            bonus, source = self.modList.applyModifierWithFilters('AC',['Dodge'])
+        else:
+            bonus, source = self.modList.applyModifier('AC')
+
         total = 10
+        total += bonus
+        source['Base'] = 10
 
         if not self.toggles['acType'] == "Touch":
+            source['Armor'] = self.armor['armorBonus']
             total += self.armor['armorBonus']
 
         if not self.toggles['acType'] == "Flat-Footed":
             ability = self.convertEnum(self.armor['ability'])
             if self.abilityMod[ability] > self.armor['maxAbility']:
+                source[ability + "*"] = self.armor['maxAbility']
                 total += self.armor['maxAbility']
             else:
+                source[ability] = self.abilityMod[ability]
                 total += self.abilityMod[ability]
         
-        if self.toggles['acType'] == "Touch":
-            total += self.modList.applyModifierWithFilters('AC',['Natural Armor'])
-        elif self.toggles['acType'] == "Flat-Footed":
-            total += self.modList.applyModifierWithFilters('AC',['Dodge'])
-        else:
-            bonus, source = self.modList.applyModifier('AC')
-            total += bonus
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}        
 
-        return total
+        return {'value':total, 'source':source}
+
+    def calculateCMD(self):
+        bonus,source = self.modList.applyModifier('CMD')
+
+        source['Base'] = 10
+        total = 10
+        total += bonus
+
+        source['BAB'] = self.bab
+        total += self.bab
+
+        source['Str.'] = self.abilityMod['Strength']
+        total += self.abilityMod['Strength']
+
+        source['Dex.'] = self.abilityMod['Dexterity']
+        total += self.abilityMod['Dexterity']
+
+        source['Size'] = 0
+        total += 0
+
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])} 
+
+        return {'value':total, 'source':source}
 
     def calculateSkills(self):
             ret = {}
@@ -646,28 +698,47 @@ class PathfinderCharacter(Character):
                 self.modList.addModifier(Modifier(2, "racial", 'Appraise', 'Scavenger'))
 
             for key, value in list.items():
-                statBonus = value['value']
+                if key == "Knowledge":
+                    print("yes")
+                bonus,source = self.modList.applyModifier(key)
+                statBonus = 0
+                statBonus += bonus
 
                 ability = self.convertEnum(value['ability'])
                 statBonus += self.abilityMod[ability]
-                bonus,source = self.modList.applyModifier(key)
-                statBonus += bonus
+                source[ability] = self.abilityMod[ability]
 
                 if value['acp']:
                     statBonus -= self.armor['armorCheck']
+                    source['ACP'] = -self.armor['armorCheck']
 
+                skillUsed = False
                 if key in self.skillRanks:
+                    skillUsed = True
                     statBonus += int(self.skillRanks[key])
+                    source['Skill Ranks'] = int(self.skillRanks[key])
                     skillRanksUsed +=  int(self.skillRanks[key])
                     if key in self.classSkills:
+                        source['Class Skill'] = 3
                         statBonus += 3
 
                 if skillRanksUsed > totalSkillRanks:
                     print("Used too many skill ranks")
 
-                ret[key] = {'ability':ability, 'value':statBonus}
+                source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+                if "Knowledge" in key:
+                    if not skillUsed:
+                        continue
+                    
+                ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
 
             return ret
+
+    def applyRace(self):
+        race = races[self.race]
+        self.classSkills = self.classSkills + race.classSkills
+        return super().applyRace()
 
     def applyClass(self):
         super().applyClass()
@@ -757,10 +828,17 @@ class FifthEditionCharacter(Character):
     
             saveName = ability.name + ' Saving Throw'
             bonus, source = self.modList.applyModifier(saveName)
+
+            source['Base'] = statBonus
+            
             statBonus += bonus
             if ability.name in self.proficiencies['savingThrows']:
+                source['Prof.'] = self.profBonus
                 statBonus += self.profBonus
-            ret[ability.name] = {'ability':ability, 'value':statBonus}
+
+            source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+            ret[ability.name] = {'ability':ability, 'value':statBonus, 'source':source}
     
         return ret
 
@@ -809,20 +887,27 @@ class FifthEditionCharacter(Character):
         return ret
     
     def calculateAC(self):
-        total = 10
-
-        total += self.armor['armorBonus']
-        
-        ability = self.convertEnum(self.armor['ability'])
-        if self.abilityMod[ability] > self.armor['maxAbility']:
-            total += self.armor['maxAbility']
-        else:
-            total += self.abilityMod[ability]
-        
         bonus, source = self.modList.applyModifier('AC')
+
+        total = 10
+        source['Base'] = 10
+
         total += bonus
 
-        return total
+        source['Armor'] = self.armor['armorBonus']
+        total += self.armor['armorBonus']
+
+        ability = self.convertEnum(self.armor['ability'])
+        if self.abilityMod[ability] > self.armor['maxAbility']:
+            source['Dex*'] = self.armor['maxAbility']
+            total += self.armor['maxAbility']
+        else:
+            source['Dex'] = self.abilityMod[ability]
+            total += self.abilityMod[ability]
+
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+
+        return {'value':total, 'source':source}
     
     def getProfBonus(self):
         return 2
@@ -832,19 +917,23 @@ class FifthEditionCharacter(Character):
         list = skill_list_5e
 
         for key, value in list.items():
-            statBonus = value['value']
+            statBonus = 0
 
             ability = self.convertEnum(value['ability'])
             statBonus += self.abilityMod[ability]
             bonus, source = self.modList.applyModifier(key)
+            source[ability] = statBonus
             statBonus += bonus
 
             if key in self.proficiencies['skills']:
-                statBonus += self.profBonus
                 if key in self.charClass.expertise['skills']:
+                    source['Expertise'] = 2*self.profBonus
+                    statBonus += 2*self.profBonus
+                else:
+                    source['Prof.'] = self.profBonus
                     statBonus += self.profBonus
 
-            ret[key] = {'ability':ability, 'value':statBonus}
+            ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
         
         return ret
     

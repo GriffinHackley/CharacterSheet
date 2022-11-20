@@ -48,7 +48,7 @@ class Warpiest(Class):
     sacredWeapon  = ''
     proficiencies = {'armor': ['Light', 'Medium', 'Heavy', 'Shields (except tower shields)'], 'weapons':['Simple', 'Martial'],'languages':[]}
     classSkills   = ['Climb', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal', 'Intimidate', 'Knowledge (Engineering)', 
-                     'Knowledge(Religion)', 'Profession', 'Ride', 'Sense Motive', 'Spellcraft', 'Survival', 'Swim']
+                     'Knowledge (Religion)', 'Profession', 'Ride', 'Sense Motive', 'Spellcraft', 'Survival', 'Swim']
 
     def __init__(self, level):
         super().__init__(level, 'Warpriest', hitDie='8', edition="Pathfinder", bab="3/4", fort="good", refl="poor", will="good")
@@ -241,7 +241,10 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
         ret['abilityMod'] = abilityMod
 
         bonus, source = modList.applyModifier("SpellSaveDC")
-        ret['saveDC'] = 10 + abilityMod + bonus
+        source['Base'] = 10
+        source[ability] = abilityMod
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+        ret['saveDC'] = {'value': 10 + abilityMod + bonus, 'source':source}
 
         ret['level'] = {}
         ret['level']['Cantrip'] = {}
@@ -285,7 +288,7 @@ class Ranger(Class):
         super().appendModifiers(modList)
 
         modList.addModifier(Modifier(2,"untyped", 'ToHit-Ranged', 'Archery Fighting Style'))
-        modList.addModifier(Modifier('Wisdom',"untyped", 'Initiative', 'Gloomstalker - Dread Ambusher'))
+        modList.addModifier(Modifier('Wisdom',"untyped", 'Initiative', 'Dread Ambusher'))
 
     def getClassFeatures(self):
         ret = {}
@@ -511,9 +514,19 @@ At 20th level, you become an unparalleled hunter of your enemies. Once on each o
 
         bonus, source = modList.applyModifier("SpellSaveDC")
 
-        ret['saveDC'] = 8 + abilityMod + profBonus + bonus
+        bonus, source = modList.applyModifier("SpellSaveDC")
+        source['Base'] = 8
+        source['Prof.'] = profBonus
+        source[ability] = abilityMod
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+        ret['saveDC'] = {'value': 8 + abilityMod + profBonus + bonus, 'source':source}
 
-        ret['spellAttack'] = profBonus + abilityMod
+        bonus, source = modList.applyModifier("SpellAttack")
+        source['Prof.'] = profBonus
+        source[ability] = abilityMod
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+        ret['spellAttack'] = {'value':profBonus + abilityMod, 'source':source}
+        print(ret['spellAttack']['value'])
 
         ret['level'] = {}
         ret['level']['1'] = {}
@@ -723,9 +736,19 @@ class Wizard(Class):
         ret['ability']    = ability
         ret['abilityMod'] = abilityMod
 
-        ret['saveDC'] = 8 + abilityMod + profBonus + modList.applyModifier("SpellSaveDC")
 
-        ret['spellAttack'] = profBonus + abilityMod
+        bonus, source = modList.applyModifier("SpellSaveDC")
+        source['Base'] = 8
+        source['Prof.'] = profBonus
+        source[ability] = abilityMod
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+        ret['saveDC'] = {'value': 8 + abilityMod + profBonus + bonus, 'source':source}
+
+        bonus, source = modList.applyModifier("SpellAttack")
+        source['Prof.'] = profBonus
+        source[ability] = abilityMod
+        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
+        ret['spellAttack'] = {'value':profBonus + abilityMod, 'source':source}
 
         ret['level'] = {}
         ret['level']['Cantrip'] = {}

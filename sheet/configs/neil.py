@@ -34,11 +34,12 @@ def apply(character):
         "feet"     : {"name":""},
     }
     character.skillRanks = {
-        'Heal'         : 1,
-        'Handle Animal': 1,
-        'Perception'   : 3,
-        'Stealth'      : 3,
-        'Survival'     : 1,
+        'Heal'                 : 1,
+        'Handle Animal'        : 1,
+        'Knowledge (Religion)' : 1,
+        'Perception'           : 4,
+        'Stealth'              : 4,
+        'Survival'             : 1,
     }
 
     character.flavor = {

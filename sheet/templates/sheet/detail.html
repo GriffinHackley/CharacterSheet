@@ -48,39 +48,41 @@
         <div class="scores">
           <ul>
             {% for ability,score in character.abilityScores.items %}
-              {% with score.source|formatSource as source %}<li class="tooltip shiftedRight" data-tooltip='{{ source }}'>{% endwith %}
-              <div class="mod">
-                <div class="abilityName">{{ ability }}</div>
-                <div class="abilityMod">{{ character.abilityMod|get_item:ability }}</div>
-              </div>
-              <div class="abilityScore">
-                <div class="score">{{ score.value }}</div>
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </section>
-    <section class="attr-applications">
-      {% if character.config.edition == "5e" %}
-        <div class="inspiration">
-          <input name="inspiration" type="checkbox" />
-          <div class="labelBox">
-            <label for="inspiration">Inspiration</label>
-          </div>
+              {% with score.source|formatSource as source %}
+                <li class="tooltip shiftedRight" data-tooltip='{{ source }}'>
+                {% endwith %}
+                <div class="mod">
+                  <div class="abilityName">{{ ability }}</div>
+                  <div class="abilityMod">{{ character.abilityMod|get_item:ability }}</div>
+                </div>
+                <div class="abilityScore">
+                  <div class="score">{{ score.value }}</div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
         </div>
-        <div class="proficiencybonus">
-          <div class="value">+2</div>
-          <div class="labelBox">
-            <label>Proficiency Bonus</label>
+      </section>
+      <section class="attr-applications">
+        {% if character.config.edition == "5e" %}
+          <div class="inspiration">
+            <input name="inspiration" type="checkbox" />
+            <div class="labelBox">
+              <label for="inspiration">Inspiration</label>
+            </div>
           </div>
-        </div>
-      {% endif %}
-      <div class="saves list-section">
-        <ul>
-          <!-- SAVING THROWS -->
-          {% for save,value in character.saves.items %}
-            <li>
+          <div class="proficiencybonus">
+            <div class="value">+2</div>
+            <div class="labelBox">
+              <label>Proficiency Bonus</label>
+            </div>
+          </div>
+        {% endif %}
+        <div class="saves list-section">
+          <ul>
+            <!-- SAVING THROWS -->
+            {% for save,value in character.saves.items %}
+              {% with value.source|formatSource as source %}<li class="tooltip centered" data-tooltip='{{ source }}'>{% endwith %}
               <div class="saveName">{{ save }}</div>
               <div class="value">{{ value.value }}</div>
             </li>
@@ -91,7 +93,9 @@
       <div class="skills list-section">
         <!-- SKILL LIST -->
         {% for skill,value in character.skills.items %}
-          <div class="skill">
+          {% with value.source|formatSource as source %}
+            <div class="tooltip centered skill" data-tooltip='{{ source }}'>
+            {% endwith %}
             <div class="value">
               {{ value.value }}
             </div>
@@ -109,35 +113,43 @@
     <section class="combatPane">
       <section class="combat">
         <div class="combatHeader">
-          <div class="armorclass">
+          {% with character.combat.AC.source|formatSource as source %}
+            <div class="tooltip centered armorclass" data-tooltip='{{ source }}'>
+            {% endwith %}
             <div class="value">
-              {{ character.combat.AC }}
+              {{ character.combat.AC.value }}
             </div>
             <div class="key">
               Armor Class
             </div>
           </div>
           {% if character.config.edition == "Pathfinder" %}
-            <div class="CMD">
+            {% with character.combat.CMD.source|formatSource as source %}
+              <div class="tooltip centered CMD" data-tooltip='{{ source }}'>
+              {% endwith %}
               <div class="value">
-                {{ character.combat.AC }}
+                {{ character.combat.CMD.value }}
               </div>
               <div class="key">
                 CMD
               </div>
             </div>
           {% endif %}
-          <div class="initiative">
+          {% with character.combat.Initiative.source|formatSource as source %}
+            <div class="tooltip centered initiative" data-tooltip='{{ source }}'>
+            {% endwith %}
             <div class="value">
-              {{ character.combat.Initiative }}
+              {{ character.combat.Initiative.value }}
             </div>
             <div class="key">
               Initiative
             </div>
           </div>
-          <div class="speed">
+          {% with character.combat.Speed.source|formatSource as source %}
+            <div class="tooltip centered speed" data-tooltip='{{ source }}'>
+            {% endwith %}
             <div class="value">
-              {{ character.combat.Speed }}
+              {{ character.combat.Speed.value }}
             </div>
             <div class="key">
               Speed
@@ -606,9 +618,12 @@
             </div>
           {% endif %}
           {% if character.config.edition == "5e" %}
-            <div class="spellModifier spellHeaderItem">
+            {% with character.spells.spellAttack.source|formatSource as source %}
+              <div class="tooltip centered spellModifier spellHeaderItem"
+                   data-tooltip='{{ source }}'>
+              {% endwith %}
               <div class="value">
-                {{ character.spells.abilityMod }}
+                {{ character.spells.spellAttack.value }}
               </div>
               <div class="key">
                 Spell Modifier
@@ -619,10 +634,13 @@
           {% if character.config.edition == "Pathfinder" %}
             {% for key in character.spells.level %}
               {% if key == "Cantrip" %}{% endif %}
-              <div class="saveDC spellHeaderItem">
+              {% with character.spells.saveDC.source|formatSource as source %}
+                <div class="tooltip centered saveDC spellHeaderItem"
+                     data-tooltip='{{ source }}'>
+                {% endwith %}
                 {% if key == "Cantrip" %}
                   <div class="value">
-                    {{ character.spells.saveDC }}
+                    {{ character.spells.saveDC.value }}
                   </div>
                   <div class="key">
                     {{ key }}
@@ -631,7 +649,7 @@
                 </div>
               {% else %}
                 <div class="value">
-                  {{ character.spells.saveDC|add:key }}
+                  {{ character.spells.saveDC.value|add:key }}
                 </div>
                 <div class="key">
                   Level {{ key }}
@@ -642,9 +660,12 @@
           </div>
         {% endfor %}
       {% else %}
-        <div class="saveDC spellHeaderItem">
+        {% with character.spells.saveDC.source|formatSource as source %}
+          <div class="tooltip centered saveDC spellHeaderItem"
+               data-tooltip='{{ source }}'>
+          {% endwith %}
           <div class="value">
-            {{ character.spells.saveDC }}
+            {{ character.spells.saveDC.value }}
           </div>
           <div class="key">
             Save DC
@@ -800,49 +821,57 @@
         <h2>
           Personality Traits
         </h2>
-        {% with character.flavor.personalityTraits|split as lines %}
-          {% for line in lines %}
-            <p>
-              {{ line }}
-            </p>
-          {% endfor %}
-        {% endwith %}
+        <div class="flavorText">
+          {% with character.flavor.personalityTraits|split as lines %}
+            {% for line in lines %}
+              <p>
+                {{ line }}
+              </p>
+            {% endfor %}
+          {% endwith %}
+        </div>
       </div>
       <div class="ideals">
         <h2>
           Ideals
         </h2>
-        {% with character.flavor.ideals|split as lines %}
-          {% for line in lines %}
-            <p>
-              {{ line }}
-            </p>
-          {% endfor %}
-        {% endwith %}
+        <div class="flavorText">
+          {% with character.flavor.ideals|split as lines %}
+            {% for line in lines %}
+              <p>
+                {{ line }}
+              </p>
+            {% endfor %}
+          {% endwith %}
+        </div>
       </div>
       <div class="bonds">
         <h2>
           Bonds
         </h2>
-        {% with character.flavor.bonds|split as lines %}
-          {% for line in lines %}
-            <p>
-              {{ line }}
-            </p>
-          {% endfor %}
-        {% endwith %}
+        <div class="flavorText">
+          {% with character.flavor.bonds|split as lines %}
+            {% for line in lines %}
+              <p>
+                {{ line }}
+              </p>
+            {% endfor %}
+          {% endwith %}
+        </div>
       </div>
       <div class="flaws">
         <h2>
           Flaws
         </h2>
-        {% with character.flavor.flaws|split as lines %}
-          {% for line in lines %}
-            <p>
-              {{ line }}
-            </p>
-          {% endfor %}
-        {% endwith %}
+        <div class="flavorText">
+          {% with character.flavor.flaws|split as lines %}
+            {% for line in lines %}
+              <p>
+                {{ line }}
+              </p>
+            {% endfor %}
+          {% endwith %}
+        </div>
       </div>
     </div>
   </section>

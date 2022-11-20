@@ -22,7 +22,7 @@
 }
 
 .shiftedLeft::after, .shiftedLeft::before{
-    transform: translateX(-75%) translateY(var(--translate-y, 0)) scale(var(--scale));
+    transform: translateX(-85%) translateY(var(--translate-y, 0)) scale(var(--scale));
 }
 .tooltip::before{
     --translate-y: calc(-100% - var(--arrowSize));
@@ -222,8 +222,7 @@ section.attr-applications{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-width: 145;
-  max-width: 160px;
+  min-width: 160px;
 }
 div.inspiration, div.proficiencybonus{
   display: flex;
@@ -1099,3 +1098,7 @@ div.columnContainer > div > h2 {
   text-decoration: underline;
   align-self: center;
 }
+
+div.columnContainer > div > p {
+    background-color: blue;
+  }

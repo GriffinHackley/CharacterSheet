@@ -21,7 +21,11 @@ def formatSource(sources):
             first = False
             string = str(value) + "(" + source + ")"
         else:
-            string = " + " + str(value) + "(" + source + ")"
+            if value < 0:
+                value = str(value).split("-")[1]
+                string = " - " + value + "(" + source + ")"
+            else:
+                string = " + " + str(value) + "(" + source + ")"
         
         fullString += string
 
