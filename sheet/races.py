@@ -10,6 +10,8 @@ class Race():
     skillBonus       = []
     features         = []
     classSkills      = []
+    skills           = []
+    tools            = []
 
     def appendModifiers(self, modList:ModifierList):
         modList.addModifier(Modifier(2,"untyped", self.primaryAbility, self.name))
@@ -17,49 +19,45 @@ class Race():
             modList.addModifier(Modifier(1,"untyped", self.secondaryAbility, self.name))
 
     def addProficiencies(self, proficiencyList):
-        for proficiency in self.proficiencies:
+        #NOTE: skill proficiency is used in place of class skills
+        proficiencies = [{'skills': self.skills}, {'languages':self.languages}, {'tools': self.tools}]
+
+        for proficiency in proficiencies:
             for key,value in proficiency.items():
-                proficiencyList[key].append(value)
+                if not key in proficiencyList.keys():
+                    raise Exception("Key '" + key + "' found in proficiencies that does not exist")
+                
+                proficiencyList[key] = proficiencyList[key] + value
 
     def getConsumables(self, profBonus):
         return {}
     
-    def __init__(self, name, primaryAbility, secondaryAbility='None', size='M', speed=30, languages=[], features=[]):
-        self.name             = name
-        self.primaryAbility   = primaryAbility  
-        self.secondaryAbility = secondaryAbility
-        self.size             = size            
-        self.speed            = speed           
-        self.languages        = languages             
-        self.features         = features        
+    def __init__(self, options):
+        for option, value in options.items():
+            if hasattr(self, option):
+                setattr(self, option ,value)
+            else:
+                raise Exception("A race option was found in the config that does not exist. Option:" + option)
 
 class HalfOrc(Race):
-    def __init__(self, primaryAbility, secondaryAbility='None'):
-        self.classSkills = ["Stealth", "Perception"]
-        super().__init__(primaryAbility=primaryAbility, secondaryAbility=secondaryAbility, name="Half-Orc",  size='M', speed=30, languages=["Common", "Orc"], features=[{"darkvision":"Half-orcs can see in the dark up to 60 feet."}])
+    def __init__(self, options):
+        options['name'] = "Half-Orc"
+        options['size'] = 'M'
+        options['speed'] = 30 
+        options['languages'] = ["Common", "Orc"] + options['languages']
+        options['skills'] = ['Stealth', 'Perception']
+        
+        super().__init__(options)
 
     def appendModifiers(self, modList: ModifierList):
         modList.addModifier(Modifier(1,"luck", 'Fortitude', 'Sacred Tattoo'))
         modList.addModifier(Modifier(1,"luck", 'Reflex', 'Sacred Tattoo'))
         modList.addModifier(Modifier(1,"luck", 'Will', 'Sacred Tattoo'))
-
-        self.classSkills = ['Stealth', 'Perception']
         
         for mod in self.skillBonus:
             modList.addModifier(mod)
 
         return super().appendModifiers(modList)
-    
-    def addProficiencies(self, proficiencyList):
-        proficiencies = [{'languages':['Common', 'Orc', 'Draconic']}]
-
-        for proficiency in proficiencies:
-            for key,value in proficiency.items():
-                if key in proficiencyList.keys():
-                    proficiencyList[key] = value
-                else:
-                    proficiencyList[key] = proficiencyList[key] + value
-
 
     def getFeatures(self):
         ret = {}
@@ -102,24 +100,17 @@ class HalfOrc(Race):
         return ret
 
 class ShadarKai(Race):
-    def __init__(self, primaryAbility, secondaryAbility='None', size='M', speed=30, languages=[]):
-        super().__init__(primaryAbility=primaryAbility, secondaryAbility=secondaryAbility, name="ShadarKai", size=size, speed=speed, languages=["Common", languages], features=[{"darkvision":"See in the dark up to 60 feet."}])
-        self.proficiencies = []
+    def __init__(self, options):
+        options['name'] = "ShadarKai"
+        options['size'] = "M"
+        options['speed'] = 30
+        options['languages'] = options['languages'] + ["Common"]
+        options['skills'] = ["Perception"]
+        options['tools'] = ["tool1", "tool2"]
+        super().__init__(options)
 
     def appendModifiers(self, modList: ModifierList):
         return super().appendModifiers(modList)
-
-    def addProficiencies(self, proficiencyList):
-        proficiencies = [{'skills': ['Perception']}, {'languages':['Common', 'Elven']}, {'tools': ['test1','test2']}]
-
-        for proficiency in proficiencies:
-            for key,value in proficiency.items():
-                if key in proficiencyList.keys():
-                    proficiencyList[key] = value
-                else:
-                    proficiencyList[key] = proficiencyList[key] + value
-
-        super().addProficiencies(proficiencyList)
 
     def getFeatures(self):
         ret = {}
@@ -172,26 +163,17 @@ class ShadarKai(Race):
         return ret
 
 class Harengon(Race):
-    def __init__(self, primaryAbility, secondaryAbility='None', size='M', speed=30, languages=[]):
-        super().__init__(primaryAbility=primaryAbility, secondaryAbility=secondaryAbility, name="Harengon", size=size, speed=speed, languages=["Common", languages], features=[{"darkvision":"See in the dark up to 60 feet."}])
-        self.proficiencies = []
+    def __init__(self, options):
+        options['name'] = "Harengon"
+        options['speed'] = 30
+        options['skills'] = ["Perception"]
+        options['languages'] = options['languages'] + ["Common"]
+        super().__init__(options)
 
     def appendModifiers(self, modList: ModifierList):
         modList.addModifier(Modifier('Proficiency Bonus',"untyped", 'Initiative', 'Hare Trigger'))
         
         return super().appendModifiers(modList)
-
-    def addProficiencies(self, proficiencyList):
-        proficiencies = [{'skills': ['Perception']}, {'languages':['Common', 'Sylvan']}, {'tools': []}]
-
-        for proficiency in proficiencies:
-            for key,value in proficiency.items():
-                if key in proficiencyList.keys():
-                    proficiencyList[key] = value
-                else:
-                    proficiencyList[key] = proficiencyList[key] + value
-
-        super().addProficiencies(proficiencyList)
 
     def getConsumables(self, profBonus):
         ret = {}
@@ -240,6 +222,6 @@ class Harengon(Race):
         return ret
 
 races = {}
-races['Half-Orc'] = HalfOrc(primaryAbility="Dexterity", secondaryAbility="None")
-races['Shadar-Kai'] = ShadarKai(primaryAbility="Dexterity", secondaryAbility="Wisdom")
-races['Harengon'] = Harengon(primaryAbility="Dexterity", secondaryAbility="Intelligence", size="S")
+races['Half-Orc'] = HalfOrc
+races['Shadar-Kai'] = ShadarKai
+races['Harengon'] = Harengon

@@ -7,7 +7,7 @@ def apply(character):
     character.level = 3
     character.background = "Sage"
     character.feats = {}
-    character.race = "Harengon"
+    character.race = {"name":"Harengon", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"Intelligence", "languages":["Sylvan"]}}
     character.playerName = "Griffin"
     character.armor = {"name" : "Leather", "armorBonus" : 1, "ability":"Dex", "maxAbility": 20, "armorCheck" : 0, "spellFailure" : 0, "modifiers": []}
     character.weapon = [

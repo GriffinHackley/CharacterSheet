@@ -8,7 +8,7 @@ def apply(character):
     character.level = 4
     character.background = "In Their Footsteps"
     character.feats = {"Two-Weapon Fighting":"Level 1:", "Butterfly Sting":"Level 3", "Combat Reflexes":"Warpriest 3 Bonus Feat"}
-    character.race = "Half-Orc"
+    character.race = {"name":"Half-Orc", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"None", "languages":["Draconic"]}}
     character.playerName = "Griffin"
     character.traits = ["Fate's Favored", "Anatomist"]
     character.armor = {"name" : "Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []}

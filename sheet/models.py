@@ -160,8 +160,9 @@ class Character(models.Model):
         return ret
 
     def applyRace(self):
-        self.race = races[self.race]
+        self.race = races[self.race['name']](self.race['options'])
         self.race.appendModifiers(self.modList)
+        print(self.proficiencies)
         self.race.addProficiencies(self.proficiencies)
 
     def applyClass(self):
@@ -530,9 +531,9 @@ class Character(models.Model):
 class PathfinderCharacter(Character):
     def build(self):
         self.skillList = skill_list_pathfinder
-        self.proficiencies = {'armor': [], 'weapons':[], 'tools':[], 'languages':[]}       
-        self.classSkills = []
+        self.proficiencies = {'armor': [], 'weapons':[], 'tools':[], 'languages':[], 'skills':[]}       
         self.profBonus = 0
+        self.classSkills = []
 
         super().build()
 
@@ -765,9 +766,8 @@ class PathfinderCharacter(Character):
             return ret
 
     def applyRace(self):
-        race = races[self.race]
-        self.classSkills = self.classSkills + race.classSkills
-        return super().applyRace()
+        super().applyRace()
+        self.classSkills = self.classSkills + self.race.skills
 
     def applyClass(self):
         super().applyClass()
