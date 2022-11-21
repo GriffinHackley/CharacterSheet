@@ -162,7 +162,6 @@ class Character(models.Model):
     def applyRace(self):
         self.race = races[self.race['name']](self.race['options'])
         self.race.appendModifiers(self.modList)
-        print(self.proficiencies)
         self.race.addProficiencies(self.proficiencies)
 
     def applyClass(self):
@@ -750,7 +749,7 @@ class PathfinderCharacter(Character):
                         statBonus += 3
 
                 if skillRanksUsed > totalSkillRanks:
-                    print("Used too many skill ranks")
+                    raise Exception("You have used {} skill ranks when only {} are available".format(skillRanksUsed, totalSkillRanks))
 
                 source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
 
@@ -977,12 +976,12 @@ class FifthEditionCharacter(Character):
 
     def applyBackground(self):
         if self.background == "Spy":
-            self.proficiencies['skills'] = self.proficiencies['skills'] + ['Acrobatics', 'Sleight of Hand']
-            self.proficiencies['tools'] = self.proficiencies['tools'] + ['Thieves\' Tools']
+            self.proficiencies['skills'] += ['Acrobatics', 'Sleight of Hand']
+            self.proficiencies['tools'] += ['Thieves\' Tools']
 
         if self.background == "Sage":
-            self.proficiencies['skills'] = self.proficiencies['skills'] + ['Acrobatics', 'History']
-            self.proficiencies['languages'] = self.proficiencies['languages'] + ['Draconic', 'Elvish']
+            self.proficiencies['skills'] +=  ['Acrobatics', 'History']
+            self.proficiencies['languages'] +=  ['Draconic', 'Elvish']
 
     def getSpells(self):
         ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)
