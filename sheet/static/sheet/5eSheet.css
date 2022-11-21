@@ -302,7 +302,7 @@ div.saveName {
 div.skills{
   display: flex;
   flex-direction: column;
-  flex-grow: 3;
+  flex-grow: 4;
 }
 div.skill{
   display: flex;
