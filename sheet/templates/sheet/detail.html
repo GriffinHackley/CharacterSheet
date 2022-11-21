@@ -84,8 +84,8 @@
             {% for save,value in character.saves.items %}
               {% with value.source|formatSource as source %}
                 <li class="tooltip shiftedRight" data-tooltip='{{ source }}'>
-                {% endwith %}
-                <div class="saveName">{{ save }}</div>
+              {% endwith %}
+                <span class="saveName">{{ save }}</span>
                 <div class="value">{{ value.value }}</div>
               </li>
             {% endfor %}

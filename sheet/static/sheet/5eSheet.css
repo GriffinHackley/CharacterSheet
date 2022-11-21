@@ -222,7 +222,7 @@ section.attr-applications{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-width: 160px;
+  min-width: 155px;
 }
 div.inspiration, div.proficiencybonus{
   display: flex;
@@ -294,7 +294,7 @@ div.saves ul li {
 div.saves ul li > * {
   margin-left: 5px;
 }
-div.saveName {
+span.saveName {
   font-size: 14px;
   text-align: left;
   order: 3;

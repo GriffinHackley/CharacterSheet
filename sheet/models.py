@@ -756,6 +756,9 @@ class PathfinderCharacter(Character):
                 if "Knowledge" in key:
                     if not skillUsed:
                         continue
+                    key = key.split(" ")
+                    key = "Knowl. " + key[1]
+                    ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
                     
                 ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
 
