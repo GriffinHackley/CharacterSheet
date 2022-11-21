@@ -337,16 +337,16 @@ class Character(models.Model):
         toHit += self.abilityMod[attackStat]
         toHitSource[attackStat] = self.abilityMod[attackStat]
         
-        if weapon['bonus'] > 0:
-            toHit += weapon['bonus']
-            toHitSource['Enchant'] = weapon['bonus']
-        
         #Base Damage
         damageMod = 0
         damageMod += weapon['bonus']
         bonus, damageSource = self.modList.applyModifier('Damage')
         damageMod += bonus
 
+        if weapon['bonus'] > 0:
+            toHit += weapon['bonus']
+            toHitSource['Enchant'] = weapon['bonus']
+            damageSource['Enchant'] = weapon['bonus']
 
         #Add weapon die to damage die
         allDie, dieSource = self.modList.getDieModifier(weapon['tags'])
@@ -399,7 +399,7 @@ class Character(models.Model):
                 criticalDamage += allDie['value'][dieSize]*int(dieSize)
             elif self.config['critType'] == 'doubleDice':
                 criticalDamage += allDie['value'][dieSize]*((int(dieSize)/2)+.5)
-            if self.config['critType'] == 'doubleDice':
+            elif self.config['critType'] == 'doubleDice':
                 pass
             averageDamage += allDie['value'][dieSize]*((int(dieSize)/2)+.5)
         
@@ -427,7 +427,6 @@ class Character(models.Model):
 
         toHitSource = {k: v for k, v in sorted(toHitSource.items(), reverse=True, key=lambda item: item[1])}
         damageSource = {k: v for k, v in sorted(damageSource.items(), reverse=True, key=lambda item: item[1])}
-
         dieSource = dict(reversed(sorted(dieSource.items(), key=lambda x:x[1])))
 
         dieSource.update(damageSource)
@@ -626,9 +625,13 @@ class PathfinderCharacter(Character):
             #If not add the full ability mod
             damageStat = weapon['damageAbility']
             if 'Off-Hand' in weapon['tags']:
-                weaponRet['damageMod']['value'] += int(math.floor(self.abilityMod[damageStat]/2))
+                bonus = int(math.floor(self.abilityMod[damageStat]/2))
+                weaponRet['damageMod']['value'] +=  bonus
+                weaponRet['damageMod']['source']['1/2 Str.'] = bonus
             else:
                 weaponRet['damageMod']['value'] += self.abilityMod[damageStat]
+                weaponRet['damageMod']['source']['Str.'] = self.abilityMod[damageStat]
+
 
             weaponRet = super().calculateAttack(weaponRet, weapon, hitPenalty, damageBonus)
           

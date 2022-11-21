@@ -273,8 +273,9 @@ div.saves{
   flex-direction: column;
   margin-bottom: 5px;
   flex-grow: 1;
+  justify-content: space-evenly;
 }
- div.list-section {
+div.list-section {
   border: 1px solid black;
   border-radius: 10px;
   padding: 5px 5px;
@@ -301,7 +302,7 @@ div.saveName {
 div.skills{
   display: flex;
   flex-direction: column;
-  flex-grow: 2;
+  flex-grow: 3;
 }
 div.skill{
   display: flex;
@@ -1098,7 +1099,3 @@ div.columnContainer > div > h2 {
   text-decoration: underline;
   align-self: center;
 }
-
-div.columnContainer > div > p {
-    background-color: blue;
-  }
