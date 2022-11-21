@@ -15,11 +15,12 @@ class Race():
 
     def appendModifiers(self, modList:ModifierList):
         modList.addModifier(Modifier(2,"untyped", self.primaryAbility, self.name))
+        
         if not self.secondaryAbility == "None":
             modList.addModifier(Modifier(1,"untyped", self.secondaryAbility, self.name))
 
     def addProficiencies(self, proficiencyList):
-        #NOTE: skill proficiency is used in place of class skills
+        #NOTE: skill proficiency is used in place of class skills for pf characters
         proficiencies = [{'skills': self.skills}, {'languages':self.languages}, {'tools': self.tools}]
 
         for proficiency in proficiencies:
