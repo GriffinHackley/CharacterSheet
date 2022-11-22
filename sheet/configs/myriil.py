@@ -1,4 +1,7 @@
+id = 2
+
 def apply(character):
+    character.id = id
     character.config = {"edition":"5e", "critType":'maxDie',"castingType":"known"}
     character.name = "Myriil Taegen"
     character.baseStats = '8,17,14,10,15,8'

@@ -1,12 +1,9 @@
 import math
 import re
 
-from django.db import models
 from django.template.defaulttags import register
 
-from sheet.forms import (ACTypeForm, MyriilCombatForm, MyriilSpellForm,
-                         NailCombatForm, NailSkillForm, NailSpellForm,
-                         SacredWeaponForm, WarmundCombatForm, WarmundSpellForm)
+import sheet.forms as forms
 
 from .classes import classes
 from .lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
@@ -14,33 +11,9 @@ from .lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
 from .modifiers import Modifier, ModifierList
 from .races import races
 
-class Character(models.Model):  
-    baseStats = models.CharField(max_length=200)
-
-    name = models.CharField(max_length=200)
-    race = models.CharField(max_length=200)
-    feats = models.JSONField()
-    level = models.IntegerField()
-    traits = models.JSONField()
-    alignment = models.CharField(max_length=200)
-    charClass = models.CharField(max_length=200)
-    background = models.CharField(max_length=200)
-    playerName = models.CharField(max_length=200)
-
-    config = models.JSONField()
- 
-    armor = models.JSONField()
-    weapon = models.JSONField()
-    equipment = models.JSONField()
-    skillRanks = models.JSONField()
-
-    flavor = models.JSONField()
-    
-    @classmethod
+class Character():  
     def create(cls):
-        #Change the first number. Its the character id
-        character = cls(4, '', '', '', '', 1, '', '', '', '', '', '', '', '', '', '', '')
-        return character
+        pass
     
     @register.filter
     def get_item(dictionary, key):
@@ -75,7 +48,6 @@ class Character(models.Model):
 
         self.config = character.config
 
-        self.skillRanks = character.skillRanks
         self.weapon = character.weapon
         self.armor = character.armor
         self.equipment = character.equipment
@@ -540,6 +512,7 @@ class PathfinderCharacter(Character):
     
     def fromCharacter(self, character):
         self.traits = character.traits
+        self.skillRanks = character.skillRanks
         return super().fromCharacter(character)
 
     def getModifiers(self):
@@ -804,11 +777,11 @@ class PathfinderCharacter(Character):
         self.modList.addModifier(naturalArmor)
 
     def getForms(self, request):
-        combatForm       = NailCombatForm(request.GET)
-        spellForm        = NailSpellForm(request.GET)
-        acTypeForm       = ACTypeForm(request.GET)
-        skillForm        = NailSkillForm(request.GET)
-        sacredWeaponForm = SacredWeaponForm(request.GET)
+        combatForm       = forms.NailCombatForm(request.GET)
+        spellForm        = forms.NailSpellForm(request.GET)
+        acTypeForm       = forms.ACTypeForm(request.GET)
+        skillForm        = forms.NailSkillForm(request.GET)
+        sacredWeaponForm = forms.SacredWeaponForm(request.GET)
         
         toggles = {}
         if combatForm.is_valid():
@@ -1002,13 +975,14 @@ You have an excellent memory for maps and geography, and you can always recall t
         pass
 
     def getForms(self, request):
+        #TODO: Make this dynamic
         if self.name == "Myriil Taegen":
-            combatForm = MyriilCombatForm(request.GET)
-            spellForm  = MyriilSpellForm(request.GET)
+            combatForm = forms.MyriilCombatForm(request.GET)
+            spellForm  = forms.MyriilSpellForm(request.GET)
 
         if self.name == "Warmund":
-            combatForm = WarmundCombatForm(request.GET)
-            spellForm  = WarmundSpellForm(request.GET)
+            combatForm = forms.WarmundCombatForm(request.GET)
+            spellForm  = forms.WarmundSpellForm(request.GET)
 
         
         toggles = {}

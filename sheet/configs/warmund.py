@@ -1,4 +1,7 @@
+id = 3
+
 def apply(character):
+    character.id = id
     character.config = {"edition":"5e", "critType":'doubleDice',"castingType":"prepared"}
     character.name = "Warmund"
     character.baseStats = '11,16,14,15,12,11'

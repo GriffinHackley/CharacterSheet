@@ -1,4 +1,7 @@
+id = 1
+
 def apply(character):
+    character.id = id
     character.config = {"edition":"Pathfinder", "critType":'doubleAll', "castingType":"vancian"}
     character.edition = "Pathfinder"
     character.name = "Nail"
