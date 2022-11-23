@@ -6,7 +6,7 @@
 <script type = "text/javascript" src="{% static 'sheet/tabs.js' %}"></script>
 <script type = "text/javascript" src="{% static 'sheet/accent.js' %}"></script>
 <script>init("{{character.name}}")</script>
-<script>setColor("{{character.accentColor}}")</script>
+<script>setColor("{{character.accentColor.0}}", "{{character.accentColor.1}}")</script>
 <form action="" method="get">
   {% csrf_token %}
   <section class="pageContainer">

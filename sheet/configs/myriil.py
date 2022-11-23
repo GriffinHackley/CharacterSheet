@@ -34,7 +34,7 @@ def apply(character):
         "feet"     : {"name":""},
     }
 
-    character.accentColor = "grey"
+    character.accentColor = ["forestgreen", "black"]
 
     character.flavor = {
         "backstory":"""

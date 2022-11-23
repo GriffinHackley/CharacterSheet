@@ -44,7 +44,7 @@ def apply(character):
         'Survival'             : 1,
     }
 
-    character.accentColor = "skyblue"
+    character.accentColor = ["skyblue", "white"]
 
     character.flavor = {
         "backstory":"""

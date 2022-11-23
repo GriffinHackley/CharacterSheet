@@ -1,6 +1,3 @@
-/* :root {
-    --primary-accent: skyblue;
-} */
 .tooltip{
     position: relative;
 }
@@ -107,6 +104,7 @@ header section.charname {
   border-radius: 10px 0 0 10px;
   padding: 5px 0;
   background-color: var(--primary-accent);
+  color: var(--secondary-accent);
   width: 30%;
   display: flex;
   flex-direction: column-reverse;
@@ -525,12 +523,13 @@ section.attacksandspellcasting > div > table {
   width: 100%;
   flex-grow: 1;
 }
-/* Accent */
+section.attacksandspellcasting > div > table td{
+    color: var(--secondary-accent);
+  }
 section.attacksandspellcasting > div > table th {
   font-size: 10px;
   color: var(--primary-accent);
 }
-/* Accent */
 section.attacksandspellcasting > div > table div {
   width: calc(100% - 4px);
   border: 0;
@@ -769,6 +768,7 @@ active, button.collapsible:hover {
 }
 button.featureName {
   background-color: var(--primary-accent);
+  color: var(--secondary-accent);
   border-radius: 10px;
   text-align: left;
   width: 99%;

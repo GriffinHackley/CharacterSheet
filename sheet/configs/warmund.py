@@ -33,7 +33,7 @@ def apply(character):
         "feet"     : {"name":""},
     }
 
-    character.accentColor = "cornflowerblue"
+    character.accentColor = ["cornflowerblue", "yellow"]
 
     character.flavor = {
         "backstory":"""
