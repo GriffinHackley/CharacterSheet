@@ -12,7 +12,6 @@ def apply(character):
     character.feats = {}
     character.race = {"name":"Harengon", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"Intelligence", "languages":["Sylvan"]}}
     character.playerName = "Griffin"
-    character.armor = {"name" : "Leather", "armorBonus" : 1, "ability":"Dex", "maxAbility": 20, "armorCheck" : 0, "spellFailure" : 0, "modifiers": []}
     character.weapon = [
         {"name" : "Rapier"       , "bonus":0 , "damageDie" : "1d8",  "damageType": "P"      , "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Finesse"], 'tags':["Melee"]},
         {"name" : "Shadow Blade" , "bonus":0 , "damageDie" : "2d8",  "damageType": "Psychic", "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Finesse", "Light", "Thrown (20/60)"], 'tags':["Melee"]},

@@ -14,7 +14,6 @@ def apply(character):
     character.race = {"name":"Half-Orc", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"None", "languages":["Draconic"]}}
     character.playerName = "Griffin"
     character.traits = ["Fate's Favored", "Anatomist"]
-    character.armor = {"name" : "Chain Shirt", "armorBonus" : 4, "ability":"Dex", "maxAbility": 4, "armorCheck" : 2, "spellFailure" : 20, "modifiers": []}
     character.weapon = [
         {"displayName":"+1 Kukri", "name" : "Kukri", "bonus":1, "damageDie" : "1d4", "critRange":"18-20", "critDamage":2, "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Strength' ,'tags':['TWF','Main']},
         {"displayName":"Kukri", "name" : "Kukri", "bonus":0, "damageDie" : "1d4", "critRange":"18-20", "critDamage":2, "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Strength','tags':['TWF','Off-Hand'] },

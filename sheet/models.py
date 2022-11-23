@@ -49,7 +49,6 @@ class Character():
         self.config = character.config
 
         self.weapon = character.weapon
-        self.armor = character.armor
         self.equipment = character.equipment
 
         self.flavor = character.flavor
@@ -654,14 +653,14 @@ class PathfinderCharacter(Character):
         source['Base'] = 10
 
         if not self.toggles['acType'] == "Touch":
-            source['Armor'] = self.armor['armorBonus']
-            total += self.armor['armorBonus']
+            source['Armor'] = self.equipment['armor']['armorBonus']
+            total += self.equipment['armor']['armorBonus']
 
         if not self.toggles['acType'] == "Flat-Footed":
-            ability = self.convertEnum(self.armor['ability'])
-            if self.abilityMod[ability] > self.armor['maxAbility']:
-                source[ability + "*"] = self.armor['maxAbility']
-                total += self.armor['maxAbility']
+            ability = self.convertEnum(self.equipment['armor']['ability'])
+            if self.abilityMod[ability] > self.equipment['armor']['maxAbility']:
+                source[ability + "*"] = self.equipment['armor']['maxAbility']
+                total += self.equipment['armor']['maxAbility']
             else:
                 source[ability] = self.abilityMod[ability]
                 total += self.abilityMod[ability]
@@ -714,8 +713,8 @@ class PathfinderCharacter(Character):
                 source[ability] = self.abilityMod[ability]
 
                 if value['acp']:
-                    statBonus -= self.armor['armorCheck']
-                    source['ACP'] = -self.armor['armorCheck']
+                    statBonus -= self.equipment['armor']['armorCheck']
+                    source['ACP'] = -self.equipment['armor']['armorCheck']
 
                 skillUsed = False
                 if key in self.skillRanks:
@@ -906,13 +905,13 @@ class FifthEditionCharacter(Character):
 
         total += bonus
 
-        source['Armor'] = self.armor['armorBonus']
-        total += self.armor['armorBonus']
+        source['Armor'] = self.equipment['armor']['armorBonus']
+        total += self.equipment['armor']['armorBonus']
 
-        ability = self.convertEnum(self.armor['ability'])
-        if self.abilityMod[ability] > self.armor['maxAbility']:
-            source['Dex*'] = self.armor['maxAbility']
-            total += self.armor['maxAbility']
+        ability = self.convertEnum(self.equipment['armor']['ability'])
+        if self.abilityMod[ability] > self.equipment['armor']['maxAbility']:
+            source['Dex*'] = self.equipment['armor']['maxAbility']
+            total += self.equipment['armor']['maxAbility']
         else:
             source['Dex'] = self.abilityMod[ability]
             total += self.abilityMod[ability]

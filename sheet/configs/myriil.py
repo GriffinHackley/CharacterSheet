@@ -12,7 +12,6 @@ def apply(character):
     character.feats = {"Elven Accuracy":"Level 4:", "Sharpshooter":"Gloomstalker Bow"}
     character.race = {"name":"Shadar-Kai", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"Wisdom", "languages":["Elven"]}}
     character.playerName = "Griffin"
-    character.armor = {"name" : "Studded Leather", "armorBonus" : 2, "ability":"Dex", "maxAbility": 20, "armorCheck" : 0, "spellFailure" : 0, "modifiers": []}
     character.weapon = [
         {"name" : "Longbow"    , "bonus":0 , "damageDie" : "1d8",  "damageType": "P", "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Ammunition","Range(150/600)","Heavy","Two-Handed"] , 'tags':["Ranged"]},
         {"name" : "Shortsword" , "bonus":0 , "damageDie" : "1d6",  "damageType": "S", "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Finesse","Light"], 'tags':["Melee", "TWF", "Main"]},
