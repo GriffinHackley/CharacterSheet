@@ -7,9 +7,9 @@ def allClasses():
     module = getattr(module, "classes")
 
     ret = {}
-    for character in classes.__all__:
-        current = getattr(module, character)
-        ret[character] = current
+    for curr in classes.__all__:
+        current = getattr(module, curr)
+        ret[curr] = current
 
     return ret
 

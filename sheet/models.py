@@ -6,10 +6,10 @@ from django.template.defaulttags import register
 import sheet.forms as forms
 
 from .classes import classes
+from .races import races
 from .lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
                     skill_list_pathfinder)
 from .modifiers import Modifier, ModifierList
-from .races import races
 
 class Character():  
     def create(cls):
@@ -132,7 +132,10 @@ class Character():
         return ret
 
     def applyRace(self):
-        self.race = races[self.race['name']](self.race['options'])
+        allRaces = races.allRaces()
+        print(allRaces)
+        raceModule = allRaces[self.race['name']]
+        self.race = getattr(raceModule, self.race['name'].replace("-", ""))(self.race['options'])
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
 
