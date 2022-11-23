@@ -1,5 +1,6 @@
 .tooltip{
     position: relative;
+    z-index: 900;
 }
 .tooltip::after, .tooltip::before{
     --scale: 0;
@@ -10,6 +11,7 @@
     transition: 50ms transform;
     transform-origin: bottom center;
     left: 50%;
+    z-index: 900;
 }
 .shiftedRight::after, .shiftedRight::before{
     transform: translateX(-15%) translateY(var(--translate-y, 0)) scale(var(--scale));
@@ -32,6 +34,7 @@
     color: white;
     background: var(--primary-accent);
     width: max-content;
+    z-index: 900;
 }
 .tooltip:active::before, .tooltip:active::after{
     --scale: 1;
@@ -166,6 +169,7 @@ div.scores {
   background-color: var(--primary-accent);
   border-radius: 10px;
   flex-grow: 1;
+  z-index: 1;
 }
 div.attributeName {
   font-size: 8px;
@@ -177,7 +181,6 @@ div.scores ul {
   justify-content: space-around;
   align-items: center;
   height: 100%;
-  /* padding-bottom: 75px; */
 }
 div.scores ul li {
   height: 80px;
@@ -199,7 +202,6 @@ div.mod {
 div.abilityName {
   padding-top: 5px;
   font-size: small;
-  
 }
 div.abilityMod {
   font-size: 40px;
@@ -222,6 +224,7 @@ section.attr-applications{
   flex-direction: column;
   flex-grow: 1;
   min-width: 155px;
+  z-index: 2;
 }
 div.inspiration, div.proficiencybonus{
   display: flex;
@@ -355,7 +358,6 @@ section.combatPane{
   display: flex;
   flex-direction: column;
 }
-/* Accent */
 section.combat {
   background-color: var(--primary-accent);
   display: flex;
@@ -375,7 +377,7 @@ div.armorclass, div.CMD, div.initiative, div.speed {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+  z-index: 1;
   flex-grow: 1;
 }
 div.armorclass > div.key, div.CMD > div.key, div.initiative > div.key, div.speed > div.key {
