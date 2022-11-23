@@ -137,7 +137,9 @@ class Character():
         self.race.addProficiencies(self.proficiencies)
 
     def applyClass(self):
-        self.charClass = classes[self.charClass]
+        allClasses = classes.allClasses()
+        classModule = allClasses[self.charClass.lower()]
+        self.charClass = getattr(classModule, self.charClass)(self.level)
         self.charClass.appendModifiers(self.modList)
         self.charClass.addProficiencies(self.proficiencies)
         self.hitDie = self.charClass.hitDie
@@ -163,6 +165,7 @@ class Character():
                 self.modList.addModifier(Modifier(1, "untyped", 'Dexterity', 'Elven Accuracy'))
                 ret['Elven Accuracy'] = [
                     {"type": "normal", "text":"Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once."}]
+
             if key == "Sharpshooter":
                 ret['Sharpshooter'] = [
                     {"type": "normal", "text":"""

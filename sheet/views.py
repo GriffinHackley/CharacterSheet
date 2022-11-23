@@ -10,8 +10,6 @@ def index(request):
     character_list = []
     for name, value in config_list.items():
         character_list.append(value.apply(Character()))
-    
-    print(character_list)
 
     context = {
         'character_list': character_list,
