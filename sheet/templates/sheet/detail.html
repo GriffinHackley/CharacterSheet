@@ -84,7 +84,7 @@
             {% for save,value in character.saves.items %}
               {% with value.source|formatSource as source %}
                 <li class="tooltip shiftedRight" data-tooltip='{{ source }}'>
-              {% endwith %}
+                {% endwith %}
                 <span class="saveName">{{ save }}</span>
                 <div class="value">{{ value.value }}</div>
               </li>
@@ -204,6 +204,14 @@
                   Death Saves
                 </label>
               </div>
+              <div class="conditions">
+                <textarea id="conditions"
+                          onChange="storeItem('conditions', '{{ character.name }}')"/></textarea>
+                <label>
+                  Conditions
+                </label>
+                <script>getItem('conditions', '{{character.name}}')</script>
+              </div>
             </div>
             <div class="currentTotalHealth">
               <div class="current">
@@ -231,6 +239,14 @@
                 <label for="temphp">
                   Temporary Hit Points
                 </label>
+              </div>
+              <div class="resistances">
+                <textarea id="resistances"
+                          onChange="storeItem('resistances', '{{ character.name }}')"/></textarea>
+                <label>
+                  Resistances
+                </label>
+                <script>getItem('resistances', '{{character.name}}')</script>
               </div>
             </div>
           </div>
@@ -276,16 +292,14 @@
                     {% endif %}
                     <td>
                       {% with value.toHit.source|formatSource as source %}
-                      <div class="tooltip centered toHit"
-                             data-tooltip='{{ source }}'>
+                        <div class="tooltip centered toHit" data-tooltip='{{ source }}'>
                         {% endwith %}
                         +{{ value.toHit.value }}
                       </div>
                     </td>
                     <td>
                       {% with value.damage.source|formatSource as source %}
-                      <div class="tooltip centered damage"
-                             data-tooltip='{{ source }}'>
+                        <div class="tooltip centered damage" data-tooltip='{{ source }}'>
                         {% endwith %}
                         {{ value.damage.value }}
                       </div>
