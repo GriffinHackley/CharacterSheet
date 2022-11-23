@@ -53,6 +53,8 @@ class Character():
 
         self.flavor = character.flavor
 
+        self.accentColor = character.accentColor
+
         self.fullChar = character
 
         return self
@@ -132,7 +134,6 @@ class Character():
 
     def applyRace(self):
         allRaces = races.allRaces()
-        print(allRaces)
         raceModule = allRaces[self.race['name']]
         self.race = getattr(raceModule, self.race['name'].replace("-", ""))(self.race['options'])
         self.race.appendModifiers(self.modList)

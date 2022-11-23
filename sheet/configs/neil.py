@@ -44,6 +44,8 @@ def apply(character):
         'Survival'             : 1,
     }
 
+    character.accentColor = "skyblue"
+
     character.flavor = {
         "backstory":"""
             Neil's grandfather was an adventurer. When his grandfather cam e back from his escapades, he would regale Neil and his brother Tamir with the stories. His grandfather found many treasures throughout his years and passed a few along to his grandsons. He gifted Neil a sacred knife of the goddess Sheredin. Legend had it that the knife would protect the wielder and guide them to true freedom. 

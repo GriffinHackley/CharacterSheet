@@ -33,6 +33,8 @@ def apply(character):
         "feet"     : {"name":""},
     }
 
+    character.accentColor = "cornflowerblue"
+
     character.flavor = {
         "backstory":"""
             When Warmund was young, he was bullied for being different. No one in his small town, Yrossa, had ever met a Harengon before. After years of being picked on, he developed a power complex, he wanted power so that no one would ever be able to look down on him again. He began studying magic as a means to obtain more power.

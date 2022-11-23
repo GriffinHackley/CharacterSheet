@@ -36,6 +36,8 @@ def detail(request, character_id):
     
         character.build()
 
+        print(character.accentColor)
+
         return render(request, 'sheet/detail.html', {'character': character, 'skill_list': character.skillList, 'forms':forms })
     
     raise Exception("Character with id {} was not found".format(character_id))

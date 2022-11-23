@@ -34,6 +34,8 @@ def apply(character):
         "feet"     : {"name":""},
     }
 
+    character.accentColor = "grey"
+
     character.flavor = {
         "backstory":"""
             A 527-year-old shadar kai sent by the Raven Queen to stop Strahd and his abominations. When he was sent on this mission he was given a weapon from the Raven Queen

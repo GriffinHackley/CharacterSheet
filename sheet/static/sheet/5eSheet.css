@@ -1,11 +1,12 @@
-/* Accent */
+/* :root {
+    --primary-accent: skyblue;
+} */
 .tooltip{
     position: relative;
 }
 .tooltip::after, .tooltip::before{
     --scale: 0;
     --arrowSize: 10px;
-    --accentColor: lightblue;
     
     position: absolute;
     top: -.25rem;
@@ -32,7 +33,7 @@
     text-align: center;
     padding: .5rem;
     color: white;
-    background: var(--accentColor);
+    background: var(--primary-accent);
     width: max-content;
 }
 .tooltip:active::before, .tooltip:active::after{
@@ -44,7 +45,7 @@
     content:'';
     border: var(--arrowSize) solid transparent;
     transform-origin: top center;
-    border-top-color: var(--accentColor);
+    border-top-color: var(--primary-accent);
 }
 section.pageContainer{
   display: flex;
@@ -105,7 +106,7 @@ header section.charname {
   border-right: 0;
   border-radius: 10px 0 0 10px;
   padding: 5px 0;
-  background-color: lightblue;
+  background-color: var(--primary-accent);
   width: 30%;
   display: flex;
   flex-direction: column-reverse;
@@ -143,7 +144,7 @@ header section.misc ul li div {
 /* Accent */
 header section.misc ul li div.value {
   border: 0;
-  border-bottom: 1px solid lightblue;
+  border-bottom: 1px solid var(--primary-accent);
 }
 main {
   display: flex;
@@ -164,7 +165,7 @@ section.attributes {
 }
 /* Accent */
 div.scores {
-  background-color: lightblue;
+  background-color: var(--primary-accent);
   border-radius: 10px;
   flex-grow: 1;
 }
@@ -319,7 +320,7 @@ div.skillText {
 }
 /* Accent */
 span.skillAbility {
-  color: lightblue; 
+  color: var(--primary-accent); 
 }
 div.list-section div.value {
   width: 30px;
@@ -358,7 +359,7 @@ section.combatPane{
 }
 /* Accent */
 section.combat {
-  background-color: lightblue;
+  background-color: var(--primary-accent);
   display: flex;
   border-radius: 10px;
   flex-direction: column;
@@ -435,7 +436,7 @@ div.maxHP, div.totalHD {
 /* Accent */
 div.maxHP div.key, div.totalHD div.key {
   font-size: 10px;
-  color: lightblue;
+  color: var(--primary-accent);
   margin: 0.25em;
   text-transform: none;
 }
@@ -444,7 +445,7 @@ div.maxHP div.value, div.totalHD div.value {
   font-size: 12px;
   flex-grow: 1;
   border: 0;
-  border-bottom: 1px solid lightblue;
+  border-bottom: 1px solid var(--primary-accent);
   margin-right: 0.25em;
   padding: 0 0.25em;
   text-align: center;
@@ -527,13 +528,13 @@ section.attacksandspellcasting > div > table {
 /* Accent */
 section.attacksandspellcasting > div > table th {
   font-size: 10px;
-  color: lightblue;
+  color: var(--primary-accent);
 }
 /* Accent */
 section.attacksandspellcasting > div > table div {
   width: calc(100% - 4px);
   border: 0;
-  background-color: lightblue;
+  background-color: var(--primary-accent);
   font-size: 10px;
   padding: 3px;
 }
@@ -574,7 +575,7 @@ section.consumables > div > div.total {
 /* Accent */
 section.consumables > div > div.total div.key {
   font-size: 10px;
-  color: lightblue;
+  color: var(--primary-accent);
   margin: 0.25em;
   text-transform: none;
 }
@@ -583,7 +584,7 @@ section.consumables > div > div.total > div.value {
   font-size: 15px;
   flex-grow: 1;
   border: 0;
-  border-bottom: 1px solid lightblue;
+  border-bottom: 1px solid var(--primary-accent);
   margin-right: 0.25em;
   padding: 0 0.25em;
   text-align: center;
@@ -767,7 +768,7 @@ active, button.collapsible:hover {
   background-color: #ccc;
 }
 button.featureName {
-  background-color: lightblue;
+  background-color: var(--primary-accent);
   border-radius: 10px;
   text-align: left;
   width: 99%;
