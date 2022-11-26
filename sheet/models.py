@@ -141,8 +141,8 @@ class Character():
 
     def applyClass(self):
         allClasses = classes.allClasses()
-        classModule = allClasses[self.charClass.lower()]
-        self.charClass = getattr(classModule, self.charClass)(self.level)
+        classModule = allClasses[self.charClass['name'].lower()]
+        self.charClass = getattr(classModule, self.charClass['name'])(self.level, self.charClass['options'])
         self.charClass.appendModifiers(self.modList)
         self.charClass.addProficiencies(self.proficiencies)
         self.hitDie = self.charClass.hitDie

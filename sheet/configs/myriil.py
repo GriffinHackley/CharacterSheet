@@ -6,7 +6,7 @@ def apply(character):
     character.name = "Myriil Taegen"
     character.baseStats = '8,17,14,10,15,8'
     character.alignment = "Lawful Neutral"
-    character.charClass = "Ranger"
+    character.charClass = {"name":"Ranger", "options":{"Ranger Conclave":"subclass:Gloom Stalker", "Fighting Style":"Archery", "Favored Enemy":"replaced", "Natural Explorer":"replaced", "Primeval Awareness":"replaced", "Deft Explorer (Optional)":"used", "Favored Foe (Optional)":"used", "Primal Awareness (Optional)":"used", "Martial Versatility (Optional)":"used"}}
     character.level = 4
     character.background = "Spy"
     character.feats = {"Elven Accuracy":"Level 4:", "Sharpshooter":"Gloomstalker Bow"}

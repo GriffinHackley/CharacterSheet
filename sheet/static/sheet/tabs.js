@@ -1,18 +1,20 @@
-function setupTabs(name) {
+function setupTabs(name, logging) {
   //add event listener to switch tabs
-  document.querySelectorAll(".tabButton").forEach((button) => {
+  document.querySelectorAll(".tabButton").forEach(button => {
     const sidebar = button.parentElement;
     const tabsContainer = sidebar.parentElement;
 
     prefixes = ["main-", "feature-"];
 
-    prefixes.forEach((prefix) => {
+    prefixes.forEach(prefix => {
       activeButton = localStorage.getItem(name + prefix + "activeButton");
 
       //Set initial active tabs
       if (activeButton == button.id) {
-        console.log("Activating button from localstorage to " + activeButton);
-        activateTab(name, prefix);
+        if (logging) {
+          console.log("Activating button from localstorage to " + activeButton);
+        }
+        activateTab(name, prefix, logging);
       }
     });
 
@@ -20,30 +22,34 @@ function setupTabs(name) {
       console.log("Clicked");
       prefix = button.dataset.forTab.split("-")[0];
       prefix = prefix + "-";
-      sidebar.querySelectorAll(".tabButton").forEach((button) => {
+      sidebar.querySelectorAll(".tabButton").forEach(button => {
         button.classList.remove("tabButton--active");
       });
 
-      tabsContainer.querySelectorAll(".tabContent").forEach((tab) => {
+      tabsContainer.querySelectorAll(".tabContent").forEach(tab => {
         tab.classList.remove("tabContent--active");
       });
 
       storeKey = name + prefix + "activeButton";
-      console.log("Storing " + storeKey + " as " + button.id);
       localStorage.setItem(storeKey, button.id);
+      if (logging) {
+        console.log("Storing " + storeKey + " as " + button.id);
+      }
 
-      console.log("Activating buttons");
-      activateTabs(name);
+      if (logging) {
+        console.log("Activating buttons");
+      }
+      activateTabs(name, logging);
     });
   });
 }
 
-function activateTabs(name) {
-  activateTab(name, "main-");
-  activateTab(name, "feature-");
+function activateTabs(name, logging) {
+  activateTab(name, "main-", logging);
+  activateTab(name, "feature-", logging);
 }
 
-function activateTab(name, prefix) {
+function activateTab(name, prefix, logging) {
   activeButton = localStorage.getItem(name + prefix + "activeButton");
   button = document.getElementById(activeButton);
   const sidebar = button.parentElement;
@@ -53,14 +59,18 @@ function activateTab(name, prefix) {
   let queryString = '.tabContent[data-tab="' + tabName + '"]';
   const tabToActivate = tabsContainer.querySelector(queryString);
 
-  console.log("Activating button: " + button.id);
+  if (logging) {
+    console.log("Activating button: " + button.id);
+  }
+
   button.classList.add("tabButton--active");
   tabToActivate.classList.add("tabContent--active");
 }
 
 function init(name) {
+  logging = false;
   name = name + "-";
   document.addEventListener("DOMContentLoaded", () => {
-    setupTabs(name);
+    setupTabs(name, logging);
   });
 }

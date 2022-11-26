@@ -6,7 +6,7 @@ def apply(character):
     character.name = "Warmund"
     character.baseStats = '11,16,14,15,12,11'
     character.alignment = "Lawful Neutral"
-    character.charClass = "Wizard"
+    character.charClass = {"name":"Wizard", "options":{"Arcane Tradition":"subclass:Bladesinging", "Cantrip Formulas (Optional)":"used"}}
     character.level = 3
     character.background = "Sage"
     character.feats = {}

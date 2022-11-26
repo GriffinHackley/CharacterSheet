@@ -5,6 +5,7 @@
 <script type = "text/javascript" src="{% static 'sheet/localState.js' %}"></script>
 <script type = "text/javascript" src="{% static 'sheet/tabs.js' %}"></script>
 <script type = "text/javascript" src="{% static 'sheet/accent.js' %}"></script>
+<script type = "text/javascript" src="{% static 'sheet/injectTable.js' %}"></script>
 <script>init("{{character.name}}")</script>
 <script>setColor("{{character.accentColor.0}}", "{{character.accentColor.1}}")</script>
 <form action="" method="get">
@@ -444,6 +445,13 @@
                         <h4>
                           {{ line.text }}
                         </h4>
+                      {% elif line.type == "table" %}
+                        {% with feature|kebab as kebabFeature %}
+                        {% with line|formatTableJS as formatted %}
+                          <div id="{{ kebabFeature }}"></div>
+                          <script>inject("{{ kebabFeature }}", "{{ formatted }}")</script>
+                        {% endwith %}
+                        {% endwith %}
                       {% endif %}
                     {% endfor %}
                   </div>

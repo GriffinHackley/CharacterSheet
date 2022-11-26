@@ -1,4 +1,6 @@
 function storeItem(key, name) {
+  // Change to true to enable logging
+  logging = false;
   storageKey = name + "-" + key;
   element = document.getElementById(key);
   value = null;
@@ -7,15 +9,23 @@ function storeItem(key, name) {
   } else {
     value = element.value;
   }
-  console.log("Storing " + storageKey + " as " + value);
+  if (logging) {
+    console.log("Storing " + storageKey + " as " + value);
+  }
   localStorage.setItem(storageKey, value);
 }
 
 function getItem(key, name) {
+  // Change to true to enable logging
+  logging = false;
+
   storageKey = name + "-" + key;
   element = document.getElementById(key);
   value = localStorage.getItem(storageKey);
-  console.log("Getting " + storageKey + " as " + value);
+
+  if (logging) {
+    console.log("Getting " + storageKey + " as " + value);
+  }
 
   if (element.type == "checkbox") {
     if (value == "false") {

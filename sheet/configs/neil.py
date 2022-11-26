@@ -3,7 +3,6 @@ id = 1
 def apply(character):
     character.id = id
     character.config = {"edition":"Pathfinder", "critType":'doubleAll', "castingType":"vancian"}
-    character.edition = "Pathfinder"
     character.name = "Nail"
     character.baseStats = '14,16,14,12,16,8'
     character.alignment = "Chaotic Neutral"

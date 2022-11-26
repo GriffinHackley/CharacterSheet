@@ -9,6 +9,17 @@ def split(value):
     """
     return value.splitlines()
 
+@register.filter
+def kebab(value):
+    return value.replace(" ","-")
+    
+@register.filter
+def formatTableJS(text):
+    text = repr(str(text['text']))
+    text = text.replace("\\n", "\\")
+    
+    return text
+
 @register.filter(name='formatSource')
 def formatSource(sources):
     """
