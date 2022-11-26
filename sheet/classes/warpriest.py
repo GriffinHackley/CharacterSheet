@@ -9,7 +9,8 @@ class Warpriest(Class):
     classSkills   = ['Climb', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal', 'Intimidate', 'Knowledge (Engineering)', 
                      'Knowledge (Religion)', 'Profession', 'Ride', 'Sense Motive', 'Spellcraft', 'Survival', 'Swim']
 
-    def __init__(self, level):
+    def __init__(self, level, options):
+        self.options = options
         super().__init__(level, 'Warpriest', hitDie='8', edition="Pathfinder", bab="3/4", fort="good", refl="poor", will="good")
         self.sacredWeapon = self.getSacredWeapon()
     

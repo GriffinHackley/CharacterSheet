@@ -6,7 +6,7 @@ def apply(character):
     character.name = "Nail"
     character.baseStats = '14,16,14,12,16,8'
     character.alignment = "Chaotic Neutral"
-    character.charClass = "Warpriest"
+    character.charClass = {"name":"Warpriest", "options":{}}
     character.level = 4
     character.background = "In Their Footsteps"
     character.feats = {"Two-Weapon Fighting":"Level 1:", "Butterfly Sting":"Level 3", "Combat Reflexes":"Warpriest 3 Bonus Feat"}
