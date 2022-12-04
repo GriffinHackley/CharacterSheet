@@ -172,7 +172,6 @@ class Class():
 
         return features
 
-
     def scrapeFeature(self, current, featureText, featureName):
         # Loop through html elements until you hit the next feature heading
         while not current.findNext().name == "h3":
