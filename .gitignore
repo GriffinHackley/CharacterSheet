@@ -5,3 +5,5 @@ __pycache__/
 
 migrations/
 .vscode/
+
+sheet_venv/
