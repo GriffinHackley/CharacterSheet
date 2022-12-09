@@ -122,7 +122,7 @@ header section.charname {
   top: 0;
   margin: auto;
   text-align: center;
-  font-size: large;
+  font-size: 1rem;
 }
 header section.charname div {
   padding: 0.5em;
@@ -134,12 +134,13 @@ header section.misc {
   border: 1px solid black;
   border-radius: 10px;
   padding-left: 1em;
-  padding-right: 1em;
+  padding-right:.81em;
 }
 header section.misc ul {
   padding: 10px 0px 5px 0px;
   display: flex;
   flex-wrap: wrap;
+font-size: .9rem;
 }
 header section.misc ul li {
   width: 33.33333%;
@@ -157,7 +158,6 @@ main {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
-  height: 38%;
 }
 main > section {
   margin-right: 5px;
@@ -165,8 +165,6 @@ main > section {
 section.attributes {
   display: flex;
   flex-direction: row;
-  min-width: 75px;
-  max-width: 125px;
 }
 div.scores {
   background-color: var(--primary-accent);
@@ -175,8 +173,10 @@ div.scores {
   z-index: 1;
 }
 div.attributeName {
-  font-size: 8px;
+  font-size: 2rem;
   font-weight: bold;
+/*TODO:does this do anything*/
+background-color: blue;
 }
 div.scores ul {
   display: flex;
@@ -184,10 +184,12 @@ div.scores ul {
   justify-content: space-around;
   align-items: center;
   height: 100%;
+padding-left:5px;
+padding-right:5px;
 }
 div.scores ul li {
   height: 80px;
-  width: 90%;
+  width: 100%;
   background-color: white;
   border: 1px solid black;
   text-align: center;
@@ -204,10 +206,12 @@ div.mod {
 }
 div.abilityName {
   padding-top: 5px;
-  font-size: small;
+  font-size: .9rem;
+width:100%;
+
 }
 div.abilityMod {
-  font-size: 40px;
+  font-size: 2rem;
   background: white;
 }
 div.abilityScore {
@@ -225,7 +229,7 @@ div.abilityScore div.score {
 section.attr-applications {
   display: flex;
   flex-direction: column;
-  min-width: 195px;
+  
   z-index: 2;
 }
 div.inspiration,
@@ -251,7 +255,7 @@ div.labelBox {
 }
 div.inspiration div label,
 div.proficiencybonus div label {
-  font-size: 10px;
+  font-size: .6rem;
 }
 div.inspiration input {
   -ms-box-sizing: content-box;
@@ -302,7 +306,7 @@ div.saves ul li > * {
   margin-left: 5px;
 }
 span.saveName {
-  font-size: 14px;
+  font-size: .9rem;
   text-align: left;
   order: 3;
 }
@@ -310,6 +314,10 @@ div.skills {
   display: flex;
   flex-direction: column;
   flex-grow: 4;
+}
+div.skillSeparator{
+font-size:1rem;
+text-decoration:underline;
 }
 div.skill {
   display: flex;
@@ -321,8 +329,10 @@ div.skillText {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  font-size: 12px;
+  font-size: .7rem;
   flex-grow: 1;
+overflow: hidden;
+white-space: nowrap;
 }
 
 span.skillAbility {
@@ -427,7 +437,8 @@ div.resistances {
   justify-content: space-between;
 
   /* So deathsaves dont overflow */
-  min-width: 140px;
+overflow: hidden;
+white-space: nowrap;
 }
 div.currentTotalHealth,
 div.otherHP {
@@ -505,7 +516,7 @@ div.deathfails {
 }
 div.deathsuccesses label,
 div.deathfails label {
-  font-size: 12px;
+  font-size: .8 rem;
   text-align: right;
   width: 50%;
   margin-left: 5px;

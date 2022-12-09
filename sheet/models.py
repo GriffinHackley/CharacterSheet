@@ -695,6 +695,8 @@ class PathfinderCharacter(Character):
 
     def calculateSkills(self):
             ret = {}
+            ret["Main"] = {}
+            ret["Knowledge"] = {}
             list = skill_list_pathfinder
 
             totalSkillRanks = (self.skillPerLevel+self.abilityMod['Intelligence'])*self.level
@@ -736,10 +738,12 @@ class PathfinderCharacter(Character):
                     if not skillUsed:
                         continue
                     key = key.split(" ")
-                    key = "Knowl. " + key[1]
-                    ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
-                    
-                ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
+                    key = key[1]
+                    key = key.replace("(", "")
+                    key = key.replace(")", "")
+                    ret["Knowledge"][key] = {'ability':ability, 'value':statBonus, 'source':source}
+                else: 
+                    ret["Main"][key] = {'ability':ability, 'value':statBonus, 'source':source}
 
             return ret
 
@@ -926,6 +930,7 @@ class FifthEditionCharacter(Character):
 
     def calculateSkills(self):
         ret = {}
+        ret["Main"] = {}
         list = skill_list_5e
 
         for key, value in list.items():
@@ -945,7 +950,7 @@ class FifthEditionCharacter(Character):
                     source['Prof.'] = self.profBonus
                     statBonus += self.profBonus
 
-            ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
+            ret["Main"][key] = {'ability':ability, 'value':statBonus, 'source':source}
         
         return ret
     

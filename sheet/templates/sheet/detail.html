@@ -97,7 +97,10 @@
         </div>
         <div class="skills list-section">
           <!-- SKILL LIST -->
-          {% for skill,value in character.skills.items %}
+		{% for section in character.skills %}
+{% with character.skills|get_item:section as type %}
+		<div class="skillSeparator">{{section}}</div>
+          {% for skill,value in type.items %}
             {% with value.source|formatSource as source %}
               <div class="tooltip centered skill" data-tooltip='{{ source }}'>
               {% endwith %}
@@ -110,6 +113,8 @@
               </div>
             </div>
           {% endfor %}
+{% endwith %}
+		{% endfor %}
           <div class="label">
             Skills
           </div>
