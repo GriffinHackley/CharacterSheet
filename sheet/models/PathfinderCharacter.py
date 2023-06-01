@@ -6,6 +6,7 @@ from django.template.defaulttags import register
 import sheet.forms as forms
 from sheet.models.Characters import Character
 
+from ..misc.feats import pathfinderFeats
 from ..classes import classes
 from ..races import races
 from ..lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
@@ -27,6 +28,9 @@ class PathfinderCharacter(Character):
         self.traits = character.traits
         self.skillRanks = character.skillRanks
         return super().fromCharacter(character)
+    
+    def applyFeats(self):
+        return super().applyFeats(pathfinderFeats)
 
     def getModifiers(self):
         super().getModifiers()

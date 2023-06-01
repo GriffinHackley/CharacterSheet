@@ -90,7 +90,7 @@ class EzekielCombatForm(forms.Form):
         self.label_suffix = ""
 
     advantage = forms.BooleanField(label='Advantage', required=False)
-    bladesong = forms.BooleanField(label='Bladesong', required=False)
+    sneakAttack = forms.BooleanField(label='Sneak Attack', required=False)
     critical = forms.BooleanField(label='Critical', required=False)
 
 class EzekielSpellForm(forms.Form):

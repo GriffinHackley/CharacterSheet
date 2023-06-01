@@ -3,6 +3,7 @@ import math
 from django.template.defaulttags import register
 
 from ..classes import classes
+from ..misc.feats import fifthEditionFeats, pathfinderFeats
 from ..races import races
 from ..lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
                     skill_list_pathfinder)
@@ -136,6 +137,7 @@ class Character():
         self.race = getattr(raceModule, self.race['name'].replace("-", "").replace(" ", ""))(self.race['options'])
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
+        self.feats.update(self.race.getFeat())
     
     def applyClass(self):
         allClasses = classes.allClasses()
@@ -157,47 +159,12 @@ class Character():
             self.modList.addModifier(Modifier(10, "untyped", 'Speed', 'Bladesong'))
             pass
 
-    def applyFeats(self):
+    def applyFeats(self, featList):
         ret = {}
 
         # TODO: ADD source back
-        for key, source in self.feats.items():
-            if key == "Elven Accuracy":
-                self.modList.addModifier(Modifier(1, "untyped", 'Dexterity', 'Elven Accuracy'))
-                ret['Elven Accuracy'] = [
-                    {"type": "normal", "text":"Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once."}]
-
-            if key == "Sharpshooter":
-                ret['Sharpshooter'] = [
-                    {"type": "normal", "text":"""
-                    Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.
-
-                    Your ranged weapon attacks ignore half and three-quarters cover.
-
-                    Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.
-                    """}]
-
-            if key == "Two-Weapon Fighting":
-                ret['Two-Weapon Fighting'] = [
-                    {"type": "heading", "text":"Benefit:"},
-                    {"type": "normal", "text":"Your penalties on attack rolls for fighting with two weapons are reduced. The penalty for your primary hand lessens by 2 and the one for your off hand lessens by 6."},
-
-                    {"type": "heading", "text":"Normal:"},
-                    {"type": "normal", "text":"If you wield a second weapon in your off hand, you can get one extra attack per round with that weapon. When fighting in this way you suffer a –6 penalty with your regular attack or attacks with your primary hand and a –10 penalty to the attack with your off hand. If your off-hand weapon is light, the penalties are reduced by 2 each. An unarmed strike is always considered light."},
-                ]
-
-            if key == "Butterfly Sting":
-                ret['Butterfly Sting'] = [
-                    {"type": "normal", "text":"When you confirm a critical hit against a creature, you can choose to forgo the effect of the critical hit and grant a critical hit to the next ally who hits the creature with a melee attack before the start of your next turn. Your attack only deals normal damage, and the next ally automatically confirms the hit as a critical."},]
-
-            if key == "Combat Reflexes":
-                ret['Combat Reflexes'] = [
-                    {"type": "heading", "text":"Benefit:"},
-                    {"type": "normal", "text":"You may make a number of additional attacks of opportunity per round equal to your Dexterity bonus. With this feat, you may also make attacks of opportunity while flat-footed."},
-
-                    {"type": "heading", "text":"Normal"},
-                    {"type": "normal", "text":"A character without this feat can make only one attack of opportunity per round and can’t make attacks of opportunity while flat-footed."},
-                ]
+        for name, source in self.feats.items():
+            ret[name] = featList[name](self)
 
         self.feats = ret
 

@@ -6,6 +6,7 @@ from django.template.defaulttags import register
 import sheet.forms as forms
 from sheet.models.Characters import Character
 
+from ..misc.feats import fifthEditionFeats
 from ..classes import classes
 from ..races import races
 from ..lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
@@ -165,6 +166,9 @@ class FifthEditionCharacter(Character):
         if self.background == "Sage":
             self.proficiencies['skills'] +=  ['Acrobatics', 'History']
             self.proficiencies['languages'] +=  ['Draconic', 'Elvish']
+    
+    def applyFeats(self):
+        return super().applyFeats(fifthEditionFeats)
 
     def getSpells(self):
         ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)
@@ -173,7 +177,7 @@ class FifthEditionCharacter(Character):
     def getMiscFeatures(self):
         ret = {}
 
-        from ..backgrounds import backgrounds
+        from ..misc.backgrounds import backgrounds
 
         ret[self.background['feature']] = backgrounds[self.background['feature']]
 
