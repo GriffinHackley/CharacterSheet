@@ -6,7 +6,7 @@ class CustomLineage(Race):
         options['name'] = "Custom Lineage"
         options['size'] = options['size']
         options['speed'] = 30
-        options['languages'] = ["Common"]
+        options['languages'] = ["sylvan", "draconic"]
         super().__init__(options)
 
     def appendModifiers(self, modList: ModifierList):
@@ -14,10 +14,18 @@ class CustomLineage(Race):
 
     def getFeatures(self):
         creatureType = "You are a humanoid. You have the appearance of an Emerald Dragonborn."
-        ret = super().getFeatures(creatureType=creatureType)
 
-        ret['Languages'] = [
-            {"type": "normal", "text":"You can speak, read, and write Common and ___IDK___"}
+        darkvision = False
+        if self.misc['variable trait'] == 'darkvision':
+            darkvision = True
+        elif 'proficiency' in self.misc['variable trait']:
+            skill = self.misc['variable trait'].replace("proficiency(","").replace(")","")
+            self.skills = self.skills + [skill]
+
+        ret = super().getFeatures(creatureType=creatureType, darkvision=darkvision)
+
+        ret['Feat'] = [
+            {"type": "normal", "text":"You gain the {} feat".format(self.feat)}
         ]
 
         return ret

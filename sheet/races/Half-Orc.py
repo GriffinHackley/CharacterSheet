@@ -24,6 +24,7 @@ class HalfOrc(Race):
     def getFeatures(self):
         ret = {}
 
+        #TODO: Use general race thing for pathfinder character as well
         ret['Attributes'] = [
             {"type": "heading", "text":"Creature Type:"},
             {"type": "normal", "text":"Half-orcs are Humanoid creatures with both the human and orc subtypes."},

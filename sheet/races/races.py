@@ -91,6 +91,18 @@ class Race():
                 {"type": "normal", "text":"You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."}
             ]
 
+        languages = "You can speak, read, and write Common"
+        if len(self.languages) == 1:
+            languages = languages + " and {}".format(self.languages[0])
+        if len(self.languages) > 1:
+            for i in range(len(self.languages)-1):
+                languages = languages + ", {}".format(self.languages[i])
+            languages = languages + ", and {}".format(self.languages[len(self.languages)-1])
+
+        ret['Languages'] = [
+            {"type": "normal", "text":languages}
+        ]
+
         return ret
     
     def __init__(self, options):

@@ -6,7 +6,7 @@ class ShadarKai(Race):
         options['name'] = "ShadarKai"
         options['size'] = "M"
         options['speed'] = 30
-        options['languages'] = options['languages'] + ["Common"]
+        options['languages'] = options['languages']
         options['skills'] = ["Perception"]
         options['tools'] = ["tool1", "tool2"]
         super().__init__(options)
