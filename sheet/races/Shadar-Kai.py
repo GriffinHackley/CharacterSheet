@@ -15,18 +15,7 @@ class ShadarKai(Race):
         return super().appendModifiers(modList)
 
     def getFeatures(self):
-        ret = {}
-
-        ret['Attributes'] = [
-            {"type": "heading", "text":"Creature Type:"},
-            {"type": "normal", "text":"You are a Humanoid. You are also considered an elf for any prerequisite or effect that requires you to be an elf."},
-
-            {"type": "heading", "text":"Size:"},
-            {"type": "normal", "text":"You are Medium"},
-
-            {"type": "heading", "text":"Speed:"},
-            {"type": "normal", "text":"Your walking speed is 30 feet."},
-        ]
+        ret = super().getFeatures(darkvision=True)
 
         ret['Blessing of the Raven Queen'] = [
             {"type": "normal", "text":"""
@@ -34,10 +23,6 @@ class ShadarKai(Race):
 
             Starting at 3rd level, you also gain resistance to all damage when you teleport using this trait. The resistance lasts until the start of your next turn. During that time, you appear ghostly and translucent.
         """}]
-
-        ret['Darkvision'] = [
-            {"type": "normal", "text":"You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."}
-        ]
 
         ret['Fey Ancestry'] = [
             {"type": "normal", "text":"You have advantage on saving throws you make to avoid or end the charmed condition on yourself."}

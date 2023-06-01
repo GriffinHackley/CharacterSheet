@@ -18,7 +18,7 @@ class Race():
     primaryAbility      = ''
     secondaryAbility    = ''
     size                = ''
-    feat               = ''
+    feat                = ''
     speed               = 0
     languages           = [] 
     skillBonus          = []
@@ -26,12 +26,28 @@ class Race():
     classSkills         = []
     skills              = []
     tools               = []
+    misc                = []
 
     def appendModifiers(self, modList:ModifierList):
-        modList.addModifier(Modifier(2,"untyped", self.primaryAbility, self.name))
+        try:
+            if self.abilityDistribution == "2/1":
+                modList.addModifier(Modifier(2,"untyped", self.primaryAbility, self.name))
+                modList.addModifier(Modifier(1,"untyped", self.secondaryAbility, self.name))
         
-        if not self.secondaryAbility == "None":
-            modList.addModifier(Modifier(1,"untyped", self.secondaryAbility, self.name))
+            if self.abilityDistribution == "2/0":
+                modList.addModifier(Modifier(2,"untyped", self.primaryAbility, self.name))
+                if self.secondaryAbility != '':
+                    raise Exception()
+
+            if self.abilityDistribution == "1/1":
+                modList.addModifier(Modifier(1,"untyped", self.primaryAbility, self.name))
+                modList.addModifier(Modifier(1,"untyped", self.secondaryAbility, self.name))
+        
+        except:
+            error = "You chose an ability distribution of {}, but primaryAbility={} and secondaryAbility={}"
+            print(error.format(self.abilityDistribution, self.primaryAbility, self.secondaryAbility))
+
+        
 
     def addProficiencies(self, proficiencyList):
         #NOTE: skill proficiency is used in place of class skills for pf characters
@@ -40,12 +56,42 @@ class Race():
         for proficiency in proficiencies:
             for key,value in proficiency.items():
                 if not key in proficiencyList.keys():
-                    raise Exception("Key '" + key + "' found in proficiencies that does not exist")
+                    raise Exception("Key '" + key + "' was found in proficiencies but does not exist")
                 
                 proficiencyList[key] = proficiencyList[key] + value
 
     def getConsumables(self, profBonus):
         return {}
+    
+    def getFeat(self):
+        if self.feat == '':
+            return {}
+        
+        return {self.feat:self.name}
+    
+    def getFeatures(self, darkvision=False, creatureType="You are humanoid", extraAttributes=[]):
+        ret = {}
+        
+        size = "You are {}".format(self.size)
+        speed = "Your walking speed is {} feet.".format(self.speed)
+
+        ret['Attributes'] = [
+            {"type": "heading", "text":"Creature Type:"},
+            {"type": "normal", "text":creatureType},
+
+            {"type": "heading", "text":"Size:"},
+            {"type": "normal", "text":size},
+
+            {"type": "heading", "text":"Speed:"},
+            {"type": "normal", "text":speed},
+        ] + extraAttributes
+
+        if darkvision:
+            ret['Darkvision'] = [
+                {"type": "normal", "text":"You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."}
+            ]
+
+        return ret
     
     def __init__(self, options):
         for option, value in options.items():

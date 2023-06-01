@@ -22,21 +22,13 @@ class Harengon(Race):
         return ret
 
     def getFeatures(self):
-        ret = {}
-
-        ret['Attributes'] = [
-            {"type": "heading", "text":"Creature Type:"},
-            {"type": "normal", "text":"You are a Humanoid."},
-
-            {"type": "heading", "text":"Size:"},
-            {"type": "normal", "text":"You are Small"},
-
-            {"type": "heading", "text":"Speed:"},
-            {"type": "normal", "text":"Your walking speed is 30 feet."},
-
+        extraAttributes = [
             {"type": "heading", "text":"Life Span:"},
             {"type": "normal", "text":"Harengons have a life span of about a century."},
         ]
+
+        ret = super().getFeatures(extraAttributes=extraAttributes)
+
 
         ret['Hare Trigger'] = [
             {"type": "normal", "text":"You can add your proficiency bonus to your initiative rolls."}
