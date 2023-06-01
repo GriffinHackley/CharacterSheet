@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 
-from .models import Character, PathfinderCharacter, FifthEditionCharacter
+from .models.Characters import Character
+from .models.FifthEditionCharacter import FifthEditionCharacter
+from .models.PathfinderCharacter import PathfinderCharacter
 from .configs import configs
 
 config_list = configs.allConfigs()

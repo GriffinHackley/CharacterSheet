@@ -23,7 +23,7 @@
           </li>
           <li>
             <div class="field">Background</div>
-            <div class="value">{{ character.background }}</div>
+            <div class="value">{{ character.background.name }}</div>
           </li>
           <li>
             <div class="field">Player Name</div>
@@ -89,32 +89,46 @@
                 <li class="tooltip shiftedRight" data-tooltip='{{ source }}'>
                 {% endwith %}
                 <span class="saveName">{{ save }}</span>
-                <div class="value">{{ value.value }}</div>
+                <div class="value">
+                  {{ value.value }}
+                </div>
               </li>
             {% endfor %}
           </ul>
-          <div class="label">Saving Throws</div>
+          <div class="label">
+            Saving Throws
+          </div>
         </div>
         <div class="skills list-section">
           <!-- SKILL LIST -->
-		{% for section in character.skills %}
-{% with character.skills|get_item:section as type %}
-		<div class="skillSeparator">{{section}}</div>
-          {% for skill,value in type.items %}
-            {% with value.source|formatSource as source %}
-              <div class="tooltip centered skill" data-tooltip='{{ source }}'>
-              {% endwith %}
-              <div class="value">
-                {{ value.value }}
-              </div>
-              <div class="skillText">
-                <span class="skillName"> {{ skill }} </span>
-                <span class="skillAbility"> {{ value.ability }} </span>
-              </div>
-            </div>
+          {% for section in character.skills %}
+            {% with character.skills|get_item:section as type %}
+              {% if character.config.edition == "Pathfinder" %}
+                {% if section != "Main" %}
+                  <div class="skillSeparator">
+                    {{ section }}
+                  </div>
+                {% endif %}
+              {% endif %}
+              <ul>
+                {% for skill,value in type.items %}
+                  {% with value.source|formatSource as source %}
+                    <div class="tooltip centered skill" data-tooltip='{{ source }}'>
+                    {% endwith %}
+                    <li class="skill">
+                      <div class="value">
+                        {{ value.value }}
+                      </div>
+                      <div class="skillText">
+                        <span class="skillName"> {{ skill }} </span>
+                        <span class="skillAbility"> {{ value.ability }} </span>
+                      </div>
+                    </li>
+                  </div>
+                {% endfor %}
+              </ul>
+            {% endwith %}
           {% endfor %}
-{% endwith %}
-		{% endfor %}
           <div class="label">
             Skills
           </div>
@@ -452,10 +466,11 @@
                         </h4>
                       {% elif line.type == "table" %}
                         {% with feature|kebab as kebabFeature %}
-                        {% with line|formatTableJS as formatted %}
-                          <div id="{{ kebabFeature }}"></div>
-                          <script>inject("{{ kebabFeature }}", "{{ formatted }}")</script>
-                        {% endwith %}
+                          {% with line|formatTableJS as formatted %}
+                            <div id="{{ kebabFeature }}">
+                            </div>
+                            <script>inject("{{ kebabFeature }}", "{{ formatted }}")</script>
+                          {% endwith %}
                         {% endwith %}
                       {% endif %}
                     {% endfor %}

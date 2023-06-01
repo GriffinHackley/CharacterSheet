@@ -43,16 +43,16 @@ skill_list_pathfinder = {
     "Swim"                      : {"ability":"Str", "acp":True , },
     "Use Magic Device"          : {"ability":"Cha", "acp":False, },
     
-    "Knowledge (Arcana)"        : {"ability":"Int", "acp":False, },
-    "Knowledge (Dungeoneering)" : {"ability":"Int", "acp":False, },
-    "Knowledge (Engineering)"   : {"ability":"Int", "acp":False, },
-    "Knowledge (Geography)"     : {"ability":"Int", "acp":False, },
-    "Knowledge (History)"       : {"ability":"Int", "acp":False, },
-    "Knowledge (Local)"         : {"ability":"Int", "acp":False, },
-    "Knowledge (Nature)"        : {"ability":"Int", "acp":False, },
-    "Knowledge (Nobility)"      : {"ability":"Int", "acp":False, },
-    "Knowledge (Planes)"        : {"ability":"Int", "acp":False, },
-    "Knowledge (Religion)"      : {"ability":"Int", "acp":False, },
+    "Knowledge - Arcana"        : {"ability":"Int", "acp":False, },
+    "Knowledge - Dungeoneering" : {"ability":"Int", "acp":False, },
+    "Knowledge - Engineering"   : {"ability":"Int", "acp":False, },
+    "Knowledge - Geography"     : {"ability":"Int", "acp":False, },
+    "Knowledge - History"       : {"ability":"Int", "acp":False, },
+    "Knowledge - Local"         : {"ability":"Int", "acp":False, },
+    "Knowledge - Nature"        : {"ability":"Int", "acp":False, },
+    "Knowledge - Nobility"      : {"ability":"Int", "acp":False, },
+    "Knowledge - Planes"        : {"ability":"Int", "acp":False, },
+    "Knowledge - Religion"      : {"ability":"Int", "acp":False, },
 }
 knowledge_skills_pathfinder =  [
     

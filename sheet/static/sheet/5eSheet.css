@@ -1,6 +1,5 @@
 .tooltip {
   position: relative;
-  z-index: 900;
 }
 .tooltip::after,
 .tooltip::before {
@@ -41,7 +40,6 @@
   color: white;
   background: var(--primary-accent);
   width: max-content;
-  z-index: 900;
 }
 .tooltip:active::before,
 .tooltip:active::after {
@@ -134,13 +132,13 @@ header section.misc {
   border: 1px solid black;
   border-radius: 10px;
   padding-left: 1em;
-  padding-right:.81em;
+  padding-right: .81em;
 }
 header section.misc ul {
   padding: 10px 0px 5px 0px;
   display: flex;
   flex-wrap: wrap;
-font-size: .9rem;
+  font-size: .9rem;
 }
 header section.misc ul li {
   width: 33.33333%;
@@ -170,13 +168,6 @@ div.scores {
   background-color: var(--primary-accent);
   border-radius: 10px;
   width: 100%;
-  z-index: 1;
-}
-div.attributeName {
-  font-size: 2rem;
-  font-weight: bold;
-/*TODO:does this do anything*/
-background-color: blue;
 }
 div.scores ul {
   display: flex;
@@ -184,8 +175,8 @@ div.scores ul {
   justify-content: space-around;
   align-items: center;
   height: 100%;
-padding-left:5px;
-padding-right:5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 div.scores ul li {
   height: 80px;
@@ -207,8 +198,7 @@ div.mod {
 div.abilityName {
   padding-top: 5px;
   font-size: .9rem;
-width:100%;
-
+  width: 100%;
 }
 div.abilityMod {
   font-size: 2rem;
@@ -229,8 +219,6 @@ div.abilityScore div.score {
 section.attr-applications {
   display: flex;
   flex-direction: column;
-  
-  z-index: 2;
 }
 div.inspiration,
 div.proficiencybonus {
@@ -315,11 +303,11 @@ div.skills {
   flex-direction: column;
   flex-grow: 4;
 }
-div.skillSeparator{
-font-size:1rem;
-text-decoration:underline;
+div.skillSeparator {
+  font-size: .9rem;
+  text-decoration: underline;
 }
-div.skill {
+li.skill {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -331,10 +319,9 @@ div.skillText {
   align-items: flex-end;
   font-size: .7rem;
   flex-grow: 1;
-overflow: hidden;
-white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
 }
-
 span.skillAbility {
   color: var(--primary-accent);
 }
@@ -384,7 +371,6 @@ div.speed {
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 1;
   flex-grow: 1;
 }
 div.armorclass > div.key,
@@ -437,8 +423,8 @@ div.resistances {
   justify-content: space-between;
 
   /* So deathsaves dont overflow */
-overflow: hidden;
-white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
 }
 div.currentTotalHealth,
 div.otherHP {

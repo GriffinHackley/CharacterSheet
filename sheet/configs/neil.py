@@ -8,7 +8,7 @@ def apply(character):
     character.alignment = "Chaotic Neutral"
     character.charClass = {"name":"Warpriest", "options":{}}
     character.level = 4
-    character.background = "In Their Footsteps"
+    character.background = {'name':"In Their Footsteps"}
     character.feats = {"Two-Weapon Fighting":"Level 1:", "Butterfly Sting":"Level 3", "Combat Reflexes":"Warpriest 3 Bonus Feat"}
     character.race = {"name":"Half-Orc", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"None", "languages":["Draconic"]}}
     character.playerName = "Griffin"
@@ -37,7 +37,7 @@ def apply(character):
     character.skillRanks = {
         'Heal'                 : 1,
         'Handle Animal'        : 1,
-        'Knowledge (Religion)' : 1,
+        'Knowledge - Religion' : 1,
         'Perception'           : 4,
         'Stealth'              : 4,
         'Survival'             : 1,

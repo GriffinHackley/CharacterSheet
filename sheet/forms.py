@@ -83,3 +83,21 @@ class WarmundSpellForm(forms.Form):
     absorbElements = forms.BooleanField(label='Absorb Elements', required=False)
     boomingBlade = forms.BooleanField(label='Booming Blade', required=False)
     shield = forms.BooleanField(label='Shield', required=False)
+
+class EzekielCombatForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    advantage = forms.BooleanField(label='Advantage', required=False)
+    bladesong = forms.BooleanField(label='Bladesong', required=False)
+    critical = forms.BooleanField(label='Critical', required=False)
+
+class EzekielSpellForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    absorbElements = forms.BooleanField(label='Absorb Elements', required=False)
+    boomingBlade = forms.BooleanField(label='Booming Blade', required=False)
+    shield = forms.BooleanField(label='Shield', required=False)

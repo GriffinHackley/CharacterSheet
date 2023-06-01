@@ -13,17 +13,19 @@ def allRaces():
     return ret
 
 class Race():
-    name             = ''
-    primaryAbility   = ''
-    secondaryAbility = ''
-    size             = ''
-    speed            = 0
-    languages        = [] 
-    skillBonus       = []
-    features         = []
-    classSkills      = []
-    skills           = []
-    tools            = []
+    name                = ''
+    abilityDistribution = ''
+    primaryAbility      = ''
+    secondaryAbility    = ''
+    size                = ''
+    feat               = ''
+    speed               = 0
+    languages           = [] 
+    skillBonus          = []
+    features            = []
+    classSkills         = []
+    skills              = []
+    tools               = []
 
     def appendModifiers(self, modList:ModifierList):
         modList.addModifier(Modifier(2,"untyped", self.primaryAbility, self.name))
