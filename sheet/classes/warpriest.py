@@ -193,7 +193,6 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
 
     def getSpells(self, stats, modList):
         ret = {}
-
         ability    = "Wisdom"
         abilityMod = stats[ability]
 

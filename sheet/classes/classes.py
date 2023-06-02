@@ -71,6 +71,14 @@ class Class():
         table = table.find_all("tr")
 
         levels = {}
+
+        #Find feature Column
+        headings = table[1].find_all("th")
+        for i in range(len(headings)):
+            if headings[i].contents[0] == "Features":
+                featureIndex = i
+                break
+
         for row in table:
             row = row.find_all("td")
             if len(row) > 0:
@@ -85,7 +93,7 @@ class Class():
                     break
 
                 #Get class features and add them to dict for this level
-                features = row[2]
+                features = row[featureIndex]
                 features = features.text.split(", ")
 
                 levels[currentLevel] = {}

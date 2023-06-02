@@ -97,7 +97,3 @@ class EzekielSpellForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
-
-    absorbElements = forms.BooleanField(label='Absorb Elements', required=False)
-    boomingBlade = forms.BooleanField(label='Booming Blade', required=False)
-    shield = forms.BooleanField(label='Shield', required=False)

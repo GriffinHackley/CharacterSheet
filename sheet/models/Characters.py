@@ -157,14 +157,17 @@ class Character():
         if 'bladesong' in self.toggles.keys() and self.toggles['bladesong']:
             self.modList.addModifier(Modifier('Intelligence', "untyped", 'AC', 'Bladesong'))
             self.modList.addModifier(Modifier(10, "untyped", 'Speed', 'Bladesong'))
-            pass
+        
+        if 'sneakAttack' in self.toggles.keys() and self.toggles['sneakAttack']:
+            self.modList.addModifier(Modifier('1d6', "untyped", 'DamageDie', 'Sneak Attack'))
 
     def applyFeats(self, featList):
-        ret = {}
+        ret = []
 
-        # TODO: ADD source back
         for name, source in self.feats.items():
-            ret[name] = featList[name](self)
+            feat = featList[name]()
+            feat.setSource(source)
+            ret.append(feat)
 
         self.feats = ret
 
@@ -457,7 +460,12 @@ class Character():
         return ret
 
     def getFeats(self):
-        return self.feats
+        ret = {}
+        
+        for feat in self.feats:
+            ret[feat.name] = feat.text
+        
+        return ret
 
     def decodeStats(self):
         stats = self.baseStats

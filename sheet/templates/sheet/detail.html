@@ -404,12 +404,14 @@
                 data-for-tab="main-proficiencies">
           Proficiencies
         </button>
+        {% if character.spells != None %}
         <button type="button"
                 id="spellsButton"
                 class="tabButton"
                 data-for-tab="main-spells">
           Spells
         </button>
+        {% endif %}
         {% if character.name == "Nail" %}
           <button type="button"
                   id="sacredWeaponButton"
@@ -651,6 +653,7 @@
           <textarea class="profText"></textarea>
         </section>
       </div>
+      {% if not character.spells == None %}
       <div class="tabContent" data-tab="main-spells">
         <section class="spellsContainer">
           <div class="spellHeader">
@@ -728,8 +731,24 @@
           </div>
         {% endif %}
       </div>
+      {% endif %}
       <div class="spellList">
         {% for spellLevel, value in character.spells.level.items %}
+          {% if character.config.castingType == "ritual" %}
+            <div class="spellLevel">
+              <div class="spellLevelHeader">
+                <div>
+                  Level: {{ spellLevel }}
+                </div>
+              </div>
+              {% for spell,value in value.list.items %}
+                <div class="spellName">
+                  {{ spell }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
           {% if character.config.castingType == "vancian" %}
             <div class="spellLevel">
               <div class="spellLevelHeader">

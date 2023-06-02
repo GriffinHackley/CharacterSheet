@@ -9,7 +9,7 @@ class Harengon(Race):
         options['languages'] = options['languages'] + ["Common"]
         super().__init__(options)
 
-    def appendModifiers(self, modList: ModifierList):
+    def appendModifiers(self, modList:ModifierList):
         modList.addModifier(Modifier('Proficiency Bonus',"untyped", 'Initiative', 'Hare Trigger'))
         
         return super().appendModifiers(modList)

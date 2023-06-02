@@ -16,24 +16,7 @@ class Rogue(Class):
         return {}
     
     def getSpells(self, stats, profBonus, modList):
-        ret = {}
-        ability    = "Wisdom"
-        abilityMod = stats[ability]
-
-        ret['ability']    = ability
-        ret['abilityMod'] = abilityMod
-
-        bonus, source = modList.applyModifier("SpellSaveDC")
-
-        bonus, source = modList.applyModifier("SpellSaveDC")
-        
-        ret['saveDC'] = {'value': 8 + abilityMod + profBonus + bonus, 'source':source}
-
-        ret['spellAttack'] = {'value':profBonus + abilityMod, 'source':source}
-
-        ret['level'] = {}
-
-        return ret
+        return {}
 
     def getClassFeatures(self):
         return super().get5eClassFeatures()
