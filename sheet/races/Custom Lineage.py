@@ -6,7 +6,7 @@ class CustomLineage(Race):
         options['name'] = "Custom Lineage"
         options['size'] = options['size']
         options['speed'] = 30
-        options['languages'] = ["sylvan", "draconic"]
+        options['languages'] = options["languages"] + ["Common"]
         super().__init__(options)
 
     def appendModifiers(self, modList: ModifierList):
@@ -19,7 +19,7 @@ class CustomLineage(Race):
         if self.misc['variable trait'] == 'darkvision':
             darkvision = True
         elif 'proficiency' in self.misc['variable trait']:
-            skill = self.misc['variable trait'].replace("proficiency(","").replace(")","")
+            skill = self.misc['variable trait']
             self.skills = self.skills + [skill]
 
         ret = super().getFeatures(creatureType=creatureType, darkvision=darkvision)

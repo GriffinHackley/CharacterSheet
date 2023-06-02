@@ -51,8 +51,6 @@ class Character():
 
         self.accentColor = character.accentColor
 
-        self.fullChar = character
-
         return self
 
     def build(self):

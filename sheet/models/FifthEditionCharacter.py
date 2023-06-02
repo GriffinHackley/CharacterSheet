@@ -1,12 +1,10 @@
-import math
 import re
-
-from django.template.defaulttags import register
 
 import sheet.forms as forms
 from sheet.models.Characters import Character
 
 from ..misc.feats import fifthEditionFeats
+from ..misc.backgrounds import FifthEditionBackground
 from ..lists import (Ability, skill_list_5e)
 
 class FifthEditionCharacter(Character):
@@ -19,13 +17,6 @@ class FifthEditionCharacter(Character):
 
     def fromCharacter(self, character):
         return super().fromCharacter(character)
-    
-    def applyBackground(self):
-        return
-
-    def getModifiers(self):
-        super().getModifiers()
-        self.applyBackground()
         
     def calculateSaves(self):
         ret = {}
@@ -155,13 +146,11 @@ class FifthEditionCharacter(Character):
         self.profBonus = self.getProfBonus()
 
     def applyBackground(self):
-        if self.background == "Spy":
-            self.proficiencies['skills'] += ['Acrobatics', 'Sleight of Hand']
-            self.proficiencies['tools'] += ['Thieves\' Tools']
+        self.background = FifthEditionBackground(self.background)
 
-        if self.background == "Sage":
-            self.proficiencies['skills'] +=  ['Acrobatics', 'History']
-            self.proficiencies['languages'] +=  ['Draconic', 'Elvish']
+        self.proficiencies['skills']    += self.background.skills
+        self.proficiencies['tools']     += self.background.tools
+        self.proficiencies['languages'] += self.background.languages
     
     def applyFeats(self):
         return super().applyFeats(fifthEditionFeats)
@@ -179,9 +168,7 @@ class FifthEditionCharacter(Character):
     def getMiscFeatures(self):
         ret = {}
 
-        from ..misc.backgrounds import backgrounds
-
-        ret[self.background['feature']] = backgrounds[self.background['feature']]
+        ret[self.background.feature['name']] = self.background.feature['feature']
 
         return ret
 

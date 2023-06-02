@@ -8,7 +8,7 @@ def apply(character):
     character.alignment = "Lawful Neutral"
     character.charClass = {"name":"Wizard", "options":{"Arcane Tradition":"subclass:Bladesinging", "Cantrip Formulas (Optional)":"used"}}
     character.level = 3
-    character.background = {'name':"Sage", 'feature':'Wanderer'}
+    character.background = {'name':"Sage", 'feature':'Wanderer', "skills":["Acrobatics", "History"], "tools":["Thieves' Tools"], "languages":["Elvish", "Draconic"]}
     character.feats = []
     character.race = {"name":"Harengon", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"Intelligence", "languages":["Sylvan"]}}
     character.playerName = "Griffin"

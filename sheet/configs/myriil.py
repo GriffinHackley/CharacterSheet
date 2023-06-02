@@ -8,7 +8,7 @@ def apply(character):
     character.alignment = "Lawful Neutral"
     character.charClass = {"name":"Ranger", "options":{"Ranger Conclave":"subclass:Gloom Stalker", "Fighting Style":"Archery", "Favored Enemy":"replaced", "Natural Explorer":"replaced", "Primeval Awareness":"replaced", "Deft Explorer (Optional)":"used", "Favored Foe (Optional)":"used", "Primal Awareness (Optional)":"used", "Martial Versatility (Optional)":"used"}}
     character.level = 4
-    character.background = {'name':"Spy", 'feature':'Wanderer'}
+    character.background = {'name':"Spy", 'feature':'Wanderer', "skills":["Acrobatics", "Sleight of Hand"], "tools":["Thieves' Tools"]}
     character.feats = [{"name":"Elven Accuracy","source":"Level 4", "options":{"ASI":"Dex"}}, {"name":"Sharpshooter", "source":"Gloomstalker Bow", "options":{}}]
     character.race = {"name":"Shadar-Kai", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"Wisdom", "languages":["Elven"]}}
     character.playerName = "Griffin"
