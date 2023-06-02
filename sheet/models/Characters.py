@@ -3,10 +3,8 @@ import math
 from django.template.defaulttags import register
 
 from ..classes import classes
-from ..misc.feats import fifthEditionFeats, pathfinderFeats
 from ..races import races
-from ..lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
-                    skill_list_pathfinder)
+from ..lists import (Ability, combat_list)
 from ..modifiers import Modifier, ModifierList
 
 class Character():  

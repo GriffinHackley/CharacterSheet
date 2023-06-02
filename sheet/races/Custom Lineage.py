@@ -1,5 +1,5 @@
 from .races import Race
-from ..modifiers import Modifier, ModifierList
+from ..modifiers import ModifierList
 
 class CustomLineage(Race):
     def __init__(self, options):

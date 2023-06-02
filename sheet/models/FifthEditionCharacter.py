@@ -7,11 +7,7 @@ import sheet.forms as forms
 from sheet.models.Characters import Character
 
 from ..misc.feats import fifthEditionFeats
-from ..classes import classes
-from ..races import races
-from ..lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
-                    skill_list_pathfinder)
-from ..modifiers import Modifier, ModifierList
+from ..lists import (Ability, skill_list_5e)
 
 class FifthEditionCharacter(Character):
     def build(self):

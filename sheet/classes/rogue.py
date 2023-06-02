@@ -1,5 +1,5 @@
 from .classes import Class
-from ..modifiers import Modifier, ModifierList
+from ..modifiers import ModifierList
 
 class Rogue(Class):
     proficiencies = {'skills': ['Insight', 'Stealth', 'Performance', 'Perception'], 'languages':[], 'armor': ['Light'], 'weapons':['Simple', 'Hand crossbows', 'Longswords', 'Rapiers', 'Shortswords'], 'tools':["Thieves' Tools"], 'savingThrows':['Intelligence', 'Dexterity']}

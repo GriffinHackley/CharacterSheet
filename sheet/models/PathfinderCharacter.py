@@ -1,17 +1,9 @@
 import math
-import re
-
-from django.template.defaulttags import register
-
 import sheet.forms as forms
 from sheet.models.Characters import Character
-
 from ..misc.feats import pathfinderFeats
-from ..classes import classes
-from ..races import races
-from ..lists import (Ability, combat_list, save_list_pathfinder, skill_list_5e,
-                    skill_list_pathfinder)
-from ..modifiers import Modifier, ModifierList
+from ..lists import (save_list_pathfinder, skill_list_pathfinder)
+from ..modifiers import Modifier
 
 class PathfinderCharacter(Character):
     def build(self):
