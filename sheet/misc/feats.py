@@ -3,6 +3,9 @@ from sheet.modifiers import Modifier
 class Feat():
     source = ''
 
+    def setOptions(self, options):
+        self.options = options
+
     def setSource(self, source):
         self.source = source
     
@@ -36,38 +39,61 @@ class Sharpshooter(Feat):
 
 class RitualCaster(Feat):
     name = "Ritual Caster"
-    text = [
-        {"type": "normal", "text":"""
+
+    def setOptions(self, options):
+        super().setOptions(options)
+
+        choice = self.options['class']
+
+        if choice in ["Wizard"]:
+            self.ability = "Intelligence"
+        
+        if choice in ["Bard", "Sorcerer", "Warlock"]:
+            self.ability = "Charisma"
+
+        if choice in ["Cleric", "Druid"]:
+            self.ability = "Wisdom"
+
+
+        text = """
         You have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.
 
-        When you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. Choose one of the following classes: bard, cleric, druid, sorcerer, warlock, or wizard. You must choose your spells from that class's spell list, and the spells you choose must have the ritual tag. The class you choose also must have the ritual tag. The class you choose also determines your spellcasting ability for these spells: Charisma for bard, sorcerer, or warlock; Wisdom for cleric or druid; or Intelligence for wizard.
+        When you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. You must choose your spells from the {} spell list, and the spells you choose must have the ritual tag. Your spellcasting ability is {}
 
-        If you come across a spell in written form, such as a magical spell scroll or a wizard's spellbook, you might be able to add it to your ritual book. The spell must be on the spell list for the class you chose, the spell's level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents the material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it
-        """}
-    ]
+        If you come across a spell in written form, such as a magical spell scroll or a wizard's spellbook, you might be able to add it to your ritual book. The spell must be on the {} spell list, the spell's level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents the material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it
+        """
 
-    def getSpells(self, character):
+        text = text.format(choice, self.ability, choice)
+
+        self.text = [{"type": "normal", "text":text}]
+
+        
+        
+    def getSpells(self, character):        
         ret = {}
         
         stats = character.abilityMod
         profBonus = character.profBonus
         modList = character.modList
 
-        ability    = "Intelligence"
-        abilityMod = stats[ability]
-        ret['ability']    = ability
+        
+
+        abilityMod = stats[self.ability]
+        
+        ret = {}
+        ret['ability']    = self.ability
         ret['abilityMod'] = abilityMod
 
         bonus, source = modList.applyModifier("SpellSaveDC")
         source['Base'] = 8
         source['Prof.'] = profBonus
-        source[ability] = abilityMod
+        source[self.ability] = abilityMod
         source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
         ret['saveDC'] = {'value': 8 + abilityMod + profBonus + bonus, 'source':source}
 
         bonus, source = modList.applyModifier("SpellAttack")
         source['Prof.'] = profBonus
-        source[ability] = abilityMod
+        source[self.ability] = abilityMod
         source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
         ret['spellAttack'] = {'value':profBonus + abilityMod, 'source':source}
         

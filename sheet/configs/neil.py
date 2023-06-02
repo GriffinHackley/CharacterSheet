@@ -9,7 +9,7 @@ def apply(character):
     character.charClass = {"name":"Warpriest", "options":{}}
     character.level = 4
     character.background = {'name':"In Their Footsteps"}
-    character.feats = {"Two-Weapon Fighting":"Level 1:", "Butterfly Sting":"Level 3", "Combat Reflexes":"Warpriest 3 Bonus Feat"}
+    character.feats = [{"name":"Two-Weapon Fighting", "source":"Level 1", "options":{}}, {"name":"Butterfly Sting", "source":"Level 3", "options":{}}, {"name":"Combat Reflexes", "source":"Warpriest 3 Bonus Feat", "options":{}}]
     character.race = {"name":"Half-Orc", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"None", "languages":["Draconic"]}}
     character.playerName = "Griffin"
     character.traits = ["Fate's Favored", "Anatomist"]

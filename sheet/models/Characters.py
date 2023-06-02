@@ -137,7 +137,7 @@ class Character():
         self.race = getattr(raceModule, self.race['name'].replace("-", "").replace(" ", ""))(self.race['options'])
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
-        self.feats.update(self.race.getFeat())
+        self.feats += self.race.getFeat()
     
     def applyClass(self):
         allClasses = classes.allClasses()
@@ -164,9 +164,17 @@ class Character():
     def applyFeats(self, featList):
         ret = []
 
-        for name, source in self.feats.items():
+        for feat in self.feats:
+            name    = feat['name']
+            source  = feat['source']
+            options = feat['options']
+
             feat = featList[name]()
+            feat.setOptions(options)
             feat.setSource(source)
+
+            feat.getModifiers(self.modList)
+
             ret.append(feat)
 
         self.feats = ret

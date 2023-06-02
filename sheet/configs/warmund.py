@@ -9,7 +9,7 @@ def apply(character):
     character.charClass = {"name":"Wizard", "options":{"Arcane Tradition":"subclass:Bladesinging", "Cantrip Formulas (Optional)":"used"}}
     character.level = 3
     character.background = {'name':"Sage", 'feature':'Wanderer'}
-    character.feats = {}
+    character.feats = []
     character.race = {"name":"Harengon", "options":{"primaryAbility":"Dexterity", "secondaryAbility":"Intelligence", "languages":["Sylvan"]}}
     character.playerName = "Griffin"
     character.weapon = [

@@ -65,9 +65,10 @@ class Race():
     
     def getFeat(self):
         if self.feat == '':
-            return {}
+            return []
+        self.feat['source'] = self.name
         
-        return {self.feat:self.name}
+        return [self.feat]
     
     def getFeatures(self, darkvision=False, creatureType="You are humanoid", extraAttributes=[]):
         ret = {}

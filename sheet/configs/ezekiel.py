@@ -9,8 +9,8 @@ def apply(character):
     character.charClass = {"name":"Rogue", "options":{}}
     character.level = 2
     character.background = {'name':"Spirit Medium", 'feature':'Spirit Medium'}
-    character.feats = {}
-    character.race = {"name":"Custom Lineage", "options":{"abilityDistribution":"1/1","primaryAbility":"Dexterity","secondaryAbility":"Charisma", "size":"Small", "feat":"Ritual Caster", "languages":[], "misc":{'variable trait':'darkvision'}}}
+    character.feats = []
+    character.race = {"name":"Custom Lineage", "options":{"abilityDistribution":"1/1","primaryAbility":"Dexterity","secondaryAbility":"Charisma", "size":"Small", "feat":{"name":"Ritual Caster", "options":{"class":"Wizard"}}, "languages":[], "misc":{'variable trait':'darkvision'}}}
     character.playerName = "Griffin"
     character.weapon = [
         {"name" : "Rapier" , "bonus":0 , "damageDie" : "1d8",  "damageType": "P", "toHitAbility": "Dexterity", "damageAbility": 'Dexterity' ,'properties':["Finesse"], 'tags':["Melee"]},
