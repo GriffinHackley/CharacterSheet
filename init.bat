@@ -1,4 +1,4 @@
-python -m venv sheet_venv
+python -m venv virtualEnv
 
 call .\sheet_venv\Scripts\activate
 

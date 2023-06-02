@@ -1,5 +1,6 @@
 import math
 
+from django.db import models
 from django.template.defaulttags import register
 
 from ..classes import classes
@@ -7,7 +8,7 @@ from ..races import races
 from ..lists import (Ability, combat_list)
 from ..modifiers import Modifier, ModifierList
 
-class Character():  
+class Character(models.Model):  
     def create(cls):
         pass
     
@@ -29,9 +30,34 @@ class Character():
 
     def __str__(self):
         return self.name
+    
+    
+    baseStats = models.CharField(max_length=240)
+    
+
+    name = models.CharField(max_length=240)
+
+    charClass = models.CharField(max_length=240)
+    level = models.IntegerField()
+    race = models.CharField(max_length=240)
+    background = models.CharField(max_length=240)
+    feats = models.CharField(max_length=240)
+    playerName = models.CharField(max_length=240)
+    alignment = models.CharField(max_length=240)
+
+    config = models.CharField(max_length=240)
+
+    weapon = models.CharField(max_length=240)
+    equipment = models.CharField(max_length=240)
+
+    flavor = models.CharField(max_length=240)
+
+    accentColor = models.CharField(max_length=240)
 
     def fromCharacter(self, character):
         self.baseStats = character.baseStats
+
+        print("fdbhjdsafvhjkbhjksdavfhjksda")
 
         self.name = character.name
         self.charClass = character.charClass
