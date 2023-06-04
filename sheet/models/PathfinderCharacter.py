@@ -1,3 +1,4 @@
+import json
 import math
 import sheet.forms as forms
 from sheet.models.Characters import Character
@@ -17,8 +18,8 @@ class PathfinderCharacter(Character):
         self.sacredWeapon = self.getSacredWeapon()
     
     def fromCharacter(self, character):
-        self.traits = character.traits
-        self.skillRanks = character.skillRanks
+        self.traits     = json.loads(character.traits)
+        self.skillRanks = json.loads(character.skillRanks)
         return super().fromCharacter(character)
     
     def applyFeats(self):

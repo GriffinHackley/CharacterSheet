@@ -1,17 +1,16 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
+from django.contrib import admin
 
-from .models.Characters import Character
 from .models.FifthEditionCharacter import FifthEditionCharacter
 from .models.PathfinderCharacter import PathfinderCharacter
-from .configs import configs
+from .models.Characters import Character
 
-config_list = configs.allConfigs()
+import json
+admin.site.register(Character)
 
 def index(request):
-    character_list = []
-    for name, value in config_list.items():
-        character_list.append(value.apply(Character()))
+    character_list = Character.objects.order_by("name")
 
     context = {
         'character_list': character_list,
@@ -20,35 +19,36 @@ def index(request):
     return render(request, 'sheet/index.html', context)
 
 def detail(request, character_id):
-    for name, config in config_list.items():
-        if not config.id == character_id:
-            continue
+    character = get_object_or_404(Character, pk=character_id)
+    config = json.loads(character.config)
 
-        character = config.apply(Character())
+    #TODO: Do this dynamically
+    if config['edition'] == '5e':
+        character = FifthEditionCharacter().fromCharacter(character)
+    elif config['edition'] == 'Pathfinder':
+        character = PathfinderCharacter().fromCharacter(character)
+    else:
+        raise Exception("Character config specifies {} edition, which does not exist".format(character.config['edition']))
 
-        #TODO: Do this dynamically
-        if character.config['edition'] == '5e':
-            character = FifthEditionCharacter().fromCharacter(character)
-        elif character.config['edition'] == 'Pathfinder':
-            character = PathfinderCharacter().fromCharacter(character)
-        else:
-            raise Exception("Character config specifies {} edition, which does not exist".format(character.config['edition']))
+    forms = character.getForms(request)
 
-        forms = character.getForms(request)
-    
-        character.build()
+    character.build()
 
-        return render(request, 'sheet/detail.html', {'character': character, 'skill_list': character.skillList, 'forms':forms })
-    
-    raise Exception("Character with id {} was not found".format(character_id))
+    return render(request, 'sheet/detail.html', {'character': character, 'skill_list': character.skillList, 'forms':forms })
 
 def create(request):
-    # TODO: Implement this
-    test = Character.create()
-    test.save()
-    return HttpResponse("Created")
+    # character = config_list['ezekiel']
+    # character = character.apply(Character())
 
-def delete(request, character_id):
-    character = get_object_or_404(Character, pk=character_id)
-    character.delete()
-    return HttpResponse("Deleted")
+    # #TODO: Do this dynamically
+    # if character.config['edition'] == '5e':
+    #     character = FifthEditionCharacter().fromCharacter(character)
+    # elif character.config['edition'] == 'Pathfinder':
+    #     character = PathfinderCharacter().fromCharacter(character)
+    # else:
+    #     raise Exception("Character config specifies {} edition, which does not exist".format(character.config['edition']))
+
+    # character.save()
+
+    # return HttpResponse("Created")
+    return HttpResponse("Uncomment")

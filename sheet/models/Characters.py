@@ -7,6 +7,7 @@ from ..classes import classes
 from ..races import races
 from ..lists import (Ability, combat_list)
 from ..modifiers import Modifier, ModifierList
+import json
 
 class Character(models.Model):  
     def create(cls):
@@ -34,48 +35,43 @@ class Character(models.Model):
     
     baseStats = models.CharField(max_length=240)
     
-
     name = models.CharField(max_length=240)
 
-    charClass = models.CharField(max_length=240)
+    charClass = models.CharField(max_length=500)
     level = models.IntegerField()
-    race = models.CharField(max_length=240)
+    race = models.CharField(max_length=500)
     background = models.CharField(max_length=240)
     feats = models.CharField(max_length=240)
     playerName = models.CharField(max_length=240)
     alignment = models.CharField(max_length=240)
-
     config = models.CharField(max_length=240)
+    traits = models.CharField(max_length=240)
+    skillRanks = models.CharField(max_length=240)
 
-    weapon = models.CharField(max_length=240)
-    equipment = models.CharField(max_length=240)
+    weapon = models.CharField(max_length=1000)
+    equipment = models.CharField(max_length=500)
 
-    flavor = models.CharField(max_length=240)
+    flavor = models.CharField(max_length=10000)
 
     accentColor = models.CharField(max_length=240)
 
     def fromCharacter(self, character):
-        self.baseStats = character.baseStats
-
-        print("fdbhjdsafvhjkbhjksdavfhjksda")
-
-        self.name = character.name
-        self.charClass = character.charClass
-        self.level = character.level
-        self.race = character.race
-        self.background = character.background
-        self.feats = character.feats
-        self.playerName = character.playerName
-        self.alignment = character.alignment
-
-        self.config = character.config
-
-        self.weapon = character.weapon
-        self.equipment = character.equipment
-
-        self.flavor = character.flavor
-
-        self.accentColor = character.accentColor
+        self.name        = character.name
+        self.baseStats   = character.baseStats
+        self.level       = character.level
+        self.alignment   = character.alignment
+        self.playerName  = character.playerName
+ 
+        self.charClass   = json.loads(character.charClass)
+        self.race        = json.loads(character.race)
+        self.feats       = json.loads(character.feats)
+        self.background  = json.loads(character.background)
+        self.config      = json.loads(character.config)
+        self.weapon      = json.loads(character.weapon)
+        self.equipment   = json.loads(character.equipment)
+        self.flavor      = json.loads(character.flavor)
+        print(self.flavor)
+        self.accentColor = json.loads(character.accentColor)
 
         return self
 
