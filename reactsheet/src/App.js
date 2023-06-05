@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './components/header';
+import Attributes from './components/attributes';
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
 
@@ -18,7 +19,7 @@ function App() {
         const loadCharacter = async () => {
             setLoading(true);
   
-            const response = await axios.get('http://127.0.0.1:8000/api/characters/52');
+            const response = await axios.get('http://127.0.0.1:8000/api/characters/49');
             setCharacter(JSON.parse(response.data));
   
             setLoading(false);
@@ -35,9 +36,13 @@ function App() {
         )
     } else {
         return(
-            
-            <section>
-                < Header headerInfo={character.header} ></Header>
+            <section class="pageContainer">
+                <section>
+                    < Header headerInfo={character.header} ></Header>
+                </section>
+                <main>
+                    < Attributes attributesInfo={character.attributes}></Attributes>
+                </main>
             </section>
         )
     }     

@@ -78,19 +78,29 @@ class Character(models.Model):
         ret = {}
 
         ret['header'] = self.getHeader()
+        ret['attributes'] = self.getAttributes()
+        
 
         return json.dumps(ret)
 
     def getHeader(self):
         ret = {}
 
-        ret['name'] = self.name
-        ret['class'] = self.charClass.name
-        ret['level'] = self.level
-        ret['background'] = self.background.name
-        ret['race'] = self.race.name
+        ret['name']      = self.name
+        ret['class']     = self.charClass.name
+        ret['level']     = self.level
+        ret['race']      = self.race.name
         ret['alignment'] = self.alignment
-        ret['player'] = self.playerName
+        ret['player']    = self.playerName
+        ret['edition']   = self.config['edition']
+
+        return ret
+    
+    def getAttributes(self):
+        ret = []
+
+        for ability, value in self.abilityScores.items():
+            ret.append({"name":ability, "score":value['value'], "mod":self.abilityMod[ability], "source":value['source']})
 
         return ret
 
@@ -106,14 +116,6 @@ class Character(models.Model):
         self.spells = self.getSpells()
         self.features = self.getFeatures()
         self.proficiencies = self.cleanProficiencies()
-        self.header = self.createHeader()
-
-    def createHeader(self):
-        ret = {}
-        
-        ret['name'] = self.name
-
-        return ret
 
     def getModifiers(self):
         self.initModifiers()

@@ -22,6 +22,12 @@ class PathfinderCharacter(Character):
         self.skillRanks = json.loads(character.skillRanks)
         return super().fromCharacter(character)
     
+    def getHeader(self):
+        ret = super().getHeader()
+        ret['background'] = self.background['name']
+        ret['traits'] = self.traits
+        return ret
+
     def applyFeats(self):
         return super().applyFeats(pathfinderFeats)
 

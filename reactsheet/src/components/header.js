@@ -1,5 +1,13 @@
 export default function Header({headerInfo}){
-    // console.log(headerInfo)
+    let pathfinder = null
+    if(headerInfo.edition == "Pathfinder"){
+        pathfinder  = (
+            <li>
+                <div class="field">Traits</div>
+                <div class="value">{ headerInfo.traits[0] }, { headerInfo.traits[1] }</div>
+            </li>
+        )
+    }
     return (
         <header>
             <section class="charname">
@@ -27,12 +35,7 @@ export default function Header({headerInfo}){
                     <div class="field">Alignment</div>
                     <div class="value">{ headerInfo.alignment }</div>
                   </li>
-                  {/* {% if character.config.edition == "Pathfinder" %}
-                    <li>
-                      <div class="field">Traits</div>
-                      <div class="value">{{ character.traits.0 }}, {{ character.traits.1 }}</div>
-                    </li>
-                  {% endif %} */}
+                  {pathfinder}
                 </ul>
             </section>
         </header>

@@ -17,6 +17,10 @@ class FifthEditionCharacter(Character):
 
     def fromCharacter(self, character):
         return super().fromCharacter(character)
+    
+    def getheader(self):
+        ret = super().getHeader()
+        ret['background'] = self.background.name
         
     def calculateSaves(self):
         ret = {}
