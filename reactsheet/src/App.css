@@ -1,38 +1,1135 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.tooltip {
+    position: relative;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  .tooltip::after,
+  .tooltip::before {
+    --scale: 0;
+    --arrowSize: 10px;
+  
+    position: absolute;
+    top: -.25rem;
+    transition: 50ms transform;
+    transform-origin: bottom center;
+    left: 50%;
+    z-index: 900;
   }
-  to {
-    transform: rotate(360deg);
+  .shiftedRight::after,
+  .shiftedRight::before {
+    transform: translateX(-15%) translateY(var(--translate-y, 0))
+      scale(var(--scale));
   }
-}
+  
+  .centered::after,
+  .centered::before {
+    transform: translateX(-50%) translateY(var(--translate-y, 0))
+      scale(var(--scale));
+  }
+  
+  .shiftedLeft::after,
+  .shiftedLeft::before {
+    transform: translateX(-85%) translateY(var(--translate-y, 0))
+      scale(var(--scale));
+  }
+  .tooltip::before {
+    --translate-y: calc(-100% - var(--arrowSize));
+  
+    content: attr(data-tooltip);
+    border-radius: 10px;
+    text-align: center;
+    padding: .5rem;
+    color: white;
+    background: var(--primary-accent);
+    width: max-content;
+  }
+  .tooltip:active::before,
+  .tooltip:active::after {
+    --scale: 1;
+  }
+  .tooltip::after {
+    --translate-y: calc(-1* var(--arrowSize));
+  
+    content: '';
+    border: var(--arrowSize) solid transparent;
+    transform-origin: top center;
+    border-top-color: var(--primary-accent);
+  }
+  section.pageContainer {
+    display: flex;
+    flex-direction: column;
+    height: 99.5%;
+  }
+  .hide {
+    display: none !important;
+  }
+  textarea {
+    font-size: 12px;
+    text-align: left;
+    width: calc(100% - 20px - 2px);
+    border-radius: 10px;
+    padding: 10px;
+    resize: none;
+    overflow: hidden;
+    height: 15em;
+  }
+  div.textblock {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    align-items: center;
+  }
+  div.textblock label {
+    text-align: center;
+    border: 1px solid black;
+    border-top: 0;
+    font-size: 10px;
+    width: calc(100% - 20px - 2px);
+    border-radius: 0 0 10px 10px;
+    padding: 4px 0;
+    font-weight: bold;
+  }
+  div.textblock textarea {
+    border: 1px solid black;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  ul li {
+    list-style-image: none;
+    display: block;
+  }
+  label {
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  header {
+    display: flex;
+    align-items: stretch;
+  }
+  header section.charname {
+    border: 1px solid black;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    padding: 5px 0;
+    background-color: var(--primary-accent);
+    color: var(--secondary-accent);
+    width: 30%;
+    display: flex;
+    flex-direction: column-reverse;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    text-align: center;
+    font-size: 1rem;
+  }
+  header section.charname div {
+    padding: 0.5em;
+    margin: 5px;
+    border: 0;
+  }
+  header section.misc {
+    width: 70%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding-left: 1em;
+    padding-right: .81em;
+  }
+  header section.misc ul {
+    padding: 10px 0px 5px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: .9rem;
+  }
+  header section.misc ul li {
+    width: 33.33333%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  header section.misc ul li div {
+    margin-bottom: 2px;
+  }
+  header section.misc ul li div.value {
+    border: 0;
+    border-bottom: 1px solid var(--primary-accent);
+  }
+  main {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+  main > section {
+    margin-right: 5px;
+  }
+  section.attributes {
+    display: flex;
+    flex-direction: row;
+  }
+  div.scores {
+    background-color: var(--primary-accent);
+    border-radius: 10px;
+    width: 100%;
+  }
+  div.scores ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  div.scores ul li {
+    height: 80px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  div.mod {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  div.abilityName {
+    padding-top: 5px;
+    font-size: .9rem;
+    width: 100%;
+  }
+  div.abilityMod {
+    font-size: 2rem;
+    background: white;
+  }
+  div.abilityScore {
+    display: flex;
+    justify-content: center;
+  }
+  div.abilityScore div.score {
+    background: white;
+    width: 30px;
+    height: 20px;
+    border: 1px inset black;
+    border-radius: 20px;
+    margin: -1px;
+  }
+  section.attr-applications {
+    display: flex;
+    flex-direction: column;
+  }
+  div.inspiration,
+  div.proficiencybonus {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  div.inspiration div,
+  div.proficiencybonus div {
+    display: flex;
+    width: 100%;
+    height: 15px;
+    border: 1px solid black;
+    border-left: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  div.labelBox {
+    margin-left: -1px;
+  }
+  div.inspiration div label,
+  div.proficiencybonus div label {
+    font-size: .6rem;
+  }
+  div.inspiration input {
+    -ms-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    appearance: none;
+    border: 1px solid black;
+    width: 40px;
+    height: 30px;
+    border-radius: 10px;
+    margin: 0px;
+  }
+  div.proficiencybonus div.value {
+    width: 40px;
+    height: 30px;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  div.saves {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    flex-grow: 1;
+    justify-content: space-evenly;
+  }
+  div.list-section {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px 5px;
+  }
+  div.list-section div.label {
+    margin-top: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: bold;
+  }
+  div.saves ul li {
+    display: flex;
+    align-items: center;
+  }
+  div.saves ul li > * {
+    margin-left: 5px;
+  }
+  span.saveName {
+    font-size: .9rem;
+    text-align: left;
+    order: 3;
+  }
+  div.skills {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 4;
+  }
+  div.skillSeparator {
+    font-size: .9rem;
+    text-decoration: underline;
+  }
+  li.skill {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+  div.skillText {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: .7rem;
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  span.skillAbility {
+    color: var(--primary-accent);
+  }
+  div.list-section div.value {
+    width: 30px;
+    font-size: 12px;
+    text-align: center;
+    border: 0;
+    border-bottom: 1px solid black;
+  }
+  div.list-section ul li input[type=checkbox] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+  div.attr-applications div.list-section ul li input[type=checkbox]:checked {
+    background-color: black;
+  }
+  section.combatPane {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 5;
+  }
+  section.combat {
+    background-color: var(--primary-accent);
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    flex-grow: 2;
+    justify-content: center;
+  }
+  div.combatHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-grow: 1;
+  }
+  div.armorclass,
+  div.CMD,
+  div.initiative,
+  div.speed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+  }
+  div.armorclass > div.key,
+  div.CMD > div.key,
+  div.initiative > div.key,
+  div.speed > div.key {
+    font-size: 8px;
+    width: 45px;
+    border: 1px solid black;
+    border-top: 0;
+    background-color: white;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 0 0 10px 10px;
+  }
+  div.armorclass > div.value,
+  div.CMD > div.value,
+  div.initiative > div.value,
+  div.speed > div.value {
+    height: 60px;
+    width: 60px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+  }
+  div.hp {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+  }
+  div.hitDice,
+  div.deathsaves,
+  div.current,
+  div.temporary,
+  div.conditions,
+  div.resistances {
+    background-color: white;
+    margin: 10px;
+    border: 1px solid black;
+    border-radius: 10px 10px 10px 10px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  
+    /* So deathsaves dont overflow */
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  div.currentTotalHealth,
+  div.otherHP {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  div.maxHP,
+  div.totalHD {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+    padding: 5px 0;
+  }
+  div.maxHP div.key,
+  div.totalHD div.key {
+    font-size: 10px;
+    color: var(--primary-accent);
+    margin: 0.25em;
+    text-transform: none;
+  }
+  div.maxHP div.value,
+  div.totalHD div.value {
+    font-size: 12px;
+    flex-grow: 1;
+    border: 0;
+    border-bottom: 1px solid var(--primary-accent);
+    margin-right: 0.25em;
+    padding: 0 0.25em;
+    text-align: center;
+  }
+  div.current input,
+  div.temporary input,
+  div.hitDice input {
+    font-size: 25px;
+    border: 0;
+    width: 90%;
+    text-align: center;
+  }
+  div.temporary input {
+    flex-grow: 1;
+  }
+  div.resistances textarea,
+  div.conditions textarea {
+    height: 100%;
+    width: 100%;
+    border: 0;
+  }
+  div.current label,
+  div.temporary label,
+  div.hitDice label,
+  div.deathsaves label,
+  div.conditions label,
+  div.resistances label {
+    font-size: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
+  div.marks {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  div.deathsuccesses,
+  div.deathfails {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  div.deathsuccesses label,
+  div.deathfails label {
+    font-size: .8 rem;
+    text-align: right;
+    width: 50%;
+    margin-left: 5px;
+  }
+  div.bubbles {
+    flex: 1 40%;
+    margin-left: 5px;
+  }
+  div.bubbles input[type=checkbox] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+  div.bubbles input[type=checkbox]:checked {
+    background-color: black;
+  }
+  section.attacksandspellcasting {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+    flex-grow: 1;
+  }
+  section.attacksandspellcasting > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  section.attacksandspellcasting > div > label {
+    order: 3;
+    text-align: center;
+  }
+  section.attacksandspellcasting > div > table {
+    width: 100%;
+    flex-grow: 1;
+  }
+  section.attacksandspellcasting > div > table td {
+    color: var(--secondary-accent);
+  }
+  section.attacksandspellcasting > div > table th {
+    font-size: 12px;
+    color: var(--primary-accent);
+  }
+  section.attacksandspellcasting > div > table div {
+    width: calc(100% - 4px);
+    border: 0;
+    background-color: var(--primary-accent);
+    font-size: 12px;
+    padding: 3px;
+  }
+  section.rightPane {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+  }
+  div.separator {
+    text-decoration: underline;
+  }
+  section.consumables {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+  section.consumables > div {
+    background-color: white;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    min-height: 60px;
+  }
+  section.consumables > div > div.total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+    padding: 5px 0;
+  }
+  section.consumables > div > div.total div.key {
+    font-size: 10px;
+    color: var(--primary-accent);
+    margin: 0.25em;
+    text-transform: none;
+  }
+  section.consumables > div > div.total > div.value {
+    font-size: 15px;
+    flex-grow: 1;
+    border: 0;
+    border-bottom: 1px solid var(--primary-accent);
+    margin-right: 0.25em;
+    padding: 0 0.25em;
+    text-align: center;
+  }
+  section.consumables label {
+    text-align: center;
+    padding: 2px;
+    font-size: 10px;
+  }
+  div.remainingConsumable {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  div.remainingConsumable input {
+    width: 100%;
+    font-size: 25px;
+    text-align: center;
+    border: 0;
+    flex-grow: 1;
+  }
+  div.remainingConsumable label {
+    font-size: 10px;
+    font-weight: bold;
+  }
+  section.toggles {
+    display: flex;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    flex-grow: 6;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  section.toggles > div {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: left;
+  }
+  section.toggles > div > label {
+    margin-left: 5px;
+  }
+  main section.equipment {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  main section.equipment > div {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  main section.equipment > div > div.money ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  main section.equipment > div > div.money ul > li {
+    display: flex;
+    align-items: center;
+  }
+  main section.equipment > div > div.money ul > li label {
+    border: 1px solid black;
+    border-radius: 10px 0 0 10px;
+    border-right: 0;
+    width: 20px;
+    font-size: 8px;
+    text-align: center;
+    padding: 3px 0;
+  }
+  main section.equipment > div > div.money ul > li input {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 40px;
+    padding: 10px 3px;
+    font-size: 12px;
+    text-align: center;
+  }
+  main section.equipment > div > label {
+    order: 3;
+    text-align: center;
+    flex: 100%;
+  }
+  section.flexPanel {
+    display: flex;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+    flex-grow: 1;
+    flex-direction: column;
+    position: relative;
+    z-index: 100;
+  }
+  div.tabHeader {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid black;
+  }
+  div.tabHeader > button {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    height: 100%;
+    border: 0px;
+  }
+  div.flexHeader > button:first-child {
+    border-radius: 10px 0px 0px 0px;
+  }
+  div.flexHeader > button:last-child {
+    border-radius: 0px 10px 0px 0px;
+  }
+  .tabContent {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .8rem;
+    display: none;
+  }
+  .tabContent--active {
+    display: flex;
+  }
+  .tabButton:active {
+    color: red;
+  }
+  .tabButton--active {
+    font-weight: bold;
+  }
+  section.features {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  div.featureHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  div.featureType {
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-grow: 1;
+  }
+  div.feature {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    align-items: center;
+    width: 100%;
+  }
+  
+  button.collapsible {
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    border: none;
+    outline: none;
+  }
+  div.collapsing {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+  
+  active,
+  button.collapsible:hover {
+    background-color: #ccc;
+  }
+  button.featureName {
+    background-color: var(--primary-accent);
+    color: var(--secondary-accent);
+    border-radius: 10px;
+    text-align: left;
+    width: 99%;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  div.featureDescription {
+    padding: 0 18px;
+  }
+  section.equipment {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  div.itemSlots {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 3;
+    border-right: 1px solid black;
+  }
+  div.itemSlots > img {
+    height: 100%;
+    position: relative;
+    margin-left: 7px;
+    z-index: -1;
+  }
+  div.equipmentText {
+    padding-right: 5px;
+    white-space: nowrap;
+  }
+  p.equipmentSlot {
+    font-size: 20px;
+    position: relative;
+    text-decoration: underline;
+  }
+  p.head {
+    top: -1.7%;
+    color: #63cb2f;
+    text-decoration-color: #63cb2f;
+  }
+  p.headband {
+    top: -3.5%;
+    color: #177f00;
+    text-decoration-color: #177f00;
+  }
+  p.eyes {
+    top: -5.1%;
+    color: #23c590;
+    text-decoration-color: #23c590;
+  }
+  p.shoulders {
+    top: -1.9%;
+    color: #a41515;
+    text-decoration-color: #a41515;
+  }
+  p.neck {
+    top: -4.1%;
+    color: #ff7900;
+    text-decoration-color: #ff7900;
+  }
+  p.chest {
+    top: -6.3%;
+    color: #ff4a29;
+    text-decoration-color: #ff4a29;
+  }
+  p.body {
+    top: -8.5%;
+    color: #0b5bdf;
+    text-decoration-color: #0b5bdf;
+  }
+  p.armor {
+    top: -10.7%;
+    color: #98e21a;
+    text-decoration-color: #98e21a;
+  }
+  p.belt {
+    top: -8.1%;
+    color: #12c1ff;
+    text-decoration-color: #12c1ff;
+  }
+  p.wrists {
+    top: -8.4%;
+    color: #7a1acb;
+    text-decoration-color: #7a1acb;
+  }
+  p.hands {
+    top: -10%;
+    color: #b510c3;
+    text-decoration-color: #b510c3;
+  }
+  p.ring1 {
+    top: -11.4%;
+    color: #122da6;
+    text-decoration-color: #122da6;
+  }
+  p.ring2 {
+    top: -13.1%;
+    color: #0d22a1;
+    text-decoration-color: #0d22a1;
+  }
+  p.feet {
+    top: 6.4%;
+    color: #5aedff;
+    text-decoration-color: #5aedff;
+  }
+  div.equipmentRightPane {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    width: 20%;
+    align-items: center;
+  }
+  div.money {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 5px;
+  }
+  div.money > div {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  div.money > div > div {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    align-items: center;
+  }
+  div.money > div > div {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 45px;
+  }
+  div.copper {
+    border: 3px solid #b87333;
+  }
+  div.silver {
+    border: 3px solid #c0c0c0;
+  }
+  div.gold {
+    border: 3px solid #ffd700;
+  }
+  div.platinum {
+    border: 3px solid #e5e4e2;
+  }
+  div.money > div > div > input {
+    width: 90%;
+    height: 60%;
+    border: 0px;
+    text-align: center;
+  }
+  div.weapons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  textarea.extraEquipment {
+    width: 100%;
+    flex-grow: 1;
+  }
+  section.proficiencies {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    /* background-color: green; */
+  }
+  div.profContainer {
+    display: flex;
+    flex-direction: row;
+  }
+  div.skillProficiencies,
+  div.languageProficiencies,
+  div.savesProficiencies,
+  div.weaponProficiencies,
+  div.armorProficiencies,
+  div.toolsProficiencies {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 5px;
+  }
+  h2.proficiencyHeader {
+    text-decoration: underline;
+  }
+  textarea.profText {
+    align-self: center;
+    width: 99%;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    flex-grow: 1;
+  }
+  section.spellsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  div.spellHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  div.spellHeaderItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    flex-grow: 1;
+  }
+  div.spellHeaderItem > div.key {
+    font-size: 8px;
+    width: 45px;
+    border: 1px solid black;
+    border-top: 0;
+    background-color: white;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 0 0 10px 10px;
+  }
+  div.spellHeaderItem > div.value {
+    height: 60px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+  }
+  div.spellModifier > div.value,
+  div.saveDC > div.value,
+  div.casterLevel > div.value {
+    width: 60px;
+  }
+  div.spellAbility > div.value {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  div.spellList {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+  div.spellLevel {
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: 5px;
+  }
+  div.spellLevelHeader {
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid black;
+  }
+  div.slotsLeft {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+  }
+  div.slotsLeft > input {
+    height: 100%;
+    width: 40px;
+    text-align: center;
+    font-size: 20px;
+  }
+  div.spellName {
+    font-size: large;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  section.powerAttack {
+    display: flex;
+    width: 100%;
+    height: 99%;
+    flex-direction: column;
+    align-items: center;
+    padding: 1px;
+  }
+  section.powerAttack > canvas {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+  }
+  section.flavor {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+  }
+  div.backstory {
+    width: 50%;
+    margin: 5px;
+  }
+  div.backstory > h2 {
+    text-decoration: underline;
+    align-self: center;
+  }
+  div.backstory,
+  div.personalityTraits,
+  div.bonds,
+  div.flaws,
+  div.ideals {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  div.personalityTraits,
+  div.bonds,
+  div.flaws,
+  div.ideals {
+    flex-grow: 1;
+    margin-bottom: 5px;
+  }
+  div.columnContainer {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+  div.columnContainer > div > h2 {
+    text-decoration: underline;
+    align-self: center;
+  }

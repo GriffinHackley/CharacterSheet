@@ -45,7 +45,7 @@ class Race():
         
         except:
             error = "You chose an ability distribution of {}, but primaryAbility={} and secondaryAbility={}"
-            print(error.format(self.abilityDistribution, self.primaryAbility, self.secondaryAbility))
+            raise Exception(error.format(self.abilityDistribution, self.primaryAbility, self.secondaryAbility))
 
         
 

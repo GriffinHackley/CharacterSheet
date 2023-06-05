@@ -1,4 +1,5 @@
 Django
 django-bootstrap-v5
 djangorestframework
+django-cors-headers
 requests

@@ -70,10 +70,29 @@ class Character(models.Model):
         self.weapon      = json.loads(character.weapon)
         self.equipment   = json.loads(character.equipment)
         self.flavor      = json.loads(character.flavor)
-        print(self.flavor)
         self.accentColor = json.loads(character.accentColor)
 
         return self
+    
+    def exportCharacter(self):
+        ret = {}
+
+        ret['header'] = self.getHeader()
+
+        return json.dumps(ret)
+
+    def getHeader(self):
+        ret = {}
+
+        ret['name'] = self.name
+        ret['class'] = self.charClass.name
+        ret['level'] = self.level
+        ret['background'] = self.background.name
+        ret['race'] = self.race.name
+        ret['alignment'] = self.alignment
+        ret['player'] = self.playerName
+
+        return ret
 
     def build(self):
         self.modList = ModifierList()
@@ -87,6 +106,14 @@ class Character(models.Model):
         self.spells = self.getSpells()
         self.features = self.getFeatures()
         self.proficiencies = self.cleanProficiencies()
+        self.header = self.createHeader()
+
+    def createHeader(self):
+        ret = {}
+        
+        ret['name'] = self.name
+
+        return ret
 
     def getModifiers(self):
         self.initModifiers()
