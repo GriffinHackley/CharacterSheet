@@ -45,7 +45,7 @@ class FifthEditionCharacter(Character):
         return ret
 
     def calculateAttacks(self):
-        ret = {}
+        ret = []
 
         for weapon in self.weapon:
             weaponRet = super().attackInit(weapon)
@@ -89,7 +89,7 @@ class FifthEditionCharacter(Character):
 
             weaponRet = super().calculateAttack(weaponRet, weapon, 5, 10)
 
-            ret[name] = weaponRet
+            ret.append(weaponRet)
 
         return ret
     

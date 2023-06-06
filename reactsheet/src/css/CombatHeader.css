@@ -1,0 +1,44 @@
+div.combatHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-grow: 1;
+  }
+  div.armorclass,
+  div.CMD,
+  div.initiative,
+  div.speed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+  }
+  div.armorclass > div.key,
+  div.CMD > div.key,
+  div.initiative > div.key,
+  div.speed > div.key {
+    font-size: 8px;
+    width: 45px;
+    border: 1px solid black;
+    border-top: 0;
+    background-color: white;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 0 0 10px 10px;
+  }
+  div.armorclass > div.value,
+  div.CMD > div.value,
+  div.initiative > div.value,
+  div.speed > div.value {
+    height: 60px;
+    width: 60px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+  }

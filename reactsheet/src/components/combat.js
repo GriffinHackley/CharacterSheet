@@ -1,102 +1,35 @@
+import "../css/Combat.css";
+import AttacksAndSpellcasting from "./AttacksAndSpellcasting";
 import CombatHeader from "./CombatHeader";
+import Conditions from "./Conditions";
+import CurrentHP from "./CurrentHP";
+import DeathSaves from "./DeathSaves";
+import HitDice from "./HitDice";
+import Resistances from "./Resistances";
+import TempHP from "./TempHP";
 
-export default function Combat({ combatInfo }) {
-  console.log(combatInfo);
-  //TODO: Fix get Items
+export default function Combat({ combatInfo, config }) {
+  //TODO: Fix getItems()
   return (
-    <section class="combat">
-      <CombatHeader combatInfo={combatInfo}></CombatHeader>
-      <div class="hp">
-        <div class="otherHp">
-          <div class="hitdice">
-            <div class="totalHD">
-              <div class="key">Total Hit Dice</div>
-              <div class="value">
-                {combatInfo.hitDice}
-              </div>
-            </div>
-            <input
-              type="text"
-              id="remainingHD"
-              onChange="storeItem('remainingHD', '{ character.name }')"
-            />
-            <script>
-              {/* getItem('remainingHD', '{character.name}') */}
-            </script>
-            <label for="remainingHD">Hit Dice</label>
+    <section class="combatPane">
+      <section class="combat">
+        <CombatHeader combatInfo={combatInfo} config={config} />
+        <div class="hp">
+          <div class="otherHP">
+            <HitDice hitDice={combatInfo.hitDice} />
+            <DeathSaves />
+            <Conditions />
           </div>
-          <div class="deathsaves">
-            <div class="marks">
-              <div class="deathsuccesses">
-                <label>Successes</label>
-                <div class="bubbles">
-                  <input name="deathsuccess1" type="checkbox" />
-                  <input name="deathsuccess2" type="checkbox" />
-                  <input name="deathsuccess3" type="checkbox" />
-                </div>
-              </div>
-              <div class="deathfails">
-                <label>Failures</label>
-                <div class="bubbles">
-                  <input name="deathfail1" type="checkbox" />
-                  <input name="deathfail2" type="checkbox" />
-                  <input name="deathfail3" type="checkbox" />
-                </div>
-              </div>
-            </div>
-            <label>Death Saves</label>
-          </div>
-          <div class="conditions">
-            {/* </textarea id="conditions"
-                          onChange="storeItem('conditions', '{ character.name }')"/> */}
-
-            <label>Conditions</label>
-            <script>
-              {/* getItem('conditions', '{character.name}') */}
-            </script>
+          <div class="currentTotalHealth">
+            <CurrentHP HP={combatInfo.HP} />
+            <TempHP />
+            <Resistances />
           </div>
         </div>
-        <div class="currentTotalHealth">
-          <div class="current">
-            <div class="maxHP">
-              <div class="key">Max Hit Points</div>
-              <div class="value">
-                {combatInfo.HP}
-              </div>
-            </div>
-            <input
-              type="text"
-              id="currentHealth"
-              onChange="storeItem('currentHealth', '{ character.name }')"
-            />
-            <script>
-              {/* getItem('currentHealth', '{character.name}') */}
-            </script>
-            <label>Current Hit Points</label>
-          </div>
-          <div class="temporary">
-            <input
-              type="text"
-              id="temphp"
-              onChange="storeItem('temphp', '{ character.name }')"
-            />
-            <script>
-              {/* getItem('temphp', '{character.name}') */}
-            </script>
-            <label for="temphp">Temporary Hit Points</label>
-          </div>
-          <div class="resistances">
-            <textarea
-              id="resistances"
-              onChange="storeItem('resistances', '{ character.name }')"
-            />
-            <label>Resistances</label>
-            <script>
-              {/* getItem('resistances', '{character.name}') */}
-            </script>
-          </div>
-        </div>
-      </div>
+      </section>
+      <section class="attacksandspellcasting">
+        <AttacksAndSpellcasting attacks={combatInfo.Attacks} config={config}/>
+      </section>
     </section>
   );
 }

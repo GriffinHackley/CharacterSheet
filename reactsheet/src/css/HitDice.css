@@ -1,0 +1,23 @@
+div.totalHD {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+    padding: 5px 0;
+  }
+  
+  div.totalHD div.key {
+    font-size: 10px;
+    color: var(--primary-accent);
+    margin: 0.25em;
+    text-transform: none;
+  }
+  
+  div.totalHD div.value {
+    font-size: 12px;
+    flex-grow: 1;
+    border: 0;
+    border-bottom: 1px solid var(--primary-accent);
+    margin-right: 0.25em;
+    padding: 0 0.25em;
+    text-align: center;
+  }

@@ -178,8 +178,6 @@ class Character(models.Model):
 
         ret = ret + self.charClass.getConsumables(self.abilityMod, self.profBonus)
         ret = ret + self.race.getConsumables(self.profBonus)
-        # ret.append(self.charClass.getConsumables(self.abilityMod, self.profBonus))
-        # ret.append(self.race.getConsumables(self.profBonus))
 
         print(ret)
 

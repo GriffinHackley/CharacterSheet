@@ -1,9 +1,7 @@
 export default function Consumables({consumableInfo}){
     let consumables = []
-    console.log(consumableInfo)
 
     consumableInfo.forEach(element => {
-        console.log(element);
         consumables.push(
             <div>
                 <div class="total">

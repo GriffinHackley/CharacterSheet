@@ -56,7 +56,7 @@ class PathfinderCharacter(Character):
         return ret
     
     def calculateAttacks(self):
-        ret = {}
+        ret = []
 
         for weapon in self.weapon:
             name = weapon['name']
@@ -128,7 +128,7 @@ class PathfinderCharacter(Character):
             weaponRet['critRange'] = critRange
             weaponRet['critDamage'] = weapon['critDamage']
 
-            ret[name] = weaponRet
+            ret.append(weaponRet)
         return ret
     
     def getSacredWeapon(self):

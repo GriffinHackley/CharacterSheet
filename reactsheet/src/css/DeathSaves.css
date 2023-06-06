@@ -1,0 +1,38 @@
+div.marks {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  div.deathsuccesses,
+  div.deathfails {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  div.deathsuccesses label,
+  div.deathfails label {
+    font-size: .8 rem;
+    text-align: right;
+    width: 50%;
+    margin-left: 5px;
+  }
+  div.bubbles {
+    flex: 1 40%;
+    margin-left: 5px;
+  }
+  div.bubbles input[type=checkbox] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+  div.bubbles input[type=checkbox]:checked {
+    background-color: black;
+  }
