@@ -1,0 +1,33 @@
+div.inspiration{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5px;
+}
+div.inspiration div{
+  display: flex;
+  width: 100%;
+  height: 15px;
+  border: 1px solid black;
+  border-left: 0;
+  align-items: center;
+  justify-content: center;
+}
+div.labelBox {
+  margin-left: -1px;
+}
+div.inspiration div label{
+  font-size: .6rem;
+}
+div.inspiration input {
+  -ms-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  appearance: none;
+  border: 1px solid black;
+  width: 40px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 0px;
+}

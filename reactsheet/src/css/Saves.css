@@ -1,0 +1,20 @@
+div.saves {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    flex-grow: 1;
+    justify-content: space-evenly;
+  }
+
+  div.saves ul li {
+    display: flex;
+    align-items: center;
+  }
+  div.saves ul li > * {
+    margin-left: 5px;
+  }
+  span.saveName {
+    font-size: .9rem;
+    text-align: left;
+    order: 3;
+  }

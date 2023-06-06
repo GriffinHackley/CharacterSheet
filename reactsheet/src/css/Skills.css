@@ -1,0 +1,27 @@
+div.skills {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 4;
+}
+div.skillSeparator {
+  font-size: .9rem;
+  text-decoration: underline;
+}
+li.skill {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+div.skillText {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: .7rem;
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+span.skillAbility {
+  color: var(--primary-accent);
+}
