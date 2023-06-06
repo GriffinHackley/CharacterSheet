@@ -21,9 +21,9 @@ class FifthEditionCharacter(Character):
     def getheader(self):
         ret = super().getHeader()
         ret['background'] = self.background.name
-        
+
     def calculateSaves(self):
-        ret = {}
+        ret = []
     
         for ability in Ability:
             statBonus = self.abilityMod[ability.name]
@@ -40,7 +40,7 @@ class FifthEditionCharacter(Character):
 
             source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
 
-            ret[ability.name] = {'ability':ability, 'value':statBonus, 'source':source}
+            ret.append({'name':ability.name, 'ability':ability.name, 'value':statBonus, 'source':source})
     
         return ret
 
@@ -120,8 +120,7 @@ class FifthEditionCharacter(Character):
         return 2
 
     def calculateSkills(self):
-        ret = {}
-        ret["Main"] = {}
+        ret = []
         list = skill_list_5e
 
         for key, value in list.items():
@@ -141,7 +140,7 @@ class FifthEditionCharacter(Character):
                     source['Prof.'] = self.profBonus
                     statBonus += self.profBonus
 
-            ret["Main"][key] = {'ability':ability, 'value':statBonus, 'source':source}
+            ret.append({'name':key, 'ability':ability, 'value':statBonus, 'isKnowledge':False, 'source':source})
         
         return ret
     

@@ -36,7 +36,7 @@ class PathfinderCharacter(Character):
         self.applyTraits()
 
     def calculateSaves(self):
-        ret = {}
+        ret = []
 
         list = save_list_pathfinder
 
@@ -51,7 +51,7 @@ class PathfinderCharacter(Character):
 
             source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
 
-            ret[key] = {'ability':ability, 'value':statBonus, 'source':source}
+            ret.append({'name':key,'ability':ability, 'value':statBonus, 'source':source})
         
         return ret
     
@@ -204,9 +204,7 @@ class PathfinderCharacter(Character):
         return {'value':total, 'source':source}
 
     def calculateSkills(self):
-            ret = {}
-            ret["Main"] = {}
-            ret["Knowledge"] = {}
+            ret = []
             list = skill_list_pathfinder
 
             totalSkillRanks = (self.skillPerLevel+self.abilityMod['Intelligence'])*self.level
@@ -250,9 +248,9 @@ class PathfinderCharacter(Character):
                     key = key.split(" - ")
                     key = key[1]
                     
-                    ret["Knowledge"][key] = {'ability':ability, 'value':statBonus, 'source':source}
+                    ret.append({'name':key,'ability':ability, 'value':statBonus, 'isKnowledge':True, 'source':source})
                 else: 
-                    ret["Main"][key] = {'ability':ability, 'value':statBonus, 'source':source}
+                    ret.append({'name':key, 'ability':ability, 'value':statBonus,'isKnowledge':False, 'source':source})
 
             return ret
 

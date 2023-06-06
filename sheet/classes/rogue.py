@@ -13,7 +13,7 @@ class Rogue(Class):
         super().appendModifiers(modList)
 
     def getConsumables(self, stats, proficiencyBonus):
-        return {}
+        return []
     
     def getSpells(self, stats, profBonus, modList):
         return {}

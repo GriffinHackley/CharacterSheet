@@ -15,9 +15,9 @@ class Harengon(Race):
         return super().appendModifiers(modList)
 
     def getConsumables(self, profBonus):
-        ret = {}
+        ret = []
 
-        ret['Rabbit Hop'] = profBonus
+        ret.append({'name':'Rabbit Hop', "number":profBonus})
 
         return ret
 

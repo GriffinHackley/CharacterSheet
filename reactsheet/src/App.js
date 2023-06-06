@@ -3,6 +3,10 @@ import Header from './components/header';
 import Attributes from './components/attributes';
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
+import Saves from './components/saves';
+import Skills from './components/skills';
+import Combat from './components/combat';
+import Consumables from './components/Consumables';
 
 function setColor(primary, secondary){
     let root = document.documentElement;
@@ -38,10 +42,20 @@ function App() {
         return(
             <section class="pageContainer">
                 <section>
-                    < Header headerInfo={character.header} ></Header>
+                    <Header headerInfo={character.header} ></Header>
                 </section>
                 <main>
-                    < Attributes attributesInfo={character.attributes}></Attributes>
+                    <Attributes attributesInfo={character.attributes}></Attributes>
+                    <section class="attr-applications">
+                        <Saves savesInfo={character.saves}></Saves>
+                        <Skills skillsInfo={character.skills}></Skills>
+                    </section>
+                    <section class="combatPane">
+                        <Combat combatInfo={character.combat}></Combat>
+                    </section>
+                    <section class="rightPane">
+                        <Consumables consumableInfo={character.consumables}></Consumables>
+                    </section>
                 </main>
             </section>
         )

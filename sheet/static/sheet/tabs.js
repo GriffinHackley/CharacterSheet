@@ -19,7 +19,6 @@ function setupTabs(name, logging) {
     });
 
     button.addEventListener("click", () => {
-      console.log("Clicked");
       prefix = button.dataset.forTab.split("-")[0];
       prefix = prefix + "-";
       sidebar.querySelectorAll(".tabButton").forEach(button => {

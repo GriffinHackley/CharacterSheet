@@ -6,7 +6,7 @@ export default function Attributes({attributesInfo}){
             <li class="tooltip shiftedRight" data-tooltip={ element.source }>
                 <div class="mod">
                   <div class="abilityName">{ element.name }</div>
-                  <div class="abilityMod">{element.abilityMod}</div>
+                  <div class="abilityMod">{ element.mod }</div>
                 </div>
                 <div class="abilityScore">
                   <div class="score">{ element.score }</div>

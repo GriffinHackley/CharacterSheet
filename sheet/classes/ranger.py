@@ -16,9 +16,12 @@ class Ranger(Class):
         modList.addModifier(Modifier('Wisdom',"untyped", 'Initiative', 'Dread Ambusher'))
 
     def getConsumables(self, stats, proficiencyBonus):
-        huntersMark = stats['Wisdom']
-        favoredFoe = proficiencyBonus
-        return {'Favored Foe': favoredFoe, 'Hunters Mark': huntersMark}
+        ret = []
+        
+        ret.append({'name':'huntersMark', "number":stats['Wisdom']})
+        ret.append({'name':'favoredFoe', "number":proficiencyBonus})
+        
+        return ret
     
     def getSpells(self, stats, profBonus, modList):
         ret = {}

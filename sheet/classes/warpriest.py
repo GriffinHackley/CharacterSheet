@@ -180,14 +180,14 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
         return ret
     
     def getConsumables(self, stats, profBonus):
-        ret = {}
-        ret['Blessings'] = 3 + math.floor(stats['Wisdom']/2)
+        ret = []
+        ret.append({'name':'Blessings', "number":3 + math.floor(stats['Wisdom']/2)})
         
         if self.level >= 2:
-            ret['Fervor'] = 3 + math.floor(self.level/2)
+            ret.append({'name':'Fervor', "number":3 + math.floor(self.level/2)})
         
         if self.level >= 4:
-            ret['Focus Weapon'] = self.level
+            ret.append({'name':'Focus Weapon', "number":self.level})
 
         return ret
 

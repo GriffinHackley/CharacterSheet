@@ -61,7 +61,7 @@ class Race():
                 proficiencyList[key] = proficiencyList[key] + value
 
     def getConsumables(self, profBonus):
-        return {}
+        return []
     
     def getFeat(self):
         if self.feat == '':
