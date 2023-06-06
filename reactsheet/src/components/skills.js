@@ -1,3 +1,5 @@
+import '../css/Skills.css'
+
 export default function Skills({skillsInfo}){
     let skills = []
     let knowledge =[]

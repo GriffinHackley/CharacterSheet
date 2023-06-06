@@ -1,3 +1,5 @@
+import '../css/Header.css'
+
 export default function Header({headerInfo}){
     let pathfinder = null
     if(headerInfo.edition == "Pathfinder"){

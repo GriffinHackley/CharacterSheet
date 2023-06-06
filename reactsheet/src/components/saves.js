@@ -1,3 +1,5 @@
+import '../css/Saves.css'
+
 export default function Saves({savesInfo}){
     let saves = []
 

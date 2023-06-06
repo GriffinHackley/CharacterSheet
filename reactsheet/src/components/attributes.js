@@ -1,3 +1,5 @@
+import '../css/Attributes.css';
+
 export default function Attributes({attributesInfo}){
     let attributes = []
 
