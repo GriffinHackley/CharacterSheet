@@ -83,6 +83,7 @@ class Character(models.Model):
         ret['skills'] = self.skills
         ret['combat'] = self.combat
         ret["consumables"] = self.getConsumables()
+        ret["features"] = self.getFeatures()
 
         return json.dumps(ret)
 
@@ -158,7 +159,8 @@ class Character(models.Model):
         ret["HP"]          = self.calculateHP()
         ret["AC"]          = self.calculateAC()
         ret["Attacks"]     = self.calculateAttacks()
-        ret["hitDice"] = "{}d{}".format(self.level, self.hitDie)
+        ret["hitDice"]     = "{}d{}".format(self.level, self.hitDie)
+        ret["config"]      = {'name':self.name, 'edition':self.config['edition']}
 
         if "Main Kukri" in ret["Attacks"]:
             ret["PowerAttack"] = ret["Attacks"]["Main Kukri"]
@@ -178,8 +180,6 @@ class Character(models.Model):
 
         ret = ret + self.charClass.getConsumables(self.abilityMod, self.profBonus)
         ret = ret + self.race.getConsumables(self.profBonus)
-
-        print(ret)
 
         return ret
 
@@ -503,9 +503,9 @@ class Character(models.Model):
         ret = {}
 
         ret['Class'] = self.charClass.getClassFeatures()
-        ret['Feats'] = self.getFeats()
-        ret['Race']  = self.race.getFeatures()
-        ret['Misc.'] = self.getMiscFeatures()
+        # ret['Feats'] = self.getFeats()
+        # ret['Race']  = self.race.getFeatures()
+        # ret['Misc.'] = self.getMiscFeatures()
 
         return ret
 

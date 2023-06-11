@@ -16,27 +16,27 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
     if (includeCrit) {
       critRangeBody = (
         <td>
-          <div class="critRange">
+          <div className="critRange">
             {element.critRange}/x{element.critDamage}
           </div>
         </td>
       );
     }
     rows.push(
-      <tr>
+      <tr key={"attack-"+element.name}>
         <td>
-          <div class="atk">
+          <div className="atk">
             {element.name}
           </div>
         </td>
         {critRangeBody}
         <td>
-          <div class="tooltip centered toHit" data-tooltip="{{ source }}">
+          <div className="tooltip centered toHit" data-tooltip="{{ source }}">
             +{element.toHit.value}
           </div>
         </td>
         <td>
-          <div class="tooltip centered damage" data-tooltip="{{ source }}">
+          <div className="tooltip centered damage" data-tooltip="{{ source }}">
             {element.damage.value}
           </div>
         </td>

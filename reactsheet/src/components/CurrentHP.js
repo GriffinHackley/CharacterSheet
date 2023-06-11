@@ -1,22 +1,33 @@
 import "../css/CurrentHP.css";
+import { useEffect, useState } from "react";
+import { storeItem, getItem } from "../scripts/localState.js";
 
-export default function CurrentHP({ HP }) {
+function handleChange(event) {
+  storeItem("currentHealth   ", charName);
+}
+
+let charName = null;
+
+export default function CurrentHP({ HP, config }) {
+  charName = config.name;
+
+  //Load value from local storage when component is mounted
+  useEffect(() => {
+    getItem("currentHealth", charName);
+  }, []);
   return (
-    <div class="current">
-      <div class="maxHP">
-        <div class="key">Max Hit Points</div>
-        <div class="value">
+    <div className="current">
+      <div className="maxHP">
+        <div className="key">Max Hit Points</div>
+        <div className="value">
           {HP}
         </div>
       </div>
       <input
         type="text"
         id="currentHealth"
-        onChange="storeItem('currentHealth', '{ character.name }')"
+        onChange={handleChange}
       />
-      <script>
-        {/* getItem('currentHealth', '{character.name}') */}
-      </script>
       <label>Current Hit Points</label>
     </div>
   );

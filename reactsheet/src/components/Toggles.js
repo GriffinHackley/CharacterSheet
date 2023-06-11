@@ -1,7 +1,7 @@
 export default function Toggles(){
 
     return(
-        <section class="toggles">
+        <section className="toggles">
           <div>Add toggles</div>
         </section>
     )

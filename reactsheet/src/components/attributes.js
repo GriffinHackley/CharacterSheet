@@ -5,21 +5,21 @@ export default function Attributes({attributesInfo}){
 
     attributesInfo.forEach(element => {
         attributes.push(
-            <li class="tooltip shiftedRight" data-tooltip={ element.source }>
-                <div class="mod">
-                  <div class="abilityName">{ element.name }</div>
-                  <div class="abilityMod">{ element.mod }</div>
+            <li className="tooltip shiftedRight" data-tooltip={ element.source } key={"attribute-"+element.name}>
+                <div className="mod">
+                  <div className="abilityName">{ element.name }</div>
+                  <div className="abilityMod">{ element.mod }</div>
                 </div>
-                <div class="abilityScore">
-                  <div class="score">{ element.score }</div>
+                <div className="abilityScore">
+                  <div className="score">{ element.score }</div>
                 </div>
             </li>
         )
     });
 
     return (
-        <section class="attributes">
-        <div class="scores">
+        <section className="attributes">
+        <div className="scores">
           <ul>
             {attributes}
           </ul>

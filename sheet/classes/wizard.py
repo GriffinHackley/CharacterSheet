@@ -12,8 +12,6 @@ class Wizard(Class):
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
 
-        modList.addModifier(Modifier(2,"untyped", 'ToHit-Ranged', 'Archery Fighting Style'))
-
     def getClassFeatures(self):
         return super().get5eClassFeatures()
 

@@ -3,16 +3,16 @@ export default function Consumables({consumableInfo}){
 
     consumableInfo.forEach(element => {
         consumables.push(
-            <div>
-                <div class="total">
-                  <div class="key">
+            <div key={"consumable-"+element.name}>
+                <div className="total">
+                  <div className="key">
                     Total
                   </div>
-                  <div class="value">
+                  <div className="value">
                     { element.number }
                   </div>
                 </div>
-                <div class="remainingConsumable">
+                <div className="remainingConsumable">
                   <input name="remainingConsumable"
                          type="text"
                          id="{{ key }}"

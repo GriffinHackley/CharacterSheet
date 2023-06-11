@@ -1,23 +1,30 @@
-import '../css/HitDice.css'
+import "../css/HitDice.css";
+import { useEffect } from 'react';
+import {storeItem, getItem} from '../scripts/localState.js'
 
-export default function HitDice({hitDice}){
-    return (
-        <div class="hitDice">
-            <div class="totalHD">
-              <div class="key">Total Hit Dice</div>
-              <div class="value">
-                {hitDice}
-              </div>
-            </div>
-            <input
-              type="text"
-              id="remainingHD"
-              onChange="storeItem('remainingHD', '{ character.name }')"
-            />
-            <script>
-              {/* getItem('remainingHD', '{character.name}') */}
-            </script>
-            <label for="remainingHD">Hit Dice</label>
-          </div>
-    )
+function handleChange(event) {
+  storeItem("remainingHD", charName);
+}
+
+let charName = null
+
+export default function HitDice({ hitDice, config }) {
+    charName = config.name
+
+    //Load value from local storage when component is mounted
+    useEffect(() => {
+        getItem("remainingHD", charName);
+     }, []);
+  return (
+    <div className="hitDice">
+      <div className="totalHD">
+        <div className="key">Total Hit Dice</div>
+        <div className="value">
+          {hitDice}
+        </div>
+      </div>
+      <input type="text" id="remainingHD" onChange={handleChange} />
+      <label htmlFor="remainingHD">Hit Dice</label>
+    </div>
+  );
 }

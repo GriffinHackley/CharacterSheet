@@ -1,37 +1,37 @@
 import "../css/CombatHeader.css";
 
-export default function CombatHeader({ combatInfo, config }) {
+export default function CombatHeader({ combatInfo }) {
   let CMD = null;
-  if (config == "Pathfinder") {
+  if (combatInfo.config == "Pathfinder") {
     CMD = (
-      <div class="tooltip centered CMD" data-tooltip="{ source }">
-        <div class="value">
+      <div className="tooltip centered CMD" data-tooltip="{ source }">
+        <div className="value">
           {combatInfo.CMD.value}
         </div>
-        <div class="key">CMD</div>
+        <div className="key">CMD</div>
       </div>
     );
   }
   return (
-    <div class="combatHeader">
-      <div class="tooltip centered armorclass" data-tooltip="{ source }">
-        <div class="value">
+    <div className="combatHeader">
+      <div className="tooltip centered armorclass" data-tooltip="{ source }">
+        <div className="value">
           {combatInfo.AC.value}
         </div>
-        <div class="key">Armor Class</div>
+        <div className="key">Armor Class</div>
       </div>
       {CMD}
-      <div class="tooltip centered initiative" data-tooltip="{ source }">
-        <div class="value">
+      <div className="tooltip centered initiative" data-tooltip="{ source }">
+        <div className="value">
           {combatInfo.Initiative.value}
         </div>
-        <div class="key">Initiative</div>
+        <div className="key">Initiative</div>
       </div>
-      <div class="tooltip centered speed" data-tooltip="{ source }">
-        <div class="value">
+      <div className="tooltip centered speed" data-tooltip="{ source }">
+        <div className="value">
           {combatInfo.Speed.value}
         </div>
-        <div class="key">Speed</div>
+        <div className="key">Speed</div>
       </div>
     </div>
   );

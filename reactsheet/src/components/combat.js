@@ -8,27 +8,28 @@ import HitDice from "./HitDice";
 import Resistances from "./Resistances";
 import TempHP from "./TempHP";
 
-export default function Combat({ combatInfo, config }) {
+export default function Combat({ combatInfo}) {
   //TODO: Fix getItems()
   return (
-    <section class="combatPane">
-      <section class="combat">
-        <CombatHeader combatInfo={combatInfo} config={config} />
-        <div class="hp">
-          <div class="otherHP">
-            <HitDice hitDice={combatInfo.hitDice} />
+    <section className="combatPane">
+      <section className="combat">
+        <CombatHeader combatInfo={combatInfo}/>
+        <div className="hp">
+          <div className="otherHP">
+            {/* TODO: Make this all happen in one component */}
+            <HitDice hitDice={combatInfo.hitDice} config={combatInfo.config}/>
             <DeathSaves />
-            <Conditions />
+            <Conditions config={combatInfo.config}/>
           </div>
-          <div class="currentTotalHealth">
-            <CurrentHP HP={combatInfo.HP} />
-            <TempHP />
-            <Resistances />
+          <div className="currentTotalHealth">
+            <CurrentHP HP={combatInfo.HP} config={combatInfo.config}/>
+            <TempHP config={combatInfo.config}/>
+            <Resistances config={combatInfo.config}/>
           </div>
         </div>
       </section>
-      <section class="attacksandspellcasting">
-        <AttacksAndSpellcasting attacks={combatInfo.Attacks} config={config}/>
+      <section className="attacksandspellcasting">
+        <AttacksAndSpellcasting attacks={combatInfo.Attacks} config={combatInfo.config}/>
       </section>
     </section>
   );

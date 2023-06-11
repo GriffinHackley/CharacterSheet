@@ -43,7 +43,7 @@ class Class():
             return math.floor((self.level)/3)
 
     def getConsumables(self, stats, proficiencyBonus):
-        return {}
+        return []
 
     def appendModifiers(self, modList:ModifierList):
         if self.edition == "Pathfinder":
@@ -101,7 +101,7 @@ class Class():
                     levels[currentLevel][feature] = "Nothing"
 
         # Find all class features
-        features = {}
+        features = []
         for level in levels:
             for feature in levels[str(level)]:
                 featureHeader = soup.find("h3", text=feature)
@@ -145,7 +145,7 @@ class Class():
 
                 featureText = featureText + self.scrapeFeature(current, [], feature)
 
-                features[featureName] = featureText
+                features.append({'name': featureName, 'text':featureText})
         
         return features
 

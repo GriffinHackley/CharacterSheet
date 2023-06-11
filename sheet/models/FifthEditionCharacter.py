@@ -192,6 +192,10 @@ class FifthEditionCharacter(Character):
             combatForm = forms.EzekielCombatForm(request.GET)
             spellForm  = forms.EzekielSpellForm(request.GET)
 
+        if self.name == "New Ezekiel":
+            combatForm = forms.EzekielCombatForm(request.GET)
+            spellForm  = forms.EzekielSpellForm(request.GET)
+
         
         toggles = {}
         if combatForm.is_valid():

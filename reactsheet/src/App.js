@@ -11,6 +11,8 @@ import Consumables from "./components/Consumables";
 import Toggles from "./components/Toggles";
 import Inspiration from "./components/Inspiration";
 import Proficiency from "./components/Proficiency";
+import FlexPanel from "./components/FlexHeader";
+import init from "./scripts/tabs"
 
 function setColor(primary, secondary) {
   let root = document.documentElement;
@@ -29,7 +31,7 @@ function App() {
       setLoading(true);
 
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/characters/52"
+        "http://127.0.0.1:8000/api/characters/53"
       );
       setCharacter(JSON.parse(response.data));
     //   console.log(response.data);
@@ -46,26 +48,27 @@ function App() {
     return <h4>Loading...</h4>;
   } else {
     return (
-      <section class="pageContainer">
+      <section className="pageContainer">
         <section>
           <Header headerInfo={character.header} />
         </section>
         <main>
           <Attributes attributesInfo={character.attributes} />
-          <section class="attr-applications">
+          <section className="attr-applications">
             <Inspiration />
             <Proficiency />
             <Saves savesInfo={character.saves} />
             <Skills skillsInfo={character.skills} />
           </section>
 
-          <Combat combatInfo={character.combat} config={character.header.edition} />
+          <Combat combatInfo={character.combat} />
 
-          <section class="rightPane">
+          <section className="rightPane">
             <Consumables consumableInfo={character.consumables} />
             <Toggles />
           </section>
         </main>
+        <FlexPanel panelInfo={character.features} ></FlexPanel>
       </section>
     );
   }

@@ -1,17 +1,29 @@
 import '../css/Conditions.css'
+import { useEffect } from 'react';
+import {storeItem, getItem} from '../scripts/localState.js'
 
-export default function Conditions() {
+function handleChange(event) {
+    storeItem("conditions", charName);
+  }
+  
+  let charName = null
+
+export default function Conditions({config}) {
+    charName = config.name
+
+    //Load value from local storage when component is mounted
+    useEffect(() => {
+        getItem("conditions", charName);
+     }, []);
+     
   return (
-    <div class="conditions">
+    <div className="conditions">
       <textarea
         id="conditions"
-        onChange="storeItem('conditions', '{ character.name }')"
+        onChange={handleChange}
       />
 
       <label>Conditions</label>
-      <script>
-        {/* getItem('conditions', '{character.name}') */}
-      </script>
     </div>
   );
 }

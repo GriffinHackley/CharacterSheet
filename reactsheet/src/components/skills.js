@@ -1,64 +1,52 @@
-import '../css/Skills.css'
+import "../css/Skills.css";
 
-export default function Skills({skillsInfo}){
-    let skills = []
-    let knowledge =[]
-    let usedKnowledge = false
+export default function Skills({ skillsInfo }) {
+  let skills = [];
+  let knowledge = [];
+  let usedKnowledge = false;
 
-    skillsInfo.forEach(element => {
-        if(element.isKnowledge){
-            usedKnowledge = true
-            knowledge.push(
-                <div class="tooltip centered skill" data-tooltip={ element.source }>
-                    <li class="skill">
-                      <div class="value">
-                        { element.value }
-                      </div>
-                      <div class="skillText">
-                        <span class="skillName"> {element.name } </span>
-                        <span class="skillAbility"> { element.ability } </span>
-                      </div>
-                    </li>
-                </div>
-            )
-        } else {
-            skills.push(
-                <div class="tooltip centered skill" data-tooltip={ element.source }>
-                    <li class="skill">
-                      <div class="value">
-                        { element.value }
-                      </div>
-                      <div class="skillText">
-                        <span class="skillName"> {element.name } </span>
-                        <span class="skillAbility"> { element.ability } </span>
-                      </div>
-                    </li>
-                </div>
-            )
-        }
-    });
-
-    if(usedKnowledge){
-        skills.push(
-            <div class="skillSeparator">
-                Knowledge
-            </div>
-        )
-        skills.push(knowledge)
-    }
-
-    return (
-        <div class="skills list-section">
-            {/* <div class="skillSeparator">
-                {{ section }}
-            </div> */}
-
-            <ul>
-                {skills}
-            </ul>
-          <div class="label">
-            Skills
+  skillsInfo.forEach(element => {
+    let ret = (
+      <div
+        className="tooltip centered skill"
+        data-tooltip={element.source}
+        key={"skill-" + element.name}
+      >
+        <li className="skill">
+          <div className="value">
+            {element.value}
           </div>
-        </div>
-    )
+          <div className="skillText">
+            <span className="skillName">
+              {" "}{element.name}{" "}
+            </span>
+            <span className="skillAbility">
+              {" "}{element.ability}{" "}
+            </span>
+          </div>
+        </li>
+      </div>
+    );
+
+    if (element.isKnowledge) {
+      usedKnowledge = true;
+      knowledge.push(ret);
+    } else {
+      skills.push(ret);
+    }
+  });
+
+  if (usedKnowledge) {
+    skills.push(<div className="skillSeparator">Knowledge</div>);
+    skills.push(knowledge);
+  }
+
+  return (
+    <div className="skills list-section">
+      <ul>
+        {skills}
+      </ul>
+      <div className="label">Skills</div>
+    </div>
+  );
 }

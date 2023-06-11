@@ -5,9 +5,9 @@ export default function Saves({savesInfo}){
 
     savesInfo.forEach(element => {
         saves.push(
-            <li class="tooltip shiftedRight" data-tooltip={ element.source }>
-                <span class="saveName">{ element.name }</span>
-                <div class="value">
+            <li className="tooltip shiftedRight" data-tooltip={ element.source } key={"save-"+element.name}>
+                <span className="saveName">{ element.name }</span>
+                <div className="value">
                     { element.value }
                 </div>
             </li>
@@ -15,11 +15,11 @@ export default function Saves({savesInfo}){
     });
 
     return (
-        <div class="saves list-section">
+        <div className="saves list-section">
           <ul>
             {saves}
           </ul>
-          <div class="label">
+          <div className="label">
             Saving Throws
           </div>
         </div>
