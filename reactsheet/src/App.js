@@ -11,8 +11,7 @@ import Consumables from "./components/Consumables";
 import Toggles from "./components/Toggles";
 import Inspiration from "./components/Inspiration";
 import Proficiency from "./components/Proficiency";
-import FlexPanel from "./components/FlexHeader";
-import init from "./scripts/tabs"
+import FlexPanel from "./components/FlexPanel";
 
 function setColor(primary, secondary) {
   let root = document.documentElement;

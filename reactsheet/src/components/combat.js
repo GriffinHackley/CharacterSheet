@@ -16,7 +16,6 @@ export default function Combat({ combatInfo}) {
         <CombatHeader combatInfo={combatInfo}/>
         <div className="hp">
           <div className="otherHP">
-            {/* TODO: Make this all happen in one component */}
             <HitDice hitDice={combatInfo.hitDice} config={combatInfo.config}/>
             <DeathSaves />
             <Conditions config={combatInfo.config}/>

@@ -500,9 +500,9 @@ class Character(models.Model):
         return self.equipment
 
     def getFeatures(self):
-        ret = {}
+        ret = []
 
-        ret['Class'] = self.charClass.getClassFeatures()
+        ret = ret + [{'name':'Class', 'value':self.charClass.getClassFeatures()}]
         # ret['Feats'] = self.getFeats()
         # ret['Race']  = self.race.getFeatures()
         # ret['Misc.'] = self.getMiscFeatures()
