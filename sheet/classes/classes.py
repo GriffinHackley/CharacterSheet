@@ -125,7 +125,7 @@ class Class():
                     if "subclass" in self.options[feature]:
                         subclassName = self.options[feature].split(":")[1]
                         subclassUrl = url + ":" + subclassName.replace(" ", "-")
-                        features.update(self.getSubclassFeatures(subclassUrl))
+                        features.append(self.getSubclassFeatures(subclassUrl))
                         continue
 
                     # If this feature was tagged as replaced, just skip it
@@ -176,7 +176,11 @@ class Class():
 
             featureText = self.scrapeFeature(current, [], featureName)
                 
-            features[featureName.text] = featureText
+            features = {'name': featureName.text,
+                         'text':featureText}
+            
+            # features = {'name': "fdas",
+            #              'text':"featureText"}
 
         return features
 
@@ -228,7 +232,7 @@ class Class():
             
             # If its a table just take the whole table
             elif current.name == "table":
-                featureText.append({"type":"table","text":current})
+                featureText.append({"type":"table","text":"tables have not been implemented yet"})
                 break
             
             # Store headings as headings so they can be bolded

@@ -71,26 +71,32 @@ class Race():
         return [self.feat]
     
     def getFeatures(self, darkvision=False, creatureType="You are humanoid", extraAttributes=[]):
-        ret = {}
+        ret = []
         
         size = "You are {}".format(self.size)
         speed = "Your walking speed is {} feet.".format(self.speed)
 
-        ret['Attributes'] = [
-            {"type": "heading", "text":"Creature Type:"},
-            {"type": "normal", "text":creatureType},
+        ret = ret + [{
+            "name": "Attributes",
+            "text": [
+                {"type": "heading", "text":"Creature Type:"},
+                {"type": "normal", "text":creatureType},
 
-            {"type": "heading", "text":"Size:"},
-            {"type": "normal", "text":size},
+                {"type": "heading", "text":"Size:"},
+                {"type": "normal", "text":size},
 
-            {"type": "heading", "text":"Speed:"},
-            {"type": "normal", "text":speed},
-        ] + extraAttributes
+                {"type": "heading", "text":"Speed:"},
+                {"type": "normal", "text":speed},
+            ] + extraAttributes
+        }] 
 
         if darkvision:
-            ret['Darkvision'] = [
-                {"type": "normal", "text":"You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."}
-            ]
+            ret = ret + [{
+                "name": "Darkvision",
+                "text": [
+                    {"type": "normal", "text":"You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."}
+                ]
+            }]
 
         languages = "You can speak, read, and write Common"
         if len(self.languages) == 1:
@@ -100,9 +106,12 @@ class Race():
                 languages = languages + ", {}".format(self.languages[i])
             languages = languages + ", and {}".format(self.languages[len(self.languages)-1])
 
-        ret['Languages'] = [
-            {"type": "normal", "text":languages}
-        ]
+        ret = ret + [{
+            "name": "Languages",
+            "text": [
+                {"type": "normal", "text":languages}
+            ]
+        }]
 
         return ret
     

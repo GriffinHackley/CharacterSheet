@@ -169,9 +169,9 @@ class FifthEditionCharacter(Character):
         return ret
 
     def getMiscFeatures(self):
-        ret = {}
+        ret = []
 
-        ret[self.background.feature['name']] = self.background.feature['feature']
+        ret = ret + [{'name':self.background.feature['name'], 'text':self.background.feature['feature']}]
 
         return ret
 

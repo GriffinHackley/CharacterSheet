@@ -503,9 +503,9 @@ class Character(models.Model):
         ret = []
 
         ret = ret + [{'name':'Class', 'value':self.charClass.getClassFeatures()}]
-        # ret['Feats'] = self.getFeats()
-        # ret['Race']  = self.race.getFeatures()
-        # ret['Misc.'] = self.getMiscFeatures()
+        ret = ret + [{'name':'Feats', 'value':self.getFeats()}]
+        ret = ret + [{'name':'Race' , 'value':self.race.getFeatures()}]
+        ret = ret + [{'name':'Misc.', 'value':self.getMiscFeatures()}]
 
         return ret
 
@@ -520,10 +520,10 @@ class Character(models.Model):
         return ret
 
     def getFeats(self):
-        ret = {}
+        ret = []
         
         for feat in self.feats:
-            ret[feat.name] = feat.text
+            ret = ret + [{'name':feat.name, 'text':feat.text}]
         
         return ret
 

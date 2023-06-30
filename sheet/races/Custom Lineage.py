@@ -6,7 +6,7 @@ class CustomLineage(Race):
         options['name'] = "Custom Lineage"
         options['size'] = options['size']
         options['speed'] = 30
-        options['languages'] = options["languages"] + ["Common"]
+        options['languages'] = options["languages"]
         super().__init__(options)
 
     def appendModifiers(self, modList: ModifierList):
@@ -24,8 +24,9 @@ class CustomLineage(Race):
 
         ret = super().getFeatures(creatureType=creatureType, darkvision=darkvision)
 
-        ret['Feat'] = [
-            {"type": "normal", "text":"You gain the {} feat".format(self.feat)}
-        ]
+        ret = ret + [{
+            'name':'Feat',
+            'text':[{"type": "normal", "text":"You gain the {} feat".format(self.feat['name'])}]
+        }]
 
         return ret

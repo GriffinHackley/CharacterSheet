@@ -7,7 +7,7 @@ import PowerAttackTab from "./Tabs/PowerAttackTab";
 import FlavorTab from "./Tabs/FlavorTab";
 
 export default function FlexPanel({panelInfo}){
-    const [activeTab, setMainActiveTab] = useState('features')
+    const [activeTab, setMainActiveTab] = useState('Features')
 
     let tabs = {
         "Features": <FeaturesTab featuresInfo={panelInfo}></FeaturesTab>,

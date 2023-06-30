@@ -1,113 +1,89 @@
+import { useState } from "react";
+
 export default function FeaturesTab({ featuresInfo }) {
-  let headers = [];
-  let features = [];
+    const [activeTab, setMainActiveTab] = useState('Class')
 
-  featuresInfo.forEach(element => {
-    headers.push(
-      <button
-        type="button"
-        id={element.name + "Button"}
-        key={element.name + "Button"}
-        className="tabButton"
-        data-for-tab={"feature-" + element.name}
-      >
-        {element.name}
-      </button>
-    );
+    let tabs = {
+       
+    }
 
-    features.push(
-      <div class="feature">
-        <button type="button" class="featureName collapsible">
-          {element.name}
-        </button>
-        <div class="featureDescription collapsing">
-          {/* {% for line in description %}
-                      {% if line.type == "normal" %}
-                        {% with line.text|split as test %}
-                          {% for item in test %}
-                            <p>
-                              {{ item }}
-                            </p>
-                          {% endfor %}
-                        {% endwith %}
-                      {% elif line.type == "heading" %}
-                        <h4>
-                          {{ line.text }}
-                        </h4>
-                      {% elif line.type == "table" %}
-                        {% with feature|kebab as kebabFeature %}
-                          {% with line|formatTableJS as formatted %}
-                            <div id="{{ kebabFeature }}">
-                            </div>
-                            <script>inject("{{ kebabFeature }}", "{{ formatted }}")</script>
-                          {% endwith %}
-                        {% endwith %}
-                      {% endif %}
-                    {% endfor %} */}
-        </div>
-      </div>
-    );
-  });
+    for(let source in featuresInfo){
+        let feature = featuresInfo[source]
+        tabs[feature.name] = feature
+    }
 
-  return (
-    <div className="tabContent" data-tab="main-features">
-      <section className="features">
-        <div className="featureHeader tabHeader">
-          {headers}
-        </div>
-      </section>
-      <div
-        className="featureType tabContent"
-        data-tab="feature-{{ featureType }}"
-      />
-    </div>
-  );
+    let headerButtons = [];
 
-  // return (
-  //     <div className="tabContent" data-tab="main-features">
-  //     <section className="features">
-  //       <div className="featureHeader tabHeader">
-  //         {% for featureType in character.features %}
+    //Get all tab buttons set up
+    for(let tabName in tabs){
+        headerButtons.push(
+          <button
+            type="button"
+            onClick={() => setMainActiveTab(tabName)}
+          >
+            {tabName}
+          </button>
+        );
+    }
 
-  //         {% endfor %}
-  //       </div>
-  //       {% for featureType,features in character.features.items %}
-  //         <div className="featureType tabContent" data-tab="feature-{{ featureType }}">
-  //           {% for feature,description in features.items %}
-  //             <div className="feature">
-  //               <button type="button" className="featureName collapsible">
-  //                 {{ feature }}
-  //               </button>
-  //               <div className="featureDescription collapsing">
-  //                 {% for line in description %}
-  //                   {% if line.type == "normal" %}
-  //                     {% with line.text|split as test %}
-  //                       {% for item in test %}
-  //                         <p>
-  //                           {{ item }}
-  //                         </p>
-  //                       {% endfor %}
-  //                     {% endwith %}
-  //                   {% elif line.type == "heading" %}
-  //                     <h4>
-  //                       {{ line.text }}
-  //                     </h4>
-  //                   {% elif line.type == "table" %}
-  //                     {% with feature|kebab as kebabFeature %}
-  //                       {% with line|formatTableJS as formatted %}
-  //                         <div id="{{ kebabFeature }}">
-  //                         </div>
-  //                         <script>inject("{{ kebabFeature }}", "{{ formatted }}")</script>
-  //                       {% endwith %}
-  //                     {% endwith %}
-  //                   {% endif %}
-  //                 {% endfor %}
-  //               </div>
-  //             </div>
-  //           {% endfor %}
-  //         </div>
-  //       {% endfor %}
-  //     </section>
-  //   </div>
-  // )
+    let contents = tabs[activeTab].value
+    
+    let tabContents = []
+
+    let init = Array(contents.length).fill(false);
+    const [expandedFeatures, setExpandedFeatures] = useState(init)
+
+    const toggleExpanded = (index) => {
+        let ret = [...expandedFeatures]
+        ret[index] = !expandedFeatures[index]
+        setExpandedFeatures(ret)
+    }
+
+    const getContent = (feature, index) => {
+        if(expandedFeatures[index]){
+            let text = []
+            feature.text.forEach(line => {
+                if(line.type == "normal"){
+                    text.push(
+                        <p>{line.text}</p>
+                    )
+                } else if (line.type == "heading"){
+                    text.push(
+                        <h4>{line.text}</h4>
+                    )
+                } else if (line.type == "table"){
+                    <h1>Tables have not been implemented</h1>
+                }
+                
+            });
+            return (<div>{text}</div>)
+        } else {
+            return
+        }
+    }
+
+    for(let index in contents){
+        let feature = contents[index]
+
+        tabContents.push(
+            <div class="feature">
+                <button type="button" class="featureName collapsible" onClick={() => toggleExpanded(index)}>
+                  {feature.name}
+                </button>
+                <div className="featureDescription">
+                    {getContent(feature, index)}
+                </div>
+            </div>
+        )
+    }
+        
+
+    return (
+        <section className="flexPanel">
+            <div className="flexHeader tabHeader">
+                {headerButtons}
+            </div>
+            {tabContents}
+        </section>
+    )
 }

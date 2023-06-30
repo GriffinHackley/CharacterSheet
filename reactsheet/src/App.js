@@ -30,7 +30,7 @@ function App() {
       setLoading(true);
 
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/characters/53"
+        "http://127.0.0.1:8000/api/characters/51"
       );
       setCharacter(JSON.parse(response.data));
     //   console.log(response.data);
