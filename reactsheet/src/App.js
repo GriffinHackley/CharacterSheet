@@ -11,7 +11,7 @@ import Consumables from "./components/Consumables";
 import Toggles from "./components/Toggles";
 import Inspiration from "./components/Inspiration";
 import Proficiency from "./components/Proficiency";
-import FlexPanel from "./components/FlexPanel";
+import FlexPanel from "./components/flexPanel/FlexPanel";
 
 function setColor(primary, secondary) {
   let root = document.documentElement;
@@ -67,7 +67,12 @@ function App() {
             <Toggles />
           </section>
         </main>
-        <FlexPanel panelInfo={character.features} ></FlexPanel>
+        <FlexPanel
+            config = {character.config}
+            featureInfo={character.features}
+            profInfo = {character.proficiencies}
+        >
+        </FlexPanel>
       </section>
     );
   }

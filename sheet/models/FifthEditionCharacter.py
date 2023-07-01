@@ -174,6 +174,13 @@ class FifthEditionCharacter(Character):
         ret = ret + [{'name':self.background.feature['name'], 'text':self.background.feature['feature']}]
 
         return ret
+    
+    def getProficiencies(self):
+        ret = []
+
+        ret = ret + ["fdsa"]
+
+        return ret
 
     def initModifiers(self):
         pass

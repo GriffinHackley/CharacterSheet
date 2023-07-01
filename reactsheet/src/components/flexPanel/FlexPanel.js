@@ -1,18 +1,18 @@
 import { useState } from "react";
-import FeaturesTab from "./Tabs/FeaturesTab";
-import EquipmentTab from "./Tabs/EquipmentTab";
-import ProficienciesTab from "./Tabs/ProficienciesTab";
-import SpellTab from "./Tabs/SpellTab";
-import PowerAttackTab from "./Tabs/PowerAttackTab";
-import FlavorTab from "./Tabs/FlavorTab";
+import FeaturesTab from "./FeaturesTab";
+import EquipmentTab from "./EquipmentTab";
+import ProficienciesTab from "./ProficienciesTab";
+import SpellTab from "./SpellTab";
+import PowerAttackTab from "./PowerAttackTab";
+import FlavorTab from "./FlavorTab";
 
-export default function FlexPanel({panelInfo}){
+export default function FlexPanel({config, featureInfo, profInfo}){
     const [activeTab, setMainActiveTab] = useState('Features')
 
     let tabs = {
-        "Features": <FeaturesTab featuresInfo={panelInfo}></FeaturesTab>,
+        "Features": <FeaturesTab featuresInfo={featureInfo}></FeaturesTab>,
         "Equipment": <EquipmentTab></EquipmentTab>,
-        "Proficiencies": <ProficienciesTab></ProficienciesTab>,
+        "Proficiencies": <ProficienciesTab profInfo={profInfo} config={config}></ProficienciesTab>,
         "Spells": <SpellTab></SpellTab>,
         "Power Attack": <PowerAttackTab></PowerAttackTab>,
         "Flavor": <FlavorTab></FlavorTab>,

@@ -1,0 +1,31 @@
+section.proficiencies {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+  }
+  div.profContainer {
+    display: flex;
+    flex-direction: row;
+  }
+  div.proficiencyBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 5px;
+  }
+  h2.proficiencyHeader {
+    text-decoration: underline;
+  }
+  textarea.profText {
+    align-self: center;
+    width: 99%;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    flex-grow: 1;
+  }

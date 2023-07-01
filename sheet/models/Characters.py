@@ -77,6 +77,7 @@ class Character(models.Model):
     def exportCharacter(self):
         ret = {}
 
+        ret['config'] = self.getConfig()
         ret['header'] = self.getHeader()
         ret['attributes'] = self.getAttributes()
         ret['saves'] = self.saves
@@ -84,6 +85,7 @@ class Character(models.Model):
         ret['combat'] = self.combat
         ret["consumables"] = self.getConsumables()
         ret["features"] = self.getFeatures()
+        ret["proficiencies"] = self.proficiencies
 
         return json.dumps(ret)
 
@@ -97,6 +99,16 @@ class Character(models.Model):
         ret['alignment'] = self.alignment
         ret['player']    = self.playerName
         ret['edition']   = self.config['edition']
+
+        return ret
+    
+    def getConfig(self):
+        ret = []
+
+        ret = ret + [
+            {'name':'level', 'value':self.level},
+            {'name':'edition', 'value':self.config['edition']}
+        ]
 
         return ret
     
