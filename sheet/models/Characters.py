@@ -86,6 +86,7 @@ class Character(models.Model):
         ret["consumables"] = self.getConsumables()
         ret["features"] = self.getFeatures()
         ret["proficiencies"] = self.proficiencies
+        ret["flavor"] = self.flavor
 
         return json.dumps(ret)
 
