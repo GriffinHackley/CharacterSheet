@@ -33,7 +33,7 @@ function App() {
         "http://127.0.0.1:8000/api/characters/51"
       );
       setCharacter(JSON.parse(response.data));
-    //   console.log(response.data);
+      //   console.log(response.data);
 
       setLoading(false);
     };
@@ -68,11 +68,11 @@ function App() {
           </section>
         </main>
         <FlexPanel
-            config = {character.config}
-            featureInfo={character.features}
-            profInfo = {character.proficiencies}
-        >
-        </FlexPanel>
+          config={character.config}
+          featureInfo={character.features}
+          profInfo={character.proficiencies}
+          flavorInfo={character.flavor}
+        />
       </section>
     );
   }

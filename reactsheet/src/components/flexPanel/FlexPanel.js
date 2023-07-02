@@ -6,39 +6,41 @@ import SpellTab from "./SpellTab";
 import PowerAttackTab from "./PowerAttackTab";
 import FlavorTab from "./FlavorTab";
 
-export default function FlexPanel({config, featureInfo, profInfo}){
-    const [activeTab, setMainActiveTab] = useState('Features')
+export default function FlexPanel({
+  config,
+  featureInfo,
+  profInfo,
+  flavorInfo
+}) {
+  const [activeTab, setMainActiveTab] = useState("Features");
 
-    let tabs = {
-        "Features": <FeaturesTab featuresInfo={featureInfo}></FeaturesTab>,
-        "Equipment": <EquipmentTab></EquipmentTab>,
-        "Proficiencies": <ProficienciesTab profInfo={profInfo} config={config}></ProficienciesTab>,
-        "Spells": <SpellTab></SpellTab>,
-        "Power Attack": <PowerAttackTab></PowerAttackTab>,
-        "Flavor": <FlavorTab></FlavorTab>,
-    };
-    
-    let tabContents = tabs[activeTab]
+  let tabs = {
+    Features: <FeaturesTab featuresInfo={featureInfo} />,
+    Equipment: <EquipmentTab />,
+    Proficiencies: <ProficienciesTab profInfo={profInfo} config={config} />,
+    Spells: <SpellTab />,
+    "Power Attack": <PowerAttackTab />,
+    Flavor: <FlavorTab flavorInfo={flavorInfo} />
+  };
 
-    let headerButtons = [];
+  let tabContents = tabs[activeTab];
 
-    for(let tabName in tabs){
-        headerButtons.push(
-          <button
-            type="button"
-            onClick={() => setMainActiveTab(tabName)}
-          >
-            {tabName}
-          </button>
-        );
-    }
+  let headerButtons = [];
 
-    return (
-        <section className="flexPanel">
-            <div className="flexHeader tabHeader">
-                {headerButtons}
-            </div>
-            {tabContents}
-        </section>
-    )
+  for (let tabName in tabs) {
+    headerButtons.push(
+      <button type="button" onClick={() => setMainActiveTab(tabName)}>
+        {tabName}
+      </button>
+    );
+  }
+
+  return (
+    <section className="flexPanel">
+      <div className="flexHeader tabHeader">
+        {headerButtons}
+      </div>
+      {tabContents}
+    </section>
+  );
 }
