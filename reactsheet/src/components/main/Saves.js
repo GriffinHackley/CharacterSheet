@@ -1,4 +1,4 @@
-import "../../css/Saves.css";
+import "../../css/main/Saves.css";
 
 export default function Saves({ savesInfo }) {
   let saves = [];

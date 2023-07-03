@@ -1,4 +1,4 @@
-import "../../../css/HitDice.css";
+import "../../../css/main/combat/HitDice.css";
 import { useEffect } from "react";
 import { storeItem, getItem } from "../../../scripts/localState.js";
 

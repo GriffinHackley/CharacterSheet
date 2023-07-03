@@ -1,4 +1,4 @@
-import "../../css/Attributes.css";
+import "../../css/main/Attributes.css";
 
 export default function Attributes({ attributesInfo }) {
   let attributes = [];

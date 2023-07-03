@@ -1,4 +1,4 @@
-import "../../../css/Resistances.css";
+import "../../../css/main/combat/Resistances.css";
 import { useEffect } from "react";
 import { storeItem, getItem } from "../../../scripts/localState.js";
 

@@ -1,4 +1,4 @@
-import "../../../css/TempHP.css";
+import "../../../css/main/combat/TempHP.css";
 import { useEffect } from "react";
 import { storeItem, getItem } from "../../../scripts/localState.js";
 

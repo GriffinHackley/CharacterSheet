@@ -1,4 +1,4 @@
-import "../../../css/Conditions.css";
+import "../../../css/main/combat/Conditions.css";
 import { useEffect } from "react";
 import { storeItem, getItem } from "../../../scripts/localState.js";
 

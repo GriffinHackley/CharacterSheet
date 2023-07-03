@@ -1,4 +1,4 @@
-import "../../../css/CombatHeader.css";
+import "../../../css/main/combat/CombatHeader.css";
 
 export default function CombatHeader({ combatInfo }) {
   let CMD = null;
