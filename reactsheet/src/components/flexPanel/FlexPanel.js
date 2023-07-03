@@ -10,6 +10,7 @@ export default function FlexPanel({
   config,
   featureInfo,
   profInfo,
+  spellInfo,
   flavorInfo
 }) {
   const [activeTab, setMainActiveTab] = useState("Features");
@@ -18,7 +19,7 @@ export default function FlexPanel({
     Features: <FeaturesTab featuresInfo={featureInfo} />,
     Equipment: <EquipmentTab />,
     Proficiencies: <ProficienciesTab profInfo={profInfo} config={config} />,
-    Spells: <SpellTab />,
+    Spells: <SpellTab spellInfo={spellInfo} config={config} />,
     "Power Attack": <PowerAttackTab />,
     Flavor: <FlavorTab flavorInfo={flavorInfo} />
   };

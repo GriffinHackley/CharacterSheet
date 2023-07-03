@@ -30,7 +30,7 @@ function App() {
       setLoading(true);
 
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/characters/51"
+        "http://127.0.0.1:8000/api/characters/50"
       );
       setCharacter(JSON.parse(response.data));
       //   console.log(response.data);
@@ -71,6 +71,7 @@ function App() {
           config={character.config}
           featureInfo={character.features}
           profInfo={character.proficiencies}
+          spellInfo={character.spells}
           flavorInfo={character.flavor}
         />
       </section>

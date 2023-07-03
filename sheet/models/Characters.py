@@ -87,6 +87,7 @@ class Character(models.Model):
         ret["features"] = self.getFeatures()
         ret["proficiencies"] = self.proficiencies
         ret["flavor"] = self.flavor
+        ret["spells"] = self.spells
 
         return json.dumps(ret)
 
@@ -104,12 +105,10 @@ class Character(models.Model):
         return ret
 
     def getConfig(self):
-        ret = []
+        ret = {}
 
-        ret = ret + [
-            {"name": "level", "value": self.level},
-            {"name": "edition", "value": self.config["edition"]},
-        ]
+        ret["level"] = self.level
+        ret["edition"] = self.config["edition"]
 
         return ret
 
