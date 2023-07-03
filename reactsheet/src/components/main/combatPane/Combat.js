@@ -1,4 +1,4 @@
-import "../css/Combat.css";
+import "../../../css/Combat.css";
 import AttacksAndSpellcasting from "./AttacksAndSpellcasting";
 import CombatHeader from "./CombatHeader";
 import Conditions from "./Conditions";
@@ -8,27 +8,30 @@ import HitDice from "./HitDice";
 import Resistances from "./Resistances";
 import TempHP from "./TempHP";
 
-export default function Combat({ combatInfo}) {
+export default function Combat({ combatInfo }) {
   //TODO: Fix getItems()
   return (
     <section className="combatPane">
       <section className="combat">
-        <CombatHeader combatInfo={combatInfo}/>
+        <CombatHeader combatInfo={combatInfo} />
         <div className="hp">
           <div className="otherHP">
-            <HitDice hitDice={combatInfo.hitDice} config={combatInfo.config}/>
+            <HitDice hitDice={combatInfo.hitDice} config={combatInfo.config} />
             <DeathSaves />
-            <Conditions config={combatInfo.config}/>
+            <Conditions config={combatInfo.config} />
           </div>
           <div className="currentTotalHealth">
-            <CurrentHP HP={combatInfo.HP} config={combatInfo.config}/>
-            <TempHP config={combatInfo.config}/>
-            <Resistances config={combatInfo.config}/>
+            <CurrentHP HP={combatInfo.HP} config={combatInfo.config} />
+            <TempHP config={combatInfo.config} />
+            <Resistances config={combatInfo.config} />
           </div>
         </div>
       </section>
       <section className="attacksandspellcasting">
-        <AttacksAndSpellcasting attacks={combatInfo.Attacks} config={combatInfo.config}/>
+        <AttacksAndSpellcasting
+          attacks={combatInfo.Attacks}
+          config={combatInfo.config}
+        />
       </section>
     </section>
   );

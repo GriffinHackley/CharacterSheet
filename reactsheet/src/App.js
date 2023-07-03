@@ -2,15 +2,15 @@ import "./css/App.css";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-import Header from "./components/Header";
-import Attributes from "./components/Attributes";
-import Saves from "./components/Saves";
-import Skills from "./components/Skills";
-import Combat from "./components/Combat";
-import Consumables from "./components/Consumables";
-import Toggles from "./components/Toggles";
-import Inspiration from "./components/Inspiration";
-import Proficiency from "./components/Proficiency";
+import Header from "./components/main/Header";
+import Attributes from "./components/main/Attributes";
+import Saves from "./components/main/Saves";
+import Skills from "./components/main/Skills";
+import Combat from "./components/main/combatPane/Combat";
+import Consumables from "./components/main/Consumables";
+import Toggles from "./components/main/Toggles";
+import Inspiration from "./components/main/Inspiration";
+import Proficiency from "./components/main/Proficiency";
 import FlexPanel from "./components/flexPanel/FlexPanel";
 
 function setColor(primary, secondary) {
@@ -72,6 +72,7 @@ function App() {
           featureInfo={character.features}
           profInfo={character.proficiencies}
           spellInfo={character.spells}
+          powerAttackInfo={character.powerAttack}
           flavorInfo={character.flavor}
         />
       </section>

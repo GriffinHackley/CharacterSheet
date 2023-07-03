@@ -1,4 +1,4 @@
-import "../css/Skills.css";
+import "../../css/Skills.css";
 
 export default function Skills({ skillsInfo }) {
   let skills = [];

@@ -1,4 +1,4 @@
-import '../css/Proficiency.css'
+import "../../css/Proficiency.css";
 
 export default function Proficiency() {
   if (true) {

@@ -1,20 +1,20 @@
-import "../css/HitDice.css";
-import { useEffect } from 'react';
-import {storeItem, getItem} from '../scripts/localState.js'
+import "../../../css/HitDice.css";
+import { useEffect } from "react";
+import { storeItem, getItem } from "../../../scripts/localState.js";
 
 function handleChange(event) {
   storeItem("remainingHD", charName);
 }
 
-let charName = null
+let charName = null;
 
 export default function HitDice({ hitDice, config }) {
-    charName = config.name
+  charName = config.name;
 
-    //Load value from local storage when component is mounted
-    useEffect(() => {
-        getItem("remainingHD", charName);
-     }, []);
+  //Load value from local storage when component is mounted
+  useEffect(() => {
+    getItem("remainingHD", charName);
+  }, []);
   return (
     <div className="hitDice">
       <div className="totalHD">

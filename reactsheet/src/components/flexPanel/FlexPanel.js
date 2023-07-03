@@ -11,16 +11,17 @@ export default function FlexPanel({
   featureInfo,
   profInfo,
   spellInfo,
+  powerAttackInfo,
   flavorInfo
 }) {
-  const [activeTab, setMainActiveTab] = useState("Features");
+  const [activeTab, setActiveTab] = useState("Features");
 
   let tabs = {
     Features: <FeaturesTab featuresInfo={featureInfo} />,
     Equipment: <EquipmentTab />,
     Proficiencies: <ProficienciesTab profInfo={profInfo} config={config} />,
     Spells: <SpellTab spellInfo={spellInfo} config={config} />,
-    "Power Attack": <PowerAttackTab />,
+    "Power Attack": <PowerAttackTab powerAttackInfo={powerAttackInfo} />,
     Flavor: <FlavorTab flavorInfo={flavorInfo} />
   };
 
@@ -30,7 +31,7 @@ export default function FlexPanel({
 
   for (let tabName in tabs) {
     headerButtons.push(
-      <button type="button" onClick={() => setMainActiveTab(tabName)}>
+      <button type="button" onClick={() => setActiveTab(tabName)}>
         {tabName}
       </button>
     );
