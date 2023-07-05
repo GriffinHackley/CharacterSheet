@@ -9,6 +9,7 @@ import FlavorTab from "./FlavorTab";
 export default function FlexPanel({
   config,
   featureInfo,
+  equipmentInfo,
   profInfo,
   spellInfo,
   graphInfo,
@@ -18,7 +19,7 @@ export default function FlexPanel({
 
   let tabs = {
     Features: <FeaturesTab featuresInfo={featureInfo} />,
-    Equipment: <EquipmentTab />,
+    Equipment: <EquipmentTab equipmentInfo={equipmentInfo} config={config} />,
     Proficiencies: <ProficienciesTab profInfo={profInfo} config={config} />,
     Spells: <SpellTab spellInfo={spellInfo} config={config} />,
     "Damage Graph": <GraphTab graphInfo={graphInfo} />,

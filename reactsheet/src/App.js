@@ -29,10 +29,14 @@ function App() {
     const loadCharacter = async () => {
       setLoading(true);
 
+      let id = 51;
+
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/characters/51"
+        "http://127.0.0.1:8000/api/characters/" + id
       );
-      setCharacter(JSON.parse(response.data));
+      let character = JSON.parse(response.data);
+      character.config.id = id;
+      setCharacter(character);
       //   console.log(response.data);
 
       setLoading(false);
@@ -70,6 +74,7 @@ function App() {
         <FlexPanel
           config={character.config}
           featureInfo={character.features}
+          equipmentInfo={character.equipment}
           profInfo={character.proficiencies}
           spellInfo={character.spells}
           graphInfo={character.graph}
