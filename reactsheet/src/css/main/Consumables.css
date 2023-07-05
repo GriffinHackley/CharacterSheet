@@ -1,0 +1,61 @@
+section.consumables {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+section.consumables > div {
+  background-color: white;
+  margin-bottom: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  min-height: 60px;
+}
+section.consumables > div > div.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+  padding: 5px 0;
+}
+section.consumables > div > div.total div.key {
+  font-size: 10px;
+  color: var(--primary-accent);
+  margin: 0.25em;
+  text-transform: none;
+}
+section.consumables > div > div.total > div.value {
+  font-size: 15px;
+  flex-grow: 1;
+  border: 0;
+  border-bottom: 1px solid var(--primary-accent);
+  margin-right: 0.25em;
+  padding: 0 0.25em;
+  text-align: center;
+}
+section.consumables label {
+  text-align: center;
+  padding: 2px;
+  font-size: 10px;
+}
+div.remainingConsumable {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+div.remainingConsumable input {
+  width: 100%;
+  font-size: 25px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 0;
+  flex-grow: 1;
+}
+div.remainingConsumable label {
+  font-size: 10px;
+  font-weight: bold;
+}
