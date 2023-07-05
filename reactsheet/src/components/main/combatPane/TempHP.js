@@ -15,6 +15,7 @@ export default function TempHP({ config }) {
   useEffect(() => {
     getItem("temphp", charName);
   }, []);
+
   return (
     <div className="temporary">
       <input type="text" id="temphp" onChange={handleChange} />

@@ -3,7 +3,7 @@ import FeaturesTab from "./FeaturesTab";
 import EquipmentTab from "./EquipmentTab";
 import ProficienciesTab from "./ProficienciesTab";
 import SpellTab from "./SpellTab";
-import PowerAttackTab from "./PowerAttackTab";
+import GraphTab from "./GraphTab";
 import FlavorTab from "./FlavorTab";
 
 export default function FlexPanel({
@@ -11,7 +11,7 @@ export default function FlexPanel({
   featureInfo,
   profInfo,
   spellInfo,
-  powerAttackInfo,
+  graphInfo,
   flavorInfo
 }) {
   const [activeTab, setActiveTab] = useState("Features");
@@ -21,7 +21,7 @@ export default function FlexPanel({
     Equipment: <EquipmentTab />,
     Proficiencies: <ProficienciesTab profInfo={profInfo} config={config} />,
     Spells: <SpellTab spellInfo={spellInfo} config={config} />,
-    "Power Attack": <PowerAttackTab powerAttackInfo={powerAttackInfo} />,
+    "Damage Graph": <GraphTab graphInfo={graphInfo} />,
     Flavor: <FlavorTab flavorInfo={flavorInfo} />
   };
 

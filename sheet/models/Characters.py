@@ -85,9 +85,11 @@ class Character(models.Model):
         ret["combat"] = self.combat
         ret["consumables"] = self.getConsumables()
         ret["features"] = self.getFeatures()
+        ret["equipment"] = self.equipment
         ret["proficiencies"] = self.proficiencies
-        ret["flavor"] = self.flavor
         ret["spells"] = self.spells
+        ret["graph"] = self.graph
+        ret["flavor"] = self.flavor
 
         return json.dumps(ret)
 
@@ -473,7 +475,7 @@ class Character(models.Model):
         averageDamage += damageMod
 
         # Power Attack
-        powerAttackGraph = self.calculatePowerAttack(
+        self.graph = self.calculatePowerAttack(
             toHit, averageDamage, criticalDamage, hitPenalty, damageBonus
         )
         if "powerAttack" in self.toggles and self.toggles["powerAttack"]:
@@ -521,7 +523,6 @@ class Character(models.Model):
         ret["damageMod"] = damageMod
         ret["averageDamage"] = averageDamage
         ret["bonusCritDamage"] = criticalDamage
-        ret["powerAttackGraph"] = powerAttackGraph
 
         return ret
 
