@@ -185,7 +185,7 @@ class Character(models.Model):
         ret["Initiative"] = self.calculateInit()
         ret["Speed"] = self.calculateSpeed()
         ret["HP"] = self.calculateHP()
-        ret["AC"] = self.calculateAC()
+        ret["Armor Class"] = self.calculateAC()
         ret["Attacks"] = self.calculateAttacks()
         ret["hitDice"] = "{}d{}".format(self.level, self.hitDie)
         ret["config"] = {"name": self.name, "edition": self.config["edition"]}

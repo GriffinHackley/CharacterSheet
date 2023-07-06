@@ -1,3 +1,5 @@
+import formatSource from "../../../scripts/formatSource";
+
 export default function AttacksAndSpellcasting({ attacks, config }) {
   let rows = [];
   let critRangeHeader = null;
@@ -23,7 +25,7 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
       );
     }
     rows.push(
-      <tr key={"attack-"+element.name}>
+      <tr key={"attack-" + element.name}>
         <td>
           <div className="atk">
             {element.name}
@@ -31,12 +33,18 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
         </td>
         {critRangeBody}
         <td>
-          <div className="tooltip centered toHit" data-tooltip="{{ source }}">
+          <div
+            className="tooltip centered toHit"
+            data-tooltip={formatSource(element.toHit.source)}
+          >
             +{element.toHit.value}
           </div>
         </td>
         <td>
-          <div className="tooltip centered damage" data-tooltip="{{ source }}">
+          <div
+            className="tooltip centered damage"
+            data-tooltip={formatSource(element.damage.source)}
+          >
             {element.damage.value}
           </div>
         </td>

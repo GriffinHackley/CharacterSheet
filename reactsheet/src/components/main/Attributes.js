@@ -1,13 +1,15 @@
 import "../../css/main/Attributes.css";
+import formatSource from "../../scripts/formatSource";
 
 export default function Attributes({ attributesInfo }) {
   let attributes = [];
 
   attributesInfo.forEach(element => {
+    let source = formatSource(element.source);
     attributes.push(
       <li
         className="tooltip shiftedRight"
-        data-tooltip={element.source}
+        data-tooltip={source}
         key={"attribute-" + element.name}
       >
         <div className="mod">

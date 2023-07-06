@@ -15,7 +15,7 @@ export default function Consumables({ consumableInfo }) {
         <div className="remainingConsumable">
           <input name="remainingConsumable" type="text" id="{{ key }}" />
 
-          <label for="remainingConsumable">
+          <label htmlFor="remainingConsumable">
             {element.name}
           </label>
         </div>
