@@ -1,4 +1,5 @@
 import "../../css/main/Skills.css";
+import formatSource from "../../scripts/formatSource";
 
 export default function Skills({ skillsInfo }) {
   let skills = [];
@@ -9,7 +10,7 @@ export default function Skills({ skillsInfo }) {
     let ret = (
       <div
         className="tooltip centered skill"
-        data-tooltip={element.source}
+        data-tooltip={formatSource(element.source)}
         key={"skill-" + element.name}
       >
         <li className="skill">

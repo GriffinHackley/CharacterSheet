@@ -1,4 +1,5 @@
 import "../../css/main/Saves.css";
+import formatSource from "../../scripts/formatSource";
 
 export default function Saves({ savesInfo }) {
   let saves = [];
@@ -7,7 +8,7 @@ export default function Saves({ savesInfo }) {
     saves.push(
       <li
         className="tooltip shiftedRight"
-        data-tooltip={element.source}
+        data-tooltip={formatSource(element.source)}
         key={"save-" + element.name}
       >
         <span className="saveName">
