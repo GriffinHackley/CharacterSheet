@@ -1,4 +1,4 @@
-import "../../../css/main/combat/DeathSaves.css";
+import "../../../../css/main/combat/DeathSaves.css";
 
 export default function DeathSaves() {
   return (

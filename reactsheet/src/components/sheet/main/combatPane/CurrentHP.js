@@ -1,6 +1,6 @@
-import "../../../css/main/combat/CurrentHP.css";
+import "../../../../css/main/combat/CurrentHP.css";
 import { useEffect, useState } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import { storeItem, getItem } from "../../../../scripts/localState.js";
 
 function handleChange(event) {
   storeItem("currentHealth   ", charName);

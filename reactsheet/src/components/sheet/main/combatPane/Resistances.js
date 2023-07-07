@@ -1,6 +1,6 @@
-import "../../../css/main/combat/Resistances.css";
+import "../../../../css/main/combat/Resistances.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import { storeItem, getItem } from "../../../../scripts/localState.js";
 
 function handleChange(event) {
   storeItem("resistances", charName);

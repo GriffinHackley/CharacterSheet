@@ -1,5 +1,5 @@
-import "../../css/main/Skills.css";
-import formatSource from "../../scripts/formatSource";
+import "../../../css/main/Skills.css";
+import formatSource from "../../../scripts/formatSource";
 
 export default function Skills({ skillsInfo }) {
   let skills = [];

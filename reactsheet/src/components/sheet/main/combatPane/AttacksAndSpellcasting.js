@@ -1,4 +1,4 @@
-import formatSource from "../../../scripts/formatSource";
+import formatSource from "../../../../scripts/formatSource";
 
 export default function AttacksAndSpellcasting({ attacks, config }) {
   let rows = [];

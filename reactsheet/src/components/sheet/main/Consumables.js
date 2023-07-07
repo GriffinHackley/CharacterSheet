@@ -1,4 +1,4 @@
-import "../../css/main/Consumables.css";
+import "../../../css/main/Consumables.css";
 
 export default function Consumables({ consumableInfo }) {
   let consumables = [];

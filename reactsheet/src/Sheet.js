@@ -2,19 +2,21 @@ import "./css/App.css";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-import Header from "./components/main/Header";
-import Attributes from "./components/main/Attributes";
-import Saves from "./components/main/Saves";
-import Skills from "./components/main/Skills";
-import Combat from "./components/main/combatPane/Combat";
-import Consumables from "./components/main/Consumables";
-import Toggles from "./components/main/Toggles";
-import Inspiration from "./components/main/Inspiration";
-import Proficiency from "./components/main/Proficiency";
-import FlexPanel from "./components/flexPanel/FlexPanel";
+import Header from "./components/sheet/main/Header";
+import Attributes from "./components/sheet/main/Attributes";
+import Saves from "./components/sheet//main/Saves";
+import Skills from "./components/sheet//main/Skills";
+import Combat from "./components/sheet//main/combatPane/Combat";
+import Consumables from "./components/sheet//main/Consumables";
+import Toggles from "./components/sheet//main/Toggles";
+import Inspiration from "./components/sheet/main/Inspiration";
+import Proficiency from "./components/sheet/main/Proficiency";
+import FlexPanel from "./components/sheet/flexPanel/FlexPanel";
 import { useParams } from "react-router-dom";
 
-function setColor(primary, secondary) {
+function setColor(colors) {
+  let primary = colors[0];
+  let secondary = colors[1];
   let root = document.documentElement;
 
   root.style.setProperty("--primary-accent", primary);
@@ -27,11 +29,11 @@ const loadCharacter = async (setLoading, setCharacter, id) => {
   const response = await axios.get(
     "http://127.0.0.1:8000/api/characters/" + id
   );
-  setCharacter(JSON.parse(response.data));
-  //   console.log(response.data);
+  let character = JSON.parse(response.data);
+  setCharacter(character);
 
   setLoading(false);
-  setColor("blue", "red");
+  setColor(character.config.accentColors);
 };
 
 function Sheet() {

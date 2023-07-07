@@ -1,5 +1,5 @@
-import "../../css/main/Saves.css";
-import formatSource from "../../scripts/formatSource";
+import "../../../css/main/Saves.css";
+import formatSource from "../../../scripts/formatSource";
 
 export default function Saves({ savesInfo }) {
   let saves = [];

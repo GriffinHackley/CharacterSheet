@@ -111,6 +111,7 @@ class Character(models.Model):
 
         ret["level"] = self.level
         ret["edition"] = self.config["edition"]
+        ret["accentColors"] = self.accentColor
 
         return ret
 

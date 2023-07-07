@@ -1,4 +1,4 @@
-import "../../css/flexPanel/FlavorTab.css";
+import "../../../css/flexPanel/FlavorTab.css";
 
 export default function FlavorTab({ flavorInfo }) {
   let mainHeader = "backstory";

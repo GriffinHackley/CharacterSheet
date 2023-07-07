@@ -1,5 +1,5 @@
-import "../../css/main/Attributes.css";
-import formatSource from "../../scripts/formatSource";
+import "../../../css/main/Attributes.css";
+import formatSource from "../../../scripts/formatSource";
 
 export default function Attributes({ attributesInfo }) {
   let attributes = [];
