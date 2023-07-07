@@ -42,6 +42,7 @@ class Ranger(Class):
 
         ret["ability"] = ability
         ret["abilityMod"] = abilityMod
+        ret["castingType"] = ["known", "ritual"]
 
         bonus, source = modList.applyModifier("SpellSaveDC")
 

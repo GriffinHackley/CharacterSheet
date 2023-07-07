@@ -107,9 +107,9 @@ class RitualCaster(Feat):
         }
         ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
 
-        ret["level"] = {}
-        ret["level"]["1"] = {}
-        ret["level"]["1"]["list"] = {
+        ret["spells"] = {}
+        ret["spells"]["1"] = {}
+        ret["spells"]["1"]["list"] = {
             "Unseen Servant": {"description": ""},
             "Detect Magic": {"description": ""},
         }
@@ -118,7 +118,7 @@ class RitualCaster(Feat):
         # ret['level']['2']['list'] = {
         # }
 
-        for level, data in ret["level"].items():
+        for level, data in ret["spells"].items():
             for spell, data in data["list"].items():
                 data["source"] = "Ritual Caster"
 

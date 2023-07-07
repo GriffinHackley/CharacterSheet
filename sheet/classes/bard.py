@@ -39,6 +39,7 @@ class Bard(Class):
 
         ret["ability"] = ability
         ret["abilityMod"] = abilityMod
+        ret["castingType"] = ["known", "ritual"]
 
         bonus, source = modList.applyModifier("SpellSaveDC")
         source["Base"] = 8
@@ -59,15 +60,15 @@ class Bard(Class):
         }
         ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
 
-        ret["level"] = {}
-        ret["level"]["Cantrip"] = {}
-        ret["level"]["1"] = {}
-        # ret['level']['2'] = {}
+        ret["spells"] = {}
+        ret["spells"]["Cantrip"] = {}
+        ret["spells"]["1"] = {}
+        # ret["spells"]['2'] = {}
 
-        ret["level"]["1"]["slots"] = 3
-        # ret['level']['2']['slots'] = 2
+        ret["spells"]["1"]["slots"] = 3
+        # ret["spells"]['2']['slots'] = 2
 
-        ret["level"]["Cantrip"]["list"] = {
+        ret["spells"]["Cantrip"]["list"] = {
             "Mage Hand": {
                 "source": "Bard: Spellcasting",
                 "timesPrepared": "-1",
@@ -80,7 +81,7 @@ class Bard(Class):
             },
         }
 
-        ret["level"]["1"]["list"] = {
+        ret["spells"]["1"]["list"] = {
             "Bane": {
                 "source": "Bard: Spellcasting",
                 "timesPrepared": "-1",
@@ -113,7 +114,7 @@ class Bard(Class):
             },
         }
 
-        # ret['level']['2']['list'] = {
+        # ret["spells"]['2']['list'] = {
         # }
 
         return ret

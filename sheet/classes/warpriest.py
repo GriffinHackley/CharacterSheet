@@ -266,6 +266,7 @@ At 20th level, the warpriest can channel an aspect of war, growing in power and 
 
         ret["ability"] = ability
         ret["abilityMod"] = abilityMod
+        ret["castingType"] = ["known", "ritual"]
 
         bonus, source = modList.applyModifier("SpellSaveDC")
         source["Base"] = 10

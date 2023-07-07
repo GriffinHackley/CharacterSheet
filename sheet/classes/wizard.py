@@ -40,6 +40,7 @@ class Wizard(Class):
 
         ret["ability"] = ability
         ret["abilityMod"] = abilityMod
+        ret["castingType"] = ["prepared", "ritual"]
 
         bonus, source = modList.applyModifier("SpellSaveDC")
         source["Base"] = 8

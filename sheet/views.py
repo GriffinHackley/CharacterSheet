@@ -10,57 +10,75 @@ from .models.PathfinderCharacter import PathfinderCharacter
 from .models.Characters import Character
 
 import json
+
 admin.site.register(Character)
 
+
+@api_view(["GET"])
 def index(request):
     character_list = Character.objects.order_by("name")
 
     context = {
-        'character_list': character_list,
+        "character_list": character_list,
     }
 
-    return render(request, 'sheet/index.html', context)
+    return Response(character_list)
+    return render(request, "sheet/index.html", context)
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def getCharacter(request, character_id):
     character = get_object_or_404(Character, pk=character_id)
     config = json.loads(character.config)
 
-    #TODO: Do this dynamically
-    if config['edition'] == '5e':
+    # TODO: Do this dynamically
+    if config["edition"] == "5e":
         character = FifthEditionCharacter().fromCharacter(character)
-    elif config['edition'] == 'Pathfinder':
+    elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter().fromCharacter(character)
     else:
-        raise Exception("Character config specifies {} edition, which does not exist".format(character.config['edition']))
+        raise Exception(
+            "Character config specifies {} edition, which does not exist".format(
+                character.config["edition"]
+            )
+        )
 
     forms = character.getForms(request)
 
     character.build()
-    
+
     exported = character.exportCharacter()
 
-    if request.method == 'GET':
-        character = get_object_or_404(Character, pk=character_id)
-        return Response(exported) 
+    if request.method == "GET":
+        return Response(exported)
+
 
 def detail(request, character_id):
     character = get_object_or_404(Character, pk=character_id)
     config = json.loads(character.config)
 
-    #TODO: Do this dynamically
-    if config['edition'] == '5e':
+    # TODO: Do this dynamically
+    if config["edition"] == "5e":
         character = FifthEditionCharacter().fromCharacter(character)
-    elif config['edition'] == 'Pathfinder':
+    elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter().fromCharacter(character)
     else:
-        raise Exception("Character config specifies {} edition, which does not exist".format(character.config['edition']))
+        raise Exception(
+            "Character config specifies {} edition, which does not exist".format(
+                character.config["edition"]
+            )
+        )
 
     forms = character.getForms(request)
 
-    character.build()    
+    character.build()
 
-    return render(request, 'sheet/detail.html', {'character': character, 'skill_list': character.skillList, 'forms':forms })
+    return render(
+        request,
+        "sheet/detail.html",
+        {"character": character, "skill_list": character.skillList, "forms": forms},
+    )
+
 
 def create(request):
     # character = config_list['ezekiel']
