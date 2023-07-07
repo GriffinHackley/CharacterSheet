@@ -1,4 +1,4 @@
-import "../../../css/main/Attributes.css";
+import "../../../css/sheet/main/Attributes.css";
 import formatSource from "../../../scripts/formatSource";
 
 export default function Attributes({ attributesInfo }) {

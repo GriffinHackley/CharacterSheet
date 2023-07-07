@@ -1,4 +1,5 @@
-import "../../../css/main/Skills.css";
+import "../../../css/sheet/main/Skills.css";
+
 import formatSource from "../../../scripts/formatSource";
 
 export default function Skills({ skillsInfo }) {

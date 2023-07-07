@@ -1,4 +1,4 @@
-import "../../../css/main/Saves.css";
+import "../../../css/sheet/main/Saves.css";
 import formatSource from "../../../scripts/formatSource";
 
 export default function Saves({ savesInfo }) {

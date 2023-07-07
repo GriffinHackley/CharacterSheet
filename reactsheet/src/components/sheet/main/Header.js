@@ -1,4 +1,4 @@
-import "../../../css/main/Header.css";
+import "../../../css/sheet/main/Header.css";
 
 export default function Header({ headerInfo }) {
   let pathfinder = null;

@@ -16,6 +16,17 @@ class FifthEditionBackground:
         if "languages" in config.keys():
             self.languages = config["languages"]
 
+    def toDict(self):
+        return {
+            "name": self.name,
+            "feature": self.feature,
+            "proficiencies": {
+                "Skills": self.skills,
+                "Tools": self.tools,
+                "Languages": self.languages,
+            },
+        }
+
 
 features = {}
 
