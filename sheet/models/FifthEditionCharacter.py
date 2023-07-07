@@ -197,6 +197,7 @@ class FifthEditionCharacter(Character):
 
     def getSpells(self):
         ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)
+
         if "Ritual Caster" in [feat.name for feat in self.feats]:
             for feat in self.feats:
                 ret = feat.getSpells(self)

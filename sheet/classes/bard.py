@@ -1,14 +1,28 @@
 from .classes import Class
 from ..modifiers import Modifier, ModifierList
 
+
 class Bard(Class):
-    proficiencies = {'skills': ['Perception', 'Insight', 'Performance'], 'languages':[], 'armor': ['Light'], 'weapons':["Simple weapons", "hand crossbows", "longswords", "rapiers", "shortswords"], 'tools':["Bagpipes", "Lute", "Pan Flute"], 'savingThrows':['Dexterity', 'Charisma']}
-    expertise = {'skills': []}
+    proficiencies = {
+        "skills": ["Perception", "Insight", "Performance"],
+        "languages": [],
+        "armor": ["Light"],
+        "weapons": [
+            "Simple weapons",
+            "hand crossbows",
+            "longswords",
+            "rapiers",
+            "shortswords",
+        ],
+        "tools": ["Bagpipes", "Lute", "Pan Flute"],
+        "savingThrows": ["Dexterity", "Charisma"],
+    }
+    expertise = {"skills": []}
 
     def __init__(self, level, options):
         self.options = options
-        super().__init__(level, name="Bard", hitDie='8', edition="5e")
-    
+        super().__init__(level, name="Bard", hitDie="8", edition="5e")
+
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
 
@@ -17,50 +31,86 @@ class Bard(Class):
 
     def getSubclassFeatures(self, url):
         return super().get5eSubclassFeatures(url)
-    
+
     def getSpells(self, stats, profBonus, modList):
         ret = {}
-        ability    = "Charisma"
+        ability = "Charisma"
         abilityMod = stats[ability]
 
-        ret['ability']    = ability
-        ret['abilityMod'] = abilityMod
-
+        ret["ability"] = ability
+        ret["abilityMod"] = abilityMod
 
         bonus, source = modList.applyModifier("SpellSaveDC")
-        source['Base'] = 8
-        source['Prof.'] = profBonus
+        source["Base"] = 8
+        source["Prof."] = profBonus
         source[ability] = abilityMod
-        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
-        ret['saveDC'] = {'value': 8 + abilityMod + profBonus + bonus, 'source':source}
+        source = {
+            k: v
+            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
+        }
+        ret["saveDC"] = {"value": 8 + abilityMod + profBonus + bonus, "source": source}
 
         bonus, source = modList.applyModifier("SpellAttack")
-        source['Prof.'] = profBonus
+        source["Prof."] = profBonus
         source[ability] = abilityMod
-        source = {k: v for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])}
-        ret['spellAttack'] = {'value':profBonus + abilityMod, 'source':source}
+        source = {
+            k: v
+            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
+        }
+        ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
 
-        ret['level'] = {}
-        ret['level']['Cantrip'] = {}
-        ret['level']['1'] = {}
+        ret["level"] = {}
+        ret["level"]["Cantrip"] = {}
+        ret["level"]["1"] = {}
         # ret['level']['2'] = {}
 
-        ret['level']['1']['slots'] = 3
+        ret["level"]["1"]["slots"] = 3
         # ret['level']['2']['slots'] = 2
 
-
-        ret['level']['Cantrip']['list'] = {
-            "Mage Hand"       : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Vicious Mockery" : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1", "description":""},
+        ret["level"]["Cantrip"]["list"] = {
+            "Mage Hand": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
+            "Vicious Mockery": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
         }
 
-        ret['level']['1']['list'] = {
-            "Bane"                     : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1" , "description":""},
-            "Detect Magic"             : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Dissonant Whiespers"      : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1" , "description":""},
-            "Silvery Barbs"            : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1" , "description":""},
-            "Tasha's Hideous Laughter" : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1", "description":""},
-            "Unseen Srevant"           : {"source":"Bard: Spellcasting"    , "timesPrepared":"-1", "description":""},
+        ret["level"]["1"]["list"] = {
+            "Bane": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
+            "Detect Magic": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
+            "Dissonant Whiespers": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
+            "Silvery Barbs": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
+            "Tasha's Hideous Laughter": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
+            "Unseen Srevant": {
+                "source": "Bard: Spellcasting",
+                "timesPrepared": "-1",
+                "description": "",
+            },
         }
 
         # ret['level']['2']['list'] = {

@@ -55,9 +55,9 @@ function getSpellHeader(spellInfo, config) {
 function getSpellList(spellInfo, config) {
   let spellList = [];
 
-  for (let level in spellInfo.level) {
+  for (let level in spellInfo.spells) {
     let spellLevel = level;
-    level = spellInfo.level[level];
+    level = spellInfo.spells[level];
     let spells = [];
 
     for (let spell in level.list) {

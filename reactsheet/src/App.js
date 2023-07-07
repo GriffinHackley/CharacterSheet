@@ -29,14 +29,12 @@ function App() {
     const loadCharacter = async () => {
       setLoading(true);
 
-      let id = 51;
+      let id = 50;
 
       const response = await axios.get(
         "http://127.0.0.1:8000/api/characters/" + id
       );
-      let character = JSON.parse(response.data);
-      character.config.id = id;
-      setCharacter(character);
+      setCharacter(JSON.parse(response.data));
       //   console.log(response.data);
 
       setLoading(false);
