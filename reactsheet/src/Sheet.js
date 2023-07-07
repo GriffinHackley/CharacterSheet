@@ -12,6 +12,7 @@ import Toggles from "./components/main/Toggles";
 import Inspiration from "./components/main/Inspiration";
 import Proficiency from "./components/main/Proficiency";
 import FlexPanel from "./components/flexPanel/FlexPanel";
+import { useParams } from "react-router-dom";
 
 function setColor(primary, secondary) {
   let root = document.documentElement;
@@ -20,30 +21,28 @@ function setColor(primary, secondary) {
   root.style.setProperty("--secondary-accent", secondary);
 }
 
+const loadCharacter = async (setLoading, setCharacter, id) => {
+  setLoading(true);
+
+  const response = await axios.get(
+    "http://127.0.0.1:8000/api/characters/" + id
+  );
+  setCharacter(JSON.parse(response.data));
+  //   console.log(response.data);
+
+  setLoading(false);
+  setColor("blue", "red");
+};
+
 function Sheet() {
   const [loading, setLoading] = useState(true);
   const [character, setCharacter] = useState([]);
+  const { id } = useParams();
 
   //Get character data
   useEffect(() => {
-    const loadCharacter = async () => {
-      setLoading(true);
-
-      let id = 50;
-
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/characters/" + id
-      );
-      setCharacter(JSON.parse(response.data));
-      //   console.log(response.data);
-
-      setLoading(false);
-    };
-
-    loadCharacter();
+    loadCharacter(setLoading, setCharacter, id);
   }, []);
-
-  setColor("blue", "red");
 
   if (loading) {
     return <h4>Loading...</h4>;

@@ -15,14 +15,19 @@ admin.site.register(Character)
 
 
 @api_view(["GET"])
-def index(request):
+def listCharacters(request):
     character_list = Character.objects.order_by("name")
 
     context = {
         "character_list": character_list,
     }
 
-    return Response(character_list)
+    list = {}
+
+    for character in character_list:
+        list[character.id] = character.name
+
+    return Response(list)
     return render(request, "sheet/index.html", context)
 
 
