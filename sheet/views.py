@@ -60,6 +60,19 @@ def getCharacter(request, characterId):
 
 
 @api_view(["GET"])
+def getCharacterWithLevel(request, characterId):
+    character = get_object_or_404(Character, pk=characterId)
+    config = json.loads(character.config)
+
+    character = FifthEditionCharacter().fromCharacter(character)
+    temp = character.buildWithLevel()
+    exported = character.exportCharacter()
+
+    if request.method == "GET":
+        return Response(exported)
+
+
+@api_view(["GET"])
 def getPlan(request, characterId):
     character = get_object_or_404(Character, pk=characterId)
     config = json.loads(character.config)

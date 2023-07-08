@@ -7,7 +7,7 @@ export default function FeaturesTab({ featuresInfo }) {
 
   for (let source in featuresInfo) {
     let feature = featuresInfo[source];
-    tabs[feature.name] = feature;
+    tabs[source] = feature;
   }
 
   let headerButtons = [];
@@ -25,7 +25,7 @@ export default function FeaturesTab({ featuresInfo }) {
     );
   }
 
-  let contents = tabs[activeTab].value;
+  let contents = tabs[activeTab];
 
   let tabContents = [];
 

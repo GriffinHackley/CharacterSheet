@@ -23,6 +23,20 @@ class FifthEditionCharacter(Character):
 
         super().build()
 
+    def buildWithLevel(self):
+        self.skillList = skill_list_5e
+        self.proficiencies = {
+            "skills": [],
+            "languages": [],
+            "armor": [],
+            "weapons": [],
+            "tools": [],
+            "savingThrows": [],
+        }
+        self.expertise = {"skills": [], "tools": []}
+
+        super().buildWithLevel()
+
     def fromCharacter(self, character):
         return super().fromCharacter(character)
 
@@ -162,12 +176,13 @@ class FifthEditionCharacter(Character):
             statBonus += bonus
 
             if key in self.proficiencies["skills"]:
-                if key in self.charClass.expertise["skills"]:
-                    source["Expertise"] = 2 * self.profBonus
-                    statBonus += 2 * self.profBonus
-                else:
-                    source["Prof."] = self.profBonus
-                    statBonus += self.profBonus
+                for cls in self.charClass:
+                    if key in cls.expertise["skills"]:
+                        source["Expertise"] = 2 * self.profBonus
+                        statBonus += 2 * self.profBonus
+                    else:
+                        source["Prof."] = self.profBonus
+                        statBonus += self.profBonus
 
             ret.append(
                 {
@@ -196,7 +211,9 @@ class FifthEditionCharacter(Character):
         return super().applyFeats(fifthEditionFeats)
 
     def getSpells(self):
-        ret = self.charClass.getSpells(self.abilityMod, self.profBonus, self.modList)
+        ret = []
+        for cls in self.charClass:
+            ret.append(cls.getSpells(self.abilityMod, self.profBonus, self.modList))
 
         if "Ritual Caster" in [feat.name for feat in self.feats]:
             for feat in self.feats:
@@ -252,7 +269,7 @@ class FifthEditionCharacter(Character):
         if spellForm.is_valid():
             toggles.update(spellForm.cleaned_data)
 
-        self.toggles = toggles
+        self.toggles = {}
 
         ret = {}
         ret["combat"] = combatForm

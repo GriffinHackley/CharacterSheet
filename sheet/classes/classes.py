@@ -18,6 +18,17 @@ def allClasses():
     return ret
 
 
+def getClasses(levels):
+    ret = []
+    classes = allClasses()
+    for charClass, level in levels.items():
+        classModule = classes[charClass.lower()]
+        initClass = getattr(classModule, charClass)(level["level"], level["options"])
+        ret.append(initClass)
+
+    return ret
+
+
 class Class:
     def __init__(
         self,

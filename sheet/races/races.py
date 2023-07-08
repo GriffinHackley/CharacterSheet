@@ -162,7 +162,6 @@ class Race:
 
     # TODO: finish this for progression page
     def toDict(self):
-        print(dir(self))
         return {
             "name": self.name,
         }

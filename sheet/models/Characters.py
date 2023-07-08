@@ -96,8 +96,10 @@ class Character(models.Model):
     def getHeader(self):
         ret = {}
 
+        for cls in self.charClass:
+            ret["class"] = {cls.name: cls.level}
+
         ret["name"] = self.name
-        ret["class"] = self.charClass.name
         ret["level"] = self.level
         ret["race"] = self.race.name
         ret["alignment"] = self.alignment
@@ -131,6 +133,20 @@ class Character(models.Model):
         return ret
 
     def build(self):
+        self.modList = ModifierList()
+        self.getModifiers()
+        self.calculateStats()
+        self.cleanModifiers()
+        self.saves = self.calculateSaves()
+        self.skills = self.calculateSkills()
+        self.combat = self.calculateCombat()
+        self.equipment = self.getEquipment()
+        self.spells = self.getSpells()
+        self.features = self.getFeatures()
+        self.proficiencies = self.cleanProficiencies()
+
+    def buildWithLevel(self):
+        self.toggles = {}
         self.modList = ModifierList()
         self.getModifiers()
         self.calculateStats()
@@ -207,7 +223,9 @@ class Character(models.Model):
     def getConsumables(self):
         ret = []
 
-        ret = ret + self.charClass.getConsumables(self.abilityMod, self.profBonus)
+        for cls in self.charClass:
+            ret = ret + cls.getConsumables(self.abilityMod, self.profBonus)
+
         ret = ret + self.race.getConsumables(self.profBonus)
 
         return ret
@@ -220,35 +238,36 @@ class Character(models.Model):
 
     def applyClass(self):
         allClasses = classes.allClasses()
-        classModule = allClasses[self.charClass["name"].lower()]
-        self.charClass = getattr(classModule, self.charClass["name"])(
-            self.level, self.charClass["options"]
-        )
-        self.charClass.appendModifiers(self.modList)
-        self.charClass.addProficiencies(self.proficiencies)
-        self.hitDie = self.charClass.hitDie
+        # classModule = allClasses[self.charClass["name"].lower()]
 
-        if "dreadAmbusher" in self.toggles.keys() and self.toggles["dreadAmbusher"]:
-            self.modList.addModifier(
-                Modifier("1d8", "untyped", "DamageDie", "Dread Ambusher")
-            )
+        self.charClass = classes.getClasses(self.charClass)
 
-        if "elemental" in self.toggles.keys() and self.toggles["elemental"]:
-            if "focusWeapon" in self.toggles.keys() and self.toggles["focusWeapon"]:
-                self.modList.addModifier(
-                    Modifier("1d6", "elemental", "Main-DamageDie", "Focus Weapon")
-                )
+        for i in self.charClass:
+            i.appendModifiers(self.modList)
+            i.addProficiencies(self.proficiencies)
+            self.hitDie = i.hitDie
 
-        if "bladesong" in self.toggles.keys() and self.toggles["bladesong"]:
-            self.modList.addModifier(
-                Modifier("Intelligence", "untyped", "AC", "Bladesong")
-            )
-            self.modList.addModifier(Modifier(10, "untyped", "Speed", "Bladesong"))
+        # if "dreadAmbusher" in self.toggles.keys() and self.toggles["dreadAmbusher"]:
+        #     self.modList.addModifier(
+        #         Modifier("1d8", "untyped", "DamageDie", "Dread Ambusher")
+        #     )
 
-        if "sneakAttack" in self.toggles.keys() and self.toggles["sneakAttack"]:
-            self.modList.addModifier(
-                Modifier("1d6", "untyped", "DamageDie", "Sneak Attack")
-            )
+        # if "elemental" in self.toggles.keys() and self.toggles["elemental"]:
+        #     if "focusWeapon" in self.toggles.keys() and self.toggles["focusWeapon"]:
+        #         self.modList.addModifier(
+        #             Modifier("1d6", "elemental", "Main-DamageDie", "Focus Weapon")
+        #         )
+
+        # if "bladesong" in self.toggles.keys() and self.toggles["bladesong"]:
+        #     self.modList.addModifier(
+        #         Modifier("Intelligence", "untyped", "AC", "Bladesong")
+        #     )
+        #     self.modList.addModifier(Modifier(10, "untyped", "Speed", "Bladesong"))
+
+        # if "sneakAttack" in self.toggles.keys() and self.toggles["sneakAttack"]:
+        #     self.modList.addModifier(
+        #         Modifier("1d6", "untyped", "DamageDie", "Sneak Attack")
+        #     )
 
     def applyFeats(self, featList):
         ret = []
@@ -269,6 +288,7 @@ class Character(models.Model):
         self.feats = ret
 
     def applySpells(self):
+        return
         if "absorbElements" in self.toggles.keys() and self.toggles["absorbElements"]:
             self.modList.addModifier(
                 Modifier("1d6", "elemental", "Melee-DamageDie", "Absorb Elements")
@@ -447,12 +467,13 @@ class Character(models.Model):
         for dieSize in sortedDieSize:
             damageDie = allDie["value"][dieSize]
 
-            if self.toggles["critical"]:
-                if (
-                    self.config["critType"] == "doubleDice"
-                    or self.config["critType"] == "doubleAll"
-                ):
-                    damageDie = damageDie * 2
+            # TODO
+            # if self.toggles["critical"]:
+            #     if (
+            #         self.config["critType"] == "doubleDice"
+            #         or self.config["critType"] == "doubleAll"
+            #     ):
+            #         damageDie = damageDie * 2
 
             if firstLetter:
                 firstLetter = False
@@ -482,20 +503,18 @@ class Character(models.Model):
             damageMod = damageMod + damageBonus
             damageSource["Power Attk."] = damageBonus
 
-        # If critical, add extra critical damage
-        if self.toggles["critical"]:
-            if self.config["critType"] == "maxDie":
-                damage = (
-                    damageDice
-                    + f"+{int(damageMod+criticalDamage)} "
-                    + weapon["damageType"]
-                )
-            elif self.config["critType"] == "doubleAll":
-                damage = damageDice + f"+{2*damageMod} " + weapon["damageType"]
-            else:
-                damage = damageDice + f"+{damageMod} " + weapon["damageType"]
+            # If critical, add extra critical damage
+            # if self.toggles["critical"]:
+        if self.config["critType"] == "maxDie":
+            damage = (
+                damageDice + f"+{int(damageMod+criticalDamage)} " + weapon["damageType"]
+            )
+        elif self.config["critType"] == "doubleAll":
+            damage = damageDice + f"+{2*damageMod} " + weapon["damageType"]
         else:
             damage = damageDice + f"+{damageMod} " + weapon["damageType"]
+        # else:
+        #     damage = damageDice + f"+{damageMod} " + weapon["damageType"]
 
         toHitSource = {
             k: v
@@ -579,12 +598,16 @@ class Character(models.Model):
         return self.equipment
 
     def getFeatures(self):
-        ret = []
+        ret = {}
 
-        ret = ret + [{"name": "Class", "value": self.charClass.getClassFeatures()}]
-        ret = ret + [{"name": "Feats", "value": self.getFeats()}]
-        ret = ret + [{"name": "Race", "value": self.race.getFeatures()}]
-        ret = ret + [{"name": "Misc.", "value": self.getMiscFeatures()}]
+        features = []
+        for cls in self.charClass:
+            features += cls.getClassFeatures()
+
+        ret["Class"] = features
+        ret["Feats"] = self.getFeats()
+        ret["Race"] = self.race.getFeatures()
+        ret["Misc."] = self.getMiscFeatures()
 
         return ret
 

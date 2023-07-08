@@ -2,6 +2,15 @@ import "../../../css/sheet/main/Header.css";
 
 export default function Header({ headerInfo }) {
   let pathfinder = null;
+
+  let classes = [];
+  for (let cls in headerInfo.class) {
+    classes.push(
+      <div>
+        {cls} {headerInfo.class[cls]}
+      </div>
+    );
+  }
   if (headerInfo.edition == "Pathfinder") {
     pathfinder = (
       <li>
@@ -24,7 +33,7 @@ export default function Header({ headerInfo }) {
           <li>
             <div className="field">Class & Level</div>
             <div className="value">
-              {headerInfo.class} {headerInfo.level}
+              {classes}
             </div>
           </li>
           <li>

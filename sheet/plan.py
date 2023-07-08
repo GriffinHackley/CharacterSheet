@@ -18,7 +18,6 @@ class Plan:
         race = races.getRace(self.character.race["name"])(
             self.character.race["options"]
         ).toDict()
-        print(race)
 
         ret = {}
 

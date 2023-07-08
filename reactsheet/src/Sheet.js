@@ -27,7 +27,7 @@ const loadCharacter = async (setLoading, setCharacter, id) => {
   setLoading(true);
 
   const response = await axios.get(
-    "http://127.0.0.1:8000/api/characters/" + id
+    "http://127.0.0.1:8000/api/characters/" + id + "/level"
   );
   let character = JSON.parse(response.data);
   setCharacter(character);
