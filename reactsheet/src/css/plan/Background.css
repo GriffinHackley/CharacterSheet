@@ -1,0 +1,34 @@
+h2 {
+  text-decoration: underline;
+}
+div.backgroundText {
+}
+div.proficiencies {
+  display: flex;
+  flex-direction: column;
+}
+h4.profHeader {
+}
+div.profContent {
+  display: flex;
+  flex-direction: row;
+}
+div.typeContainer {
+  display: flex;
+  flex-direction: row;
+
+  padding-left: 15px;
+  align-content: center;
+  justify-content: center;
+}
+
+b.profType {
+  padding-right: 4px;
+  align-content: center;
+  justify-content: center;
+}
+
+p.proficiency {
+  align-items: center;
+  justify-items: center;
+}

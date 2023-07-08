@@ -2,6 +2,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { React, useState, useEffect } from "react";
 import Background from "./components/plan/Background";
+import Race from "./components/plan/Race";
+import "./css/Plan.css";
 
 const loadPlan = async (setLoading, setPlan, id) => {
   setLoading(true);
@@ -32,8 +34,9 @@ export default function Plan() {
 
   levels.push(
     <div className="level">
-      <h2>Level 0</h2>
+      <h1>Level 0</h1>
       <Background background={plan[0].Background} />
+      <Race race={plan[0].Race} />
     </div>
   );
 

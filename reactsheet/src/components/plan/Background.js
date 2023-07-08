@@ -1,3 +1,5 @@
+import "../../css/plan/Background.css";
+
 export default function Background({ background }) {
   let text = [];
 
@@ -17,13 +19,13 @@ export default function Background({ background }) {
     let profs = background.proficiencies[type];
     if (profs.length !== 0) {
       proficiencies.push(
-        <div>
-          <h5>
+        <div className="typeContainer">
+          <b className="profType">
             {type}:
-          </h5>
-          <div>
+          </b>
+          <p className="proficiency">
             {profs.join(", ")}
-          </div>
+          </p>
         </div>
       );
     }
@@ -31,14 +33,18 @@ export default function Background({ background }) {
 
   return (
     <div>
-      <h4>
+      <h2>Background</h2>
+      <h4 className="backgroundName">
         {background.name}
       </h4>
       <div className="backgroundText">
         {text}
       </div>
       <div className="proficiencies">
-        {proficiencies}
+        <h4 className="profHeader">Proficiencies</h4>
+        <div className="profContent">
+          {proficiencies}
+        </div>
       </div>
     </div>
   );

@@ -213,11 +213,7 @@ class Character(models.Model):
         return ret
 
     def applyRace(self):
-        allRaces = races.allRaces()
-        raceModule = allRaces[self.race["name"]]
-        self.race = getattr(
-            raceModule, self.race["name"].replace("-", "").replace(" ", "")
-        )(self.race["options"])
+        self.race = races.getRace(self.race["name"])(self.race["options"])
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
         self.feats += self.race.getFeat()

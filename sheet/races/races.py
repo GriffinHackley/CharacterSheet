@@ -14,6 +14,12 @@ def allRaces():
     return ret
 
 
+def getRace(name):
+    races = allRaces()
+    raceModule = races[name]
+    return getattr(raceModule, name.replace("-", "").replace(" ", ""))
+
+
 class Race:
     name = ""
     abilityDistribution = ""
@@ -153,3 +159,10 @@ class Race:
                     "A race option was found in the config that does not exist. Option:"
                     + option
                 )
+
+    # TODO: finish this for progression page
+    def toDict(self):
+        print(dir(self))
+        return {
+            "name": self.name,
+        }
