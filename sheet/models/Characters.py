@@ -96,15 +96,15 @@ class Character(models.Model):
     def getHeader(self):
         ret = {}
 
+        ret["Class and Level"] = {}
         for cls in self.charClass:
-            ret["class"] = {cls.name: cls.level}
+            ret["Class and Level"][cls.name] = cls.level
 
-        ret["name"] = self.name
-        ret["level"] = self.level
-        ret["race"] = self.race.name
-        ret["alignment"] = self.alignment
-        ret["player"] = self.playerName
-        ret["edition"] = self.config["edition"]
+        ret["Character Name"] = self.name
+        ret["Background"] = self.background.name
+        ret["Race"] = self.race.name
+        ret["Alignment"] = self.alignment
+        ret["Player Name"] = self.playerName
 
         return ret
 
@@ -146,6 +146,7 @@ class Character(models.Model):
         self.proficiencies = self.cleanProficiencies()
 
     def buildWithLevel(self):
+        # TODO remove this
         self.toggles = {}
         self.modList = ModifierList()
         self.getModifiers()
