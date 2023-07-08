@@ -1,4 +1,4 @@
-import "../../../../css/main/combat/CurrentHP.css";
+import "../../../../css/sheet/main/combat/CurrentHP.css";
 import { useEffect, useState } from "react";
 import { storeItem, getItem } from "../../../../scripts/localState.js";
 

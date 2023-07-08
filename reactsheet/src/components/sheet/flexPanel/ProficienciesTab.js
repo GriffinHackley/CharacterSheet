@@ -1,4 +1,4 @@
-import "../../../css/flexPanel/ProficienciesTab.css";
+import "../../../css/sheet/flexPanel/ProficienciesTab.css";
 
 function makeList(allProfs, array, header) {
   if (array !== 0) {

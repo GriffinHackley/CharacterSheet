@@ -1,4 +1,4 @@
-import "../../../../css/main/combat/CombatHeader.css";
+import "../../../../css/sheet/main/combat/CombatHeader.css";
 import formatSource from "../../../../scripts/formatSource";
 
 export default function CombatHeader({ combatInfo }) {

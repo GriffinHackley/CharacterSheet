@@ -1,4 +1,5 @@
-import "../../../../css/main/combat/Combat.css";
+import "../../../../css/sheet/main/combat/Combat.css";
+
 import AttacksAndSpellcasting from "./AttacksAndSpellcasting";
 import CombatHeader from "./CombatHeader";
 import Conditions from "./Conditions";

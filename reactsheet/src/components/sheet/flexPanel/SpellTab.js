@@ -1,4 +1,4 @@
-import "../../../css/flexPanel/SpellTab.css";
+import "../../../css/sheet/flexPanel/SpellTab.css";
 
 function getSpellHeader(spellInfo, config) {
   let spellHeader = [];
