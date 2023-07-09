@@ -7,6 +7,7 @@ from ..classes import classes
 from ..races import races
 from ..lists import Ability, combat_list
 from ..modifiers import Modifier, ModifierList
+from ..toggles import Toggle, ToggleList
 import json
 
 
@@ -147,7 +148,7 @@ class Character(models.Model):
 
     def buildWithLevel(self):
         # TODO remove this
-        self.toggles = {}
+        self.toggles = ToggleList()
         self.modList = ModifierList()
         self.getModifiers()
         self.calculateStats()
@@ -238,9 +239,6 @@ class Character(models.Model):
         self.feats += self.race.getFeat()
 
     def applyClass(self):
-        allClasses = classes.allClasses()
-        # classModule = allClasses[self.charClass["name"].lower()]
-
         self.charClass = classes.getClasses(self.charClass)
 
         for i in self.charClass:
@@ -290,45 +288,6 @@ class Character(models.Model):
 
     def applySpells(self):
         return
-        if "absorbElements" in self.toggles.keys() and self.toggles["absorbElements"]:
-            self.modList.addModifier(
-                Modifier("1d6", "elemental", "Melee-DamageDie", "Absorb Elements")
-            )
-
-        if "boomingBlade" in self.toggles.keys() and self.toggles["boomingBlade"]:
-            self.modList.addModifier(
-                Modifier("0d8", "untyped", "DamageDie", "Booming Blade")
-            )
-
-        if "catsGrace" in self.toggles.keys() and self.toggles["catsGrace"]:
-            self.modList.addModifier(
-                Modifier(4, "enhancement", "Dexterity", "Cats Grace")
-            )
-
-        if "divineFavor" in self.toggles.keys() and self.toggles["divineFavor"]:
-            self.modList.addModifier(Modifier(1, "luck", "ToHit", "Divine Favor"))
-            self.modList.addModifier(Modifier(1, "luck", "Damage", "Divine Favor"))
-
-        if "favoredFoe" in self.toggles.keys() and self.toggles["favoredFoe"]:
-            self.modList.addModifier(
-                Modifier("1d4", "untyped", "DamageDie", "Favored Foe")
-            )
-
-        if "huntersMark" in self.toggles.keys() and self.toggles["huntersMark"]:
-            self.modList.addModifier(
-                Modifier("1d6", "untyped", "DamageDie", "Hunters Mark")
-            )
-
-        if "ironSkin" in self.toggles.keys() and self.toggles["ironSkin"]:
-            self.modList.applyModifierToModifier(
-                Modifier(4, "enhancement", "Natural Armor", "Iron Skin")
-            )
-
-        if "shield" in self.toggles.keys() and self.toggles["shield"]:
-            self.modList.addModifier(Modifier(5, "untyped", "AC", "Shield"))
-
-        if "shieldOfFaith" in self.toggles.keys() and self.toggles["shieldOfFaith"]:
-            self.modList.addModifier(Modifier(2, "deflection", "AC", "Shield of Faith"))
 
     def calculateInit(self):
         modifier, source = self.modList.applyModifier("Initiative")
@@ -497,15 +456,15 @@ class Character(models.Model):
         self.graph = self.calculatePowerAttack(
             toHit, averageDamage, criticalDamage, hitPenalty, damageBonus
         )
-        if "powerAttack" in self.toggles and self.toggles["powerAttack"]:
-            toHit = toHit - hitPenalty
-            toHitSource["Power Attk."] = -hitPenalty
+        # if "powerAttack" in self.toggles and self.toggles["powerAttack"]:
+        #     toHit = toHit - hitPenalty
+        #     toHitSource["Power Attk."] = -hitPenalty
 
-            damageMod = damageMod + damageBonus
-            damageSource["Power Attk."] = damageBonus
+        #     damageMod = damageMod + damageBonus
+        #     damageSource["Power Attk."] = damageBonus
 
-            # If critical, add extra critical damage
-            # if self.toggles["critical"]:
+        #     # If critical, add extra critical damage
+        #     # if self.toggles["critical"]:
         if self.config["critType"] == "maxDie":
             damage = (
                 damageDice + f"+{int(damageMod+criticalDamage)} " + weapon["damageType"]
@@ -544,14 +503,14 @@ class Character(models.Model):
         return ret
 
     def calculatePowerAttack(self, toHit, damage, critDamage, hitPenalty, damageBonus):
-        if "advantage" in self.toggles.keys() and self.toggles["advantage"]:
-            if "Elven Accuracy" in self.feats.keys():
-                timesRolling = 3
-            else:
-                timesRolling = 2
-        else:
-            timesRolling = 1
-
+        # if "advantage" in self.toggles.keys() and self.toggles["advantage"]:
+        #     if "Elven Accuracy" in self.feats.keys():
+        #         timesRolling = 3
+        #     else:
+        #         timesRolling = 2
+        # else:
+        #     timesRolling = 1
+        timesRolling = 1
         critChance = 1 - pow(0.95, timesRolling)
 
         ret = {"AC": [], "normal": [], "powerAttack": []}
