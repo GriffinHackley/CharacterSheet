@@ -85,7 +85,7 @@ class Character(models.Model):
         ret["skills"] = self.skills
         ret["combat"] = self.combat
         ret["consumables"] = self.getConsumables()
-        ret["features"] = self.getFeatures()
+        ret["features"] = self.features
         ret["equipment"] = self.equipment
         ret["proficiencies"] = self.proficiencies
         ret["spells"] = self.spells
@@ -134,20 +134,6 @@ class Character(models.Model):
         return ret
 
     def build(self):
-        self.modList = ModifierList()
-        self.getModifiers()
-        self.calculateStats()
-        self.cleanModifiers()
-        self.saves = self.calculateSaves()
-        self.skills = self.calculateSkills()
-        self.combat = self.calculateCombat()
-        self.equipment = self.getEquipment()
-        self.spells = self.getSpells()
-        self.features = self.getFeatures()
-        self.proficiencies = self.cleanProficiencies()
-
-    def buildWithLevel(self):
-        # TODO remove this
         self.toggles = ToggleList()
         self.modList = ModifierList()
         self.getModifiers()
@@ -560,9 +546,9 @@ class Character(models.Model):
     def getFeatures(self):
         ret = {}
 
-        features = []
+        features = {}
         for cls in self.charClass:
-            features += cls.getClassFeatures()
+            features[cls.name] = cls.getClassFeatures()
 
         ret["Class"] = features
         ret["Feats"] = self.getFeats()

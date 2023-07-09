@@ -23,20 +23,6 @@ class FifthEditionCharacter(Character):
 
         super().build()
 
-    def buildWithLevel(self):
-        self.skillList = skill_list_5e
-        self.proficiencies = {
-            "skills": [],
-            "languages": [],
-            "armor": [],
-            "weapons": [],
-            "tools": [],
-            "savingThrows": [],
-        }
-        self.expertise = {"skills": [], "tools": []}
-
-        super().buildWithLevel()
-
     def fromCharacter(self, character):
         return super().fromCharacter(character)
 

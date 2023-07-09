@@ -3,7 +3,6 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', include('sheet.urls')),
-    path('admin/', admin.site.urls),
-    path('react/', views.index, name="react"),
+    path("", include("sheet.urls")),
+    path("admin/", admin.site.urls),
 ]
