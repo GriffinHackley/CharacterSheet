@@ -560,7 +560,7 @@ class Character(models.Model):
     def cleanProficiencies(self):
         ret = {}
         for item, value in self.proficiencies.items():
-            if item == "armor" or item == "weapons":
+            if item == "Armor" or item == "Weapons":
                 ret[item] = value
             else:
                 ret[item] = sorted(value)

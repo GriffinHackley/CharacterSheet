@@ -36,34 +36,9 @@ class Ranger(Class):
         return ret
 
     def getSpells(self, stats, profBonus, modList):
-        ret = {}
         ability = "Wisdom"
-        abilityMod = stats[ability]
-
-        ret["ability"] = ability
-        ret["abilityMod"] = abilityMod
-        ret["castingType"] = ["known", "ritual"]
-
-        bonus, source = modList.applyModifier("SpellSaveDC")
-
-        bonus, source = modList.applyModifier("SpellSaveDC")
-        source["Base"] = 8
-        source["Prof."] = profBonus
-        source[ability] = abilityMod
-        source = {
-            k: v
-            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
-        }
-        ret["saveDC"] = {"value": 8 + abilityMod + profBonus + bonus, "source": source}
-
-        bonus, source = modList.applyModifier("SpellAttack")
-        source["Prof."] = profBonus
-        source[ability] = abilityMod
-        source = {
-            k: v
-            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
-        }
-        ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
+        ret = super().getSpells(stats, profBonus, modList, ability)
+        ret["castingType"] = ["known"]
 
         ret["spells"] = {}
         ret["spells"]["1"] = {}

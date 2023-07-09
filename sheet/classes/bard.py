@@ -9,10 +9,10 @@ class Bard(Class):
         "armor": ["Light"],
         "weapons": [
             "Simple weapons",
-            "hand crossbows",
-            "longswords",
-            "rapiers",
-            "shortswords",
+            "Hand Crossbows",
+            "Longswords",
+            "Rapiers",
+            "Shortswords",
         ],
         "tools": ["Bagpipes", "Lute", "Pan Flute"],
         "savingThrows": ["Dexterity", "Charisma"],
@@ -33,32 +33,10 @@ class Bard(Class):
         return super().get5eSubclassFeatures(url)
 
     def getSpells(self, stats, profBonus, modList):
-        ret = {}
         ability = "Charisma"
-        abilityMod = stats[ability]
-
-        ret["ability"] = ability
-        ret["abilityMod"] = abilityMod
+        ret = super().getSpells(stats, profBonus, modList, ability)
+        ret["name"] = "Bard"
         ret["castingType"] = ["known", "ritual"]
-
-        bonus, source = modList.applyModifier("SpellSaveDC")
-        source["Base"] = 8
-        source["Prof."] = profBonus
-        source[ability] = abilityMod
-        source = {
-            k: v
-            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
-        }
-        ret["saveDC"] = {"value": 8 + abilityMod + profBonus + bonus, "source": source}
-
-        bonus, source = modList.applyModifier("SpellAttack")
-        source["Prof."] = profBonus
-        source[ability] = abilityMod
-        source = {
-            k: v
-            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
-        }
-        ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
 
         ret["spells"] = {}
         ret["spells"]["Cantrip"] = {}
@@ -92,17 +70,7 @@ class Bard(Class):
                 "timesPrepared": "-1",
                 "description": "",
             },
-            "Dissonant Whiespers": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Silvery Barbs": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Tasha's Hideous Laughter": {
+            "Dissonant Whispers": {
                 "source": "Bard: Spellcasting",
                 "timesPrepared": "-1",
                 "description": "",

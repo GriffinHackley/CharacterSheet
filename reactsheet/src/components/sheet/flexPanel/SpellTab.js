@@ -1,4 +1,5 @@
 import "../../../css/sheet/flexPanel/SpellTab.css";
+import { useState } from "react";
 
 function getSpellHeader(spellInfo, config) {
   let spellHeader = [];
@@ -99,12 +100,49 @@ function getSpellList(spellInfo, config) {
   return spellList;
 }
 
+function setUpSourceTabs(spellInfo) {
+  let mainSource = "";
+  let length = 0;
+  let sourceTabs = [];
+  for (let src in spellInfo) {
+    sourceTabs.push(spellInfo[src]);
+    if (spellInfo[src] > length) {
+      length = spellInfo[src].length;
+    }
+  }
+
+  mainSource = 1;
+  return [mainSource, sourceTabs];
+}
+
 export default function SpellTab({ spellInfo, config }) {
-  let spellHeader = getSpellHeader(spellInfo, config);
-  let spellList = getSpellList(spellInfo, config);
+  let [mainSource, sourceTabs] = setUpSourceTabs(spellInfo);
+  const [activeSourceTab, setActiveSourceTab] = useState(mainSource);
+
+  let sourceButtons = [];
+
+  //Get all tab buttons set up
+  for (let source in sourceTabs) {
+    let tabName = sourceTabs[source].name;
+    sourceButtons.push(
+      <button
+        type="button"
+        key={tabName}
+        onClick={() => setActiveSourceTab(source)}
+      >
+        {tabName}
+      </button>
+    );
+  }
+
+  let spellHeader = getSpellHeader(sourceTabs[activeSourceTab], config);
+  let spellList = getSpellList(sourceTabs[activeSourceTab], config);
 
   return (
     <section className="spellsContainer">
+      <div className="tabHeader">
+        {sourceButtons}
+      </div>
       <div className="spellHeader">
         {spellHeader}
       </div>

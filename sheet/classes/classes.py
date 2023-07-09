@@ -84,25 +84,57 @@ class Class:
             )
 
     def addProficiencies(self, proficiencyList):
-        proficiencyList["armor"] = (
-            proficiencyList["armor"] + self.proficiencies["armor"]
+        # list(set()) converts removes duplicates
+        proficiencyList["armor"] = list(
+            set(proficiencyList["armor"] + self.proficiencies["armor"])
         )
-        proficiencyList["weapons"] = (
-            proficiencyList["weapons"] + self.proficiencies["weapons"]
+        proficiencyList["weapons"] = list(
+            set(proficiencyList["weapons"] + self.proficiencies["weapons"])
         )
-        proficiencyList["languages"] = (
-            proficiencyList["languages"] + self.proficiencies["languages"]
+        proficiencyList["languages"] = list(
+            set(proficiencyList["languages"] + self.proficiencies["languages"])
         )
         if self.edition == "5e":
-            proficiencyList["skills"] = (
-                proficiencyList["skills"] + self.proficiencies["skills"]
+            proficiencyList["skills"] = list(
+                set(proficiencyList["skills"] + self.proficiencies["skills"])
             )
-            proficiencyList["tools"] = (
-                proficiencyList["tools"] + self.proficiencies["tools"]
+            proficiencyList["tools"] = list(
+                set(proficiencyList["tools"] + self.proficiencies["tools"])
             )
-            proficiencyList["savingThrows"] = (
-                proficiencyList["savingThrows"] + self.proficiencies["savingThrows"]
+            proficiencyList["savingThrows"] = list(
+                set(
+                    proficiencyList["savingThrows"] + self.proficiencies["savingThrows"]
+                )
             )
+
+    def getSpells(self, stats, profBonus, modList, ability):
+        abilityMod = stats[ability]
+
+        ret = {}
+        ret["ability"] = ability
+        ret["abilityMod"] = abilityMod
+
+        bonus, source = modList.applyModifier("SpellSaveDC")
+        source["Base"] = 8
+        source["Prof."] = profBonus
+        source[ability] = abilityMod
+
+        source = {
+            k: v
+            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
+        }
+        ret["saveDC"] = {"value": 8 + abilityMod + profBonus + bonus, "source": source}
+
+        bonus, source = modList.applyModifier("SpellAttack")
+        source["Prof."] = profBonus
+        source[ability] = abilityMod
+        source = {
+            k: v
+            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
+        }
+        ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
+
+        return ret
 
     def get5eClassFeatures(self):
         url = "http://dnd5e.wikidot.com/" + self.name
