@@ -15,16 +15,18 @@ def allRaces():
 
 
 def getRace(name):
-    races = allRaces()
-    raceModule = races[name]
-    return getattr(raceModule, name.replace("-", "").replace(" ", ""))
+    try:
+        races = allRaces()
+        raceModule = races[name]
+        return getattr(raceModule, name.replace("-", "").replace(" ", ""))
+    except:
+        error = "{} does not exist in list of available races"
+        raise Exception(error.format(name))
 
 
 class Race:
     name = ""
-    abilityDistribution = ""
-    primaryAbility = ""
-    secondaryAbility = ""
+    abilityScores = ""
     size = ""
     feat = ""
     speed = 0
@@ -37,37 +39,8 @@ class Race:
     misc = []
 
     def appendModifiers(self, modList: ModifierList):
-        try:
-            if self.abilityDistribution == "2/1":
-                modList.addModifier(
-                    Modifier(2, "untyped", self.primaryAbility, self.name)
-                )
-                modList.addModifier(
-                    Modifier(1, "untyped", self.secondaryAbility, self.name)
-                )
-
-            if self.abilityDistribution == "2/0":
-                modList.addModifier(
-                    Modifier(2, "untyped", self.primaryAbility, self.name)
-                )
-                if self.secondaryAbility != "":
-                    raise Exception()
-
-            if self.abilityDistribution == "1/1":
-                modList.addModifier(
-                    Modifier(1, "untyped", self.primaryAbility, self.name)
-                )
-                modList.addModifier(
-                    Modifier(1, "untyped", self.secondaryAbility, self.name)
-                )
-
-        except:
-            error = "You chose an ability distribution of {}, but primaryAbility={} and secondaryAbility={}"
-            raise Exception(
-                error.format(
-                    self.abilityDistribution, self.primaryAbility, self.secondaryAbility
-                )
-            )
+        for score, value in self.abilityScores.items():
+            modList.addModifier(Modifier(value, "untyped", score, self.name))
 
     def addProficiencies(self, proficiencyList):
         # NOTE: skill proficiency is used in place of class skills for pf characters
@@ -150,7 +123,8 @@ class Race:
 
         return ret
 
-    def __init__(self, options):
+    def __init__(self, options, level):
+        self.level = level
         for option, value in options.items():
             if hasattr(self, option):
                 setattr(self, option, value)

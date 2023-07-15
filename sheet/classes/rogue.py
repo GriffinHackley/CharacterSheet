@@ -15,7 +15,7 @@ class Rogue(Class):
 
     def __init__(self, level, options):
         self.options = options
-        super().__init__(level, name="Rogue", hitDie="8", edition="5e")
+        super().__init__(level, name="Rogue", hitDie="8", spellProgression="none")
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

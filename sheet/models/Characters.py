@@ -136,6 +136,7 @@ class Character(models.Model):
     def build(self):
         self.toggles = ToggleList()
         self.modList = ModifierList()
+        self.getTotalLevel()
         self.getModifiers()
         self.calculateStats()
         self.cleanModifiers()
@@ -157,6 +158,13 @@ class Character(models.Model):
 
     def cleanModifiers(self):
         self.modList.cleanModifiers(self.abilityMod, self.profBonus)
+
+    def getTotalLevel(self):
+        totalLevel = 0
+
+        for cls, data in self.charClass.items():
+            totalLevel += data["level"]
+        self.totalLevel = totalLevel
 
     def calculateStats(self):
         stats = self.decodeStats()
@@ -209,17 +217,19 @@ class Character(models.Model):
         return ret
 
     def getConsumables(self):
-        ret = []
+        ret = {}
 
         for cls in self.charClass:
-            ret = ret + cls.getConsumables(self.abilityMod, self.profBonus)
+            ret.update(cls.getConsumables(self.abilityMod, self.profBonus))
 
-        ret = ret + self.race.getConsumables(self.profBonus)
+        ret.update(self.race.getConsumables(self.abilityMod, self.profBonus))
 
         return ret
 
     def applyRace(self):
-        self.race = races.getRace(self.race["name"])(self.race["options"])
+        self.race = races.getRace(self.race["name"])(
+            self.race["options"], self.totalLevel
+        )
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
         self.feats += self.race.getFeat()

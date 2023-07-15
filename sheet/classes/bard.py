@@ -1,8 +1,8 @@
-from .classes import Class
+from .classes import FifthEditionClass
 from ..modifiers import Modifier, ModifierList
 
 
-class Bard(Class):
+class Bard(FifthEditionClass):
     proficiencies = {
         "skills": ["Perception", "Insight", "Performance"],
         "languages": [],
@@ -21,13 +21,29 @@ class Bard(Class):
 
     def __init__(self, level, options):
         self.options = options
-        super().__init__(level, name="Bard", hitDie="8", edition="5e")
+        super().__init__(level, name="Bard", hitDie="8", spellProgression="full")
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
 
+    # TODO: make this the default
     def getClassFeatures(self):
-        return super().get5eClassFeatures()
+        subclassLevel = 3
+
+        features = {
+            1: ["Spellcasting", "Bardic Inspiration"],
+            2: ["Jack of All Trades", "Song of Rest", "Magical Inspiration"],
+            3: ["Expertise"],
+        }
+
+        return super().getClassFeatures(features)
+
+    # def getClassFeatures(self):
+    #     temp = super().get5eClassFeatures()
+    #     # import pdb
+
+    #     # pdb.set_trace()
+    #     return self.NewgetClassFeatures()
 
     def getSubclassFeatures(self, url):
         return super().get5eSubclassFeatures(url)

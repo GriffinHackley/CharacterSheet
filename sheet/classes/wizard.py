@@ -22,7 +22,7 @@ class Wizard(Class):
 
     def __init__(self, level, options):
         self.options = options
-        super().__init__(level, name="Wizard", hitDie="6", edition="5e")
+        super().__init__(level, name="Wizard", hitDie="6", spellProgression="full")
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

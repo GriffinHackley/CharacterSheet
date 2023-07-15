@@ -2,25 +2,23 @@ from .races import Race
 from ..modifiers import Modifier, ModifierList
 
 
-class Harengon(Race):
-    def __init__(self, options):
-        options["name"] = "Harengon"
+class Dragonborn(Race):
+    def __init__(self, options, level):
+        options["name"] = "Dragonborn"
         options["speed"] = 30
-        options["skills"] = ["Perception"]
+        options["skills"] = []
         options["languages"] = options["languages"]
-        super().__init__(options)
+        super().__init__(options, level)
 
     def appendModifiers(self, modList: ModifierList):
-        modList.addModifier(
-            Modifier("Proficiency Bonus", "untyped", "Initiative", "Hare Trigger")
-        )
-
         return super().appendModifiers(modList)
 
-    def getConsumables(self, abilityMod, profBonus):
-        ret = []
+    def getConsumables(self, abilityScores, profBonus):
+        ret = {}
 
-        ret.append({"name": "Rabbit Hop", "number": profBonus})
+        ret["Breath Weapon"] = BreathWeapon(
+            profBonus, abilityScores["Constitution"], self.level
+        ).toJson()
 
         return ret
 
@@ -75,3 +73,31 @@ class Harengon(Race):
         ]
 
         return ret
+
+
+class BreathWeapon:
+    def __init__(self, profBonus, conMod, level):
+        self.uses = profBonus
+        self.dc = 8 + profBonus + conMod
+        self.areaType = "15-ft cone"
+        self.damage = self.getDamage(level)
+
+    def getDamage(self, level):
+        if level < 5:
+            return "1d10"
+
+        if level >= 5 and level < 10:
+            return "2d10"
+
+        if level >= 11 and level < 16:
+            return "3d10"
+
+        if level >= 17:
+            return "4d10"
+
+        raise Exception(
+            "The level given for breath weapon was not valid: {}".format(level)
+        )
+
+    def toJson(self):
+        return {"uses": self.uses}

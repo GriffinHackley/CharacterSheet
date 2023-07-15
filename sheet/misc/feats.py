@@ -76,8 +76,6 @@ class RitualCaster(Feat):
         self.text = [{"type": "normal", "text": text}]
 
     def getSpells(self, character):
-        ret = {}
-
         stats = character.abilityMod
         profBonus = character.profBonus
         modList = character.modList
@@ -85,6 +83,7 @@ class RitualCaster(Feat):
         abilityMod = stats[self.ability]
 
         ret = {}
+        ret["name"] = "Ritual Caster"
         ret["ability"] = self.ability
         ret["abilityMod"] = abilityMod
 
@@ -117,10 +116,6 @@ class RitualCaster(Feat):
         # ret['level']['2'] = {}
         # ret['level']['2']['list'] = {
         # }
-
-        for level, data in ret["spells"].items():
-            for spell, data in data["list"].items():
-                data["source"] = "Ritual Caster"
 
         return ret
 

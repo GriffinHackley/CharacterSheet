@@ -1,4 +1,5 @@
 import "../../../css/sheet/flexPanel/SpellTab.css";
+import formatSource from "../../../scripts/formatSource";
 import { useState } from "react";
 
 function getSpellHeader(spellInfo, config) {
@@ -28,7 +29,7 @@ function getSpellHeader(spellInfo, config) {
     spellHeader.push(
       <div
         className="tooltip centered spellModifier spellHeaderItem"
-        data-tooltip="{ source }"
+        data-tooltip={formatSource(spellInfo.spellAttack.source)}
       >
         <div className="value">
           {spellInfo.spellAttack.value}
@@ -40,7 +41,7 @@ function getSpellHeader(spellInfo, config) {
     spellHeader.push(
       <div
         className="tooltip centered saveDC spellHeaderItem"
-        data-tooltip="{{ source }}"
+        data-tooltip={formatSource(spellInfo.saveDC.source)}
       >
         <div className="value">
           {spellInfo.saveDC.value}
@@ -101,17 +102,19 @@ function getSpellList(spellInfo, config) {
 }
 
 function setUpSourceTabs(spellInfo) {
-  let mainSource = "";
+  let mainSource = 0;
   let length = 0;
   let sourceTabs = [];
   for (let src in spellInfo) {
     sourceTabs.push(spellInfo[src]);
-    if (spellInfo[src] > length) {
-      length = spellInfo[src].length;
+
+    let currentLength = Object.keys(spellInfo[src].spells).length;
+    if (currentLength > length) {
+      length = currentLength;
+      mainSource = parseInt(src);
     }
   }
 
-  mainSource = 1;
   return [mainSource, sourceTabs];
 }
 

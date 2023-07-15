@@ -9,9 +9,8 @@ from .models.FifthEditionCharacter import FifthEditionCharacter
 from .models.PathfinderCharacter import PathfinderCharacter
 from .models.Characters import Character
 from .plan import Plan
-from .scrapeClass import get5eClassFeatures
-
 import json
+from .races import races
 
 admin.site.register(Character)
 
@@ -78,24 +77,32 @@ def getPlan(request, characterId):
         return Response(plan)
 
 
+# @api_view(["GET"])
+# def getDBItem(request, type, item):
+#     url = "./5eDatabase/{type}/{item}.html".format(type=type, item=item)
+
+#     # Scrape and write features to file
+#     file = open(url, "w")
+#     contents = get5eClassFeatures(item)
+#     ret = ""
+#     for line in contents:
+#         ret += line
+
+#     file.write(ret)
+#     file.close()
+
+#     file = open(url)
+#     contents = file.read()
+#     file.close()
+#     return Response(contents)
+
+
 @api_view(["GET"])
-def getDBItem(request, type, item):
-    url = "./5eDatabase/{type}/{item}.html".format(type=type, item=item)
+def getCreationOptions(request):
+    ret = {}
+    ret["Race"] = list(races.allRaces().keys())
 
-    # Scrape and write features to file
-    file = open(url, "w")
-    contents = get5eClassFeatures(item)
-    ret = ""
-    for line in contents:
-        ret += line
-
-    file.write(ret)
-    file.close()
-
-    file = open(url)
-    contents = file.read()
-    file.close()
-    return Response(contents)
+    return Response(json.dumps(ret))
 
 
 def create(request):

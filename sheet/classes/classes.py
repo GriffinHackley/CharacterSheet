@@ -23,65 +23,25 @@ def getClasses(levels):
     classes = allClasses()
     for charClass, level in levels.items():
         classModule = classes[charClass.lower()]
-        initClass = getattr(classModule, charClass)(level["level"], level["options"])
+        cls = getattr(classModule, charClass)
+        initClass = cls(level["level"], level["options"])
         ret.append(initClass)
 
     return ret
 
 
 class Class:
-    def __init__(
-        self,
-        level,
-        name,
-        hitDie,
-        edition,
-        fort="poor",
-        refl="poor",
-        will="poor",
-        bab="1/2",
-    ):
-        self.edition = edition
+    def __init__(self, level, name, hitDie, spellProgression):
         self.name = name
         self.hitDie = hitDie
         self.level = level
-        if edition == "Pathfinder":
-            self.fort = self.getSave(fort)
-            self.refl = self.getSave(refl)
-            self.will = self.getSave(will)
-            self.bab = self.getBab(bab)
-
-    def getBab(self, progression):
-        if progression == "full":
-            return self.level
-        elif progression == "3/4":
-            return math.floor(self.level * 3 / 4)
-        elif progression == "1/2":
-            return math.floor(self.level / 2)
-
-    def getSave(self, progression):
-        if progression == "good":
-            return 2 + math.ceil((self.level - 1) / 2)
-        elif progression == "poor":
-            return math.floor((self.level) / 3)
+        self.spellProgression = spellProgression
 
     def getConsumables(self, stats, proficiencyBonus):
         return []
 
     def appendModifiers(self, modList: ModifierList):
-        if self.edition == "Pathfinder":
-            modList.addModifier(
-                Modifier(self.bab, "untyped", "ToHit", self.name + " BAB")
-            )
-            modList.addModifier(
-                Modifier(self.fort, "untyped", "Fortitude", self.name + " Fortitude")
-            )
-            modList.addModifier(
-                Modifier(self.refl, "untyped", "Reflex", self.name + " Reflex")
-            )
-            modList.addModifier(
-                Modifier(self.will, "untyped", "Will", self.name + " Will")
-            )
+        return
 
     def addProficiencies(self, proficiencyList):
         # list(set()) converts removes duplicates
@@ -94,18 +54,6 @@ class Class:
         proficiencyList["languages"] = list(
             set(proficiencyList["languages"] + self.proficiencies["languages"])
         )
-        if self.edition == "5e":
-            proficiencyList["skills"] = list(
-                set(proficiencyList["skills"] + self.proficiencies["skills"])
-            )
-            proficiencyList["tools"] = list(
-                set(proficiencyList["tools"] + self.proficiencies["tools"])
-            )
-            proficiencyList["savingThrows"] = list(
-                set(
-                    proficiencyList["savingThrows"] + self.proficiencies["savingThrows"]
-                )
-            )
 
     def getSpells(self, stats, profBonus, modList, ability):
         abilityMod = stats[ability]
@@ -325,3 +273,163 @@ class Class:
                 featureText.append({"type": "normal", "text": current.text})
 
         return featureText
+
+
+class FifthEditionClass(Class):
+    def __init__(self, level, name, hitDie, spellProgression):
+        super().__init__(level, name, hitDie, spellProgression)
+        self.edition = "5e"
+
+    def addProficiencies(self, proficiencyList):
+        super().addProficiencies(proficiencyList)
+
+        proficiencyList["skills"] = list(
+            set(proficiencyList["skills"] + self.proficiencies["skills"])
+        )
+        proficiencyList["tools"] = list(
+            set(proficiencyList["tools"] + self.proficiencies["tools"])
+        )
+        proficiencyList["savingThrows"] = list(
+            set(proficiencyList["savingThrows"] + self.proficiencies["savingThrows"])
+        )
+
+    def getCasterLevel(self):
+        if self.spellProgression == "full":
+            return self.level
+
+        if self.spellProgression == "half":
+            return math.floor(self.level / 2)
+
+        return 0
+
+    def getClassFeatures(self, features):
+        allFeatures = []
+        for level in features:
+            if level > self.level:
+                continue
+
+            for feature in features[level]:
+                allFeatures.append(
+                    {"name": feature, "text": self.getFeatureText(feature)}
+                )
+
+        return allFeatures
+
+    def getFeatureText(self, feature):
+        url = "http://dnd5e.wikidot.com/" + self.name
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        current = soup.find("h3", text=feature)
+
+        if current == None:
+            current = soup.find("h3", text=feature + " (Optional)")
+
+        current = current.findNext()
+
+        featureText = []
+        while not current.findNext().name == "h3":
+            current = current.findNext()
+
+            if len(featureText) >= 1:
+                if current.text == featureText[len(featureText) - 2]["text"]:
+                    current = current.findNext()
+
+            # Handle list in feature
+            if current.name == "ul":
+                current = current.findNext()
+                optionList = False
+                while True:
+                    if not feature in self.options:
+                        break
+                    if current.name == "script":
+                        break
+                    if self.options[feature] in current.text:
+                        optionList = True
+                        break
+                    current = current.findNext().findNext()
+
+                # If this feature is in options, filter it so it is only the option chosen
+                if optionList:
+                    text = current.text.replace(".", ":", 1)
+                    choice = text.split(":")
+                    featureText = featureText + [
+                        {"type": "heading", "text": choice[0]},
+                        {"type": "normal", "text": choice[1]},
+                    ]
+                    break
+                else:
+                    featureText.append({"type": "normal", "text": current.text})
+                    current = current.findNext()
+
+            # When we get to divs that is the end of the features section
+            elif current.name == "div":
+                break
+
+            # Links get duplicated, so just skip them
+            elif current.name == "a":
+                continue
+
+            # Strongs are put after the element they are in, so put it before instead
+            elif current.name == "strong":
+                featureText.insert(
+                    len(featureText) - 1, {"type": "heading", "text": current.text}
+                )
+                continue
+
+            # If its a table just take the whole table
+            elif current.name == "table":
+                featureText.append(
+                    {"type": "table", "text": "tables have not been implemented yet"}
+                )
+                break
+
+            # Store headings as headings so they can be bolded
+            elif current.name == "h6" or current.name == "h5":
+                featureText.append({"type": "heading", "text": current.text})
+                current = current.findNext()
+
+            # Store feature text
+            else:
+                featureText.append({"type": "normal", "text": current.text})
+
+        return featureText
+
+
+class PathfinderClass(Class):
+    def __init__(self, level, name, hitDie, fort, refl, will, bab):
+        super().__init__(level, name, hitDie, fort, refl, will, bab)
+        self.edition = "Pathfinder"
+        self.fort = self.getSave(fort)
+        self.refl = self.getSave(refl)
+        self.will = self.getSave(will)
+        self.bab = self.getBab(bab)
+
+    def getBab(self, progression):
+        if progression == "full":
+            return self.level
+        elif progression == "3/4":
+            return math.floor(self.level * 3 / 4)
+        elif progression == "1/2":
+            return math.floor(self.level / 2)
+
+    def getSave(self, progression):
+        if progression == "good":
+            return 2 + math.ceil((self.level - 1) / 2)
+        elif progression == "poor":
+            return math.floor((self.level) / 3)
+
+    def appendModifiers(self, modList: ModifierList):
+        if self.edition == "Pathfinder":
+            modList.addModifier(
+                Modifier(self.bab, "untyped", "ToHit", self.name + " BAB")
+            )
+            modList.addModifier(
+                Modifier(self.fort, "untyped", "Fortitude", self.name + " Fortitude")
+            )
+            modList.addModifier(
+                Modifier(self.refl, "untyped", "Reflex", self.name + " Reflex")
+            )
+            modList.addModifier(
+                Modifier(self.will, "untyped", "Will", self.name + " Will")
+            )

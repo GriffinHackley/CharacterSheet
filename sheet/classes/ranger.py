@@ -15,7 +15,7 @@ class Ranger(Class):
 
     def __init__(self, level, options):
         self.options = options
-        super().__init__(level, name="Ranger", hitDie="10", edition="5e")
+        super().__init__(level, name="Ranger", hitDie="10", spellProgression="half")
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

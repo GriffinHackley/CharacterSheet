@@ -1,3 +1,4 @@
+import math
 import re
 
 import sheet.forms as forms
@@ -146,7 +147,12 @@ class FifthEditionCharacter(Character):
         return {"value": total, "source": source}
 
     def getProfBonus(self):
-        return 2
+        totalLevel = 0
+        for cls in self.charClass:
+            totalLevel += cls.level
+
+        bonus = math.floor(2 + ((totalLevel - 1) / 4))
+        return bonus
 
     def calculateSkills(self):
         ret = []
@@ -198,14 +204,15 @@ class FifthEditionCharacter(Character):
 
     def getSpells(self):
         ret = []
+        casterLevel = 0
         for cls in self.charClass:
-            ret.append(cls.getSpells(self.abilityMod, self.profBonus, self.modList))
+            spells = cls.getSpells(self.abilityMod, self.profBonus, self.modList)
+            if spells:
+                ret.append(spells)
 
         if "Ritual Caster" in [feat.name for feat in self.feats]:
             for feat in self.feats:
-                ret = feat.getSpells(self)
-        if ret == None:
-            ret = {}
+                ret.append(feat.getSpells(self))
 
         return ret
 
@@ -232,6 +239,7 @@ class FifthEditionCharacter(Character):
         pass
 
     def getForms(self, request):
+        return {}
         # TODO: Make this dynamic
         if self.name == "Myriil Taegen":
             combatForm = forms.MyriilCombatForm(request.GET)
