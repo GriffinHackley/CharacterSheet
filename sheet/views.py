@@ -34,9 +34,9 @@ def getCharacter(request, characterId):
 
     # TODO: Do this dynamically
     if config["edition"] == "5e":
-        character = FifthEditionCharacter().fromCharacter(character)
+        character = FifthEditionCharacter(character)
     elif config["edition"] == "Pathfinder":
-        character = PathfinderCharacter().fromCharacter(character)
+        character = PathfinderCharacter(character)
     else:
         raise Exception(
             "Character config specifies {} edition, which does not exist".format(
@@ -54,6 +54,32 @@ def getCharacter(request, characterId):
         return Response(exported)
 
 
+@api_view(["POST"])
+def getCharacterWithToggles(request, characterId):
+    character = get_object_or_404(Character, pk=characterId)
+    config = json.loads(character.config)
+
+    # TODO: Do this dynamically
+    if config["edition"] == "5e":
+        character = FifthEditionCharacter(character)
+    elif config["edition"] == "Pathfinder":
+        character = PathfinderCharacter(character)
+    else:
+        raise Exception(
+            "Character config specifies {} edition, which does not exist".format(
+                character.config["edition"]
+            )
+        )
+
+    character.activeToggles = request.data
+
+    character.build()
+
+    exported = character.exportCharacter()
+
+    return Response(exported)
+
+
 @api_view(["GET"])
 def getPlan(request, characterId):
     character = get_object_or_404(Character, pk=characterId)
@@ -61,7 +87,7 @@ def getPlan(request, characterId):
 
     # TODO: Do this dynamically
     if config["edition"] == "5e":
-        character = FifthEditionCharacter().fromCharacter(character)
+        character = FifthEditionCharacter()
     elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter().fromCharacter(character)
     else:

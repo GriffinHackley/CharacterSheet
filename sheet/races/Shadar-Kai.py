@@ -3,14 +3,12 @@ from ..modifiers import Modifier, ModifierList
 
 
 class ShadarKai(Race):
-    def __init__(self, options):
+    def __init__(self, options, totalLevel):
         options["name"] = "ShadarKai"
-        options["size"] = "M"
-        options["speed"] = 30
         options["languages"] = options["languages"]
         options["skills"] = ["Perception"]
         options["tools"] = ["tool1", "tool2"]
-        super().__init__(options)
+        super().__init__(options, totalLevel)
 
     def appendModifiers(self, modList: ModifierList):
         return super().appendModifiers(modList)

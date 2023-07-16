@@ -1,3 +1,5 @@
+from sheet.misc.spells import Spell
+from sheet.toggles import Toggle, ToggleList
 from .classes import Class
 from ..modifiers import Modifier, ModifierList
 
@@ -33,6 +35,26 @@ class Wizard(Class):
     def getSubclassFeatures(self, url):
         return super().get5eSubclassFeatures(url)
 
+    def getConsumables(self, stats, proficiencyBonus):
+        ret = {}
+
+        ret["Blade Song"] = {"uses": proficiencyBonus}
+
+        return ret
+
+    def getToggles(self, toggleList: ToggleList):
+        bladesong = Toggle(
+            "Blade Song",
+            "Class Feature",
+            [
+                Modifier("Intelligence", "AC", "Bladesong"),
+                Modifier("Intelligence", "Concentration", "Bladesong"),
+                Modifier(10, "Speed", "Bladesong"),
+            ],
+        )
+
+        toggleList.addToggle(bladesong)
+
     def getSpells(self, stats, profBonus, modList):
         ability = "Intelligence"
         ret = super().getSpells(stats, profBonus, modList, ability)
@@ -46,6 +68,12 @@ class Wizard(Class):
 
         ret["spells"]["1"]["slots"] = 4
         ret["spells"]["2"]["slots"] = 2
+
+        cantrips = ["booming-blade"]
+        level1 = ["shield"]
+
+        for spell in level1:
+            Spell(spell, "Wizard: Spellcasting")
 
         ret["spells"]["Cantrip"]["list"] = {
             "Booming Blade": {

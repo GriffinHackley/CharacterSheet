@@ -3,24 +3,21 @@ from ..modifiers import Modifier, ModifierList
 
 
 class Harengon(Race):
-    def __init__(self, options):
+    def __init__(self, options, totalLevel):
         options["name"] = "Harengon"
-        options["speed"] = 30
         options["skills"] = ["Perception"]
         options["languages"] = options["languages"]
-        super().__init__(options)
+        super().__init__(options, totalLevel)
 
     def appendModifiers(self, modList: ModifierList):
-        modList.addModifier(
-            Modifier("Proficiency Bonus", "untyped", "Initiative", "Hare Trigger")
-        )
+        modList.addModifier(Modifier("Proficiency Bonus", "Initiative", "Hare Trigger"))
 
         return super().appendModifiers(modList)
 
     def getConsumables(self, abilityMod, profBonus):
-        ret = []
+        ret = {}
 
-        ret.append({"name": "Rabbit Hop", "number": profBonus})
+        ret["Rabbit Hop"] = {"uses": profBonus}
 
         return ret
 

@@ -1,9 +1,12 @@
+from typing import List
+
+
 class Modifier:
     stat = ""
     type = ""
     bonus = 0
 
-    def __init__(self, bonus, type, stat, source):
+    def __init__(self, bonus, stat, source, type="untyped"):
         self.bonus = bonus
         self.type = type
         self.stat = stat
@@ -24,6 +27,10 @@ class ModifierList:
             self.list[modifier.stat] = []
 
         self.list[modifier.stat].append(modifier)
+
+    def addModifierList(self, list):
+        for mod in list:
+            self.addModifier(mod)
 
     def cleanModifiers(self, stats, profBonus):
         # Search through modlist and find any bonus that is not already an int

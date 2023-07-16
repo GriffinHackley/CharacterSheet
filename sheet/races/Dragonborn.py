@@ -5,7 +5,6 @@ from ..modifiers import Modifier, ModifierList
 class Dragonborn(Race):
     def __init__(self, options, level):
         options["name"] = "Dragonborn"
-        options["speed"] = 30
         options["skills"] = []
         options["languages"] = options["languages"]
         super().__init__(options, level)

@@ -8,5 +8,9 @@ urlpatterns = [
     path("api/characters", views.listCharacters, name="listCharacters"),
     path("api/characters/<int:characterId>", views.getCharacter, name="getCharacter"),
     path("api/characters/<int:characterId>/plan", views.getPlan, name="getPlan"),
-    # path("api/database/<str:type>/<str:item>", views.getDBItem, name="getDBClass"),
+    path(
+        "api/characters/toggles/<int:characterId>",
+        views.getCharacterWithToggles,
+        name="getCharacterWithToggles",
+    ),
 ]

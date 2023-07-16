@@ -20,18 +20,13 @@ class Ranger(Class):
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
 
-        modList.addModifier(
-            Modifier(2, "untyped", "ToHit-Ranged", "Archery Fighting Style")
-        )
-        modList.addModifier(
-            Modifier("Wisdom", "untyped", "Initiative", "Dread Ambusher")
-        )
+        modList.addModifier(Modifier(2, "ToHit-Ranged", "Archery Fighting Style"))
+        modList.addModifier(Modifier("Wisdom", "Initiative", "Dread Ambusher"))
 
     def getConsumables(self, stats, proficiencyBonus):
-        ret = []
+        ret = {}
 
-        ret.append({"name": "huntersMark", "number": stats["Wisdom"]})
-        ret.append({"name": "favoredFoe", "number": proficiencyBonus})
+        ret["Favored Foe"] = {"uses": proficiencyBonus}
 
         return ret
 

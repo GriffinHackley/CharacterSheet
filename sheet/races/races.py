@@ -29,7 +29,7 @@ class Race:
     abilityScores = ""
     size = ""
     feat = ""
-    speed = 0
+    speed = 30
     languages = []
     skillBonus = []
     features = []
@@ -40,7 +40,7 @@ class Race:
 
     def appendModifiers(self, modList: ModifierList):
         for score, value in self.abilityScores.items():
-            modList.addModifier(Modifier(value, "untyped", score, self.name))
+            modList.addModifier(Modifier(value, score, self.name))
 
     def addProficiencies(self, proficiencyList):
         # NOTE: skill proficiency is used in place of class skills for pf characters
@@ -61,7 +61,7 @@ class Race:
 
                 proficiencyList[key] = proficiencyList[key] + value
 
-    def getConsumables(self, profBonus):
+    def getConsumables(self, abilityScores, profBonus):
         return []
 
     def getFeat(self):

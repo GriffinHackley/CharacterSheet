@@ -91,6 +91,7 @@ class Character(models.Model):
         ret["spells"] = self.spells
         ret["graph"] = self.graph
         ret["flavor"] = self.flavor
+        ret["toggles"] = self.toggles.toJson()
 
         return json.dumps(ret)
 
@@ -155,6 +156,22 @@ class Character(models.Model):
         self.applyClass()
         self.applyFeats()
         self.applySpells()
+        self.applyToggles()
+
+    def applyToggles(self):
+        if not hasattr(self, "activeToggles"):
+            return
+
+        for toggle, value in self.activeToggles.items():
+            if toggle not in self.toggles.list:
+                raise Exception(
+                    "{} was not found in the toggle list for this character".format(
+                        toggle
+                    )
+                )
+
+            if value:
+                self.modList.addModifierList(self.toggles.list[toggle].modifiers)
 
     def cleanModifiers(self):
         self.modList.cleanModifiers(self.abilityMod, self.profBonus)
@@ -237,10 +254,11 @@ class Character(models.Model):
     def applyClass(self):
         self.charClass = classes.getClasses(self.charClass)
 
-        for i in self.charClass:
-            i.appendModifiers(self.modList)
-            i.addProficiencies(self.proficiencies)
-            self.hitDie = i.hitDie
+        for cls in self.charClass:
+            cls.appendModifiers(self.modList)
+            cls.addProficiencies(self.proficiencies)
+            cls.getToggles(self.toggles)
+            self.hitDie = cls.hitDie
 
         # if "dreadAmbusher" in self.toggles.keys() and self.toggles["dreadAmbusher"]:
         #     self.modList.addModifier(

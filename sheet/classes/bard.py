@@ -38,13 +38,6 @@ class Bard(FifthEditionClass):
 
         return super().getClassFeatures(features)
 
-    # def getClassFeatures(self):
-    #     temp = super().get5eClassFeatures()
-    #     # import pdb
-
-    #     # pdb.set_trace()
-    #     return self.NewgetClassFeatures()
-
     def getSubclassFeatures(self, url):
         return super().get5eSubclassFeatures(url)
 

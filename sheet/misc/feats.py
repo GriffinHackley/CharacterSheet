@@ -27,7 +27,7 @@ class ElvenAccuracy(Feat):
     ]
 
     def getModifiers(self, modList):
-        modList.addModifier(Modifier(1, "untyped", "Dexterity", "Elven Accuracy"))
+        modList.addModifier(Modifier(1, "Dexterity", "Elven Accuracy"))
 
 
 class Sharpshooter(Feat):

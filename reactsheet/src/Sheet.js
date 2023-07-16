@@ -67,7 +67,11 @@ function Sheet() {
 
           <section className="rightPane">
             <Consumables consumableInfo={character.consumables} />
-            <Toggles />
+            <Toggles
+              togglesInfo={character.toggles}
+              setCharacter={setCharacter}
+              id={id}
+            />
           </section>
         </main>
         <FlexPanel

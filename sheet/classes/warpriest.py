@@ -45,9 +45,7 @@ class Warpriest(Class):
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
 
-        modList.addModifier(
-            Modifier(1, "untyped", "ToHit-Kukri", "Weapon Focus (Kukri)")
-        )
+        modList.addModifier(Modifier(1, "ToHit-Kukri", "Weapon Focus (Kukri)"))
 
     def getClassFeatures(self):
         ret = {}

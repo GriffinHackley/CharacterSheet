@@ -24,8 +24,8 @@ class FifthEditionCharacter(Character):
 
         super().build()
 
-    def fromCharacter(self, character):
-        return super().fromCharacter(character)
+    def __init__(self, character):
+        super().fromCharacter(character)
 
     def getHeader(self):
         ret = super().getHeader()

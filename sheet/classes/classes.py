@@ -55,6 +55,9 @@ class Class:
             set(proficiencyList["languages"] + self.proficiencies["languages"])
         )
 
+    def getToggles(self, toggleList):
+        return {}
+
     def getSpells(self, stats, profBonus, modList, ability):
         abilityMod = stats[ability]
 
@@ -421,15 +424,9 @@ class PathfinderClass(Class):
 
     def appendModifiers(self, modList: ModifierList):
         if self.edition == "Pathfinder":
+            modList.addModifier(Modifier(self.bab, "ToHit", self.name + " BAB"))
             modList.addModifier(
-                Modifier(self.bab, "untyped", "ToHit", self.name + " BAB")
+                Modifier(self.fort, "Fortitude", self.name + " Fortitude")
             )
-            modList.addModifier(
-                Modifier(self.fort, "untyped", "Fortitude", self.name + " Fortitude")
-            )
-            modList.addModifier(
-                Modifier(self.refl, "untyped", "Reflex", self.name + " Reflex")
-            )
-            modList.addModifier(
-                Modifier(self.will, "untyped", "Will", self.name + " Will")
-            )
+            modList.addModifier(Modifier(self.refl, "Reflex", self.name + " Reflex"))
+            modList.addModifier(Modifier(self.will, "Will", self.name + " Will"))

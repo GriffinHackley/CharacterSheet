@@ -24,7 +24,7 @@ class PathfinderCharacter(Character):
 
         self.sacredWeapon = self.getSacredWeapon()
 
-    def fromCharacter(self, character):
+    def __init__(self, character):
         self.traits = json.loads(character.traits)
         self.skillRanks = json.loads(character.skillRanks)
         return super().fromCharacter(character)
@@ -320,11 +320,11 @@ class PathfinderCharacter(Character):
 
     def applyTraits(self):
         # Fate's Favored
-        fatesFavored = Modifier(1, "untyped", "luck", "Fate's Favored")
+        fatesFavored = Modifier(1, "luck", "Fate's Favored")
         self.modList.applyModifierToModifier(fatesFavored)
 
         # Anatomist
-        modifier = Modifier(1, "untyped", "ConfCrit", "Anatomist")
+        modifier = Modifier(1, "ConfCrit", "Anatomist")
         self.modList.addModifier(modifier)
 
     def getSpells(self):
