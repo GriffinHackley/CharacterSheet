@@ -47,6 +47,17 @@ class Spell:
         self.components = components.text
         self.duration = duration.text
 
+        # Shortened
+        if len(castingTime.text.split(",")) > 1:
+            self.shortCast = castingTime.text.split(",")[0] + "*"
+        else:
+            self.shortCast = self.castingTime
+
+        if len(components.text.split("(")) > 1:
+            self.shortComponent = components.text.split(" (")[0] + "*"
+        else:
+            self.shortComponent = self.components
+
     def toJSON(self):
         return json.dumps(self.__dict__)
 
@@ -98,7 +109,7 @@ class SpellList:
             "9": [],
         }
 
-    def getSpellHeader(self, cls, stats, profBonus, modList):
+    def getSpellHeader(self, cls, stats, profBonus, modList, saves):
         ability = cls.primaryStat
         abilityMod = stats[ability]
 
@@ -106,6 +117,7 @@ class SpellList:
         ret["ability"] = ability
         ret["abilityMod"] = abilityMod
 
+        # Save DC
         bonus, source = modList.applyModifier("SpellSaveDC")
         source["Base"] = 8
         source["Prof."] = profBonus
@@ -117,6 +129,7 @@ class SpellList:
         }
         ret["saveDC"] = {"value": 8 + abilityMod + profBonus + bonus, "source": source}
 
+        # Spell Attack
         bonus, source = modList.applyModifier("SpellAttack")
         source["Prof."] = profBonus
         source[ability] = abilityMod
@@ -125,6 +138,23 @@ class SpellList:
             for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
         }
         ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
+
+        # Concentration
+        for save in saves:
+            if save["name"] == "Constitution":
+                baseValue = save["value"]
+                baseSource = save["source"]
+
+        bonus, source = modList.applyModifier("Concentration")
+        bonus = baseValue + bonus
+        source.update(baseSource)
+        source = {
+            k: v
+            for k, v in sorted(source.items(), reverse=True, key=lambda item: item[1])
+        }
+
+        ret["concentration"] = {"value": bonus, "source": source}
+
         return ret
 
     def getSpellSlots(self):

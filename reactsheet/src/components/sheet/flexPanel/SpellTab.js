@@ -28,6 +28,17 @@ function getSpellHeader(spellInfo, config) {
   } else if (config.edition == "5e") {
     spellHeader.push(
       <div
+        className="tooltip centered concentration spellHeaderItem"
+        data-tooltip={formatSource(spellInfo.concentration.source)}
+      >
+        <div className="value">
+          {spellInfo.concentration.value}
+        </div>
+        <div className="key">Concentration</div>
+      </div>
+    );
+    spellHeader.push(
+      <div
         className="tooltip centered spellModifier spellHeaderItem"
         data-tooltip={formatSource(spellInfo.spellAttack.source)}
       >
@@ -72,9 +83,20 @@ function getSpellList(list, slots, activeSource, config) {
         continue;
       }
       spells.push(
-        <div className="spellName">
-          {fullSpell.name}
-        </div>
+        <tr className="spell">
+          <td className="spellName">
+            {fullSpell.name}
+          </td>
+          <td className="spellCastingTime">
+            {fullSpell.shortCast}
+          </td>
+          <td className="spellRange">
+            {fullSpell.range}
+          </td>
+          <td className="spellComponents">
+            {fullSpell.shortComponent}
+          </td>
+        </tr>
       );
     }
 
@@ -90,7 +112,16 @@ function getSpellList(list, slots, activeSource, config) {
               Level: {spellLevel}
             </div>
           </div>
-          {spells}
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Casting Time</th>
+              <th>Range</th>
+              <th>Components</th>
+            </tr>
+
+            {spells}
+          </table>
         </div>
       );
     } else {
@@ -104,7 +135,16 @@ function getSpellList(list, slots, activeSource, config) {
               Slots: {slots[level]}
             </div>
           </div>
-          {spells}
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Casting Time</th>
+              <th>Range</th>
+              <th>Components</th>
+            </tr>
+
+            {spells}
+          </table>
         </div>
       );
     }

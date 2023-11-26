@@ -214,7 +214,7 @@ class FifthEditionCharacter(Character):
         for cls in self.charClass:
             spellList.addClass(cls)
             headers[cls.name] = spellList.getSpellHeader(
-                cls, self.abilityMod, self.profBonus, self.modList
+                cls, self.abilityMod, self.profBonus, self.modList, self.saves
             )
         # for cls in self.charClass:
         #     spells = cls.getSpells(self.abilityMod, self.profBonus, self.modList)
