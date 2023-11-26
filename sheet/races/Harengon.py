@@ -6,7 +6,7 @@ class Harengon(Race):
     def __init__(self, options, totalLevel):
         options["name"] = "Harengon"
         options["skills"] = ["Perception"]
-        options["languages"] = options["languages"]
+        options["size"] = "Small"
         super().__init__(options, totalLevel)
 
     def appendModifiers(self, modList: ModifierList):

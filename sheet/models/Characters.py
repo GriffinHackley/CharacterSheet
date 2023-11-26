@@ -40,6 +40,7 @@ class Character(models.Model):
 
     charClass = models.CharField(max_length=500)
     level = models.IntegerField()
+    spellList = models.CharField(max_length=500)
     race = models.CharField(max_length=500)
     background = models.CharField(max_length=240)
     feats = models.CharField(max_length=240)
@@ -64,6 +65,7 @@ class Character(models.Model):
         self.playerName = character.playerName
 
         self.charClass = json.loads(character.charClass)
+        self.spellList = json.loads(character.spellList)
         self.race = json.loads(character.race)
         self.feats = json.loads(character.feats)
         self.background = json.loads(character.background)
@@ -252,7 +254,7 @@ class Character(models.Model):
         self.feats += self.race.getFeat()
 
     def applyClass(self):
-        self.charClass = classes.getClasses(self.charClass)
+        self.charClass = classes.getClasses(self.charClass, self.spellList)
 
         for cls in self.charClass:
             cls.appendModifiers(self.modList)

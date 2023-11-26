@@ -1,4 +1,4 @@
-from sheet.misc.spells import Spell
+from sheet.misc.spells import Spell, SpellList
 from sheet.toggles import Toggle, ToggleList
 from .classes import Class
 from ..modifiers import Modifier, ModifierList
@@ -22,9 +22,16 @@ class Wizard(Class):
     }
     expertise = {"skills": []}
 
-    def __init__(self, level, options):
+    def __init__(self, level, options, spellList):
         self.options = options
-        super().__init__(level, name="Wizard", hitDie="6", spellProgression="full")
+        super().__init__(
+            level,
+            spellList,
+            name="Wizard",
+            hitDie="6",
+            spellProgression="full",
+            primaryStat="Intelligence",
+        )
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

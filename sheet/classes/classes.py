@@ -18,24 +18,26 @@ def allClasses():
     return ret
 
 
-def getClasses(levels):
+def getClasses(levels, spellList):
     ret = []
     classes = allClasses()
     for charClass, level in levels.items():
         classModule = classes[charClass.lower()]
         cls = getattr(classModule, charClass)
-        initClass = cls(level["level"], level["options"])
+        initClass = cls(level["level"], level["options"], spellList[charClass])
         ret.append(initClass)
 
     return ret
 
 
 class Class:
-    def __init__(self, level, name, hitDie, spellProgression):
+    def __init__(self, level, spellList, name, hitDie, spellProgression, primaryStat):
+        self.level = level
+        self.spellList = spellList
         self.name = name
         self.hitDie = hitDie
-        self.level = level
         self.spellProgression = spellProgression
+        self.primaryStat = primaryStat
 
     def getConsumables(self, stats, proficiencyBonus):
         return []
@@ -279,8 +281,8 @@ class Class:
 
 
 class FifthEditionClass(Class):
-    def __init__(self, level, name, hitDie, spellProgression):
-        super().__init__(level, name, hitDie, spellProgression)
+    def __init__(self, level, spellList, name, hitDie, spellProgression, primaryStat):
+        super().__init__(level, spellList, name, hitDie, spellProgression, primaryStat)
         self.edition = "5e"
 
     def addProficiencies(self, proficiencyList):

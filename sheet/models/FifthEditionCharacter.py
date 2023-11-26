@@ -2,6 +2,7 @@ import math
 import re
 
 import sheet.forms as forms
+from sheet.misc.spells import SpellList
 from sheet.models.Characters import Character
 
 from ..misc.feats import fifthEditionFeats
@@ -168,13 +169,17 @@ class FifthEditionCharacter(Character):
             statBonus += bonus
 
             if key in self.proficiencies["skills"]:
-                for cls in self.charClass:
-                    if key in cls.expertise["skills"]:
-                        source["Expertise"] = 2 * self.profBonus
-                        statBonus += 2 * self.profBonus
-                    else:
-                        source["Prof."] = self.profBonus
-                        statBonus += self.profBonus
+                source["Prof."] = self.profBonus
+                statBonus += self.profBonus
+
+            expertise = False
+            for cls in self.charClass:
+                if key in cls.expertise["skills"]:
+                    expertise = True
+
+            if expertise:
+                source["Expertise"] = 2 * self.profBonus
+                statBonus += 2 * self.profBonus
 
             ret.append(
                 {
@@ -204,15 +209,27 @@ class FifthEditionCharacter(Character):
 
     def getSpells(self):
         ret = []
-        casterLevel = 0
+        headers = {}
+        spellList = SpellList()
         for cls in self.charClass:
-            spells = cls.getSpells(self.abilityMod, self.profBonus, self.modList)
-            if spells:
-                ret.append(spells)
+            spellList.addClass(cls)
+            headers[cls.name] = spellList.getSpellHeader(
+                cls, self.abilityMod, self.profBonus, self.modList
+            )
+        # for cls in self.charClass:
+        #     spells = cls.getSpells(self.abilityMod, self.profBonus, self.modList)
+        #     if spells:
+        #         ret.append(spells)
 
-        if "Ritual Caster" in [feat.name for feat in self.feats]:
-            for feat in self.feats:
-                ret.append(feat.getSpells(self))
+        # if "Ritual Caster" in [feat.name for feat in self.feats]:
+        #     for feat in self.feats:
+        #         ret.append(feat.getSpells(self))
+
+        ret = {
+            "slots": spellList.getSpellSlots(),
+            "list": spellList.getSpellList(),
+            "headers": headers,
+        }
 
         return ret
 

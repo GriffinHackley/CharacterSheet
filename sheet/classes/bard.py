@@ -19,9 +19,16 @@ class Bard(FifthEditionClass):
     }
     expertise = {"skills": []}
 
-    def __init__(self, level, options):
+    def __init__(self, level, options, spellList):
         self.options = options
-        super().__init__(level, name="Bard", hitDie="8", spellProgression="full")
+        super().__init__(
+            level,
+            spellList,
+            name="Bard",
+            hitDie="8",
+            spellProgression="full",
+            primaryStat="Charisma",
+        )
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

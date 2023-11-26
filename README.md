@@ -22,3 +22,9 @@ To run the backend server just use the run.bat file
 cd reactsheet
 npm start
 ```
+
+# Adding a Character
+
+go to `http://localhost:8000/admin`
+User: Griffin
+Password:1234

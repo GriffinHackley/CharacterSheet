@@ -54,20 +54,32 @@ function getSpellHeader(spellInfo, config) {
   return spellHeader;
 }
 
-function getSpellList(spellInfo, config) {
+function getSpellList(list, slots, activeSource, config) {
   let spellList = [];
 
-  for (let level in spellInfo.spells) {
+  for (let level in list) {
     let spellLevel = level;
-    level = spellInfo.spells[level];
-    let spells = [];
 
-    for (let spell in level.list) {
+    if (level != "Cantrip") {
+      spellLevel = parseInt(level);
+    }
+
+    let listForLevel = list[level];
+    let spells = [];
+    for (let spell in listForLevel) {
+      let fullSpell = JSON.parse(listForLevel[spell]);
+      if (fullSpell.source != activeSource) {
+        continue;
+      }
       spells.push(
         <div className="spellName">
-          {spell}
+          {fullSpell.name}
         </div>
       );
+    }
+
+    if (spells.length == 0) {
+      continue;
     }
 
     if (spellLevel == "Cantrip") {
@@ -89,7 +101,7 @@ function getSpellList(spellInfo, config) {
               Level: {spellLevel}
             </div>
             <div className="spellSlots">
-              Slots: {level["slots"]}
+              Slots: {slots[level]}
             </div>
           </div>
           {spells}
@@ -103,15 +115,16 @@ function getSpellList(spellInfo, config) {
 
 function setUpSourceTabs(spellInfo) {
   let mainSource = 0;
-  let length = 0;
-  let sourceTabs = [];
-  for (let src in spellInfo) {
-    sourceTabs.push(spellInfo[src]);
+  let highestMod = 0;
+  let sourceTabs = {};
 
-    let currentLength = Object.keys(spellInfo[src].spells).length;
-    if (currentLength > length) {
-      length = currentLength;
-      mainSource = parseInt(src);
+  for (let src in spellInfo.headers) {
+    sourceTabs[src] = spellInfo.headers[src];
+
+    let currentMod = spellInfo.headers[src].abilityMod;
+    if (currentMod > highestMod) {
+      highestMod = currentMod;
+      mainSource = src;
     }
   }
 
@@ -126,20 +139,24 @@ export default function SpellTab({ spellInfo, config }) {
 
   //Get all tab buttons set up
   for (let source in sourceTabs) {
-    let tabName = sourceTabs[source].name;
     sourceButtons.push(
       <button
         type="button"
-        key={tabName}
+        key={source}
         onClick={() => setActiveSourceTab(source)}
       >
-        {tabName}
+        {source}
       </button>
     );
   }
 
   let spellHeader = getSpellHeader(sourceTabs[activeSourceTab], config);
-  let spellList = getSpellList(sourceTabs[activeSourceTab], config);
+  let spellList = getSpellList(
+    spellInfo.list,
+    spellInfo.slots,
+    activeSourceTab,
+    config
+  );
 
   return (
     <section className="spellsContainer">
