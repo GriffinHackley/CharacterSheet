@@ -27,6 +27,9 @@ class FifthEditionBackground:
             },
         }
 
+    def getAllFeatures():
+        return features
+
 
 features = {}
 

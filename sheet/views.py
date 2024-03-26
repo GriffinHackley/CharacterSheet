@@ -44,8 +44,6 @@ def getCharacter(request, characterId):
             )
         )
 
-    forms = character.getForms(request)
-
     character.build()
 
     exported = character.exportCharacter()
@@ -87,7 +85,7 @@ def getPlan(request, characterId):
 
     # TODO: Do this dynamically
     if config["edition"] == "5e":
-        character = FifthEditionCharacter()
+        character = FifthEditionCharacter(character)
     elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter().fromCharacter(character)
     else:

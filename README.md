@@ -26,5 +26,5 @@ npm start
 # Adding a Character
 
 go to `http://localhost:8000/admin`
-User: Griffin
+User: admin
 Password:1234

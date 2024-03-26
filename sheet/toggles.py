@@ -1,4 +1,5 @@
 from sheet.modifiers import Modifier
+from typing import Type, TypeVar
 
 
 class Toggle:
@@ -19,6 +20,9 @@ class ToggleList:
     def addToggle(self, toggle: Toggle):
         self.list[toggle.name] = toggle
 
+    def addToggleList(self, toggleList):
+        self.list = self.list | toggleList.list
+
     def toJson(self):
         ret = {}
 
@@ -27,79 +31,5 @@ class ToggleList:
 
         return ret
 
-    def masterList(self):
-        masterList = []
-
-        return masterList
-
-    # def addSpellToggles(self):
-    #     self.list.append(
-    #         Toggle(
-    #             "Absorb Elements",
-    #             "spell",
-    #             [Modifier("1d6", "elemental", "Melee-DamageDie", "Absorb Elements")],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Booming Blade",
-    #             "spell",
-    #             [Modifier("0d8", "untyped", "DamageDie", "Booming Blade")],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Cats Grace",
-    #             "spell",
-    #             [Modifier(4, "enhancement", "Dexterity", "Cats Grace")],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Divine Favor",
-    #             "spell",
-    #             [
-    #                 Modifier(1, "luck", "ToHit", "Divine Favor"),
-    #                 Modifier(1, "luck", "Damage", "Divine Favor"),
-    #             ],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Favored Foe",
-    #             "spell",
-    #             [Modifier("1d4", "untyped", "DamageDie", "Favored Foe")],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Hunter's Mark",
-    #             "spell",
-    #             [Modifier("1d6", "untyped", "DamageDie", "Hunter's Mark")],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Iron Skin",
-    #             "spell",
-    #             [Modifier(4, "enhancement", "Natural Armor", "Iron Skin")],
-    #         )
-    #     )
-
-    #     self.list.append(
-    #         Toggle("Shield", "spell", [Modifier(5, "untyped", "AC", "Shield (Spell)")])
-    #     )
-
-    #     self.list.append(
-    #         Toggle(
-    #             "Shield Of Faith",
-    #             "spell",
-    #             [Modifier(2, "deflection", "AC", "Shield of Faith")],
-    #         )
-    #     )
+    def addSpellToggles(self, spellList):
+        spellEffects = spellList.getToggleList()

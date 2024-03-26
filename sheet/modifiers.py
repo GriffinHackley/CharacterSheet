@@ -6,7 +6,7 @@ class Modifier:
     type = ""
     bonus = 0
 
-    def __init__(self, bonus, stat, source, type="untyped"):
+    def __init__(self, bonus, stat, source=None, type="untyped"):
         self.bonus = bonus
         self.type = type
         self.stat = stat
@@ -25,6 +25,9 @@ class ModifierList:
     def addModifier(self, modifier: Modifier):
         if not modifier.stat in self.list:
             self.list[modifier.stat] = []
+
+        if not modifier.source:
+            raise Exception("Modifier has no source set")
 
         self.list[modifier.stat].append(modifier)
 

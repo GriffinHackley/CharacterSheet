@@ -54,106 +54,106 @@ class Wizard(Class):
             "Blade Song",
             "Class Feature",
             [
-                Modifier("Intelligence", "AC", "Bladesong"),
-                Modifier("Intelligence", "Concentration", "Bladesong"),
-                Modifier(10, "Speed", "Bladesong"),
+                Modifier("Intelligence", "AC", source="Bladesong"),
+                Modifier("Intelligence", "Concentration", source="Bladesong"),
+                Modifier(10, "Speed", source="Bladesong"),
             ],
         )
 
         toggleList.addToggle(bladesong)
 
-    def getSpells(self, stats, profBonus, modList):
-        ability = "Intelligence"
-        ret = super().getSpells(stats, profBonus, modList, ability)
-        ret["name"] = "Wizard"
-        ret["castingType"] = ["prepared", "ritual"]
+    # def getSpells(self, stats, profBonus, modList):
+    #     ability = "Intelligence"
+    #     ret = super().getSpells(stats, profBonus, modList, ability)
+    #     ret["name"] = "Wizard"
+    #     ret["castingType"] = ["prepared", "ritual"]
 
-        ret["spells"] = {}
-        ret["spells"]["Cantrip"] = {}
-        ret["spells"]["1"] = {}
-        ret["spells"]["2"] = {}
+    #     ret["spells"] = {}
+    #     ret["spells"]["Cantrip"] = {}
+    #     ret["spells"]["1"] = {}
+    #     ret["spells"]["2"] = {}
 
-        ret["spells"]["1"]["slots"] = 4
-        ret["spells"]["2"]["slots"] = 2
+    #     ret["spells"]["1"]["slots"] = 4
+    #     ret["spells"]["2"]["slots"] = 2
 
-        cantrips = ["booming-blade"]
-        level1 = ["shield"]
+    #     cantrips = ["booming-blade"]
+    #     level1 = ["shield"]
 
-        for spell in level1:
-            Spell(spell, "Wizard: Spellcasting")
+    #     for spell in level1:
+    #         Spell(spell, "Wizard: Spellcasting")
 
-        ret["spells"]["Cantrip"]["list"] = {
-            "Booming Blade": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Mage Hand": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Mind Sliver": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-        }
+    #     ret["spells"]["Cantrip"]["list"] = {
+    #         "Booming Blade": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Mage Hand": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Mind Sliver": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #     }
 
-        ret["spells"]["1"]["list"] = {
-            "Absorb Elements": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "1",
-                "description": "",
-            },
-            "Detect Magic": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Feather Fall": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "1",
-                "description": "",
-            },
-            "Find Familiar": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Identify": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Jump": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "1",
-                "description": "",
-            },
-            "Shield": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "1",
-                "description": "",
-            },
-            "Silvery Barbs": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "1",
-                "description": "",
-            },
-        }
+    #     ret["spells"]["1"]["list"] = {
+    #         "Absorb Elements": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "1",
+    #             "description": "",
+    #         },
+    #         "Detect Magic": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Feather Fall": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "1",
+    #             "description": "",
+    #         },
+    #         "Find Familiar": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Identify": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Jump": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "1",
+    #             "description": "",
+    #         },
+    #         "Shield": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "1",
+    #             "description": "",
+    #         },
+    #         "Silvery Barbs": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "1",
+    #             "description": "",
+    #         },
+    #     }
 
-        ret["spells"]["2"]["list"] = {
-            "Invisibility": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Shadow Blade": {
-                "source": "Wizard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-        }
+    #     ret["spells"]["2"]["list"] = {
+    #         "Invisibility": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Shadow Blade": {
+    #             "source": "Wizard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #     }
 
-        return ret
+    #     return ret

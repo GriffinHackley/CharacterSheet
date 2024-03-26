@@ -2,6 +2,9 @@ import json
 from prettytable import PrettyTable
 from bs4 import BeautifulSoup
 import requests
+from sheet.modifiers import Modifier
+
+from sheet.toggles import Toggle, ToggleList
 
 
 class Spell:
@@ -65,7 +68,9 @@ class Spell:
 class SpellList:
     casterLevel = 0
 
-    def __init__(self):
+    def __init__(self, edition):
+        self.toggles = ToggleList()
+        self.togglesMasterlist = SpellSources(edition).list
         slotTable = PrettyTable([str(i) for i in range(1, 10)])
 
         slotTable.add_rows(
@@ -166,12 +171,20 @@ class SpellList:
             ret[index + 1] = slots
         return ret
 
+    def addSpell(self, spell, source):
+        toAdd = Spell(spell, source)
+        if toAdd.name in self.togglesMasterlist.keys():
+            self.toggles.addToggle(self.togglesMasterlist[toAdd.name])
+
+        self.spellList[toAdd.level].append(toAdd.toJSON())
+
     def addClass(self, cls):
         if cls.spellProgression == "full":
             self.casterLevel += cls.level
+
         for spell in cls.spellList:
-            toAdd = Spell(spell, cls.name)
-            self.spellList[toAdd.level].append(toAdd.toJSON())
+            self.addSpell(spell, cls.name)
+
         return
 
     def getSpellList(self):
@@ -269,3 +282,51 @@ class SpellList:
         # }
 
         # return ret
+
+    def getToggles(self):
+        return self.toggles
+
+
+class SpellSources:
+    def addSpellToggle(self, name, modifierList):
+        toggle = Toggle(
+            name,
+            "spell",
+            modifierList,
+        )
+
+        for modifier in modifierList:
+            if not modifier.source:
+                modifier.source = name
+
+        self.list[name] = toggle
+
+    def __init__(self, edition):
+        self.list = {}
+
+        if edition == "5e":
+            self.add5eSpells()
+        if edition == "pathfinder":
+            self.addPathfinderSpells()
+
+    def add5eSpells(self):
+        self.addSpellToggle(
+            "Absorb Elements",
+            [Modifier("1d6", "Melee-DamageDie", type="elemental")],
+        )
+        self.addSpellToggle("Booming Blade", [Modifier("1d8", "Melee-DamageDie")])
+        self.addSpellToggle("Favored Foe", [Modifier("1d4", "DamageDie")])
+        self.addSpellToggle("Hunter's Mark", [Modifier("1d6", "DamageDie")])
+        self.addSpellToggle("Shield", [Modifier(5, "AC", source="Shield (Spell)")])
+        self.addSpellToggle("Shield Of Faith", [Modifier(2, "deflection", "AC")])
+
+    def addPathfinderSpells(self):
+        self.addSpellToggle("Cats Grace", [Modifier(4, "enhancement", "Dexterity")])
+        self.addSpellToggle(
+            "Divine Favor",
+            [
+                Modifier(1, "luck", "ToHit"),
+                Modifier(1, "luck", "Damage"),
+            ],
+        )
+        self.addSpellToggle("Iron Skin", [Modifier(4, "enhancement", "Natural Armor")])

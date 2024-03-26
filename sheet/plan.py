@@ -14,14 +14,11 @@ class Plan:
         return json.dumps(ret)
 
     def getLevelZeroPlan(self):
-        background = FifthEditionBackground(self.character.background).toDict()
-        race = races.getRace(self.character.race["name"])(
-            self.character.race["options"]
-        ).toDict()
-
         ret = {}
 
-        ret["Background"] = background
-        ret["Race"] = race
+        # Get all backgrounds
+        ret["background"] = FifthEditionBackground.getAllFeatures()
+
+        # Get all races
 
         return ret

@@ -140,8 +140,9 @@ class Character(models.Model):
         self.toggles = ToggleList()
         self.modList = ModifierList()
         self.getTotalLevel()
-        self.getModifiers()
+        self.getBaseModifiers()
         self.calculateStats()
+        self.getConditionalModifiers()
         self.cleanModifiers()
         self.saves = self.calculateSaves()
         self.skills = self.calculateSkills()
@@ -151,12 +152,14 @@ class Character(models.Model):
         self.features = self.getFeatures()
         self.proficiencies = self.cleanProficiencies()
 
-    def getModifiers(self):
+    def getBaseModifiers(self):
         self.initModifiers()
         self.applyRace()
         self.applyBackground()
         self.applyClass()
         self.applyFeats()
+
+    def getConditionalModifiers(self):
         self.applySpells()
         self.applyToggles()
 

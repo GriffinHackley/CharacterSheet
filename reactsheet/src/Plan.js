@@ -35,8 +35,8 @@ export default function Plan() {
   levels.push(
     <div className="level">
       <h1>Level 0</h1>
-      <Background background={plan[0].Background} />
-      <Race race={plan[0].Race} />
+      <Background backgrounds={plan[0].background} />
+      {/* <Race race={plan[0].Race} /> */}
     </div>
   );
 

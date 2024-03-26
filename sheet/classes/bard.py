@@ -48,57 +48,57 @@ class Bard(FifthEditionClass):
     def getSubclassFeatures(self, url):
         return super().get5eSubclassFeatures(url)
 
-    def getSpells(self, stats, profBonus, modList):
-        ability = "Charisma"
-        ret = super().getSpells(stats, profBonus, modList, ability)
-        ret["name"] = "Bard"
-        ret["castingType"] = ["known", "ritual"]
+    # def getSpells(self, stats, profBonus, modList):
+    #     ability = "Charisma"
+    #     ret = super().getSpells(stats, profBonus, modList, ability)
+    #     ret["name"] = "Bard"
+    #     ret["castingType"] = ["known", "ritual"]
 
-        ret["spells"] = {}
-        ret["spells"]["Cantrip"] = {}
-        ret["spells"]["1"] = {}
-        # ret["spells"]['2'] = {}
+    #     ret["spells"] = {}
+    #     ret["spells"]["Cantrip"] = {}
+    #     ret["spells"]["1"] = {}
+    #     # ret["spells"]['2'] = {}
 
-        ret["spells"]["1"]["slots"] = 3
-        # ret["spells"]['2']['slots'] = 2
+    #     ret["spells"]["1"]["slots"] = 3
+    #     # ret["spells"]['2']['slots'] = 2
 
-        ret["spells"]["Cantrip"]["list"] = {
-            "Mage Hand": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Vicious Mockery": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-        }
+    #     ret["spells"]["Cantrip"]["list"] = {
+    #         "Mage Hand": {
+    #             "source": "Bard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Vicious Mockery": {
+    #             "source": "Bard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #     }
 
-        ret["spells"]["1"]["list"] = {
-            "Bane": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Detect Magic": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Dissonant Whispers": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Unseen Srevant": {
-                "source": "Bard: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-        }
+    #     ret["spells"]["1"]["list"] = {
+    #         "Bane": {
+    #             "source": "Bard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Detect Magic": {
+    #             "source": "Bard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Dissonant Whispers": {
+    #             "source": "Bard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #         "Unseen Srevant": {
+    #             "source": "Bard: Spellcasting",
+    #             "timesPrepared": "-1",
+    #             "description": "",
+    #         },
+    #     }
 
-        # ret["spells"]['2']['list'] = {
-        # }
+    #     # ret["spells"]['2']['list'] = {
+    #     # }
 
-        return ret
+    #     return ret

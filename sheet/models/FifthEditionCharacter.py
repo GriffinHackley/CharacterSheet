@@ -207,27 +207,30 @@ class FifthEditionCharacter(Character):
     def applyFeats(self):
         return super().applyFeats(fifthEditionFeats)
 
+    def applySpells(self):
+        spellList = SpellList("5e")
+        for cls in self.charClass:
+            spellList.addClass(cls)
+
+        self.toggles.addToggleList(spellList.getToggles())
+
+        self.spellList = spellList
+
     def getSpells(self):
         ret = []
         headers = {}
-        spellList = SpellList()
         for cls in self.charClass:
-            spellList.addClass(cls)
-            headers[cls.name] = spellList.getSpellHeader(
+            headers[cls.name] = self.spellList.getSpellHeader(
                 cls, self.abilityMod, self.profBonus, self.modList, self.saves
             )
-        # for cls in self.charClass:
-        #     spells = cls.getSpells(self.abilityMod, self.profBonus, self.modList)
-        #     if spells:
-        #         ret.append(spells)
 
         # if "Ritual Caster" in [feat.name for feat in self.feats]:
         #     for feat in self.feats:
         #         ret.append(feat.getSpells(self))
 
         ret = {
-            "slots": spellList.getSpellSlots(),
-            "list": spellList.getSpellList(),
+            "slots": self.spellList.getSpellSlots(),
+            "list": self.spellList.getSpellList(),
             "headers": headers,
         }
 
