@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.contrib import admin
+from django.core.cache import cache
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -99,6 +100,44 @@ def getPlan(request, characterId):
 
     if request.method == "GET":
         return Response(plan)
+
+
+# @api_view(["POST"])
+# def getGraph(request, characterId):
+#     character = get_object_or_404(Character, pk=characterId)
+#     graph = cache.get(character.name + "_graph")
+#     requested_toggles = request.data
+
+#     if graph and requested_toggles == graph["usedToggles"]:
+#         return Response(json.dumps(graph))
+
+#     if not graph:
+#         graph = {}
+
+#     # cached_character = cache.get(character.name)
+#     cached_character = None
+#     if not cached_character:
+#         config = json.loads(character.config)
+#         if config["edition"] == "5e":
+#             character = FifthEditionCharacter(character)
+#         elif config["edition"] == "Pathfinder":
+#             character = PathfinderCharacter(character)
+#         else:
+#             raise Exception(
+#                 "Character config specifies {} edition, which does not exist".format(
+#                     character.config["edition"]
+#                 )
+#             )
+
+#         character.build()
+
+#     else:
+#         character = cached_character
+
+#     graph["toggles"] = requested_toggles
+#     character.graph = graph
+
+#     return Response(json.dumps(character.calculateGraph()))
 
 
 # @api_view(["GET"])

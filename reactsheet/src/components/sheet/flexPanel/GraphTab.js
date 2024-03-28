@@ -4,53 +4,58 @@ import { Chart, registerables } from "chart.js";
 import axios from "axios";
 Chart.register(...registerables);
 
-function getSelectors(characterSelectors) {
-  // Default selectors
-  let defaults = ["advantage", "critical"];
+// function getSelectors(characterSelectors) {
+//   // Default selectors
+//   let defaults = ["advantage", "critical"];
 
-  let selectors = defaults.concat(characterSelectors);
+//   let selectors = defaults.concat(characterSelectors);
 
-  let ret = [];
-  for (let selector in selectors) {
-    selector = selectors[selector];
-    ret.push(
-      <div>
-        <input
-          type="checkbox"
-          className="selectorToggle"
-          id={selector}
-          name={selector}
-          value={selector}
-        />
-        <label for={selector}>
-          {selector}
-        </label>
-      </div>
-    );
-  }
+//   let ret = [];
+//   for (let selector in selectors) {
+//     selector = selectors[selector];
+//     ret.push(
+//       <div>
+//         <input
+//           type="checkbox"
+//           className="selectorToggle"
+//           id={selector}
+//           name={selector}
+//           value={selector}
+//         />
+//         <label for={selector}>
+//           {selector}
+//         </label>
+//       </div>
+//     );
+//   }
 
-  return ret;
-}
+//   return ret;
+// }
 
-const sendRequest = async (setLoading, setData, id) => {
-  setLoading(true);
+// const sendRequest = async (setLoading, setData, id) => {
+//   setLoading(true);
 
-  let checked = document.querySelector(".selectorToggle:checked").value;
+//   let checked = document.querySelectorAll(".selectorToggle:checked");
 
-  const response = await axios.get(
-    "http://127.0.0.1:8000/api/characters/" + id + "/graph"
-  );
-  let data = JSON.parse(response.data);
+//   let payload = [];
+//   checked.forEach(item => payload.push(item.name));
 
-  setData(data);
+//   const response = await axios.post(
+//     "http://127.0.0.1:8000/api/characters/" + id + "/graph",
+//     payload
+//   );
 
-  setLoading(false);
-};
+//   let data = JSON.parse(response.data);
+
+//   setData(data);
+
+//   setLoading(false);
+// };
 
 export default function GraphTab({ graphInfo }) {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(true);
-  let id = 55;
+
+  let id = 50;
 
   const graph = {
     labels: graphInfo.AC,
@@ -70,7 +75,7 @@ export default function GraphTab({ graphInfo }) {
     ]
   };
 
-  let selectors = getSelectors([]);
+  //   let selectors = getSelectors([]);
 
   useEffect(() => {
     setLoading(false);
@@ -82,7 +87,7 @@ export default function GraphTab({ graphInfo }) {
     return (
       <section className="damageGraph">
         <Line data={graph} options={{}} />
-        <div className="selectors">
+        {/* <div className="selectors">
           {selectors}
         </div>
         <button
@@ -90,7 +95,7 @@ export default function GraphTab({ graphInfo }) {
           onClick={() => sendRequest(setLoading, setData, id)}
         >
           Submit
-        </button>
+        </button> */}
       </section>
     );
   }

@@ -1,5 +1,4 @@
 from sheet.modifiers import Modifier
-from typing import Type, TypeVar
 
 
 class Toggle:
@@ -16,6 +15,17 @@ class Toggle:
 class ToggleList:
     def __init__(self):
         self.list = {}
+        self.defaultToggles = {}
+        self.defaultToggles["Critical"] = Toggle(
+            "Critical",
+            "",
+            [],
+        )
+        self.defaultToggles["Advantage"] = Toggle(
+            "Advantage",
+            "",
+            [],
+        )
 
     def addToggle(self, toggle: Toggle):
         self.list[toggle.name] = toggle
@@ -23,11 +33,36 @@ class ToggleList:
     def addToggleList(self, toggleList):
         self.list = self.list | toggleList.list
 
-    def toJson(self):
+    def isInList(self, name):
+        if name in self.list.keys():
+            return True
+
+        if name in self.defaultToggles.keys():
+            return True
+
+        return False
+
+    def getFullList(self):
         ret = {}
 
+        ret.update(self.list)
+        ret.update(self.defaultToggles)
+
+        return ret
+
+    def toJson(self):
+        ret = {}
+        ret["other"] = {}
+        ret["default"] = {}
+
         for toggle, data in self.list.items():
-            ret[toggle] = data.isUsed
+            ret["other"][toggle] = data.isUsed
+
+        for toggle, data in self.defaultToggles.items():
+            ret["default"][toggle] = data.isUsed
+
+        ret["other"] = dict(sorted(ret["other"].items()))
+        ret["default"] = dict(sorted(ret["default"].items()))
 
         return ret
 

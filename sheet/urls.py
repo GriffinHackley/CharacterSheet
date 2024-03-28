@@ -8,6 +8,7 @@ urlpatterns = [
     path("api/characters", views.listCharacters, name="listCharacters"),
     path("api/characters/<int:characterId>", views.getCharacter, name="getCharacter"),
     path("api/characters/<int:characterId>/plan", views.getPlan, name="getPlan"),
+    # path("api/characters/<int:characterId>/graph", views.getGraph, name="getGraph"),
     path(
         "api/characters/toggles/<int:characterId>",
         views.getCharacterWithToggles,

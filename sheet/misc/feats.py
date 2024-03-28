@@ -16,6 +16,10 @@ class Feat:
     def getSpells(self):
         return
 
+    def toJSON(self):
+        ret = {"name": self.name, "text": self.text}
+        return ret
+
 
 class ElvenAccuracy(Feat):
     name = "Elven Accuracy"

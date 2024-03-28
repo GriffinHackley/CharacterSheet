@@ -2,6 +2,7 @@ import math
 
 from django.db import models
 from django.template.defaulttags import register
+from django.core.cache import cache
 
 from ..classes import classes
 from ..races import races
@@ -91,9 +92,14 @@ class Character(models.Model):
         ret["equipment"] = self.equipment
         ret["proficiencies"] = self.proficiencies
         ret["spells"] = self.spells
-        ret["graph"] = self.graph
         ret["flavor"] = self.flavor
         ret["toggles"] = self.toggles.toJson()
+
+        cache.set(self.name, ret)
+
+        ret["graph"] = self.calculateGraph()
+
+        cache.set(self.name + "_graph", self.graph)
 
         return json.dumps(ret)
 
@@ -137,6 +143,7 @@ class Character(models.Model):
         return ret
 
     def build(self):
+        self.graph = None
         self.toggles = ToggleList()
         self.modList = ModifierList()
         self.getTotalLevel()
@@ -168,7 +175,7 @@ class Character(models.Model):
             return
 
         for toggle, value in self.activeToggles.items():
-            if toggle not in self.toggles.list:
+            if not self.toggles.isInList(toggle):
                 raise Exception(
                     "{} was not found in the toggle list for this character".format(
                         toggle
@@ -176,7 +183,10 @@ class Character(models.Model):
                 )
 
             if value:
-                self.modList.addModifierList(self.toggles.list[toggle].modifiers)
+                tempToggle = self.toggles.getFullList()[toggle]
+                tempToggle.isUsed = True
+                modifiers = tempToggle.modifiers
+                self.modList.addModifierList(modifiers)
 
     def cleanModifiers(self):
         self.modList.cleanModifiers(self.abilityMod, self.profBonus)
@@ -254,7 +264,7 @@ class Character(models.Model):
         )
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
-        self.feats += self.race.getFeat()
+        self.feats.update(self.race.getFeat())
 
     def applyClass(self):
         self.charClass = classes.getClasses(self.charClass, self.spellList)
@@ -288,20 +298,21 @@ class Character(models.Model):
         #     )
 
     def applyFeats(self, featList):
-        ret = []
+        ret = {}
 
-        for feat in self.feats:
-            name = feat["name"]
+        for name, feat in self.feats.items():
             source = feat["source"]
-            options = feat["options"]
 
-            feat = featList[name]()
-            feat.setOptions(options)
-            feat.setSource(source)
+            newFeat = featList[name]()
+            newFeat.setSource(source)
 
-            feat.getModifiers(self.modList)
+            if feat.get("options", None):
+                options = feat["options"]
+                newFeat.setOptions(options)
 
-            ret.append(feat)
+            newFeat.getModifiers(self.modList)
+
+            ret[name] = newFeat
 
         self.feats = ret
 
@@ -471,19 +482,8 @@ class Character(models.Model):
 
         averageDamage += damageMod
 
-        # Power Attack
-        self.graph = self.calculatePowerAttack(
-            toHit, averageDamage, criticalDamage, hitPenalty, damageBonus
-        )
-        # if "powerAttack" in self.toggles and self.toggles["powerAttack"]:
-        #     toHit = toHit - hitPenalty
-        #     toHitSource["Power Attk."] = -hitPenalty
-
-        #     damageMod = damageMod + damageBonus
-        #     damageSource["Power Attk."] = damageBonus
-
-        #     # If critical, add extra critical damage
-        #     # if self.toggles["critical"]:
+        # If critical, add extra critical damage
+        # if self.toggles["critical"]:
         if self.config["critType"] == "maxDie":
             damage = (
                 damageDice + f"+{int(damageMod+criticalDamage)} " + weapon["damageType"]
@@ -521,26 +521,32 @@ class Character(models.Model):
 
         return ret
 
-    def calculatePowerAttack(self, toHit, damage, critDamage, hitPenalty, damageBonus):
-        # if "advantage" in self.toggles.keys() and self.toggles["advantage"]:
-        #     if "Elven Accuracy" in self.feats.keys():
-        #         timesRolling = 3
-        #     else:
-        #         timesRolling = 2
-        # else:
-        #     timesRolling = 1
-        timesRolling = 1
+    def calculateGraph(self):
+        if self.toggles.getFullList()["Advantage"].isUsed:
+            if "Elven Accuracy" in self.feats.keys():
+                timesRolling = 3
+            else:
+                timesRolling = 2
+        else:
+            timesRolling = 1
+
         critChance = 1 - pow(0.95, timesRolling)
 
+        attacks = self.combat["Attacks"]
+        attack = attacks[0]
+
         ret = {"AC": [], "normal": [], "powerAttack": []}
+        toHit = attack["toHit"]["value"]
+        avgCritDamage = attack["bonusCritDamage"]
+        damage = attack["averageDamage"]
+        hitPenalty = 5
+        damageBonus = 10
         for targetAC in range(toHit + 1, toHit + 22):
             chancePerRoll = 0.05 * (targetAC - toHit - 1)
             hitChance = 1 - pow(chancePerRoll, timesRolling)
 
             powerchancePerRoll = 0.05 * (targetAC - toHit - 1 + hitPenalty)
             powerHitChance = 1 - pow(powerchancePerRoll, timesRolling)
-
-            avgCritDamage = critChance * critDamage
 
             if hitChance >= 1:
                 hitChance = 1
@@ -584,7 +590,7 @@ class Character(models.Model):
             features[cls.name] = cls.getClassFeatures()
 
         ret["Class"] = features
-        ret["Feats"] = self.getFeats()
+        ret["Feats"] = self.getFeatsInJSON()
         ret["Race"] = self.race.getFeatures()
         ret["Misc."] = self.getMiscFeatures()
 
@@ -600,11 +606,11 @@ class Character(models.Model):
 
         return ret
 
-    def getFeats(self):
+    def getFeatsInJSON(self):
         ret = []
 
         for feat in self.feats:
-            ret = ret + [{"name": feat.name, "text": feat.text}]
+            ret = ret + [self.feats[feat].toJSON()]
 
         return ret
 
