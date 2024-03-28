@@ -1,4 +1,3 @@
-from sheet.misc.spells import Spell, SpellList
 from sheet.toggles import Toggle, ToggleList
 from .classes import Class
 from ..modifiers import Modifier, ModifierList

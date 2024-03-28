@@ -31,7 +31,16 @@ class ElvenAccuracy(Feat):
     ]
 
     def getModifiers(self, modList):
-        modList.addModifier(Modifier(1, "Dexterity", "Elven Accuracy"))
+        validOptions = ["Dexterity", "Intelligence", "Wisdom", "Charisma"]
+        if not hasattr(self, "options") or not self.options["ASI"]:
+            raise Exception("No ASI specified for the Elven Accuracy feat")
+        if not self.options["ASI"] in validOptions:
+            raise Exception(
+                "{} is not a valid ASI choice for Elven Accuracy".format(
+                    self.options["ASI"]
+                )
+            )
+        modList.addModifier(Modifier(1, self.options["ASI"], "Elven Accuracy"))
 
 
 class Sharpshooter(Feat):

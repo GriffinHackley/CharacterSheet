@@ -13,9 +13,16 @@ class Ranger(Class):
     }
     expertise = {"skills": ["Stealth"]}
 
-    def __init__(self, level, options):
+    def __init__(self, level, options, spellList):
         self.options = options
-        super().__init__(level, name="Ranger", hitDie="10", spellProgression="half")
+        super().__init__(
+            level,
+            spellList,
+            name="Ranger",
+            hitDie="10",
+            spellProgression="half",
+            primaryStat="Wisdom",
+        )
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
@@ -27,46 +34,6 @@ class Ranger(Class):
         ret = {}
 
         ret["Favored Foe"] = {"uses": proficiencyBonus}
-
-        return ret
-
-    def getSpells(self, stats, profBonus, modList):
-        ability = "Wisdom"
-        ret = super().getSpells(stats, profBonus, modList, ability)
-        ret["castingType"] = ["known"]
-
-        ret["spells"] = {}
-        ret["spells"]["1"] = {}
-
-        ret["spells"]["1"]["slots"] = 3
-
-        ret["spells"]["1"]["list"] = {
-            "Absorb Elements": {
-                "source": "Ranger: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Cure Wounds": {
-                "source": "Ranger: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Hunter's Mark": {
-                "source": "Ranger: Spellcasting",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Disguise Self": {
-                "source": "Ranger: Gloom Stalker",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-            "Speak With Animals": {
-                "source": "Ranger: Primal Awareness",
-                "timesPrepared": "-1",
-                "description": "",
-            },
-        }
 
         return ret
 
