@@ -3,14 +3,19 @@ from ..modifiers import Modifier, ModifierList
 
 
 class HalfOrc(Race):
-    def __init__(self, options):
-        options["name"] = "Half-Orc"
+    def setOptions(self, options):
         options["size"] = "M"
         options["speed"] = 30
         options["languages"] = ["Common", "Orc"] + options["languages"]
         options["skills"] = ["Stealth", "Perception"]
+        return super().setOptions(options)
 
-        super().__init__(options)
+    def setLevel(self, level):
+        return super().setLevel(level)
+
+    def __init__(self):
+        self.name = "Half-Orc"
+        super().__init__()
 
     def appendModifiers(self, modList: ModifierList):
         modList.addModifier(Modifier(1, "luck", "Fortitude", "Sacred Tattoo"))

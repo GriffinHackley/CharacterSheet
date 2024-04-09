@@ -3,11 +3,15 @@ from ..modifiers import Modifier, ModifierList
 
 
 class Dragonborn(Race):
-    def __init__(self, options, level):
+    def setOptions(self, options):
         options["name"] = "Dragonborn"
         options["skills"] = []
         options["languages"] = options["languages"]
-        super().__init__(options, level)
+        return super().setOptions(options)
+
+    def __init__(self):
+        self.name = "Dragonborn"
+        super().__init__()
 
     def appendModifiers(self, modList: ModifierList):
         return super().appendModifiers(modList)
@@ -23,11 +27,15 @@ class Dragonborn(Race):
 
     def getFeatures(self):
         extraAttributes = [
-            {"type": "heading", "text": "Life Span:"},
             {
-                "type": "normal",
-                "text": "Harengons have a life span of about a century.",
-            },
+                "name": "Life Span",
+                "text": [
+                    {
+                        "type": "normal",
+                        "text": "Harengons have a life span of about a century.",
+                    }
+                ],
+            }
         ]
 
         ret = super().getFeatures(extraAttributes=extraAttributes)

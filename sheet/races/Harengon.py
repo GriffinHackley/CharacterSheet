@@ -3,11 +3,17 @@ from ..modifiers import Modifier, ModifierList
 
 
 class Harengon(Race):
-    def __init__(self, options, totalLevel):
-        options["name"] = "Harengon"
+    def setLevel(self, level):
+        return super().setLevel(level)
+
+    def setOptions(self, options):
         options["skills"] = ["Perception"]
         options["size"] = "Small"
-        super().__init__(options, totalLevel)
+        return super().setOptions(options)
+
+    def __init__(self):
+        self.name = "Harengon"
+        super().__init__()
 
     def appendModifiers(self, modList: ModifierList):
         modList.addModifier(Modifier("Proficiency Bonus", "Initiative", "Hare Trigger"))

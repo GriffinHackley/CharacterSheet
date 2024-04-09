@@ -21,6 +21,24 @@ class Feat:
         return ret
 
 
+class ASI(Feat):
+    name = "ASI"
+    text = []
+
+    def getModifiers(self, modList):
+        for stat in iter(self.options["ASI"]):
+            i = 0
+
+        if not hasattr(self, "options") or not self.options["ASI"]:
+            raise Exception("No ASI specified for the ASI feat")
+
+        stat = next(iter(self.options["ASI"]))
+
+        modList.addModifier(
+            Modifier(int(self.options["ASI"][stat]), stat, "ASI:" + self.source)
+        )
+
+
 class ElvenAccuracy(Feat):
     name = "Elven Accuracy"
     text = [
@@ -34,13 +52,18 @@ class ElvenAccuracy(Feat):
         validOptions = ["Dexterity", "Intelligence", "Wisdom", "Charisma"]
         if not hasattr(self, "options") or not self.options["ASI"]:
             raise Exception("No ASI specified for the Elven Accuracy feat")
-        if not self.options["ASI"] in validOptions:
+
+        stat = next(iter(self.options["ASI"]))
+        if not stat in validOptions:
             raise Exception(
                 "{} is not a valid ASI choice for Elven Accuracy".format(
                     self.options["ASI"]
                 )
             )
-        modList.addModifier(Modifier(1, self.options["ASI"], "Elven Accuracy"))
+
+        modList.addModifier(
+            Modifier(int(self.options["ASI"][stat]), stat, "Elven Accuracy")
+        )
 
 
 class Sharpshooter(Feat):
@@ -70,11 +93,16 @@ class RitualCaster(Feat):
         if choice in ["Wizard"]:
             self.ability = "Intelligence"
 
-        if choice in ["Bard", "Sorcerer", "Warlock"]:
+        elif choice in ["Bard", "Sorcerer", "Warlock"]:
             self.ability = "Charisma"
 
-        if choice in ["Cleric", "Druid"]:
+        elif choice in ["Cleric", "Druid"]:
             self.ability = "Wisdom"
+
+        else:
+            raise Exception(
+                "{} is not a valid clas choice for Ritual Caster".format(choice)
+            )
 
         text = """
         You have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.
@@ -134,6 +162,7 @@ class RitualCaster(Feat):
 
 
 fifthEditionFeats = {}
+fifthEditionFeats["ASI"] = ASI
 fifthEditionFeats["Elven Accuracy"] = ElvenAccuracy
 fifthEditionFeats["Sharpshooter"] = Sharpshooter
 fifthEditionFeats["Ritual Caster"] = RitualCaster

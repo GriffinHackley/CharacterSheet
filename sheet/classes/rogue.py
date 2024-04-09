@@ -1,8 +1,8 @@
-from .classes import Class
+from .classes import FifthEditionClass
 from ..modifiers import ModifierList
 
 
-class Rogue(Class):
+class Rogue(FifthEditionClass):
     proficiencies = {
         "skills": ["Insight", "Stealth", "Performance", "Perception"],
         "languages": [],

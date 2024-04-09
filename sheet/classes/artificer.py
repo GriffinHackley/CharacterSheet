@@ -1,14 +1,14 @@
-from .classes import Class
-from ..modifiers import Modifier, ModifierList
+from .classes import FifthEditionClass
+from ..modifiers import ModifierList
 
 
-class Artificer(Class):
+class Artificer(FifthEditionClass):
     proficiencies = {
-        "skills": ["Investigation", "Perception"],
+        "skills": ["Investigation", "Arcana"],
         "languages": [],
         "armor": ["Light", "Medium", "Shields"],
         "weapons": ["Simple"],
-        "tools": ["Thieves'", "Tinker's"],
+        "tools": ["Thieves' Tools", "Tinker's Tools"],
         "savingThrows": ["Constitution", "Intelligence"],
     }
 

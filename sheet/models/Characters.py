@@ -259,9 +259,10 @@ class Character(models.Model):
         return ret
 
     def applyRace(self):
-        self.race = races.getRace(self.race["name"])(
-            self.race["options"], self.totalLevel
-        )
+        options = self.race["options"]
+        self.race = races.getRace(self.race["name"])()
+        self.race.setOptions(options)
+        self.race.setLevel(self.totalLevel)
         self.race.appendModifiers(self.modList)
         self.race.addProficiencies(self.proficiencies)
         self.feats.update(self.race.getFeat())

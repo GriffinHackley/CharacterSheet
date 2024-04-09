@@ -14,6 +14,16 @@ def allRaces():
     return ret
 
 
+def allRacesDict():
+    races = allRaces()
+
+    ret = {}
+    for race in races:
+        ret[race] = getRace(race)().toDict()
+
+    return ret
+
+
 def getRace(name):
     try:
         races = allRaces()
@@ -30,6 +40,7 @@ class Race:
     size = ""
     feat = ""
     speed = 30
+    size = "Medium"
     languages = []
     skillBonus = []
     features = []
@@ -72,7 +83,7 @@ class Race:
         return [self.feat]
 
     def getFeatures(
-        self, darkvision=False, creatureType="You are humanoid", extraAttributes=[]
+        self, darkvision=False, creatureType="You are Humanoid", extraAttributes=[]
     ):
         ret = []
 
@@ -81,17 +92,32 @@ class Race:
 
         ret = ret + [
             {
-                "name": "Attributes",
+                "name": "Creature Type",
                 "text": [
-                    {"type": "heading", "text": "Creature Type:"},
-                    {"type": "normal", "text": creatureType},
-                    {"type": "heading", "text": "Size:"},
-                    {"type": "normal", "text": size},
-                    {"type": "heading", "text": "Speed:"},
-                    {"type": "normal", "text": speed},
-                ]
-                + extraAttributes,
-            }
+                    {
+                        "type": "normal",
+                        "text": creatureType,
+                    }
+                ],
+            },
+            {
+                "name": "Size",
+                "text": [
+                    {
+                        "type": "normal",
+                        "text": size,
+                    }
+                ],
+            },
+            {
+                "name": "Speed",
+                "text": [
+                    {
+                        "type": "normal",
+                        "text": speed,
+                    }
+                ],
+            },
         ]
 
         if darkvision:
@@ -123,9 +149,13 @@ class Race:
 
         return ret
 
-    def __init__(self, options, level):
+    def setLevel(self, level):
         self.level = level
+
+    def setOptions(self, options):
         for option, value in options.items():
+            if option == "skill":
+                i = 0
             if hasattr(self, option):
                 setattr(self, option, value)
             else:
@@ -134,8 +164,10 @@ class Race:
                     + option
                 )
 
-    # TODO: finish this for progression page
+    def __init__(self):
+        return
+
     def toDict(self):
-        return {
-            "name": self.name,
-        }
+        ret = {}
+        ret["features"] = self.getFeatures()
+        return ret

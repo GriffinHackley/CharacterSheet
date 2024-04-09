@@ -1,3 +1,20 @@
+div.planPage {
+  padding: 15px;
+}
+
 div.level > h1 {
   border-bottom: solid 5px;
+}
+
+div.featureContainer {
+  display: inline;
+}
+
+h5.featureHeading {
+  display: inline;
+  padding-right: 4px;
+}
+
+p.featureText {
+  display: inline;
 }

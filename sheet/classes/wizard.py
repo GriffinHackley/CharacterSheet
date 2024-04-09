@@ -1,9 +1,9 @@
 from sheet.toggles import Toggle, ToggleList
-from .classes import Class
+from .classes import FifthEditionClass
 from ..modifiers import Modifier, ModifierList
 
 
-class Wizard(Class):
+class Wizard(FifthEditionClass):
     proficiencies = {
         "skills": ["Arcana", "Investigation", "Performance"],
         "languages": [],

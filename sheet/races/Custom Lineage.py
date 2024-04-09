@@ -3,12 +3,18 @@ from ..modifiers import ModifierList
 
 
 class CustomLineage(Race):
-    def __init__(self, options):
-        options["name"] = "Custom Lineage"
+    def setOptions(self, options):
         options["size"] = options["size"]
         options["speed"] = 30
         options["languages"] = options["languages"]
-        super().__init__(options)
+        return super().setOptions(options)
+
+    def setLevel(self, level):
+        return super().setLevel(level)
+
+    def __init__(self):
+        self.name = "Custom Lineage"
+        super().__init__()
 
     def appendModifiers(self, modList: ModifierList):
         return super().appendModifiers(modList)
@@ -19,24 +25,26 @@ class CustomLineage(Race):
         )
 
         darkvision = False
-        if self.misc["variable trait"] == "darkvision":
-            darkvision = True
-        elif "proficiency" in self.misc["variable trait"]:
-            skill = self.misc["variable trait"]
-            self.skills = self.skills + [skill]
+        # TODO: Fix this
+        # if self.misc["variable trait"] == "darkvision":
+        #     darkvision = True
+        # elif "proficiency" in self.misc["variable trait"]:
+        #     skill = self.misc["variable trait"]
+        #     self.skills = self.skills + [skill]
 
         ret = super().getFeatures(creatureType=creatureType, darkvision=darkvision)
 
-        ret = ret + [
-            {
-                "name": "Feat",
-                "text": [
-                    {
-                        "type": "normal",
-                        "text": "You gain the {} feat".format(self.feat["name"]),
-                    }
-                ],
-            }
-        ]
+        # TODO: Fix this
+        # ret = ret + [
+        #     {
+        #         "name": "Feat",
+        #         "text": [
+        #             {
+        #                 "type": "normal",
+        #                 "text": "You gain the {} feat".format(self.feat["name"]),
+        #             }
+        #         ],
+        #     }
+        # ]
 
         return ret

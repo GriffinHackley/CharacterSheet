@@ -53,6 +53,10 @@ class ModifierList:
         total = 0
         source = {}
         for bonus in allBonus:
+            if not type(bonus.bonus) == int:
+                raise Exception(
+                    "The type of bonus for {} is not an int".format(bonus.source)
+                )
             source[bonus.source] = bonus.bonus
             total += bonus.bonus
 

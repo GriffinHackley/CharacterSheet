@@ -1,8 +1,8 @@
-from .classes import Class
+from .classes import FifthEditionClass
 from ..modifiers import Modifier, ModifierList
 
 
-class Ranger(Class):
+class Ranger(FifthEditionClass):
     proficiencies = {
         "skills": ["Insight", "Stealth", "Survival"],
         "languages": ["Draconic", "Sylvan"],

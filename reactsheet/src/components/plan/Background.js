@@ -1,25 +1,116 @@
 import { useState } from "react";
 import "../../css/plan/Background.css";
 
+let allSkills = [
+  "Acrobatics",
+  "Animal Handling",
+  "Arcana",
+  "Athletics",
+  "Deception",
+  "History",
+  "Insight",
+  "Intimidation",
+  "Investigation",
+  "Medicine",
+  "Nature",
+  "Perception",
+  "Performance",
+  "Persuasion",
+  "Religion",
+  "Sleight of Hand",
+  "Stealth",
+  "Survival"
+];
+
+let allArtisanTools = [
+  "Alchemist's supplies",
+  "Brewer's supplies",
+  "Calligrapher's supplies",
+  "Carpenter's tools",
+  "Cartographer's tools",
+  "Cobbler's tools",
+  "Cook's utensils",
+  "Glassblower's tools",
+  "Jeweler's tools",
+  "Leatherworker's tool",
+  "Mason's tools",
+  "Painter's supplies",
+  "Potter's tools",
+  "Smith's tools",
+  "Tinker's tools",
+  "Weaver's tools",
+  "Woodcarver's tools"
+];
+
+let allTools = [
+  "Disguise kit",
+  "Forgery kit",
+  "Herbalism kit",
+  "Navigator's tools",
+  "Poisoner's kit",
+  "Thieves' tools"
+];
+
+let allGames = [
+  "Dice set",
+  "Dragonchess set",
+  "Playing card set",
+  "Three-Dragon Ante set"
+];
+
+let allInstruments = [
+  "Bagpipes",
+  "Drum",
+  "Dulcimer",
+  "Flute",
+  "Lute",
+  "Lyre",
+  "Horn",
+  "Pan flute",
+  "Shawm",
+  "Viol"
+];
+
+let allLanguages = [
+  "Dwarvish",
+  "Elvish",
+  "Giant",
+  "Gnomish",
+  "Goblin",
+  "Halfling",
+  "Orc",
+  "Abyssal",
+  "Celestial",
+  "DeepSpeech",
+  "Draconic",
+  "Infernal",
+  "Aquan",
+  "Auran",
+  "Ignan",
+  "Terran",
+  "Sylvan",
+  "Undercommon"
+];
+
 function displayContent(feature) {
-  if (feature == "") {
+  if (feature === "") {
     return;
   }
   let text = [];
   feature.forEach(line => {
-    if (line.type == "normal") {
+    if (line.type === "normal") {
       text.push(
         <p>
           {line.text}
         </p>
       );
-    } else if (line.type == "heading") {
+    } else if (line.type === "heading") {
       text.push(
         <h4>
           {line.text}
         </h4>
       );
-    } else if (line.type == "table") {
+    } else if (line.type === "table") {
       text.push(<h1>Tables have not been implemented</h1>);
     }
   });
@@ -39,11 +130,11 @@ function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   );
 
   //   Dont let them choose the same option as the other selector
-  allOptions = allOptions.filter(option => option != otherOption);
+  allOptions = allOptions.filter(option => option !== otherOption);
 
   for (let option in allOptions) {
     let isSelected = false;
-    if (currentOption == allOptions[option]) {
+    if (currentOption === allOptions[option]) {
       isSelected = true;
     }
     options.push(
@@ -59,111 +150,69 @@ function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   );
 }
 
-function toolOrLanguageSelector(id, setSelector) {
+function miscProfSelector(id, setSelector) {
   return (
     <div onChange={e => setSelector(e.target.value)}>
       <input
         type="radio"
         id={id + "Language"}
-        name={id + "LanguageOrTool"}
+        name={id + "miscProf"}
         value="language"
         defaultChecked
       />
       <label for={id + "Language"}>Language</label>
+
       <input
         type="radio"
         id={id + "Tool"}
-        name={id + "LanguageOrTool"}
+        name={id + "miscProf"}
         value="tool"
       />
       <label for={id + "Tool"}>Tool</label>
+
+      <input
+        type="radio"
+        id={id + "ArtisanTool"}
+        name={id + "miscProf"}
+        value="artisanTool"
+      />
+      <label for={id + "ArtisanTool"}>Artisan Tool</label>
+
+      <input
+        type="radio"
+        id={id + "Instrument"}
+        name={id + "miscProf"}
+        value="instrument"
+      />
+      <label for={id + "Instrument"}>Instrument</label>
+
+      <input
+        type="radio"
+        id={id + "GameSet"}
+        name={id + "miscProf"}
+        value="gameSet"
+      />
+      <label for={id + "GameSet"}>Game Set</label>
     </div>
   );
 }
 
+function applySelector(selector) {
+  if (selector === "tool") {
+    return allTools;
+  } else if (selector === "language") {
+    return allLanguages;
+  } else if (selector === "artisanTool") {
+    return allArtisanTools;
+  } else if (selector === "instrument") {
+    return allInstruments;
+  } else if (selector === "gameSet") {
+    return allGames;
+  }
+}
+
 export default function Background({ backgrounds }) {
-  let allSkills = [
-    "Acrobatics",
-    "Animal Handling",
-    "Arcana",
-    "Athletics",
-    "Deception",
-    "History",
-    "Insight",
-    "Intimidation",
-    "Investigation",
-    "Medicine",
-    "Nature",
-    "Perception",
-    "Performance",
-    "Persuasion",
-    "Religion",
-    "Sleight of Hand",
-    "Stealth",
-    "Survival"
-  ];
-
-  let allTools = [
-    "Alchemist's supplies",
-    "Brewer's supplies",
-    "Calligrapher's supplies",
-    "Carpenter's tools",
-    "Cartographer's tools",
-    "Cobbler's tools",
-    "Cook's utensils",
-    "Glassblower's tools",
-    "Jeweler's tools",
-    "Leatherworker's tool",
-    "Mason's tools",
-    "Painter's supplies",
-    "Potter's tools",
-    "Smith's tools",
-    "Tinker's tools",
-    "Weaver's tools",
-    "Woodcarver's tools",
-    "Dice set",
-    "Dragonchess set",
-    "Playing card set",
-    "Three-Dragon Ante set",
-    "Bagpipes",
-    "Drum",
-    "Dulcimer",
-    "Flute",
-    "Lute",
-    "Lyre",
-    "Horn",
-    "Pan flute",
-    "Shawm",
-    "Viol",
-    "Disguise kit",
-    "Forgery kit",
-    "Herbalism kit",
-    "Navigator's tools",
-    "Poisoner's kit",
-    "Thieves' tools"
-  ];
-
-  let allLanguages = [
-    "Dwarvish",
-    "Elvish",
-    "Giant",
-    "Gnomish",
-    "Goblin",
-    "Halfling",
-    "Orc",
-    "Abyssal",
-    "Celestial",
-    "DeepSpeech",
-    "Draconic",
-    "Infernal",
-    "Aquan",
-    "Auran",
-    "Ignan",
-    "Terran",
-    "Sylvan",
-    "Undercommon"
-  ];
-
+  let allBackgrounds = backgrounds.all;
   let features = [];
 
   features.push(
@@ -172,7 +221,7 @@ export default function Background({ backgrounds }) {
     </option>
   );
 
-  for (let background in backgrounds) {
+  for (let background in allBackgrounds) {
     features.push(
       <option value={background}>
         {background}
@@ -183,7 +232,7 @@ export default function Background({ backgrounds }) {
   const [activeFeature, setActiveFeature] = useState("none");
   let featureText = "";
 
-  if (activeFeature != "none") {
+  if (activeFeature !== "none") {
     featureText = displayContent(backgrounds[activeFeature]);
   }
 
@@ -194,19 +243,8 @@ export default function Background({ backgrounds }) {
   const [misc1, setmisc1] = useState("none");
   const [misc2, setmisc2] = useState("none");
 
-  let misc1Options = [];
-  if (miscSelector1 == "tool") {
-    misc1Options = allTools;
-  } else if (miscSelector1 == "language") {
-    misc1Options = allLanguages;
-  }
-
-  let misc2Options = [];
-  if (miscSelector2 == "tool") {
-    misc2Options = allTools;
-  } else if (miscSelector2 == "language") {
-    misc2Options = allLanguages;
-  }
+  let misc1Options = applySelector(miscSelector1);
+  let misc2Options = applySelector(miscSelector2);
 
   return (
     <div>
@@ -231,12 +269,12 @@ export default function Background({ backgrounds }) {
         <label>Misc. Proficiencies</label>
         <div>
           {/* TODO: It is possible to get duplicate entries by switching between language and tools */}
-          {toolOrLanguageSelector("misc1", setmiscSelector1)}
+          {miscProfSelector("misc1", setmiscSelector1)}
           {optionSelector("misc1", setmisc1, misc1, misc2, misc1Options)}
           {misc1}
         </div>
         <div>
-          {toolOrLanguageSelector("misc2", setmiscSelector2)}
+          {miscProfSelector("misc2", setmiscSelector2)}
           {optionSelector("misc2", setmisc2, misc2, misc1, misc2Options)}
           {misc2}
         </div>
