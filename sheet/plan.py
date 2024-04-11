@@ -17,7 +17,10 @@ class Plan:
         ret = {}
 
         # Get all backgrounds
-        ret["backgrounds"] = {"all": FifthEditionBackground.getAllFeatures()}
+        ret["backgrounds"] = {
+            "all": FifthEditionBackground.getAllFeatures(),
+            "choices": self.character.background,
+        }
 
         # Get all races
         ret["races"] = {

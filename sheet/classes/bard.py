@@ -17,7 +17,7 @@ class Bard(FifthEditionClass):
         "tools": ["Bagpipes", "Lute", "Pan Flute"],
         "savingThrows": ["Dexterity", "Charisma"],
     }
-    expertise = {"skills": []}
+    expertise = {"skills": ["Perception", "Persuasion"]}
 
     def __init__(self, level, options, spellList):
         self.options = options

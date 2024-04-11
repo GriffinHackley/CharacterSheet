@@ -38,8 +38,6 @@ function getStatRow(stat, baseValues, racial, asi) {
 function getASI(feats) {
   let asi = Array(6).fill(0);
   for (let feat in feats) {
-    console.log(feats[feat]);
-    console.log(feats[feat].options);
     for (let [stat, value] of Object.entries(feats[feat].options.ASI)) {
       stat = AbilityScores[stat];
       asi[stat] += Number(value);

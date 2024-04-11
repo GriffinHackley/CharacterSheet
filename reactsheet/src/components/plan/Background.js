@@ -93,7 +93,7 @@ let allLanguages = [
 ];
 
 function displayContent(feature) {
-  if (feature === "") {
+  if (feature === "none") {
     return;
   }
   let text = [];
@@ -123,18 +123,20 @@ function displayContent(feature) {
 
 function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   let options = [];
-  options.push(
-    <option hidden disabled selected value>
-      -- select an option --
-    </option>
-  );
+  if (currentOption === "none") {
+    options.push(
+      <option hidden disabled selected value>
+        -- select an option --
+      </option>
+    );
+  }
 
   //   Dont let them choose the same option as the other selector
   allOptions = allOptions.filter(option => option !== otherOption);
 
   for (let option in allOptions) {
     let isSelected = false;
-    if (currentOption === allOptions[option]) {
+    if (currentOption.toLowerCase() === allOptions[option].toLowerCase()) {
       isSelected = true;
     }
     options.push(
@@ -150,15 +152,15 @@ function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   );
 }
 
-function miscProfSelector(id, setSelector) {
+function miscProfSelector(id, selectorType, setSelector) {
   return (
     <div onChange={e => setSelector(e.target.value)}>
       <input
         type="radio"
         id={id + "Language"}
         name={id + "miscProf"}
-        value="language"
-        defaultChecked
+        value="languages"
+        defaultChecked={selectorType === "languages" ? true : false}
       />
       <label for={id + "Language"}>Language</label>
 
@@ -166,7 +168,8 @@ function miscProfSelector(id, setSelector) {
         type="radio"
         id={id + "Tool"}
         name={id + "miscProf"}
-        value="tool"
+        value="tools"
+        defaultChecked={selectorType === "tools" ? true : false}
       />
       <label for={id + "Tool"}>Tool</label>
 
@@ -174,7 +177,8 @@ function miscProfSelector(id, setSelector) {
         type="radio"
         id={id + "ArtisanTool"}
         name={id + "miscProf"}
-        value="artisanTool"
+        value="artisanTools"
+        defaultChecked={selectorType === "artisanTools" ? true : false}
       />
       <label for={id + "ArtisanTool"}>Artisan Tool</label>
 
@@ -182,7 +186,8 @@ function miscProfSelector(id, setSelector) {
         type="radio"
         id={id + "Instrument"}
         name={id + "miscProf"}
-        value="instrument"
+        value="instruments"
+        defaultChecked={selectorType === "instruments" ? true : false}
       />
       <label for={id + "Instrument"}>Instrument</label>
 
@@ -190,7 +195,8 @@ function miscProfSelector(id, setSelector) {
         type="radio"
         id={id + "GameSet"}
         name={id + "miscProf"}
-        value="gameSet"
+        value="gameSets"
+        defaultChecked={selectorType === "gameSets" ? true : false}
       />
       <label for={id + "GameSet"}>Game Set</label>
     </div>
@@ -198,52 +204,82 @@ function miscProfSelector(id, setSelector) {
 }
 
 function applySelector(selector) {
-  if (selector === "tool") {
+  if (selector === "tools") {
     return allTools;
-  } else if (selector === "language") {
+  } else if (selector === "languages") {
     return allLanguages;
-  } else if (selector === "artisanTool") {
+  } else if (selector === "artisanTools") {
     return allArtisanTools;
-  } else if (selector === "instrument") {
+  } else if (selector === "instruments") {
     return allInstruments;
-  } else if (selector === "gameSet") {
+  } else if (selector === "gameSets") {
     return allGames;
   }
 }
 
-export default function Background({ backgrounds }) {
-  let allBackgrounds = backgrounds.all;
-  let features = [];
+function getAllFeatures(features, chosenFeature) {
+  let choices = [];
 
-  features.push(
-    <option hidden disabled selected value>
-      -- select an option --
-    </option>
-  );
+  let usedFeature = false;
 
-  for (let background in allBackgrounds) {
-    features.push(
-      <option value={background}>
-        {background}
+  for (let [key, value] of Object.entries(features)) {
+    if (key === chosenFeature) {
+      usedFeature = true;
+      choices.push(
+        <option value={key} selected>
+          {key}
+        </option>
+      );
+    } else {
+      choices.push(
+        <option value={key}>
+          {key}
+        </option>
+      );
+    }
+  }
+
+  if (!usedFeature) {
+    choices.push(
+      <option hidden disabled selected value>
+        -- select an ancestry --
       </option>
     );
   }
 
-  const [activeFeature, setActiveFeature] = useState("none");
-  let featureText = "";
+  return choices;
+}
 
-  if (activeFeature !== "none") {
-    featureText = displayContent(backgrounds[activeFeature]);
+function getMiscSelections(choices) {
+  let keys = Object.keys(choices);
+  let key = keys[0];
+  let value = choices[key].pop();
+  if (choices[key].length === 0) {
+    delete choices[key];
   }
+  return [key, value];
+}
 
-  const [skill1, setskill1] = useState("none");
-  const [skill2, setskill2] = useState("none");
-  const [miscSelector1, setmiscSelector1] = useState("language");
-  const [miscSelector2, setmiscSelector2] = useState("language");
-  const [misc1, setmisc1] = useState("none");
-  const [misc2, setmisc2] = useState("none");
+export default function Background({ backgrounds }) {
+  let allBackgrounds = backgrounds.all;
+  let choices = structuredClone(backgrounds.choices);
+  delete choices.name;
 
+  const [activeFeature, setActiveFeature] = useState(choices.feature);
+  delete choices.feature;
+
+  const [skill1, setskill1] = useState(choices.skills[0]);
+  const [skill2, setskill2] = useState(choices.skills[1]);
+  delete choices.skills;
+
+  let [type, value] = getMiscSelections(choices);
+  const [miscSelector1, setmiscSelector1] = useState(type);
+  const [misc1, setmisc1] = useState(value);
   let misc1Options = applySelector(miscSelector1);
+
+  [type, value] = getMiscSelections(choices);
+  const [miscSelector2, setmiscSelector2] = useState(type);
+  const [misc2, setmisc2] = useState(value);
   let misc2Options = applySelector(miscSelector2);
 
   return (
@@ -255,10 +291,10 @@ export default function Background({ backgrounds }) {
         id="backgroundFeature"
         onChange={e => setActiveFeature(e.target.value)}
       >
-        {features}
+        {getAllFeatures(allBackgrounds, activeFeature)}
       </select>
       <div>
-        {featureText}
+        {displayContent(allBackgrounds[activeFeature])}
       </div>
       <div className="backgroundSkills">
         <label>Skills:</label>
@@ -268,13 +304,12 @@ export default function Background({ backgrounds }) {
       <div className="backgroundMiscProf">
         <label>Misc. Proficiencies</label>
         <div>
-          {/* TODO: It is possible to get duplicate entries by switching between language and tools */}
-          {miscProfSelector("misc1", setmiscSelector1)}
+          {miscProfSelector("misc1", miscSelector1, setmiscSelector1)}
           {optionSelector("misc1", setmisc1, misc1, misc2, misc1Options)}
           {misc1}
         </div>
         <div>
-          {miscProfSelector("misc2", setmiscSelector2)}
+          {miscProfSelector("misc2", miscSelector2, setmiscSelector2)}
           {optionSelector("misc2", setmisc2, misc2, misc1, misc2Options)}
           {misc2}
         </div>
