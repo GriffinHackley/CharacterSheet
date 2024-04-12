@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CollapsibleTabs from "../../shared/collapsibleTab";
 
 function setUpClassTabs(featuresInfo) {
   let mainClass = "";
@@ -43,36 +44,6 @@ function setUpMainTabs(featuresInfo, setMainActiveTab, activeTab) {
   return [headerButtons, contents];
 }
 
-function getContent(feature, expandedFeatures, index) {
-  if (expandedFeatures[index]) {
-    let text = [];
-    feature.text.forEach(line => {
-      if (line.type == "normal") {
-        text.push(
-          <p>
-            {line.text}
-          </p>
-        );
-      } else if (line.type == "heading") {
-        text.push(
-          <h4>
-            {line.text}
-          </h4>
-        );
-      } else if (line.type == "table") {
-        <h1>Tables have not been implemented</h1>;
-      }
-    });
-    return (
-      <div>
-        {text}
-      </div>
-    );
-  } else {
-    return;
-  }
-}
-
 export default function FeaturesTab({ featuresInfo }) {
   const [activeTab, setMainActiveTab] = useState("Class");
   let [headerButtons, contents] = setUpMainTabs(
@@ -100,36 +71,10 @@ export default function FeaturesTab({ featuresInfo }) {
     }
     contents = contents[activeSubTab];
   }
-
-  let tabContents = [];
-  let init = Array(contents.length).fill(false);
-  const [expandedFeatures, setExpandedFeatures] = useState(init);
-
-  const toggleExpanded = index => {
-    let ret = [...expandedFeatures];
-    ret[index] = !expandedFeatures[index];
-    setExpandedFeatures(ret);
-  };
-
-  for (let index in contents) {
-    let feature = contents[index];
-
-    tabContents.push(
-      <div className="feature">
-        <button
-          type="button"
-          className="featureName collapsible"
-          key={feature.name}
-          onClick={() => toggleExpanded(index)}
-        >
-          {feature.name}
-        </button>
-        <div className="featureDescription">
-          {getContent(feature, expandedFeatures, index)}
-        </div>
-      </div>
-    );
-  }
+  let allTabs = [];
+  contents.forEach(content => {
+    allTabs.push(<CollapsibleTabs name={content.name} text={content.text} />);
+  });
 
   return (
     <section className="flexPanel">
@@ -139,7 +84,7 @@ export default function FeaturesTab({ featuresInfo }) {
       <div className="tabHeader">
         {classButtons}
       </div>
-      {tabContents}
+      {allTabs}
     </section>
   );
 }
