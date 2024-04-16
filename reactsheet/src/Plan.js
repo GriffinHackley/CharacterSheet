@@ -40,7 +40,7 @@ export default function Plan() {
       <Stats stats={plan[0].stats} />
       <Ancestry ancestries={plan[0].races} />
       <Background backgrounds={plan[0].backgrounds} />
-      <Classes />
+      <Classes classes={plan[1]} />
     </div>
   );
 

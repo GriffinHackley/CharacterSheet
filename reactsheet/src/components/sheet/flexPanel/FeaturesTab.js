@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CollapsibleTabs from "../../shared/collapsibleTab";
+import CollapsibleTab from "../../shared/collapsibleTab";
 
 function setUpClassTabs(featuresInfo) {
   let mainClass = "";
@@ -73,7 +73,7 @@ export default function FeaturesTab({ featuresInfo }) {
   }
   let allTabs = [];
   contents.forEach(content => {
-    allTabs.push(<CollapsibleTabs name={content.name} text={content.text} />);
+    allTabs.push(<CollapsibleTab name={content.name} text={content.text} />);
   });
 
   return (

@@ -2,35 +2,13 @@ import { useState } from "react";
 
 function getContent(content, expanded) {
   if (expanded) {
-    let text = [];
-    content.forEach(line => {
-      if (line.type == "normal") {
-        text.push(
-          <p>
-            {line.text}
-          </p>
-        );
-      } else if (line.type == "heading") {
-        text.push(
-          <h4>
-            {line.text}
-          </h4>
-        );
-      } else if (line.type == "table") {
-        <h1>Tables have not been implemented</h1>;
-      }
-    });
-    return (
-      <div>
-        {text}
-      </div>
-    );
+    return content;
   } else {
     return;
   }
 }
 
-export default function CollapsibleTabs({ name, text }) {
+export default function CollapsibleTab({ name, text }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -43,9 +21,10 @@ export default function CollapsibleTabs({ name, text }) {
       >
         {name}
       </button>
-      <div className="featureDescription">
-        {getContent(text, expanded)}
-      </div>
+      <div
+        className="featureDescription"
+        dangerouslySetInnerHTML={{ __html: getContent(text, expanded) }}
+      />
     </div>
   );
 }

@@ -10,6 +10,7 @@ class Plan:
         ret = []
 
         ret.append(self.getLevelZeroPlan())
+        ret.append(self.getClassLevels())
 
         return json.dumps(ret)
 
@@ -33,5 +34,10 @@ class Plan:
             "racial": self.character.race["options"]["abilityScores"],
             "feats": self.character.feats,
         }
+
+        return ret
+
+    def getClassLevels(self):
+        ret = {}
 
         return ret

@@ -123,27 +123,31 @@ function displayContent(feature) {
 
 function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   let options = [];
-  if (currentOption === "none") {
-    options.push(
-      <option hidden disabled selected value>
-        -- select an option --
-      </option>
-    );
-  }
 
   //   Dont let them choose the same option as the other selector
   allOptions = allOptions.filter(option => option !== otherOption);
+  let oneSelected = false;
 
   for (let option in allOptions) {
     let isSelected = false;
     if (currentOption.toLowerCase() === allOptions[option].toLowerCase()) {
       isSelected = true;
+      oneSelected = true;
     }
     options.push(
       <option selected={isSelected}>
         {allOptions[option]}
       </option>
     );
+  }
+  if (currentOption === "none") {
+    options.push(
+      <option hidden disabled selected value>
+        -- select an option --
+      </option>
+    );
+  } else if (!oneSelected) {
+    throw `${currentOption} is not in list ${allOptions}`;
   }
   return (
     <select name={id} id={id} onChange={e => setOption(e.target.value)}>
