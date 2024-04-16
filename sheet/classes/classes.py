@@ -205,7 +205,7 @@ class FifthEditionClass(Class):
         modified = []
         regex = "\(([^\)]+)\)"
 
-        for level in range(1, self.level - 1):
+        for level in range(1, self.level + 1):
             for feature in self.table[level]["Features"]:
 
                 # Look for features that improve as you level
@@ -236,9 +236,31 @@ class FifthEditionClass(Class):
         )
 
         table = self.mdTableToJSON(table)
+        allFeatureNames = []
 
         for i in range(1, 21):
-            levels[i] = {"Features": table[i - 1]["Features"].split(",")}
+            stripped = []
+
+            for feature in table[i - 1]["Features"].split(","):
+                feature = feature.strip(" ")
+
+                if feature == "-":
+                    continue
+                if feature in allFeatureNames:
+                    continue
+                if feature == "Ability Score Improvement":
+                    continue
+
+                ##TODO: Handle subclass levels
+                if feature == self.subclass:
+                    continue
+                if feature == self.subclass + " feature":
+                    continue
+
+                stripped.append(feature)
+                allFeatureNames.append(feature)
+
+            levels[i] = {"Features": stripped}
 
         return levels
 
@@ -276,6 +298,8 @@ class FifthEditionClass(Class):
             current = current.findNext()
 
             # Lists are weird for some reason, handle them as a special case
+            if current.name == "em":
+                continue
             if current.name == "ul":
                 continue
             if current.name == "li":

@@ -4,6 +4,7 @@ from ..modifiers import Modifier, ModifierList
 
 
 class Wizard(FifthEditionClass):
+    subclass = "Arcane Tradition"
     proficiencies = {
         "skills": ["Arcana", "Investigation", "Performance"],
         "languages": [],
@@ -34,12 +35,6 @@ class Wizard(FifthEditionClass):
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)
-
-    def getClassFeatures(self):
-        return super().get5eClassFeatures()
-
-    def getSubclassFeatures(self, url):
-        return super().get5eSubclassFeatures(url)
 
     def getConsumables(self, stats, proficiencyBonus):
         ret = {}
