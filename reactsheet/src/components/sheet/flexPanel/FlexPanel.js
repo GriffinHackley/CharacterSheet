@@ -5,6 +5,7 @@ import ProficienciesTab from "./ProficienciesTab";
 import SpellTab from "./SpellTab";
 import GraphTab from "./GraphTab";
 import FlavorTab from "./FlavorTab";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 export default function FlexPanel({
   config,
@@ -28,21 +29,29 @@ export default function FlexPanel({
 
   let tabContents = tabs[activeTab];
 
-  let headerButtons = [];
+  const control = {
+    value: activeTab,
+    onChange: (event, newTab) => {
+      setActiveTab(newTab);
+    },
+    exclusive: true
+  };
 
-  for (let tabName in tabs) {
-    headerButtons.push(
-      <button type="button" onClick={() => setActiveTab(tabName)}>
-        {tabName}
-      </button>
+  let toggleButtons = [];
+
+  for (let tab in tabs) {
+    toggleButtons.push(
+      <ToggleButton value={tab} key={tab}>
+        {tab}
+      </ToggleButton>
     );
   }
 
   return (
     <section className="flexPanel">
-      <div className="flexHeader tabHeader">
-        {headerButtons}
-      </div>
+      <ToggleButtonGroup {...control} size="large" fullWidth={true}>
+        {toggleButtons}
+      </ToggleButtonGroup>
       {tabContents}
     </section>
   );
