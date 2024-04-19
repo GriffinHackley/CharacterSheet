@@ -32,7 +32,9 @@ export default function FlexPanel({
   const control = {
     value: activeTab,
     onChange: (event, newTab) => {
-      setActiveTab(newTab);
+      if (newTab) {
+        setActiveTab(newTab);
+      }
     },
     exclusive: true
   };

@@ -1,22 +1,22 @@
 import { useState } from "react";
 import CollapsibleTab from "../../shared/collapsibleTab";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
+// Find the class that has the most features and set it as the main class
 function setUpClassTabs(featuresInfo) {
   let mainClass = "";
   let length = 0;
-  let classTabs = [];
   for (let cls in featuresInfo.Class) {
-    classTabs.push(cls);
     if (featuresInfo.Class[cls].length > length) {
       mainClass = cls;
       length = featuresInfo.Class[cls].length;
     }
   }
 
-  return [mainClass, classTabs];
+  return mainClass;
 }
 
-function setUpMainTabs(featuresInfo, setMainActiveTab, activeTab) {
+function setUpMainTabs(featuresInfo, setActiveTab, activeTab) {
   let tabs = {};
 
   for (let source in featuresInfo) {
@@ -29,13 +29,9 @@ function setUpMainTabs(featuresInfo, setMainActiveTab, activeTab) {
   //Get all tab buttons set up
   for (let tabName in tabs) {
     headerButtons.push(
-      <button
-        type="button"
-        key={tabName}
-        onClick={() => setMainActiveTab(tabName)}
-      >
+      <ToggleButton value={tabName} key={tabName}>
         {tabName}
-      </button>
+      </ToggleButton>
     );
   }
 
@@ -45,32 +41,54 @@ function setUpMainTabs(featuresInfo, setMainActiveTab, activeTab) {
 }
 
 export default function FeaturesTab({ featuresInfo }) {
-  const [activeTab, setMainActiveTab] = useState("Class");
+  const [activeTab, setActiveTab] = useState("Class");
+
+  const control = {
+    value: activeTab,
+    onChange: (event, newTab) => {
+      if (newTab) {
+        setActiveTab(newTab);
+      }
+    },
+    exclusive: true
+  };
+
   let [headerButtons, contents] = setUpMainTabs(
     featuresInfo,
-    setMainActiveTab,
+    setActiveTab,
     activeTab
   );
 
-  let [mainClass, classTabs] = setUpClassTabs(featuresInfo);
-  const [activeSubTab, setActiveSubTab] = useState(mainClass);
+  let mainClass = setUpClassTabs(featuresInfo);
+  const [activeClassTab, setActiveClassTab] = useState(mainClass);
+
+  const classControl = {
+    value: activeClassTab,
+    onChange: (event, newTab) => {
+      if (newTab) {
+        setActiveClassTab(newTab);
+      }
+    },
+    exclusive: true
+  };
 
   let classButtons = [];
   if (activeTab == "Class") {
     //Get all tab buttons set up
     for (let tabName in contents) {
       classButtons.push(
-        <button
-          type="button"
+        <ToggleButton
           key={tabName}
-          onClick={() => setActiveSubTab(tabName)}
+          value={tabName}
+          onClick={() => setActiveClassTab(tabName)}
         >
           {tabName}
-        </button>
+        </ToggleButton>
       );
     }
-    contents = contents[activeSubTab];
+    contents = contents[activeClassTab];
   }
+
   let allTabs = [];
   contents.forEach(content => {
     allTabs.push(<CollapsibleTab name={content.name} text={content.text} />);
@@ -78,12 +96,22 @@ export default function FeaturesTab({ featuresInfo }) {
 
   return (
     <section className="flexPanel">
-      <div className="flexHeader tabHeader">
+      <ToggleButtonGroup
+        className="flexHeader tabHeader"
+        {...control}
+        size="medium"
+        fullWidth={true}
+      >
         {headerButtons}
-      </div>
-      <div className="tabHeader">
+      </ToggleButtonGroup>
+      <ToggleButtonGroup
+        className="tabHeader"
+        {...classControl}
+        size="small"
+        fullWidth={true}
+      >
         {classButtons}
-      </div>
+      </ToggleButtonGroup>
       {allTabs}
     </section>
   );
