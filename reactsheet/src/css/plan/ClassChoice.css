@@ -1,0 +1,26 @@
+div.classChoice {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-self: center;
+  /* background-color: blue; */
+}
+
+div.classSelector {
+  /* background-color: red; */
+}
+
+div.classHeader {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-around;
+  /* background-color: purple; */
+}
+
+div.levels {
+  display: flex;
+  flex-direction: row;
+  /* background-color: green; */
+}

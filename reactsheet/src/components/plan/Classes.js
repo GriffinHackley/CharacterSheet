@@ -1,33 +1,42 @@
-function getFeatureTabs(contents) {
-  let tabContents = [];
-  //   for (let index in contents) {
-  //     let feature = contents[index];
+import { useState, useEffect } from "react";
+import ClassChoice from "./ClassChoice";
 
-  //     tabContents.push(
-  //       <div className="feature">
-  //         <button
-  //           type="button"
-  //           className="featureName collapsible"
-  //           key={feature.name}
-  //           onClick={() => toggleExpanded(index)}
-  //         >
-  //           {feature.name}
-  //         </button>
-  //         <div className="featureDescription">
-  //           {getContent(feature, expandedFeatures, index)}
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-  return tabContents;
-}
 export default function Classes({ classes }) {
-  let content = {};
-  let features = getFeatureTabs(content);
+  const [classChoiceList, setClassChoiceList] = useState([]);
+  const [selectionList, setSelectionList] = useState([
+    {
+      name: "",
+      endLevel: -1
+    }
+  ]);
+
+  useEffect(
+    () => {
+      let choiceList = selectionList.map((selection, index) => {
+        return (
+          <ClassChoice
+            selectionList={selectionList}
+            setSelectionList={setSelectionList}
+            allClasses={classes.all}
+            index={index}
+          />
+        );
+      });
+      setClassChoiceList(choiceList);
+    },
+    [selectionList]
+  );
+
   return (
     <div>
       <h3>Classes</h3>
-      {features}
+      <button
+        onClick={() =>
+          setSelectionList([...selectionList, { name: "", endLevel: -1 }])}
+      >
+        Add Class
+      </button>
+      {classChoiceList}
     </div>
   );
 }

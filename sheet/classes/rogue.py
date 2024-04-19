@@ -3,6 +3,7 @@ from ..modifiers import ModifierList
 
 
 class Rogue(FifthEditionClass):
+    subclass = "Roguish Archetype"
     proficiencies = {
         "skills": ["Insight", "Stealth", "Performance", "Perception"],
         "languages": [],
@@ -13,9 +14,8 @@ class Rogue(FifthEditionClass):
     }
     expertise = {"skills": ["Insight", "Perception"]}
 
-    def __init__(self, level, options):
-        self.options = options
-        super().__init__(level, name="Rogue", hitDie="8", spellProgression="none")
+    def __init__(self):
+        super().__init__(name="Rogue", hitDie="8", spellProgression="none")
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

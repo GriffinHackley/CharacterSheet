@@ -19,28 +19,47 @@ def allClasses():
     return ret
 
 
+def allClassesJSON():
+    ret = {}
+
+    for name, info in allClasses().items():
+        print()
+        cls = getattr(info, name.title())()
+        ret[name] = {"features": cls.features}
+
+    return ret
+
+
 def getClasses(levels, spellList):
     ret = []
     classes = allClasses()
     for charClass, level in levels.items():
         classModule = classes[charClass.lower()]
         cls = getattr(classModule, charClass)
-        initClass = cls(level["level"], level["options"], spellList[charClass])
+        initClass = cls()
+        initClass.setLevel(level["level"])
+        initClass.setSpellList(spellList[charClass])
+        initClass.setOptions(level["options"])
         ret.append(initClass)
 
     return ret
 
 
 class Class:
-    def __init__(self, level, spellList, name, hitDie, spellProgression, primaryStat):
-        self.level = level
-        self.spellList = spellList
+    def __init__(self, name, hitDie, spellProgression, primaryStat):
         self.name = name
         self.hitDie = hitDie
         self.spellProgression = spellProgression
         self.primaryStat = primaryStat
 
-        self.parseMd()
+    def setLevel(self, level):
+        self.level = level
+
+    def setSpellList(self, spellList):
+        self.spellList = spellList
+
+    def setOptions(self, options):
+        self.options = options
 
     def getConsumables(self, stats, proficiencyBonus):
         return []
@@ -162,8 +181,9 @@ class Class:
 
 
 class FifthEditionClass(Class):
-    def __init__(self, level, spellList, name, hitDie, spellProgression, primaryStat):
-        super().__init__(level, spellList, name, hitDie, spellProgression, primaryStat)
+    def __init__(self, name, hitDie, spellProgression, primaryStat=None):
+        super().__init__(name, hitDie, spellProgression, primaryStat)
+        self.parseMd()
         self.edition = "5e"
 
     def addProficiencies(self, proficiencyList):
@@ -198,35 +218,7 @@ class FifthEditionClass(Class):
 
         self.table = self.parseTable(htmlFile)
 
-        self.features = self.getClassFeatures(htmlFile)
-
-    def getClassFeatures(self, htmlFile):
-        allFeatures = []
-        modified = []
-        regex = "\(([^\)]+)\)"
-
-        for level in range(1, self.level + 1):
-            for feature in self.table[level]["Features"]:
-
-                # Look for features that improve as you level
-                # If you find one, only get the text for the feature the first time
-                # Skip it every other time
-                match = re.search(regex, feature)
-                if match:
-                    feature = re.split(regex, feature)[0].strip(" ")
-                    if feature in modified:
-                        continue
-                    else:
-                        modified.append(feature)
-
-                allFeatures.append(
-                    {
-                        "name": feature,
-                        "text": self.getFeatureText(feature, htmlFile),
-                    }
-                )
-
-        return allFeatures
+        self.features = self.getAllClassFeatures(htmlFile)
 
     def parseTable(self, html):
         levels = {}
@@ -284,6 +276,50 @@ class FifthEditionClass(Class):
                 )
         return ret
 
+    def getAllClassFeatures(self, htmlFile):
+        allFeatures = {}
+        modified = []
+        regex = "\(([^\)]+)\)"
+
+        for level in range(1, 21):
+            currentLevel = []
+            for feature in self.table[level]["Features"]:
+
+                # Look for features that improve as you level
+                # If you find one, only get the text for the feature the first time
+                # Skip it every other time
+                match = re.search(regex, feature)
+                if match:
+                    feature = re.split(regex, feature)[0].strip(" ")
+                    if feature in modified:
+                        continue
+                    else:
+                        modified.append(feature)
+                if "Improvement" in feature:
+                    feature = feature.split(" Improvement")[0]
+                    if feature in modified:
+                        continue
+                    else:
+                        modified.append(feature)
+
+                currentLevel.append(
+                    {
+                        "name": feature,
+                        "text": self.getFeatureText(feature, htmlFile),
+                    }
+                )
+            allFeatures[level] = currentLevel
+
+        return allFeatures
+
+    def getFeaturesToLevel(self):
+        features = []
+
+        for level in range(1, self.level + 1):
+            features = features + self.features[level]
+
+        return features
+
     def getFeatureText(self, feature, soup):
         current = soup.find("h3", text=feature)
 
@@ -294,7 +330,7 @@ class FifthEditionClass(Class):
             raise Exception("Could not find {}".format(feature))
 
         featureText = []
-        while not current.findNext().name == "h3":
+        while current.findNext() and not current.findNext().name == "h3":
             current = current.findNext()
 
             # Lists are weird for some reason, handle them as a special case
@@ -313,6 +349,13 @@ class FifthEditionClass(Class):
 
         featureText = "".join(featureText)
         return featureText
+
+    def toJSON(self):
+        ret = {}
+
+        ret[self.name] = {"features": self.features}
+
+        return ret
 
 
 class PathfinderClass(Class):

@@ -1,9 +1,10 @@
 import math
-from .classes import Class
+from .classes import PathfinderClass
 from ..modifiers import Modifier, ModifierList
 
 
-class Warpriest(Class):
+class Warpriest(PathfinderClass):
+    features = None
     skillPerLevel = 2
     sacredWeapon = ""
     proficiencies = {
@@ -28,19 +29,18 @@ class Warpriest(Class):
         "Swim",
     ]
 
-    def __init__(self, level, options):
-        self.options = options
-        super().__init__(
-            level,
-            "Warpriest",
-            hitDie="8",
-            edition="Pathfinder",
-            bab="3/4",
-            fort="good",
-            refl="poor",
-            will="good",
-        )
-        self.sacredWeapon = self.getSacredWeapon()
+    def __init__(self):
+        i = 0
+        # super().__init__(
+        #     "Warpriest",
+        #     hitDie="8",
+        #     edition="Pathfinder",
+        #     bab="3/4",
+        #     fort="good",
+        #     refl="poor",
+        #     will="good",
+        # )
+        # self.sacredWeapon = self.getSacredWeapon()
 
     def appendModifiers(self, modList: ModifierList):
         super().appendModifiers(modList)

@@ -1,4 +1,6 @@
 import json
+
+from sheet.classes.classes import allClassesJSON
 from .races import races
 
 from sheet.misc.backgrounds import FifthEditionBackground
@@ -39,5 +41,7 @@ class Plan:
 
     def getClassLevels(self):
         ret = {}
+
+        ret["all"] = allClassesJSON()
 
         return ret

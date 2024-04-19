@@ -588,7 +588,7 @@ class Character(models.Model):
 
         features = {}
         for cls in self.charClass:
-            features[cls.name] = cls.features
+            features[cls.name] = cls.getFeaturesToLevel()
 
         ret["Class"] = features
         ret["Feats"] = self.getFeatsInJSON()

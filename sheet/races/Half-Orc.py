@@ -2,6 +2,7 @@ from .races import Race
 from ..modifiers import Modifier, ModifierList
 
 
+# TODO: Fix thisd, its pathfinder
 class HalfOrc(Race):
     def setOptions(self, options):
         options["size"] = "M"

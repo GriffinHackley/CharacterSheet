@@ -20,12 +20,9 @@ class Bard(FifthEditionClass):
     }
     expertise = {"skills": ["Perception", "Persuasion"]}
 
-    def __init__(self, level, options, spellList):
-        self.options = options
+    def __init__(self):
         self.subclassChoice = "Spirits"
         super().__init__(
-            level,
-            spellList,
             name="Bard",
             hitDie="8",
             spellProgression="full",

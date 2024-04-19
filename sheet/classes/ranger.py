@@ -3,6 +3,7 @@ from ..modifiers import Modifier, ModifierList
 
 
 class Ranger(FifthEditionClass):
+    subclass = "Ranger Conclave"
     proficiencies = {
         "skills": ["Insight", "Stealth", "Survival"],
         "languages": ["Draconic", "Sylvan"],
@@ -13,11 +14,9 @@ class Ranger(FifthEditionClass):
     }
     expertise = {"skills": ["Stealth"]}
 
-    def __init__(self, level, options, spellList):
-        self.options = options
+    def __init__(self):
+        self.subclassChoice = "Gloomstalker"
         super().__init__(
-            level,
-            spellList,
             name="Ranger",
             hitDie="10",
             spellProgression="half",

@@ -22,11 +22,8 @@ class Wizard(FifthEditionClass):
     }
     expertise = {"skills": []}
 
-    def __init__(self, level, options, spellList):
-        self.options = options
+    def __init__(self):
         super().__init__(
-            level,
-            spellList,
             name="Wizard",
             hitDie="6",
             spellProgression="full",

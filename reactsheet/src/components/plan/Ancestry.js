@@ -1,37 +1,5 @@
 import { useState } from "react";
-
-function getAllAncestries(ancestries, chosenAncestry) {
-  let choices = [];
-
-  let usedAncestry = false;
-
-  for (let [key, value] of Object.entries(ancestries)) {
-    if (key === chosenAncestry) {
-      usedAncestry = true;
-      choices.push(
-        <option value={key} selected>
-          {key}
-        </option>
-      );
-    } else {
-      choices.push(
-        <option value={key}>
-          {key}
-        </option>
-      );
-    }
-  }
-
-  if (!usedAncestry) {
-    choices.push(
-      <option hidden disabled selected value>
-        -- select an ancestry --
-      </option>
-    );
-  }
-
-  return choices;
-}
+import Selector from "../shared/selector";
 
 function displayFeature(feature) {
   if (feature === "") {
@@ -92,14 +60,12 @@ export default function Ancestry({ ancestries }) {
   return (
     <div>
       <h3>Ancestry</h3>
-      <label for="ancestryChoice">Ancestry: </label>
-      <select
-        name="ancestryChoice"
-        id="ancestryChoice"
-        onChange={e => setAncestry(e.target.value)}
-      >
-        {getAllAncestries(allAncestries, chosenAncestry)}
-      </select>
+      <Selector
+        type={"ancestry"}
+        choice={chosenAncestry}
+        allChoices={Object.keys(allAncestries)}
+        setFunction={setAncestry}
+      />
       {getFeatureText(allAncestries, chosenAncestry)}
     </div>
   );
