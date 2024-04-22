@@ -38,8 +38,9 @@ def getClasses(levels, spellList):
         cls = getattr(classModule, charClass)
         initClass = cls()
         initClass.setLevel(level["level"])
-        initClass.setSpellList(spellList[charClass])
         initClass.setOptions(level["options"])
+        if spellList.get(charClass):
+            initClass.setSpellList(spellList[charClass])
         ret.append(initClass)
 
     return ret

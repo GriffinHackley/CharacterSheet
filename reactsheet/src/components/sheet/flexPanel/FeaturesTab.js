@@ -76,15 +76,17 @@ export default function FeaturesTab({ featuresInfo }) {
   if (activeTab == "Class") {
     //Get all tab buttons set up
     for (let tabName in contents) {
-      classButtons.push(
-        <ToggleButton
-          key={tabName}
-          value={tabName}
-          onClick={() => setActiveClassTab(tabName)}
-        >
-          {tabName}
-        </ToggleButton>
-      );
+      if (Object.keys(featuresInfo.Class).length < 1) {
+        classButtons.push(
+          <ToggleButton
+            key={tabName}
+            value={tabName}
+            onClick={() => setActiveClassTab(tabName)}
+          >
+            {tabName}
+          </ToggleButton>
+        );
+      }
     }
     contents = contents[activeClassTab];
   }
@@ -95,7 +97,7 @@ export default function FeaturesTab({ featuresInfo }) {
   });
 
   return (
-    <section className="flexPanel">
+    <section>
       <ToggleButtonGroup
         className="flexHeader tabHeader"
         {...control}

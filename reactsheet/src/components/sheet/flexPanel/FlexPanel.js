@@ -22,10 +22,13 @@ export default function FlexPanel({
     Features: <FeaturesTab featuresInfo={featureInfo} />,
     Equipment: <EquipmentTab equipmentInfo={equipmentInfo} config={config} />,
     Proficiencies: <ProficienciesTab profInfo={profInfo} config={config} />,
-    Spells: <SpellTab spellInfo={spellInfo} config={config} />,
     "Damage Graph": <GraphTab graphInfo={graphInfo} />,
     Flavor: <FlavorTab flavorInfo={flavorInfo} />
   };
+
+  if (spellInfo !== null) {
+    tabs.Spells = <SpellTab spellInfo={spellInfo} config={config} />;
+  }
 
   let tabContents = tabs[activeTab];
 

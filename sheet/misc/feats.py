@@ -41,12 +41,9 @@ class ASI(Feat):
 
 class ElvenAccuracy(Feat):
     name = "Elven Accuracy"
-    text = [
-        {
-            "type": "normal",
-            "text": "Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.",
-        }
-    ]
+    text = (
+        "<p>Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.</p>",
+    )
 
     def getModifiers(self, modList):
         validOptions = ["Dexterity", "Intelligence", "Wisdom", "Charisma"]
@@ -68,18 +65,13 @@ class ElvenAccuracy(Feat):
 
 class Sharpshooter(Feat):
     name = "Sharpshooter"
-    text = [
-        {
-            "type": "normal",
-            "text": """
-        Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.
+    text = """
+        <p>Attacking at long range doesn't impose disadvantage on your ranged weapon attack rolls.</p>
 
-        Your ranged weapon attacks ignore half and three-quarters cover.
+        <p>Your ranged weapon attacks ignore half and three-quarters cover.</p>
 
-        Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.
-        """,
-        }
-    ]
+        <p>Before you make an attack with a ranged weapon that you are proficient with, you can choose to take a -5 penalty to the attack roll. If that attack hits, you add +10 to the attack's damage.</p>
+        """
 
 
 class RitualCaster(Feat):
@@ -105,16 +97,14 @@ class RitualCaster(Feat):
             )
 
         text = """
-        You have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.
+        <p>You have learned a number of spells that you can cast as rituals. These spells are written in a ritual book, which you must have in hand while casting one of them.</p>
 
-        When you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. You must choose your spells from the {} spell list, and the spells you choose must have the ritual tag. Your spellcasting ability is {}
+       <p>When you choose this feat, you acquire a ritual book holding two 1st-level spells of your choice. You must choose your spells from the {} spell list, and the spells you choose must have the ritual tag. Your spellcasting ability is {}</p>
 
-        If you come across a spell in written form, such as a magical spell scroll or a wizard's spellbook, you might be able to add it to your ritual book. The spell must be on the {} spell list, the spell's level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents the material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it
+        <p>If you come across a spell in written form, such as a magical spell scroll or a wizard's spellbook, you might be able to add it to your ritual book. The spell must be on the {} spell list, the spell's level can be no higher than half your level (rounded up), and it must have the ritual tag. The process of copying the spell into your ritual book takes 2 hours per level of the spell, and costs 50 gp per level. The cost represents the material components you expend as you experiment with the spell to master it, as well as the fine inks you need to record it</p>
         """
 
-        text = text.format(choice, self.ability, choice)
-
-        self.text = [{"type": "normal", "text": text}]
+        self.text = text.format(choice, self.ability, choice)
 
     def getSpells(self, character):
         stats = character.abilityMod

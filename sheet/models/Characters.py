@@ -65,16 +65,21 @@ class Character(models.Model):
         self.alignment = character.alignment
         self.playerName = character.playerName
 
-        self.charClass = json.loads(character.charClass)
-        self.spellList = json.loads(character.spellList)
-        self.race = json.loads(character.race)
-        self.feats = json.loads(character.feats)
-        self.background = json.loads(character.background)
-        self.config = json.loads(character.config)
-        self.weapon = json.loads(character.weapon)
-        self.equipment = json.loads(character.equipment)
-        self.flavor = json.loads(character.flavor)
-        self.accentColor = json.loads(character.accentColor)
+        try:
+
+            self.charClass = json.loads(character.charClass)
+            self.spellList = json.loads(character.spellList)
+            self.race = json.loads(character.race)
+            self.feats = json.loads(character.feats)
+            self.background = json.loads(character.background)
+            self.config = json.loads(character.config)
+            self.weapon = json.loads(character.weapon)
+            self.equipment = json.loads(character.equipment)
+            self.flavor = json.loads(character.flavor)
+            self.accentColor = json.loads(character.accentColor)
+        
+        except:
+            raise Exception("Invalid Character JSON")
 
         return self
 
@@ -98,8 +103,6 @@ class Character(models.Model):
         cache.set(self.name, ret)
 
         ret["graph"] = self.calculateGraph()
-
-        cache.set(self.name + "_graph", self.graph)
 
         return json.dumps(ret)
 

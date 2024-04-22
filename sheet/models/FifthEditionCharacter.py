@@ -209,14 +209,22 @@ class FifthEditionCharacter(Character):
 
     def applySpells(self):
         spellList = SpellList("5e")
+
+        hasSpells = False
         for cls in self.charClass:
+            if not hasattr(cls, "spellList"):
+                continue
             spellList.addClass(cls)
+            hasSpells = True
 
-        self.toggles.addToggleList(spellList.getToggles())
-
-        self.spellList = spellList
+        if hasSpells:
+            self.toggles.addToggleList(spellList.getToggles())
+            self.spellList = spellList
 
     def getSpells(self):
+        if not self.spellList:
+            return None
+
         ret = []
         headers = {}
         for cls in self.charClass:

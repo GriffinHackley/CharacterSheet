@@ -88,6 +88,7 @@ div.list-section ul li input[type=checkbox] {
   border-top-color: var(--primary-accent);
 }
 section.pageContainer {
+  padding: 5px;
   display: flex;
   flex-direction: column;
   height: 99.5%;
@@ -281,73 +282,17 @@ section.flexPanel {
   position: relative;
   z-index: 100;
 }
-div.tabHeader {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  border-bottom: 1px solid black;
-}
-div.tabHeader > button {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  width: 100%;
-  height: 100%;
-  border: 0px;
-}
 div.flexHeader > button:first-child {
   border-radius: 10px 0px 0px 0px;
 }
 div.flexHeader > button:last-child {
   border-radius: 0px 10px 0px 0px;
 }
-.tabContent {
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: .8rem;
-  display: none;
-}
-.tabContent--active {
-  display: flex;
-}
-.tabButton:active {
-  color: red;
-}
-.tabButton--active {
-  font-weight: bold;
-}
-section.features {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
-div.featureHeader {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  width: 100%;
-  margin-bottom: 5px;
-}
-div.featureType {
-  /* display: flex; */
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  flex-grow: 1;
-}
+
 div.feature {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  height: 100%;
   align-items: center;
-  width: 100%;
 }
 
 button.collapsible {

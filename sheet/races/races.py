@@ -1,5 +1,6 @@
 from .. import races
 from ..modifiers import Modifier, ModifierList
+from ..static.addParagraphTags import addParagraphTags
 
 
 def allRaces():
@@ -77,10 +78,9 @@ class Race:
 
     def getFeat(self):
         if self.feat == "":
-            return []
-        self.feat["source"] = self.name
+            return {}
 
-        return [self.feat]
+        return self.feat
 
     def getFeatures(
         self, darkvision=False, creatureType="You are Humanoid", extraAttributes=[]
@@ -93,30 +93,16 @@ class Race:
         ret = ret + [
             {
                 "name": "Creature Type",
-                "text": [
-                    {
-                        "type": "normal",
-                        "text": creatureType,
-                    }
-                ],
+                "text": addParagraphTags(creatureType),
             },
             {
                 "name": "Size",
-                "text": [
-                    {
-                        "type": "normal",
-                        "text": size,
-                    }
-                ],
+                "text": addParagraphTags(size),
             },
             {
                 "name": "Speed",
-                "text": [
-                    {
-                        "type": "normal",
-                        "text": speed,
-                    }
-                ],
+                "type": "normal",
+                "text": addParagraphTags(speed),
             },
         ]
 
@@ -124,12 +110,9 @@ class Race:
             ret = ret + [
                 {
                     "name": "Darkvision",
-                    "text": [
-                        {
-                            "type": "normal",
-                            "text": "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray.",
-                        }
-                    ],
+                    "text": addParagraphTags(
+                        "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."
+                    ),
                 }
             ]
 
@@ -143,9 +126,7 @@ class Race:
                 self.languages[len(self.languages) - 1]
             )
 
-        ret = ret + [
-            {"name": "Languages", "text": [{"type": "normal", "text": languages}]}
-        ]
+        ret = ret + [{"name": "Languages", "text": addParagraphTags(languages)}]
 
         return ret
 
