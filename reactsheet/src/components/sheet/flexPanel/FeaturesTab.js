@@ -3,7 +3,7 @@ import CollapsibleTab from "../../shared/collapsibleTab";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 // Find the class that has the most features and set it as the main class
-function setUpClassTabs(featuresInfo) {
+function getMainClass(featuresInfo) {
   let mainClass = "";
   let length = 0;
   for (let cls in featuresInfo.Class) {
@@ -16,11 +16,22 @@ function setUpClassTabs(featuresInfo) {
   return mainClass;
 }
 
-function setUpMainTabs(featuresInfo, setActiveTab, activeTab) {
+function setUpMainTabs(featuresInfo, activeTab, setActiveTab) {
+  const control = {
+    value: activeTab,
+    onChange: (event, newTab) => {
+      if (newTab) {
+        setActiveTab(newTab);
+      }
+    },
+    exclusive: true
+  };
+
   let tabs = {};
 
   for (let source in featuresInfo) {
     let feature = featuresInfo[source];
+
     tabs[source] = feature;
   }
 
@@ -37,31 +48,15 @@ function setUpMainTabs(featuresInfo, setActiveTab, activeTab) {
 
   let contents = tabs[activeTab];
 
-  return [headerButtons, contents];
+  return [headerButtons, contents, control];
 }
 
-export default function FeaturesTab({ featuresInfo }) {
-  const [activeTab, setActiveTab] = useState("Class");
-
-  const control = {
-    value: activeTab,
-    onChange: (event, newTab) => {
-      if (newTab) {
-        setActiveTab(newTab);
-      }
-    },
-    exclusive: true
-  };
-
-  let [headerButtons, contents] = setUpMainTabs(
-    featuresInfo,
-    setActiveTab,
-    activeTab
-  );
-
-  let mainClass = setUpClassTabs(featuresInfo);
-  const [activeClassTab, setActiveClassTab] = useState(mainClass);
-
+function setupClassTabs(
+  featuresInfo,
+  contents,
+  activeClassTab,
+  setActiveClassTab
+) {
   const classControl = {
     value: activeClassTab,
     onChange: (event, newTab) => {
@@ -73,28 +68,70 @@ export default function FeaturesTab({ featuresInfo }) {
   };
 
   let classButtons = [];
-  if (activeTab == "Class") {
-    //Get all tab buttons set up
-    for (let tabName in contents) {
-      if (Object.keys(featuresInfo.Class).length < 1) {
-        classButtons.push(
-          <ToggleButton
-            key={tabName}
-            value={tabName}
-            onClick={() => setActiveClassTab(tabName)}
-          >
-            {tabName}
-          </ToggleButton>
-        );
-      }
+
+  //Get all tab buttons set up
+  for (let tabName in contents) {
+    if (Object.keys(featuresInfo.Class).length < 1) {
+      classButtons.push(
+        <ToggleButton
+          key={tabName}
+          value={tabName}
+          onClick={() => setActiveClassTab(tabName)}
+        >
+          {tabName}
+        </ToggleButton>
+      );
     }
-    contents = contents[activeClassTab];
+  }
+  contents = contents[activeClassTab];
+
+  return [contents, classControl, classButtons];
+}
+
+export default function FeaturesTab({ featuresInfo }) {
+  const [activeTab, setActiveTab] = useState("Class");
+
+  let [headerButtons, contents, control] = setUpMainTabs(
+    featuresInfo,
+    activeTab,
+    setActiveTab
+  );
+
+  let classControl = {};
+  let classButtons = [];
+  let mainClass = getMainClass(featuresInfo);
+  const [activeClassTab, setActiveClassTab] = useState(mainClass);
+  if (activeTab == "Class") {
+    [contents, classControl, classButtons] = setupClassTabs(
+      featuresInfo,
+      contents,
+      activeClassTab,
+      setActiveClassTab
+    );
   }
 
   let allTabs = [];
-  contents.forEach(content => {
-    allTabs.push(<CollapsibleTab name={content.name} text={content.text} />);
-  });
+
+  if (activeTab == "Misc.") {
+    Object.keys(contents).forEach(source => {
+      if (contents[source].length > 0) {
+        allTabs.push(
+          <h3 style={{ paddingLeft: "5px" }}>
+            {source}
+          </h3>
+        );
+        contents[source].forEach(content => {
+          allTabs.push(
+            <CollapsibleTab name={content.name} text={content.text} />
+          );
+        });
+      }
+    });
+  } else {
+    contents.forEach(content => {
+      allTabs.push(<CollapsibleTab name={content.name} text={content.text} />);
+    });
+  }
 
   return (
     <section>

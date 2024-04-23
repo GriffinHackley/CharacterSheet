@@ -245,9 +245,11 @@ class FifthEditionCharacter(Character):
         return ret
 
     def getMiscFeatures(self):
-        ret = []
+        ret = {}
 
-        ret = ret + [
+        ret["Feats"] = self.getFeatsInJSON()
+
+        ret["Background"] = [
             {
                 "name": self.background.feature["name"],
                 "text": self.background.feature["feature"],

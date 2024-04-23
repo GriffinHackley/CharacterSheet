@@ -77,7 +77,7 @@ class Character(models.Model):
             self.equipment = json.loads(character.equipment)
             self.flavor = json.loads(character.flavor)
             self.accentColor = json.loads(character.accentColor)
-        
+
         except:
             raise Exception("Invalid Character JSON")
 
@@ -594,7 +594,6 @@ class Character(models.Model):
             features[cls.name] = cls.getFeaturesToLevel()
 
         ret["Class"] = features
-        ret["Feats"] = self.getFeatsInJSON()
         ret["Race"] = self.race.getFeatures()
         ret["Misc."] = self.getMiscFeatures()
 
