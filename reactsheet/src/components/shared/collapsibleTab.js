@@ -1,15 +1,18 @@
 import { useState } from "react";
 
-function getContent(content, expanded) {
-  if (expanded) {
-    return content;
-  } else {
-    return;
-  }
-}
-
 export default function CollapsibleTab({ name, text }) {
   const [expanded, setExpanded] = useState(false);
+
+  let description = null;
+  if (expanded) {
+    description = (
+      <div
+        className="featureDescription"
+        dangerouslySetInnerHTML={{ __html: text }}
+        style={{ paddingBottom: "15px" }}
+      />
+    );
+  }
 
   return (
     <div className="feature">
@@ -21,10 +24,7 @@ export default function CollapsibleTab({ name, text }) {
       >
         {name}
       </button>
-      <div
-        className="featureDescription"
-        dangerouslySetInnerHTML={{ __html: getContent(text, expanded) }}
-      />
+      {description}
     </div>
   );
 }
