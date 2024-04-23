@@ -1,6 +1,5 @@
 from .races import Race
 from ..modifiers import Modifier, ModifierList
-from ..static.addParagraphTags import addParagraphTags
 
 
 class AstralElf(Race):
@@ -48,8 +47,5 @@ class AstralElf(Race):
                 "text": "You don't need to sleep, and magic can't put you to sleep. You can finish a long rest in 4 hours if you spend those hours in a trancelike meditation, during which you remain conscious. Whenever you finish this trance, you gain proficiency in one skill of your choice and with one weapon or tool of your choice, selected from the Player's Handbook. You magically acquire these proficiencies by drawing them from shared elven memory and the experiences of entities on the Astral Plane, and you retain them until you finish your next long rest.",
             },
         ]
-
-        for current in toAdd:
-            current["text"] = addParagraphTags(current["text"])
 
         return ret + toAdd

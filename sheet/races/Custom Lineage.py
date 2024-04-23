@@ -1,5 +1,6 @@
 from .races import Race
 from ..modifiers import ModifierList
+from ..static.addParagraphTags import addParagraphTags
 
 
 class CustomLineage(Race):
@@ -34,17 +35,18 @@ class CustomLineage(Race):
 
         ret = super().getFeatures(creatureType=creatureType, darkvision=darkvision)
 
-        # TODO: Fix this
-        # ret = ret + [
-        #     {
-        #         "name": "Feat",
-        #         "text": [
-        #             {
-        #                 "type": "normal",
-        #                 "text": "You gain the {} feat".format(self.feat["name"]),
-        #             }
-        #         ],
-        #     }
-        # ]
+        ret = ret + [
+            {
+                "name": next(iter(self.feat)),
+                "text": addParagraphTags(
+                    """
+                    You gain the {} feat. 
+                    See the \"Feats\" section under the \"Misc.\" tab for more information
+                    """.format(
+                        next(iter(self.feat))
+                    )
+                ),
+            }
+        ]
 
         return ret
