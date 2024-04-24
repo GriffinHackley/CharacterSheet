@@ -461,13 +461,13 @@ class Character(models.Model):
         for dieSize in sortedDieSize:
             damageDie = allDie["value"][dieSize]
 
-            # TODO
-            # if self.toggles["critical"]:
-            #     if (
-            #         self.config["critType"] == "doubleDice"
-            #         or self.config["critType"] == "doubleAll"
-            #     ):
-            #         damageDie = damageDie * 2
+            if self.toggles.defaultToggles["Critical"].isUsed:
+                if (
+                    self.config["critType"] == "doubleDice"
+                    or self.config["critType"] == "doubleAll"
+                ):
+                    allDie["source"]["Critical"] = str(damageDie) + "d" + str(dieSize)
+                    damageDie = damageDie * 2
 
             if firstLetter:
                 firstLetter = False
@@ -487,17 +487,19 @@ class Character(models.Model):
         averageDamage += damageMod
 
         # If critical, add extra critical damage
-        # if self.toggles["critical"]:
-        if self.config["critType"] == "maxDie":
-            damage = (
-                damageDice + f"+{int(damageMod+criticalDamage)} " + weapon["damageType"]
-            )
-        elif self.config["critType"] == "doubleAll":
-            damage = damageDice + f"+{2*damageMod} " + weapon["damageType"]
+        if self.toggles.defaultToggles["Critical"].isUsed:
+            if self.config["critType"] == "maxDie":
+                damage = (
+                    damageDice
+                    + f"+{int(damageMod+criticalDamage)} "
+                    + weapon["damageType"]
+                )
+            elif self.config["critType"] == "doubleAll":
+                damage = damageDice + f"+{2*damageMod} " + weapon["damageType"]
+            else:
+                damage = damageDice + f"+{damageMod} " + weapon["damageType"]
         else:
             damage = damageDice + f"+{damageMod} " + weapon["damageType"]
-        # else:
-        #     damage = damageDice + f"+{damageMod} " + weapon["damageType"]
 
         toHitSource = {
             k: v
