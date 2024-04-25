@@ -211,24 +211,6 @@ section.rightPane {
 div.separator {
   text-decoration: underline;
 }
-section.toggles {
-  display: flex;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 5px;
-  flex-grow: 6;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-section.toggles > div {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: left;
-}
-section.toggles > div > label {
-  margin-left: 5px;
-}
 main section.equipment {
   border: 1px solid black;
   border-radius: 10px;

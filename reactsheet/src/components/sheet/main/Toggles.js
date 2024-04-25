@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
+import "../../../css/sheet/main/Toggles.css";
 
 function submitForm(e, setCharacter, id, activeToggles) {
   e.preventDefault();
@@ -18,45 +20,44 @@ const loadCharacter = async (setCharacter, id, toggles) => {
 
 function updateForm(activeToggles, setActive, target) {
   let value = target.checked;
-  let name = target.name;
+  let id = target.id;
 
-  activeToggles[name] = value;
+  activeToggles[id] = value;
   setActive(activeToggles);
 }
 
 export default function Toggles({ togglesInfo, setCharacter, id }) {
-  const [toggles, setToggles] = useState(togglesInfo);
   const [activeToggles, setActiveToggles] = useState({});
 
   let display = [];
   for (let toggle in togglesInfo.default) {
     display.push(
-      <div className="defaultToggles">
-        <label>
-          {toggle}
-        </label>
-        <input
-          type="checkbox"
-          id={toggle}
-          name={toggle}
-          onChange={e => updateForm(activeToggles, setActiveToggles, e.target)}
-        />
-      </div>
+      <FormControlLabel
+        className="defaultToggles"
+        control={
+          <Checkbox
+            id={toggle}
+            onChange={e =>
+              updateForm(activeToggles, setActiveToggles, e.target)}
+          />
+        }
+        label={toggle}
+      />
     );
   }
   for (let toggle in togglesInfo.other) {
     display.push(
-      <div className="otherToggles">
-        <label>
-          {toggle}
-        </label>
-        <input
-          type="checkbox"
-          id={toggle}
-          name={toggle}
-          onChange={e => updateForm(activeToggles, setActiveToggles, e.target)}
-        />
-      </div>
+      <FormControlLabel
+        className="otherToggles"
+        control={
+          <Checkbox
+            id={toggle}
+            onChange={e =>
+              updateForm(activeToggles, setActiveToggles, e.target)}
+          />
+        }
+        label={toggle}
+      />
     );
   }
 
