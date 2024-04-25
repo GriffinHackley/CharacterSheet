@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../../css/shared/CollapsibleTab.css";
 
 export default function CollapsibleTab({ name, text }) {
   const [expanded, setExpanded] = useState(false);
@@ -9,7 +10,6 @@ export default function CollapsibleTab({ name, text }) {
       <div
         className="featureDescription"
         dangerouslySetInnerHTML={{ __html: text }}
-        style={{ paddingBottom: "15px" }}
       />
     );
   }

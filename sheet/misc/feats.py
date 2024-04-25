@@ -41,9 +41,10 @@ class ASI(Feat):
 
 class ElvenAccuracy(Feat):
     name = "Elven Accuracy"
-    text = (
-        "<p>Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.</p>",
-    )
+    text = """
+        <p>Increase your {} score by 1, to a maximum of 20</p>
+        <p>Whenever you have advantage on an attack roll using Dexterity, Intelligence, Wisdom, or Charisma, you can reroll one of the dice once.</p>
+        """
 
     def getModifiers(self, modList):
         validOptions = ["Dexterity", "Intelligence", "Wisdom", "Charisma"]
@@ -61,6 +62,8 @@ class ElvenAccuracy(Feat):
         modList.addModifier(
             Modifier(int(self.options["ASI"][stat]), stat, "Elven Accuracy")
         )
+
+        self.text = self.text.format(stat)
 
 
 class Sharpshooter(Feat):

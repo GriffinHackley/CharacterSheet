@@ -26,11 +26,7 @@ class Dragonborn(Race):
         return ret
 
     def getFeatures(self):
-        extraAttributes = []
-
-        ret = super().getFeatures(extraAttributes=extraAttributes)
-
-        ret = ret + []
+        ret = super().getFeatures([])
 
         return ret
 

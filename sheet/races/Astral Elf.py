@@ -19,12 +19,12 @@ class AstralElf(Race):
     def appendModifiers(self, modList: ModifierList):
         return super().appendModifiers(modList)
 
-    def getFeatures(self):
-        ret = super().getFeatures(
-            darkvision=True,
-            creatureType="You are a Humanoid. You are also considered an elf for any prerequisite or effect that requires you to be an elf.",
+    def getAttributes(self):
+        return super().getAttributes(
+            creatureType="You are a Humanoid. You are also considered an elf for any prerequisite or effect that requires you to be an elf."
         )
 
+    def getFeatures(self):
         toAdd = [
             {
                 "name": "Astral Fire",
@@ -48,4 +48,6 @@ class AstralElf(Race):
             },
         ]
 
-        return ret + toAdd
+        ret = super().getFeatures(toAdd, darkvision=True)
+
+        return ret

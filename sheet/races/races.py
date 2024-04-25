@@ -82,15 +82,11 @@ class Race:
 
         return self.feat
 
-    def getFeatures(
-        self, darkvision=False, creatureType="You are Humanoid", extraAttributes=[]
-    ):
-        ret = []
-
+    def getAttributes(self, creatureType="You are Humanoid", extraAttributes=[]):
         size = "You are {}".format(self.size)
         speed = "Your walking speed is {} feet.".format(self.speed)
 
-        ret = ret + [
+        ret = [
             {
                 "name": "Creature Type",
                 "text": addParagraphTags(creatureType),
@@ -105,6 +101,11 @@ class Race:
                 "text": addParagraphTags(speed),
             },
         ]
+
+        return ret
+
+    def getFeatures(self, toAdd, darkvision=False):
+        ret = toAdd
 
         if darkvision:
             ret = ret + [
@@ -128,7 +129,7 @@ class Race:
 
         ret = ret + [{"name": "Languages", "text": addParagraphTags(languages)}]
 
-        return ret
+        return {"Features": ret, "Attributes": self.getAttributes()}
 
     def setLevel(self, level):
         self.level = level
@@ -150,5 +151,6 @@ class Race:
 
     def toDict(self):
         ret = {}
+        ret["attributes"] = self.getAttributes()
         ret["features"] = self.getFeatures()
         return ret

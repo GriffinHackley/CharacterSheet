@@ -99,6 +99,7 @@ export default function FeaturesTab({ featuresInfo }) {
 
   let classControl = {};
   let classButtons = [];
+  let allTabs = [];
   let mainClass = getMainClass(featuresInfo);
   const [activeClassTab, setActiveClassTab] = useState(mainClass);
   if (activeTab == "Class") {
@@ -109,8 +110,6 @@ export default function FeaturesTab({ featuresInfo }) {
       setActiveClassTab
     );
   }
-
-  let allTabs = [];
 
   if (activeTab == "Misc.") {
     Object.keys(contents).forEach(source => {
@@ -126,6 +125,18 @@ export default function FeaturesTab({ featuresInfo }) {
           );
         });
       }
+    });
+  } else if (activeTab == "Race") {
+    let attributes = "";
+    contents.Attributes.forEach(content => {
+      attributes =
+        attributes + `<div><h4>${content.name}: </h4> ${content.text}</div>`;
+    });
+
+    allTabs.push(<CollapsibleTab name="Attributes" text={attributes} />);
+
+    contents.Features.forEach(content => {
+      allTabs.push(<CollapsibleTab name={content.name} text={content.text} />);
     });
   } else {
     contents.forEach(content => {

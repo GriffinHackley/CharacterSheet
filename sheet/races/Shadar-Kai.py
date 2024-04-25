@@ -21,8 +21,6 @@ class ShadarKai(Race):
         return super().appendModifiers(modList)
 
     def getFeatures(self):
-        ret = super().getFeatures(darkvision=True)
-
         toAdd = [
             {
                 "name": "Blessing of the Raven Queen",
@@ -56,4 +54,6 @@ class ShadarKai(Race):
             },
         ]
 
-        return ret + toAdd
+        ret = super().getFeatures(toAdd, darkvision=True)
+
+        return ret

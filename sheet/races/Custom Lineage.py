@@ -33,9 +33,7 @@ class CustomLineage(Race):
         #     skill = self.misc["variable trait"]
         #     self.skills = self.skills + [skill]
 
-        ret = super().getFeatures(creatureType=creatureType, darkvision=darkvision)
-
-        ret = ret + [
+        toAdd = [
             {
                 "name": next(iter(self.feat)),
                 "text": addParagraphTags(
@@ -48,5 +46,7 @@ class CustomLineage(Race):
                 ),
             }
         ]
+
+        ret = super().getFeatures(toAdd, darkvision=darkvision)
 
         return ret

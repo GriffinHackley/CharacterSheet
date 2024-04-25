@@ -1,0 +1,52 @@
+button.featureName {
+  background-color: var(--primary-accent);
+  color: var(--secondary-accent);
+  border-radius: 10px;
+  text-align: left;
+  width: 99%;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+div.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button.collapsible {
+  cursor: pointer;
+  padding: 15px;
+  border: none;
+  outline: none;
+}
+
+div.collapsing {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+active,
+button.collapsible:hover {
+  background-color: #ccc;
+}
+
+div.featureDescription {
+  padding-bottom: 15px;
+  display: "flex";
+  flex-direction: "column";
+}
+
+div.featureDescription > div {
+  display: "flex";
+  flex-direction: "column";
+}
+
+div.featureDescription > div > h4 {
+  display: inline;
+}
+
+div.featureDescription > div > p {
+  display: inline;
+}
