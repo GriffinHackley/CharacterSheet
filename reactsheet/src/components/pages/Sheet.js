@@ -1,18 +1,16 @@
-import "./css/App.css";
+import "../../css/App.css";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import Header from "./components/sheet/main/Header";
-import Attributes from "./components/sheet/main/Attributes";
-import Saves from "./components/sheet//main/Saves";
-import Skills from "./components/sheet//main/Skills";
-import Combat from "./components/sheet//main/combatPane/Combat";
-import Consumables from "./components/sheet//main/Consumables";
-import Toggles from "./components/sheet//main/Toggles";
-import Inspiration from "./components/sheet/main/Inspiration";
-import Proficiency from "./components/sheet/main/Proficiency";
-import FlexPanel from "./components/sheet/flexPanel/FlexPanel";
+import Header from "../sheet/Header";
+import Combat from "../sheet/combatPane/Combat";
+import Consumables from "../sheet/Consumables";
+import Toggles from "../sheet/Toggles";
+import Proficiency from "../sheet/Proficiency";
 import { useParams } from "react-router-dom";
+import Attributes from "../sheet/Attributes";
+import Passives from "../sheet/Passives";
 
 function setColor(colors) {
   let primary = colors[0];
@@ -54,13 +52,15 @@ function Sheet() {
         <section>
           <Header headerInfo={character.header} />
         </section>
+        <Attributes
+          attributesInfo={character.attributes}
+          skillsInfo={character.skills}
+          savesInfo={character.saves}
+        />
         <main>
-          <Attributes attributesInfo={character.attributes} />
-          <section className="attr-applications">
-            <Inspiration />
+          <section className="passivesAndProficiencies">
             <Proficiency />
-            <Saves savesInfo={character.saves} />
-            <Skills skillsInfo={character.skills} />
+            <Passives skillsInfo={character.skills} />
           </section>
 
           <Combat combatInfo={character.combat} />
@@ -74,7 +74,31 @@ function Sheet() {
             />
           </section>
         </main>
-        <FlexPanel
+        <Link
+          to={`/character/${id}/features/`}
+          state={{ featuresInfo: character.features }}
+        >
+          Features
+        </Link>
+        <Link
+          to={`/character/${id}/equipment/`}
+          state={{ equipmentInfo: character.equipment }}
+        >
+          Equipment
+        </Link>
+        <Link
+          to={`/character/${id}/spells/`}
+          state={{ spellInfo: character.spells, config: character.config }}
+        >
+          Spells
+        </Link>
+        <Link
+          to={`/character/${id}/flavor/`}
+          state={{ flavorInfo: character.flavor }}
+        >
+          Flavor
+        </Link>
+        {/* <FlexPanel
           config={character.config}
           featureInfo={character.features}
           equipmentInfo={character.equipment}
@@ -82,7 +106,7 @@ function Sheet() {
           spellInfo={character.spells}
           graphInfo={character.graph}
           flavorInfo={character.flavor}
-        />
+        /> */}
       </section>
     );
   }

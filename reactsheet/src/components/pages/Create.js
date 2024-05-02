@@ -1,5 +1,5 @@
 import axios from "axios";
-import "./css/Create.css";
+import "../../css/pages/Create.css";
 import { useState, useEffect } from "react";
 
 const loadOptions = async (setLoading, setOptions) => {

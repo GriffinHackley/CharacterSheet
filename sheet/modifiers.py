@@ -1,3 +1,4 @@
+import math
 from typing import List
 
 
@@ -44,6 +45,8 @@ class ModifierList:
                         bonus.bonus = stats[bonus.bonus]
                     if bonus.bonus == "Proficiency Bonus":
                         bonus.bonus = profBonus
+                    if bonus.bonus == "Proficiency/2":
+                        bonus.bonus = math.floor(profBonus / 2)
 
     def applyModifier(self, modifierName):
         if not modifierName in self.list:

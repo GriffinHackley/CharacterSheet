@@ -1,0 +1,100 @@
+section.attributes {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+div.scores {
+  background-color: var(--primary-accent);
+  border-radius: 10px;
+  width: 100%;
+  background-color: yellow;
+}
+ul.attributes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+li.attribute {
+  border: 1px solid black;
+  height: 80px;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  height: 100%;
+}
+div.mod {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+div.abilityName {
+  padding-top: 5px;
+  font-size: .9rem;
+  width: 100%;
+}
+div.abilityMod {
+  font-size: 2rem;
+  background: white;
+}
+div.abilityScore {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
+}
+div.abilityScore div.score {
+  background: white;
+  width: 30px;
+  height: 20px;
+  border: 1px inset black;
+  border-radius: 20px;
+  margin: -1px;
+}
+div.savingThrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+div.saveText {
+  font-size: .7rem;
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+div.saveValue {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+ul.skills {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 4;
+  justify-content: space-evenly;
+}
+li.skill {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+}
+div.skillName {
+  font-size: .7rem;
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+div.skillValue {
+  padding-left: 5px;
+  padding-right: 5px;
+}

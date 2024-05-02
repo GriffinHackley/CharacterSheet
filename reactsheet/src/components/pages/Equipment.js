@@ -1,4 +1,9 @@
-export default function EquipmentTab({ equipmentInfo }) {
+import { useLocation } from "react-router-dom";
+
+export default function Equipment() {
+  const location = useLocation();
+  const { equipmentInfo } = location.state;
+
   return (
     <section className="equipment">
       <div className="equipmentRightPane">

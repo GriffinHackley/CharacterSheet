@@ -1,6 +1,7 @@
-import "../../../css/sheet/flexPanel/SpellTab.css";
-import formatSource from "../../../scripts/formatSource";
+import "../../css/pages/Spells.css";
+import formatSource from "../../scripts/formatSource";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function getSpellHeader(spellInfo, config) {
   let spellHeader = [];
@@ -171,7 +172,10 @@ function setUpSourceTabs(spellInfo) {
   return [mainSource, sourceTabs];
 }
 
-export default function SpellTab({ spellInfo, config }) {
+export default function Spells() {
+  const location = useLocation();
+  const { spellInfo, config } = location.state;
+
   let [mainSource, sourceTabs] = setUpSourceTabs(spellInfo);
   const [activeSourceTab, setActiveSourceTab] = useState(mainSource);
 

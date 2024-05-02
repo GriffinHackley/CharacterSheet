@@ -145,10 +145,8 @@ class SpellList:
         ret["spellAttack"] = {"value": profBonus + abilityMod, "source": source}
 
         # Concentration
-        for save in saves:
-            if save["name"] == "Constitution":
-                baseValue = save["value"]
-                baseSource = save["source"]
+        baseValue = saves["Constitution"]["value"]
+        baseSource = saves["Constitution"]["source"]
 
         bonus, source = modList.applyModifier("Concentration")
         bonus = baseValue + bonus

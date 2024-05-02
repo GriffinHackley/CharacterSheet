@@ -1,6 +1,6 @@
-import "../../../../css/sheet/main/combat/HitDice.css";
+import "../../../css/sheet/combat/HitDice.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../../scripts/localState.js";
+import { storeItem, getItem } from "../../../scripts/localState.js";
 
 function handleChange(event) {
   storeItem("remainingHD", charName);

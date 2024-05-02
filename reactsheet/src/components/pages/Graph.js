@@ -52,7 +52,7 @@ Chart.register(...registerables);
 //   setLoading(false);
 // };
 
-export default function GraphTab({ graphInfo }) {
+export default function Graph({ graphInfo }) {
   const [loading, setLoading] = useState(true);
 
   let id = 50;

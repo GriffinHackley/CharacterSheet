@@ -1,6 +1,6 @@
-import "../../../../css/sheet/main/combat/TempHP.css";
+import "../../../css/sheet/combat/TempHP.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../../scripts/localState.js";
+import { storeItem, getItem } from "../../../scripts/localState.js";
 
 function handleChange(event) {
   storeItem("temphp", charName);

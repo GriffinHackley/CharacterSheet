@@ -1,5 +1,5 @@
-import "../../../../css/sheet/main/combat/CombatHeader.css";
-import formatSource from "../../../../scripts/formatSource";
+import "../../../css/sheet/combat/CombatHeader.css";
+import formatSource from "../../../scripts/formatSource";
 
 export default function CombatHeader({ combatInfo }) {
   let headerItems = ["Armor Class", "Initiative", "Speed"];

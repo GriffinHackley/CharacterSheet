@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { React, useState, useEffect } from "react";
-import Ancestry from "./components/plan/Ancestry";
-import Background from "./components/plan/Background";
-import Stats from "./components/plan/Stats";
-import "./css/Plan.css";
-import Classes from "./components/plan/Classes";
+import Ancestry from "../plan/Ancestry";
+import Background from "../plan/Background";
+import Stats from "../plan/Stats";
+import "../../css/pages/Plan.css";
+import Classes from "../plan/Classes";
 
 const loadPlan = async (setLoading, setPlan, id) => {
   setLoading(true);

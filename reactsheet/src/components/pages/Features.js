@@ -1,5 +1,6 @@
 import { useState } from "react";
-import CollapsibleTab from "../../shared/collapsibleTab";
+import { useLocation } from "react-router-dom";
+import CollapsibleTab from "../shared/collapsibleTab";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 // Find the class that has the most features and set it as the main class
@@ -88,7 +89,9 @@ function setupClassTabs(
   return [contents, classControl, classButtons];
 }
 
-export default function FeaturesTab({ featuresInfo }) {
+export default function Features() {
+  const location = useLocation();
+  const { featuresInfo } = location.state;
   const [activeTab, setActiveTab] = useState("Class");
 
   let [headerButtons, contents, control] = setUpMainTabs(

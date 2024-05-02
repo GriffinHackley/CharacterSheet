@@ -1,6 +1,10 @@
-import "../../../css/sheet/flexPanel/FlavorTab.css";
+import "../../css/pages/Flavor.css";
+import { useLocation } from "react-router-dom";
 
-export default function FlavorTab({ flavorInfo }) {
+export default function Flavor() {
+  const location = useLocation();
+  const { flavorInfo } = location.state;
+
   let mainHeader = "backstory";
   let main = [];
   let columnContainer = [];

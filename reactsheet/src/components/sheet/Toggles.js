@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
-import "../../../css/sheet/main/Toggles.css";
+import "../../css/sheet/Toggles.css";
 
 function submitForm(e, setCharacter, id, activeToggles) {
   e.preventDefault();

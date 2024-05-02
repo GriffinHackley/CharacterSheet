@@ -33,9 +33,10 @@ class FifthEditionCharacter(Character):
         return ret
 
     def calculateSaves(self):
-        ret = []
+        ret = {}
 
         for ability in Ability:
+            ret[ability.name] = {"ability": ability.name, "proficiency": False}
             statBonus = self.abilityMod[ability.name]
 
             saveName = ability.name + " Saving Throw"
@@ -45,6 +46,7 @@ class FifthEditionCharacter(Character):
 
             statBonus += bonus
             if ability.name in self.proficiencies["savingThrows"]:
+                ret[ability.name]["proficiency"] = True
                 source["Prof."] = self.profBonus
                 statBonus += self.profBonus
 
@@ -55,14 +57,10 @@ class FifthEditionCharacter(Character):
                 )
             }
 
-            ret.append(
-                {
-                    "name": ability.name,
-                    "ability": ability.name,
-                    "value": statBonus,
-                    "source": source,
-                }
-            )
+            ret[ability.name] = ret[ability.name] | {
+                "value": statBonus,
+                "source": source,
+            }
 
         return ret
 
@@ -160,6 +158,12 @@ class FifthEditionCharacter(Character):
         list = skill_list_5e
 
         for key, value in list.items():
+            current = {
+                "name": key,
+                "isKnowledge": False,
+                "proficiency": False,
+                "expertise": False,
+            }
             statBonus = 0
 
             ability = self.convertEnum(value["ability"])
@@ -168,28 +172,36 @@ class FifthEditionCharacter(Character):
             source[ability] = statBonus
             statBonus += bonus
 
-            if key in self.proficiencies["skills"]:
-                source["Prof."] = self.profBonus
-                statBonus += self.profBonus
-
             expertise = False
             for cls in self.charClass:
                 if key in cls.expertise["skills"]:
                     expertise = True
 
-            if expertise:
-                source["Expertise"] = 2 * self.profBonus
-                statBonus += 2 * self.profBonus
+            if key in self.proficiencies["skills"]:
+                current["proficiency"] = True
+                source["Prof."] = self.profBonus
+                statBonus += self.profBonus
+                if expertise:
+                    current["expertise"] = True
+                    source["Expertise"] = self.profBonus
+                    statBonus += self.profBonus
+            else:
+                bonus, modSource = self.modList.applyModifier(
+                    "Non-Proficient Ability Check"
+                )
+                statBonus += bonus
+                if modSource:
+                    i = 0
+                source = source | modSource
+                # source[modSource] = bonus
 
-            ret.append(
-                {
-                    "name": key,
-                    "ability": ability,
-                    "value": statBonus,
-                    "isKnowledge": False,
-                    "source": source,
-                }
-            )
+            current = current | {
+                "ability": ability,
+                "value": statBonus,
+                "source": source,
+            }
+
+            ret.append(current)
 
         return ret
 

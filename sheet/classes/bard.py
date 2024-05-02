@@ -5,7 +5,7 @@ from ..modifiers import Modifier, ModifierList
 class Bard(FifthEditionClass):
     subclass = "Bard College"
     proficiencies = {
-        "skills": ["Perception", "Insight", "Performance"],
+        "skills": ["Perception", "Insight", "Persuasion"],
         "languages": [],
         "armor": ["Light"],
         "weapons": [
@@ -30,6 +30,11 @@ class Bard(FifthEditionClass):
         )
 
     def appendModifiers(self, modList: ModifierList):
+        if self.level >= 2:
+            mod = Modifier(
+                "Proficiency/2", "Non-Proficient Ability Check", "Jack of All Trades"
+            )
+            modList.addModifier(mod)
         super().appendModifiers(modList)
 
     def getSubclassFeatureNames(self):

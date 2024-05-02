@@ -7,8 +7,8 @@ from django.core.cache import cache
 from ..classes import classes
 from ..races import races
 from ..lists import Ability, combat_list
-from ..modifiers import Modifier, ModifierList
-from ..toggles import Toggle, ToggleList
+from ..modifiers import ModifierList
+from ..toggles import ToggleList
 import json
 
 
@@ -100,7 +100,7 @@ class Character(models.Model):
         ret["flavor"] = self.flavor
         ret["toggles"] = self.toggles.toJson()
 
-        cache.set(self.name, ret)
+        # cache.set(self.name, ret)
 
         ret["graph"] = self.calculateGraph()
 
@@ -155,11 +155,11 @@ class Character(models.Model):
         self.getConditionalModifiers()
         self.cleanModifiers()
         self.saves = self.calculateSaves()
+        self.features = self.getFeatures()
         self.skills = self.calculateSkills()
         self.combat = self.calculateCombat()
         self.equipment = self.getEquipment()
         self.spells = self.getSpells()
-        self.features = self.getFeatures()
         self.proficiencies = self.cleanProficiencies()
 
     def getBaseModifiers(self):
@@ -325,6 +325,15 @@ class Character(models.Model):
 
     def calculateInit(self):
         modifier, source = self.modList.applyModifier("Initiative")
+
+        # TODO: JoaT should only apply if prof. bonus is not already added
+        # which it can be with something like harengons hare-trigger
+        newModifier, newSource = self.modList.applyModifier(
+            "Non-Proficient Ability Check"
+        )
+
+        modifier = modifier + newModifier
+        source = source | newSource
 
         init = combat_list["Initiative"]
         ability = self.convertEnum(init["ability"])

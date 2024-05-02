@@ -1,4 +1,4 @@
-import "../../../css/sheet/flexPanel/ProficienciesTab.css";
+import "../../css/sheet/flexPanel/ProficienciesTab.css";
 
 function makeList(allProfs, array, header) {
   if (array !== 0) {
@@ -23,7 +23,7 @@ function makeList(allProfs, array, header) {
   }
 }
 
-export default function ProficienciesTab({ profInfo, config }) {
+export default function Proficiencies({ profInfo, config }) {
   let allProfs = [];
 
   allProfs = makeList(allProfs, profInfo.skills, "Skills");
