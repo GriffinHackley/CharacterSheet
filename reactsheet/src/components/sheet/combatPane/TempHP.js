@@ -1,9 +1,12 @@
 import "../../../css/sheet/combat/TempHP.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import {
+  storeCheckboxValue,
+  getCheckboxValue
+} from "../../../scripts/localState.js";
 
 function handleChange(event) {
-  storeItem("temphp", charName);
+  storeCheckboxValue("temphp", charName);
 }
 
 let charName = null;
@@ -13,7 +16,7 @@ export default function TempHP({ config }) {
 
   //Load value from local storage when component is mounted
   useEffect(() => {
-    getItem("temphp", charName);
+    getCheckboxValue("temphp", charName);
   }, []);
 
   return (

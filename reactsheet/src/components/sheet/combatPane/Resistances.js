@@ -1,9 +1,12 @@
 import "../../../css/sheet/combat/Resistances.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import {
+  storeCheckboxValue,
+  getCheckboxValue
+} from "../../../scripts/localState.js";
 
 function handleChange(event) {
-  storeItem("resistances", charName);
+  storeCheckboxValue("resistances", charName);
 }
 
 let charName = null;
@@ -13,7 +16,7 @@ export default function Resistances({ config }) {
 
   //Load value from local storage when component is mounted
   useEffect(() => {
-    getItem("resistances", charName);
+    getCheckboxValue("resistances", charName);
   }, []);
 
   return (

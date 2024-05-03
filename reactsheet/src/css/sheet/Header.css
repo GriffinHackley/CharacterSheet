@@ -1,51 +1,40 @@
 header {
   display: flex;
-  align-items: stretch;
 }
 header section.charname {
   border: 1px solid black;
   border-right: 0;
   border-radius: 10px 0 0 10px;
-  padding: 5px 0;
   background-color: var(--primary-accent);
   color: var(--secondary-accent);
   width: 30%;
   display: flex;
   flex-direction: column-reverse;
-  bottom: 0;
-  top: 0;
   margin: auto;
   text-align: center;
-  font-size: 1rem;
-}
-header section.charname div {
   padding: 0.5em;
-  margin: 5px;
-  border: 0;
 }
-header section.misc {
+header ul {
   width: 70%;
   border: 1px solid black;
   border-radius: 10px;
   padding-left: 1em;
   padding-right: .81em;
-}
-header section.misc ul {
-  padding: 10px 0px 5px 0px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  align-items: center;
   font-size: .9rem;
 }
-header section.misc ul li {
+header ul li {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
 }
-header section.misc ul li div {
+header ul li div {
   margin-bottom: 2px;
 }
-header section.misc ul li div.headerValue {
+header ul li div.headerValue {
   border: 0;
   border-bottom: 1px solid var(--primary-accent);
   display: flex;

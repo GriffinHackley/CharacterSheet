@@ -15,8 +15,6 @@ ul.attributes {
   justify-content: space-around;
   width: 100%;
   align-items: center;
-  padding-left: 5px;
-  padding-right: 5px;
 }
 li.attribute {
   border: 1px solid black;
@@ -26,8 +24,8 @@ li.attribute {
   text-align: center;
   display: flex;
   flex-direction: column;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
   border-radius: 10px;
   height: 100%;
 }
@@ -55,10 +53,9 @@ div.abilityScore {
 div.abilityScore div.score {
   background: white;
   width: 30px;
-  height: 20px;
+  height: 25px;
   border: 1px inset black;
   border-radius: 20px;
-  margin: -1px;
 }
 div.savingThrow {
   display: flex;
@@ -69,11 +66,8 @@ div.saveText {
   font-size: .7rem;
   flex-grow: 1;
   overflow: hidden;
-  white-space: nowrap;
-}
-div.saveValue {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 ul.skills {
@@ -92,9 +86,6 @@ div.skillName {
   font-size: .7rem;
   flex-grow: 1;
   overflow: hidden;
-  white-space: nowrap;
-}
-div.skillValue {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
 }

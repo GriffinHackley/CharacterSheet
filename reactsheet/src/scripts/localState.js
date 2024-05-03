@@ -1,4 +1,4 @@
-export function storeItem(key, name) {
+export function storeCheckboxValue(key, name) {
   // Change to true to enable logging
   let logging = true;
   let storageKey = name + "-" + key;
@@ -15,7 +15,18 @@ export function storeItem(key, name) {
   localStorage.setItem(storageKey, value);
 }
 
-export function getItem(key, name) {
+export function storeLayout(name, value) {
+  let storageKey = name + "-Layout";
+
+  localStorage.setItem(storageKey, JSON.stringify(value));
+}
+
+export function getLayout(name) {
+  let storageKey = name + "-Layout";
+  return JSON.parse(localStorage.getItem(storageKey));
+}
+
+export function getCheckboxValue(key, name) {
   // Change to true to enable logging
   let logging = false;
 

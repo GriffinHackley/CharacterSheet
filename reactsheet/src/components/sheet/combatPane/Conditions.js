@@ -1,9 +1,12 @@
 import "../../../css/sheet/combat/Conditions.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import {
+  storeCheckboxValue,
+  getCheckboxValue
+} from "../../../scripts/localState.js";
 
 function handleChange(event) {
-  storeItem("conditions", charName);
+  storeCheckboxValue("conditions", charName);
 }
 
 let charName = null;
@@ -13,7 +16,7 @@ export default function Conditions({ config }) {
 
   //Load value from local storage when component is mounted
   useEffect(() => {
-    getItem("conditions", charName);
+    getCheckboxValue("conditions", charName);
   }, []);
 
   return (

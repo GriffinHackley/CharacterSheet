@@ -1,9 +1,12 @@
 import "../../../css/sheet/combat/CurrentHP.css";
 import { useEffect, useState } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import {
+  storeCheckboxValue,
+  getCheckboxValue
+} from "../../../scripts/localState.js";
 
 function handleChange(event) {
-  storeItem("currentHealth   ", charName);
+  storeCheckboxValue("currentHealth   ", charName);
 }
 
 let charName = null;
@@ -13,7 +16,7 @@ export default function CurrentHP({ HP, config }) {
 
   //Load value from local storage when component is mounted
   useEffect(() => {
-    getItem("currentHealth", charName);
+    getCheckboxValue("currentHealth", charName);
   }, []);
   return (
     <div className="current">

@@ -1,6 +1,6 @@
 import "../../css/sheet/Attributes.css";
 import formatSource from "../../scripts/formatSource";
-import { Checkbox, Radio } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import { RadioButtonChecked, RadioButtonUnchecked } from "@mui/icons-material";
 
@@ -40,8 +40,10 @@ function addSave(saveInfo) {
     >
       <Checkbox
         className="proficiencyCheck"
+        size="small"
         icon={<RadioButtonUnchecked />}
         checkedIcon={<RadioButtonChecked />}
+        style={{ padding: "2px" }}
         checked={saveInfo.proficiency}
         disabled={true}
       />
@@ -63,10 +65,12 @@ function addSkill(skillInfo) {
       <li className="skill">
         <Checkbox
           className="proficiencyCheck"
+          size="small"
           icon={<RadioButtonUnchecked />}
           checkedIcon={
             skillInfo.expertise ? <CircleIcon /> : <RadioButtonChecked />
           }
+          style={{ padding: "2px" }}
           checked={skillInfo.proficiency}
           disabled={true}
         />

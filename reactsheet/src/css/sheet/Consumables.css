@@ -1,33 +1,23 @@
-section.consumables {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-}
-section.consumables > div {
+div.consumable {
   background-color: white;
-  margin-bottom: 10px;
   border: 1px solid black;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  width: 45%;
-  min-height: 60px;
+  height: 100%;
 }
-section.consumables > div > div.total {
+div.consumable > div.total {
   display: flex;
   align-items: baseline;
   justify-content: space-around;
-  padding: 5px 0;
 }
-section.consumables > div > div.total div.key {
+div.consumable > div.total div.key {
   font-size: 10px;
   color: var(--primary-accent);
   margin: 0.25em;
   text-transform: none;
 }
-section.consumables > div > div.total > div.value {
+div.consumable > div.total > div.value {
   font-size: 15px;
   flex-grow: 1;
   border: 0;
@@ -36,10 +26,10 @@ section.consumables > div > div.total > div.value {
   padding: 0 0.25em;
   text-align: center;
 }
-section.consumables label {
+label.consumableLabel {
   text-align: center;
   padding: 2px;
-  font-size: 10px;
+  font-size: 5px;
 }
 div.remainingConsumable {
   display: flex;

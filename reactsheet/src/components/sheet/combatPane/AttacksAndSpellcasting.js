@@ -1,4 +1,12 @@
 import formatSource from "../../../scripts/formatSource";
+import "../../../css/sheet/combat/AttacksAndSpellcasting.css";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell
+} from "@mui/material";
 
 export default function AttacksAndSpellcasting({ attacks, config }) {
   let rows = [];
@@ -11,63 +19,63 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
   }
 
   if (includeCrit) {
-    critRangeHeader = <th>Crit Range</th>;
+    critRangeHeader = <TableHead>Crit Range</TableHead>;
   }
 
   attacks.forEach(element => {
     if (includeCrit) {
       critRangeBody = (
-        <td>
+        <TableCell>
           <div className="critRange">
-            {element.critRange}/x{element.critDamage}
+            {element.critRange}/x{element.criTableCellamage}
           </div>
-        </td>
+        </TableCell>
       );
     }
     rows.push(
-      <tr key={"attack-" + element.name}>
-        <td>
+      <TableRow key={"attack-" + element.name}>
+        <TableCell>
           <div className="atk">
             {element.name}
           </div>
-        </td>
+        </TableCell>
         {critRangeBody}
-        <td>
+        <TableCell>
           <div
             className="tooltip centered toHit"
             data-tooltip={formatSource(element.toHit.source)}
           >
             +{element.toHit.value}
           </div>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <div
             className="tooltip centered damage"
             data-tooltip={formatSource(element.damage.source)}
           >
             {element.damage.value}
           </div>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   });
 
   return (
-    <div>
+    <div className="attacksAndSpellcasting">
       <label>Attacks & Spellcasting</label>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
+      <Table style={{ height: "100%" }}>
+        <TableHead className="tableHeader">
+          <TableRow>
+            <TableCell>Name</TableCell>
             {critRangeHeader}
-            <th>Atk Bonus</th>
-            <th>Damage/Type</th>
-          </tr>
-        </thead>
-        <tbody>
+            <TableCell>Atk Bonus</TableCell>
+            <TableCell>Damage/Type</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {rows}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

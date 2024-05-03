@@ -45,15 +45,12 @@ export default function Header({ headerInfo }) {
   return (
     <header>
       <section className="charname">
-        <div>
-          {headerInfo["Character Name"]}
-        </div>
+        {headerInfo["Character Name"]}
       </section>
-      <section className="misc">
-        <ul>
-          {listContent}
-        </ul>
-      </section>
+
+      <ul>
+        {listContent}
+      </ul>
     </header>
   );
 }

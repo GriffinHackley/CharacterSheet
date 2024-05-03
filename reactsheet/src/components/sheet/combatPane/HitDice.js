@@ -1,9 +1,12 @@
 import "../../../css/sheet/combat/HitDice.css";
 import { useEffect } from "react";
-import { storeItem, getItem } from "../../../scripts/localState.js";
+import {
+  storeCheckboxValue,
+  getCheckboxValue
+} from "../../../scripts/localState.js";
 
 function handleChange(event) {
-  storeItem("remainingHD", charName);
+  storeCheckboxValue("remainingHD", charName);
 }
 
 let charName = null;
@@ -13,7 +16,7 @@ export default function HitDice({ hitDice, config }) {
 
   //Load value from local storage when component is mounted
   useEffect(() => {
-    getItem("remainingHD", charName);
+    getCheckboxValue("remainingHD", charName);
   }, []);
   return (
     <div className="hitDice">

@@ -5,6 +5,7 @@ section.combat {
   flex-direction: column;
   flex-grow: 2;
   justify-content: center;
+  height: 100%;
 }
 
 div.hitDice,
@@ -14,7 +15,7 @@ div.temporary,
 div.conditions,
 div.resistances {
   background-color: white;
-  margin: 10px;
+  margin: 5px;
   border: 1px solid black;
   border-radius: 10px 10px 10px 10px;
   display: flex;
@@ -43,7 +44,7 @@ div.resistances label {
 div.current input,
 div.temporary input,
 div.hitDice input {
-  font-size: 25px;
+  font-size: 20px;
   border: 0;
   width: 90%;
   text-align: center;

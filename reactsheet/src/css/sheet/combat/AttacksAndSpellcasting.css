@@ -1,0 +1,13 @@
+div.attacksAndSpellcasting {
+  background-color: var(--primary-accent);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.tableHeader {
+  border-radius: 10px;
+  background-color: var(--secondary-accent);
+}
