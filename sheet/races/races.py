@@ -102,6 +102,8 @@ class Race:
             },
         ]
 
+        ret = ret + extraAttributes
+
         return ret
 
     def getFeatures(self, toAdd, darkvision=False):

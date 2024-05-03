@@ -1,3 +1,4 @@
+from sheet.static.addParagraphTags import addParagraphTags
 from .races import Race
 from ..modifiers import Modifier, ModifierList
 
@@ -27,14 +28,19 @@ class Harengon(Race):
 
         return ret
 
-    def getFeatures(self):
+    def getAttributes(self):
         extraAttributes = [
             {
                 "name": "Life Span:",
-                "text": "Harengons have a life span of about a century.",
+                "text": addParagraphTags(
+                    "Harengons have a life span of about a century."
+                ),
             }
         ]
 
+        return super().getAttributes(extraAttributes=extraAttributes)
+
+    def getFeatures(self):
         toAdd = [
             {
                 "name": "Hare Trigger",
@@ -54,6 +60,6 @@ class Harengon(Race):
             },
         ]
 
-        ret = super().getFeatures(toAdd, extraAttributes=extraAttributes)
+        ret = super().getFeatures(toAdd)
 
         return ret
