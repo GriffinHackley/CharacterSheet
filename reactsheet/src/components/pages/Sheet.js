@@ -16,6 +16,8 @@ import Consumable from "../sheet/Consumable";
 import Combat from "../sheet/combatPane/Combat";
 import AttacksAndSpellcasting from "../sheet/combatPane/AttacksAndSpellcasting";
 import SideDrawer from "../sheet/SideDrawer.js";
+import Features from "../sheet/FeaturesPanel.js";
+import FeaturesPanel from "../sheet/FeaturesPanel.js";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -70,7 +72,8 @@ function initLayout(editMode, id, consumables) {
       static: !editMode
     },
     { i: "proficiency", x: 0, y: 0, w: 2, h: 1, static: !editMode },
-    { i: "toggles", x: 8, y: 0, w: 2, h: 3, static: !editMode }
+    { i: "toggles", x: 8, y: 0, w: 2, h: 3, static: !editMode },
+    { i: "features", x: 0, y: 0, w: 2, h: 3, static: !editMode }
   ];
 
   let count = 0;
@@ -107,8 +110,6 @@ function Sheet() {
       });
 
       if (!editMode) {
-        console.log("storing layout");
-        console.log(newLayout);
         storeLayout(id, newLayout);
       }
 
@@ -182,6 +183,9 @@ function Sheet() {
               setCharacter={setCharacter}
               id={id}
             />
+          </div>
+          <div key="features">
+            <FeaturesPanel features={character.features} />
           </div>
         </ReactGridLayout>
         <section />

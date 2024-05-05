@@ -34,7 +34,13 @@ export function storeLayout(id, layout) {
 
 export function getLayout(id) {
   let storageKey = id + "-Layout";
-  let ret = JSON.parse(localStorage.getItem(storageKey)).map(element => {
+  let item = localStorage.getItem(storageKey);
+
+  if (item === null) {
+    return null;
+  }
+
+  let ret = JSON.parse(item).map(element => {
     return JSON.parse(element);
   });
 
