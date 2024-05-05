@@ -1,42 +1,13 @@
 import { useState } from "react";
 import Selector from "../shared/selector";
 
-function displayFeature(feature) {
-  if (feature === "") {
-    return;
-  }
-  let text = [];
-  feature.forEach(line => {
-    if (line.type === "normal") {
-      text.push(
-        <p className="featureText">
-          {line.text}
-        </p>
-      );
-    } else if (line.type === "heading") {
-      text.push(
-        <h5 className="featureText">
-          {line.text}
-        </h5>
-      );
-    } else if (line.type === "table") {
-      text.push(<h1>Tables have not been implemented</h1>);
-    }
-  });
-  return (
-    <div className="featureContainer">
-      {text}
-    </div>
-  );
-}
-
 function getFeatureText(ancestries, chosenAncestry) {
   let text = [];
   if (chosenAncestry === "none") {
     return text;
   }
 
-  let features = ancestries[chosenAncestry].features;
+  let features = ancestries[chosenAncestry].Features;
 
   features.forEach(feature => {
     text.push(
@@ -44,7 +15,7 @@ function getFeatureText(ancestries, chosenAncestry) {
         <h5 className="featureHeading">
           {feature.name}:
         </h5>
-        {displayFeature(feature.text)}
+        <div dangerouslySetInnerHTML={{ __html: feature.text }} />
       </div>
     );
   });

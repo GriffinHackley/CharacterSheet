@@ -15,6 +15,7 @@ class CustomLineage(Race):
 
     def __init__(self):
         self.name = "Custom Lineage"
+        self.feat = {"____": {}}
         super().__init__()
 
     def appendModifiers(self, modList: ModifierList):

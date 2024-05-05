@@ -297,9 +297,9 @@ export default function Background({ backgrounds }) {
       >
         {getAllFeatures(allBackgrounds, activeFeature)}
       </select>
-      <div>
-        {displayContent(allBackgrounds[activeFeature])}
-      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: allBackgrounds[activeFeature] }}
+      />
       <div className="backgroundSkills">
         <label>Skills:</label>
         {optionSelector("skill1", setskill1, skill1, skill2, allSkills)}

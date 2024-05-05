@@ -152,7 +152,4 @@ class Race:
         return
 
     def toDict(self):
-        ret = {}
-        ret["attributes"] = self.getAttributes()
-        ret["features"] = self.getFeatures()
-        return ret
+        return self.getFeatures()

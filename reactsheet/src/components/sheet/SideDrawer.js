@@ -51,10 +51,18 @@ export default function SideDrawer({ id, character, editMode, setEditMode }) {
         </ListItem>
       </List>
       <Divider />
-      <Switch
-        onChange={newValue => setEditMode(newValue.target.checked)}
-        checked={editMode}
-      />
+      <List>
+        <ListItem>
+          <Switch
+            onChange={newValue => setEditMode(newValue.target.checked)}
+            checked={editMode}
+          />
+          <ListItemText>Edit Mode</ListItemText>
+        </ListItem>
+        <ListItem to={`/character/${id}/plan/`} component={Link}>
+          <ListItemText>Plan</ListItemText>
+        </ListItem>
+      </List>
     </Box>
   );
 
