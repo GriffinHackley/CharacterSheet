@@ -1,6 +1,7 @@
+let logging = false;
+
 export function storeCheckboxValue(key, name) {
   // Change to true to enable logging
-  let logging = true;
   let storageKey = name + "-" + key;
   let element = document.getElementById(key);
   let value = null;
@@ -15,15 +16,33 @@ export function storeCheckboxValue(key, name) {
   localStorage.setItem(storageKey, value);
 }
 
-export function storeLayout(name, value) {
-  let storageKey = name + "-Layout";
+export function storeLayout(id, layout) {
+  let storageKey = id + "-Layout";
 
-  localStorage.setItem(storageKey, JSON.stringify(value));
+  let ret = JSON.stringify(
+    layout.map(value => {
+      return JSON.stringify(value);
+    })
+  );
+
+  if (logging) {
+    console.log("Storing " + storageKey + " as " + ret);
+  }
+
+  localStorage.setItem(storageKey, ret);
 }
 
-export function getLayout(name) {
-  let storageKey = name + "-Layout";
-  return JSON.parse(localStorage.getItem(storageKey));
+export function getLayout(id) {
+  let storageKey = id + "-Layout";
+  let ret = JSON.parse(localStorage.getItem(storageKey)).map(element => {
+    return JSON.parse(element);
+  });
+
+  if (logging) {
+    console.log("Getting " + storageKey + " as :" + ret);
+  }
+
+  return ret;
 }
 
 export function getCheckboxValue(key, name) {

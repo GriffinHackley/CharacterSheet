@@ -15,6 +15,7 @@ import Proficiency from "../sheet/Proficiency";
 import Consumable from "../sheet/Consumable";
 import Combat from "../sheet/combatPane/Combat";
 import AttacksAndSpellcasting from "../sheet/combatPane/AttacksAndSpellcasting";
+import SideDrawer from "../sheet/SideDrawer.js";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -40,34 +41,81 @@ const loadCharacter = async (setLoading, setCharacter, id) => {
   setColor(character.config.accentColors);
 };
 
-function initLayout(locked, name) {
-  let layout = getLayout(name);
-  if (layout) {
+function initLayout(editMode, id, consumables) {
+  let layout = getLayout(id);
+  if (layout != null) {
     return layout;
   }
 
-  return [
-    { i: "combat", x: 2, y: 0, w: 4, h: 4, minW: 3, static: locked },
+  console.log("Using default layout");
+  let ret = [
+    {
+      i: "combat",
+      x: 2,
+      y: 0,
+      w: 4,
+      h: 4,
+      minW: 3,
+      minH: 4,
+      static: !editMode
+    },
     {
       i: "attacksandspellcasting",
       x: 2,
-      y: 0,
+      y: 5,
       w: 4,
       h: 2,
       minW: 3,
       minH: 2,
-      static: locked
+      static: !editMode
     },
-    { i: "proficiency", x: 0, y: 0, w: 2, h: 1, static: locked },
-    { i: "toggles", x: 8, y: 0, w: 2, h: 3, static: locked }
+    { i: "proficiency", x: 0, y: 0, w: 2, h: 1, static: !editMode },
+    { i: "toggles", x: 8, y: 0, w: 2, h: 3, static: !editMode }
   ];
+
+  let count = 0;
+  for (let consumable in consumables) {
+    ret.push({
+      i: "consumable-" + consumable,
+      x: 1 + count % 2,
+      y: 1 + Math.floor(count / 2),
+      w: 2,
+      h: 1,
+      static: !editMode
+    });
+    count++;
+  }
+
+  return ret;
 }
 
 function Sheet() {
-  const locked = false;
-  const [loading, setLoading] = useState(true);
-  const [character, setCharacter] = useState([]);
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+  const [character, setCharacter] = useState([]);
+  const [layout, setLayout] = useState(initLayout(editMode, id));
+
+  useEffect(
+    () => {
+      let newLayout = [];
+
+      //Put the array in reverse order because they layout doesnt change enough?
+      layout.forEach(value => {
+        value["static"] = !editMode;
+        newLayout.unshift(value);
+      });
+
+      if (!editMode) {
+        console.log("storing layout");
+        console.log(newLayout);
+        storeLayout(id, newLayout);
+      }
+
+      setLayout([...newLayout]);
+    },
+    [editMode]
+  );
 
   //Get character data
   useEffect(() => {
@@ -77,32 +125,27 @@ function Sheet() {
   if (loading) {
     return <h4>Loading...</h4>;
   } else {
-    const layout = initLayout(locked, character.header["Character Name"]);
     let consumables = [];
-    let count = 0;
+
     for (let consumable in character.consumables) {
       consumables.push(
-        <div
-          key={"consumable-" + consumable}
-          data-grid={{
-            x: count % 2,
-            y: 1 + Math.floor(count / 2),
-            w: 1,
-            h: 1,
-            static: locked
-          }}
-        >
+        <div key={"consumable-" + consumable}>
           <Consumable
             name={consumable}
             consumableInfo={character.consumables[consumable]}
           />
         </div>
       );
-      count++;
     }
 
     return (
       <section className="pageContainer">
+        <SideDrawer
+          id={id}
+          character={character}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
         <Header headerInfo={character.header} />
         <Attributes
           key="attributes"
@@ -115,8 +158,9 @@ function Sheet() {
           layout={layout}
           cols={12}
           rowHeight={100}
-          onLayoutChange={layout =>
-            storeLayout(character.header["Character Name"], layout)}
+          onLayoutChange={newLayout => {
+            setLayout([...newLayout]);
+          }}
         >
           <div key="proficiency">
             <Proficiency />
@@ -141,39 +185,6 @@ function Sheet() {
           </div>
         </ReactGridLayout>
         <section />
-        <Link
-          to={`/character/${id}/features/`}
-          state={{ featuresInfo: character.features }}
-        >
-          Features
-        </Link>
-        <Link
-          to={`/character/${id}/equipment/`}
-          state={{ equipmentInfo: character.equipment }}
-        >
-          Equipment
-        </Link>
-        <Link
-          to={`/character/${id}/spells/`}
-          state={{ spellInfo: character.spells, config: character.config }}
-        >
-          Spells
-        </Link>
-        <Link
-          to={`/character/${id}/flavor/`}
-          state={{ flavorInfo: character.flavor }}
-        >
-          Flavor
-        </Link>
-        {/* <FlexPanel
-          config={character.config}
-          featureInfo={character.features}
-          equipmentInfo={character.equipment}
-          profInfo={character.proficiencies}
-          spellInfo={character.spells}
-          graphInfo={character.graph}
-          flavorInfo={character.flavor}
-        /> */}
       </section>
     );
   }
