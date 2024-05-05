@@ -92,35 +92,6 @@ let allLanguages = [
   "Undercommon"
 ];
 
-function displayContent(feature) {
-  if (feature === "none") {
-    return;
-  }
-  let text = [];
-  feature.forEach(line => {
-    if (line.type === "normal") {
-      text.push(
-        <p>
-          {line.text}
-        </p>
-      );
-    } else if (line.type === "heading") {
-      text.push(
-        <h4>
-          {line.text}
-        </h4>
-      );
-    } else if (line.type === "table") {
-      text.push(<h1>Tables have not been implemented</h1>);
-    }
-  });
-  return (
-    <div>
-      {text}
-    </div>
-  );
-}
-
 function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   let options = [];
 
