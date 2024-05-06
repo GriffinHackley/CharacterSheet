@@ -34,6 +34,7 @@ export default function Toggles({ togglesInfo, setCharacter, id }) {
     display.push(
       <FormControlLabel
         className="defaultToggles"
+        key={toggle}
         control={
           <Checkbox
             id={toggle}
@@ -49,6 +50,7 @@ export default function Toggles({ togglesInfo, setCharacter, id }) {
     display.push(
       <FormControlLabel
         className="otherToggles"
+        key={toggle}
         control={
           <Checkbox
             id={toggle}

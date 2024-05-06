@@ -15,6 +15,7 @@ export default function CombatHeader({ combatInfo }) {
     content.push(
       <div
         className="tooltip centered headerItem"
+        key={item}
         data-tooltip={formatSource(data.source)}
       >
         <div className="value">

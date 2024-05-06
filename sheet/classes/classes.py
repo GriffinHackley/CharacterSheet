@@ -298,10 +298,9 @@ class FifthEditionClass(Class):
                         modified.append(feature)
                 if "Improvement" in feature:
                     feature = feature.split(" Improvement")[0]
-                    if feature in modified:
-                        continue
-                    else:
+                    if not feature in modified:
                         modified.append(feature)
+                    continue
 
                 currentLevel.append(
                     {

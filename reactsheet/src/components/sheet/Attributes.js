@@ -95,7 +95,7 @@ function getAttributeColumn(attribute, saveInfo, skillsInfo) {
     .map(skill => addSkill(skill));
 
   let column = (
-    <li className="attribute">
+    <li className="attribute" key={attribute.name}>
       {modAndScore}
       {savingThrow}
       <div className="skillSeparator">Skills</div>

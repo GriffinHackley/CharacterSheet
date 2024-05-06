@@ -1,18 +1,18 @@
 import "../../css/sheet/Header.css";
 
 export default function Header({ headerInfo }) {
-  let pathfinder = null;
+  //   let pathfinder = null;
 
-  if (headerInfo.edition == "Pathfinder") {
-    pathfinder = (
-      <li>
-        <div className="headerField">Traits</div>
-        <div className="headerValue">
-          {headerInfo.traits[0]}, {headerInfo.traits[1]}
-        </div>
-      </li>
-    );
-  }
+  //   if (headerInfo.edition == "Pathfinder") {
+  //     pathfinder = (
+  //       <li>
+  //         <div className="headerField">Traits</div>
+  //         <div className="headerValue">
+  //           {headerInfo.traits[0]}, {headerInfo.traits[1]}
+  //         </div>
+  //       </li>
+  //     );
+  //   }
 
   let listContent = [];
 
@@ -23,7 +23,7 @@ export default function Header({ headerInfo }) {
       content = [];
       for (let cls in headerInfo["Class and Level"]) {
         content.push(
-          <div className="classText">
+          <div className="classText" key={cls}>
             {cls} {headerInfo["Class and Level"][cls]}
           </div>
         );
@@ -31,7 +31,7 @@ export default function Header({ headerInfo }) {
     }
 
     listContent.push(
-      <li>
+      <li key={header}>
         <div className="headerValue">
           {content}
         </div>

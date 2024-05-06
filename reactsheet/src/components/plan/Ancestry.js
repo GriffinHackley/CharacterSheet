@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Selector from "../shared/selector";
+import Selector from "../shared/Selector";
 
 function getFeatureText(ancestries, chosenAncestry) {
   let text = [];
@@ -11,7 +11,7 @@ function getFeatureText(ancestries, chosenAncestry) {
 
   features.forEach(feature => {
     text.push(
-      <div>
+      <div key={feature.name}>
         <h5 className="featureHeading">
           {feature.name}:
         </h5>

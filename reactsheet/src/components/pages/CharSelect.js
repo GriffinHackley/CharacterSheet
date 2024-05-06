@@ -31,7 +31,7 @@ export default function CharSelect() {
     let id = character;
     let name = characters[character];
     content.push(
-      <li>
+      <li key={id}>
         <Link to={`/character/${id}`}>
           {name}
         </Link>

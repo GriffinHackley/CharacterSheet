@@ -1,34 +1,27 @@
-function getChoices(type, allChoices, currentChoice) {
-  let choices = [];
-
-  let used = false;
-
-  allChoices.forEach(choice => {
-    if (choice === currentChoice) {
-      used = true;
-      choices.push(
-        <option value={choice} selected>
-          {choice}
-        </option>
-      );
-    } else {
-      choices.push(
-        <option value={choice}>
-          {choice}
-        </option>
-      );
-    }
-  });
-
-  if (!used) {
-    choices.push(
-      <option hidden disabled selected value>
-        -- select a {type} --
+function getChoices(allChoices, index) {
+  if (index !== null) {
+    index = "-" + index;
+  }
+  allChoices = allChoices.map(choice => {
+    let value = choice + index;
+    return (
+      <option value={value} key={value}>
+        {choice}
       </option>
     );
-  }
+  });
 
-  return choices;
+  allChoices.push(
+    <option hidden disabled value={"default" + index} key={"default" + index}>
+      --- Make a Selection ---
+    </option>
+  );
+
+  return allChoices;
+}
+
+function temp(value) {
+  let i = 0;
 }
 
 export default function Selector({
@@ -37,25 +30,34 @@ export default function Selector({
   allChoices,
   setFunction,
   className,
-  showLabel = true
+  showLabel = true,
+  index = null
 }) {
   let label = null;
   if (showLabel) {
     label = (
-      <label for={type + "Choice"}>
+      <label htmlFor={type + "Choice"}>
         {type}:{" "}
       </label>
     );
   }
+
+  let currentValue = choice;
+
+  if (index !== null) {
+    currentValue = currentValue + "-" + index;
+  }
+
   return (
     <div className={className + " selector"}>
       {label}
       <select
         name={type + "Choice"}
         id={type + "Choice"}
-        onChange={e => setFunction(e.target.value)}
+        value={currentValue}
+        onChange={e => setFunction(e.target.value.split("-")[0])}
       >
-        {getChoices(type, allChoices, choice)}
+        {getChoices(allChoices, index)}
       </select>
     </div>
   );

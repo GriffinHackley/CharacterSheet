@@ -1,3 +1,5 @@
+import { TableBody } from "@mui/material";
+
 const AbilityScores = Object.freeze({
   Strength: 0,
   Dexterity: 1,
@@ -38,6 +40,9 @@ function getStatRow(stat, baseValues, racial, asi) {
 function getASI(feats) {
   let asi = Array(6).fill(0);
   for (let feat in feats) {
+    if (!feats[feat].options?.ASI) {
+      continue;
+    }
     for (let [stat, value] of Object.entries(feats[feat].options.ASI)) {
       stat = AbilityScores[stat];
       asi[stat] += Number(value);
@@ -58,20 +63,24 @@ export default function Stats({ stats }) {
     <div>
       <h3>Stats</h3>
       <table>
-        <tr>
-          <th>Stat</th>
-          <th>Bonus</th>
-          <th>Value</th>
-          <th>Base</th>
-          <th>Racial</th>
-          <th>ASI</th>
-        </tr>
-        {getStatRow("Strength", baseValues, racial, asi)}
-        {getStatRow("Dexterity", baseValues, racial, asi)}
-        {getStatRow("Constitution", baseValues, racial, asi)}
-        {getStatRow("Intelligence", baseValues, racial, asi)}
-        {getStatRow("Wisdom", baseValues, racial, asi)}
-        {getStatRow("Charisma", baseValues, racial, asi)}
+        <thead>
+          <tr>
+            <th>Stat</th>
+            <th>Bonus</th>
+            <th>Value</th>
+            <th>Base</th>
+            <th>Racial</th>
+            <th>ASI</th>
+          </tr>
+        </thead>
+        <tbody>
+          {getStatRow("Strength", baseValues, racial, asi)}
+          {getStatRow("Dexterity", baseValues, racial, asi)}
+          {getStatRow("Constitution", baseValues, racial, asi)}
+          {getStatRow("Intelligence", baseValues, racial, asi)}
+          {getStatRow("Wisdom", baseValues, racial, asi)}
+          {getStatRow("Charisma", baseValues, racial, asi)}
+        </tbody>
       </table>
     </div>
   );

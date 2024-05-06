@@ -93,35 +93,34 @@ let allLanguages = [
 ];
 
 function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
-  let options = [];
-
   //   Dont let them choose the same option as the other selector
   allOptions = allOptions.filter(option => option !== otherOption);
-  let oneSelected = false;
+  let selected = currentOption;
 
-  for (let option in allOptions) {
-    let isSelected = false;
-    if (currentOption.toLowerCase() === allOptions[option].toLowerCase()) {
-      isSelected = true;
-      oneSelected = true;
-    }
-    options.push(
-      <option selected={isSelected}>
-        {allOptions[option]}
+  let options = allOptions.map(option => {
+    return (
+      <option key={option}>
+        {option}
       </option>
     );
-  }
+  });
+
+  options.push(
+    <option hidden disabled value key={"defaultOption"}>
+      -- select an option --
+    </option>
+  );
+
   if (currentOption === "none") {
-    options.push(
-      <option hidden disabled selected value>
-        -- select an option --
-      </option>
-    );
-  } else if (!oneSelected) {
-    throw `${currentOption} is not in list ${allOptions}`;
+    selected = "defaultOption";
   }
   return (
-    <select name={id} id={id} onChange={e => setOption(e.target.value)}>
+    <select
+      name={id}
+      id={id}
+      onChange={e => setOption(e.target.value)}
+      value={selected}
+    >
       {options}
     </select>
   );
@@ -137,7 +136,7 @@ function miscProfSelector(id, selectorType, setSelector) {
         value="languages"
         defaultChecked={selectorType === "languages" ? true : false}
       />
-      <label for={id + "Language"}>Language</label>
+      <label htmlFor={id + "Language"}>Language</label>
 
       <input
         type="radio"
@@ -146,7 +145,7 @@ function miscProfSelector(id, selectorType, setSelector) {
         value="tools"
         defaultChecked={selectorType === "tools" ? true : false}
       />
-      <label for={id + "Tool"}>Tool</label>
+      <label htmlFor={id + "Tool"}>Tool</label>
 
       <input
         type="radio"
@@ -155,7 +154,7 @@ function miscProfSelector(id, selectorType, setSelector) {
         value="artisanTools"
         defaultChecked={selectorType === "artisanTools" ? true : false}
       />
-      <label for={id + "ArtisanTool"}>Artisan Tool</label>
+      <label htmlFor={id + "ArtisanTool"}>Artisan Tool</label>
 
       <input
         type="radio"
@@ -164,7 +163,7 @@ function miscProfSelector(id, selectorType, setSelector) {
         value="instruments"
         defaultChecked={selectorType === "instruments" ? true : false}
       />
-      <label for={id + "Instrument"}>Instrument</label>
+      <label htmlFor={id + "Instrument"}>Instrument</label>
 
       <input
         type="radio"
@@ -173,7 +172,7 @@ function miscProfSelector(id, selectorType, setSelector) {
         value="gameSets"
         defaultChecked={selectorType === "gameSets" ? true : false}
       />
-      <label for={id + "GameSet"}>Game Set</label>
+      <label htmlFor={id + "GameSet"}>Game Set</label>
     </div>
   );
 }
@@ -201,13 +200,13 @@ function getAllFeatures(features, chosenFeature) {
     if (key === chosenFeature) {
       usedFeature = true;
       choices.push(
-        <option value={key} selected>
+        <option value={key} key={key}>
           {key}
         </option>
       );
     } else {
       choices.push(
-        <option value={key}>
+        <option value={key} key={key}>
           {key}
         </option>
       );
@@ -216,7 +215,7 @@ function getAllFeatures(features, chosenFeature) {
 
   if (!usedFeature) {
     choices.push(
-      <option hidden disabled selected value>
+      <option hidden disabled value key={"defaultAncestry"}>
         -- select an ancestry --
       </option>
     );
@@ -226,6 +225,9 @@ function getAllFeatures(features, chosenFeature) {
 }
 
 function getMiscSelections(choices) {
+  if (Object.keys(choices).length == 0) {
+    throw "Could not find Misc. Selection";
+  }
   let keys = Object.keys(choices);
   let key = keys[0];
   let value = choices[key].pop();
@@ -260,7 +262,7 @@ export default function Background({ backgrounds }) {
   return (
     <div>
       <h3>Background</h3>
-      <label for="backgroundFeature">Feature: </label>
+      <label htmlFor="backgroundFeature">Feature: </label>
       <select
         name="backgroundFeature"
         id="backgroundFeature"

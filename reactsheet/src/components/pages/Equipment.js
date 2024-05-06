@@ -10,21 +10,21 @@ export default function Equipment() {
         <div className="money">
           <div>
             <div className="copper">
-              <label for="copper">Copper</label>
+              <label htmlFor="copper">Copper</label>
               <input name="copper" id="copper" />
             </div>
             <div className="silver">
-              <label for="silver">Silver</label>
+              <label htmlFor="silver">Silver</label>
               <input name="silver" id="silver" />
             </div>
           </div>
           <div>
             <div className="gold">
-              <label for="gold">Gold</label>
+              <label htmlFor="gold">Gold</label>
               <input name="gold" id="gold" />
             </div>
             <div className="platinum">
-              <label for="platinum">Platinum</label>
+              <label htmlFor="platinum">Platinum</label>
               <input name="platinum" id="platinum" />
             </div>
           </div>

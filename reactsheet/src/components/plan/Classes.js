@@ -19,6 +19,7 @@ export default function Classes({ classes }) {
             setSelectionList={setSelectionList}
             allClasses={classes.all}
             index={index}
+            key={"classChoice-" + index}
           />
         );
       });

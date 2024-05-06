@@ -22,7 +22,7 @@ Chart.register(...registerables);
 //           name={selector}
 //           value={selector}
 //         />
-//         <label for={selector}>
+//         <label htmlFor={selector}>
 //           {selector}
 //         </label>
 //       </div>

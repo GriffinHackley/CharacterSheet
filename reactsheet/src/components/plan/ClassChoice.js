@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Selector from "../shared/selector";
+import Selector from "../shared/Selector";
 import "../../css/plan/ClassChoice.css";
 import CollapsibleTab from "../shared/collapsibleTab";
 
@@ -7,7 +7,7 @@ function getPrevMax(selectionList, index) {
   let selection = selectionList[index].name;
   let max = 0;
 
-  if (selection == "") {
+  if (selection === "") {
     return max;
   }
 
@@ -34,7 +34,7 @@ export default function ClassChoice({
   index
 }) {
   let prevMax = getPrevMax(selectionList, index) + 1;
-  const [currentSelection, setCurrentSelection] = useState("");
+  const [currentSelection, setCurrentSelection] = useState("default");
   const [startLevel, setStartLevel] = useState(prevMax);
   const [endLevel, setEndLevel] = useState(prevMax);
   const [features, setFeatures] = useState([]);
@@ -43,17 +43,18 @@ export default function ClassChoice({
     <Selector
       className="endLevel"
       type={"level"}
-      choice={prevMax}
+      choice={prevMax > endLevel ? prevMax : endLevel}
       allChoices={[...Array(21).keys()].slice(prevMax)}
       setFunction={setEndLevel}
       showLabel={false}
+      index={index}
     />
   );
 
   useEffect(
     () => {
       const newList = selectionList.map((selection, i) => {
-        if (i == index) {
+        if (i === index) {
           return {
             name: currentSelection,
             endLevel: getPrevMax(selectionList, index) + 1
@@ -70,7 +71,7 @@ export default function ClassChoice({
   useEffect(
     () => {
       const newList = selectionList.map((selection, i) => {
-        if (i == index) {
+        if (i === index) {
           return {
             name: selection.name,
             endLevel: endLevel
@@ -103,16 +104,26 @@ export default function ClassChoice({
           allChoices={[...Array(21).keys()].slice(newMax)}
           setFunction={setEndLevel}
           showLabel={false}
+          index={index}
         />
       );
 
-      if (currentSelection !== "") {
+      if (currentSelection !== "default") {
         let temp = [];
         for (let level = newMax; level <= newEnd; level++) {
-          let arr = allClasses[currentSelection]["features"][level];
+          let currentClass = currentSelection;
+          if (currentSelection.includes("-")) {
+            currentClass = currentClass.split("-")[0];
+          }
+          let arr = allClasses[currentClass]["features"][level];
           arr.forEach(feature => {
             temp.push(
-              <CollapsibleTab name={feature.name} text={feature.text} />
+              <CollapsibleTab
+                value={feature.name}
+                name={feature.name}
+                text={feature.text}
+                key={feature.name + "-" + currentClass}
+              />
             );
           });
         }
@@ -128,10 +139,11 @@ export default function ClassChoice({
         <Selector
           className={"classSelector"}
           type={"class"}
-          choice={""}
+          choice={currentSelection}
           allChoices={Object.keys(allClasses)}
           setFunction={setCurrentSelection}
           showLabel={false}
+          index={index}
         />
         <div className="levels">
           <div>
