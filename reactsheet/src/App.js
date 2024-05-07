@@ -8,31 +8,19 @@ import EquipmentTab from "./components/pages/Equipment";
 import SpellTab from "./components/pages/Spells";
 import FlavorTab from "./components/pages/Flavor";
 
-import { createTheme, ThemeProvider } from "@mui/material";
-import { blue, purple } from "@mui/material/colors";
-
-const theme = createTheme({
-  palette: {
-    primary: purple,
-    secondary: purple
-  }
-});
-
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<CharSelect />} />
-          <Route path="/character/:id" element={<Sheet />} />
-          <Route path="/character/:id/features" element={<FeaturesTab />} />
-          <Route path="/character/:id/equipment" element={<EquipmentTab />} />
-          <Route path="/character/:id/spells" element={<SpellTab />} />
-          <Route path="/character/:id/flavor" element={<FlavorTab />} />
-          <Route path="/character/:id/plan" element={<Plan />} />
-          <Route path="/create" element={<Create />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<CharSelect />} />
+        <Route path="/character/:id" element={<Sheet />} />
+        <Route path="/character/:id/features" element={<FeaturesTab />} />
+        <Route path="/character/:id/equipment" element={<EquipmentTab />} />
+        <Route path="/character/:id/spells" element={<SpellTab />} />
+        <Route path="/character/:id/flavor" element={<FlavorTab />} />
+        <Route path="/character/:id/plan" element={<Plan />} />
+        <Route path="/create" element={<Create />} />
+      </Routes>
+    </Router>
   );
 }

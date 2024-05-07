@@ -1,6 +1,6 @@
 import "../../css/sheet/Attributes.css";
 import formatSource from "../../scripts/formatSource";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Paper } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import { RadioButtonChecked, RadioButtonUnchecked } from "@mui/icons-material";
 
@@ -118,10 +118,10 @@ export default function Attributes({ attributesInfo, skillsInfo, savesInfo }) {
   });
 
   return (
-    <section className="attributes">
+    <Paper className="attributes">
       <ul className="attributes">
         {attributes}
       </ul>
-    </section>
+    </Paper>
   );
 }

@@ -1,8 +1,8 @@
+import { Paper } from "@mui/material";
 import formatSource from "../../scripts/formatSource";
 import Tooltip from "@mui/material/Tooltip";
 
 function addPassive(passive) {
-  passive.source = { Base: 10, ...passive.source };
   return (
     <Tooltip
       className="passive"
@@ -16,10 +16,10 @@ function addPassive(passive) {
           }
         }
       }}
-      title={formatSource(passive.source)}
+      title={formatSource({ Base: 10, ...passive.source })}
       key={"skill-" + passive.name}
     >
-      <li className="skill">
+      <div className="skill" style={{ display: "flex", flexDirection: "row" }}>
         <div className="skillValue">
           {10 + passive.value}
         </div>
@@ -27,7 +27,7 @@ function addPassive(passive) {
           {" Passive "}
           {passive.name}{" "}
         </div>
-      </li>
+      </div>
     </Tooltip>
   );
 }
@@ -40,5 +40,9 @@ export default function Passives({ skillsInfo }) {
     .sort((a, b) => b.value - a.value)
     .map(passive => addPassive(passive));
 
-  return passives;
+  return (
+    <Paper>
+      {passives}
+    </Paper>
+  );
 }

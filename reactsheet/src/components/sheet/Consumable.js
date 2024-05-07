@@ -1,8 +1,9 @@
+import { Paper } from "@mui/material";
 import "../../css/sheet/Consumables.css";
 
 export default function Consumable({ name, consumableInfo }) {
   return (
-    <div className="consumable">
+    <Paper className="consumable">
       <div className="total">
         <div className="key">Total</div>
         <div className="value">
@@ -10,12 +11,11 @@ export default function Consumable({ name, consumableInfo }) {
         </div>
       </div>
       <div className="remainingConsumable">
-        <input name="remainingConsumable" type="text" id="{{ key }}" />
-
+        <input name="remainingConsumable" type="text" />
         <label className="consumableLabel" htmlFor="remainingConsumable">
           {name}
         </label>
       </div>
-    </div>
+    </Paper>
   );
 }

@@ -1,13 +1,13 @@
-section.attributes {
+.attributes {
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
-div.scores {
+.scores {
   background-color: var(--primary-accent);
-  border-radius: 10px;
+
   width: 100%;
-  background-color: yellow;
 }
 ul.attributes {
   display: flex;
@@ -16,11 +16,11 @@ ul.attributes {
   width: 100%;
   align-items: center;
 }
-li.attribute {
-  border: 1px solid black;
+.attribute {
+  border: 1px solid var(--primary-accent);
+  background-color: white;
   height: 80px;
   width: 100%;
-  background-color: white;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -42,20 +42,18 @@ div.abilityName {
 }
 div.abilityMod {
   font-size: 2rem;
-  background: white;
 }
 div.abilityScore {
   display: flex;
   justify-content: center;
   padding-bottom: 5px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--primary-accent);
 }
 div.abilityScore div.score {
-  background: white;
   width: 30px;
   height: 25px;
-  border: 1px inset black;
-  border-radius: 20px;
+  border: 1px solid var(--primary-accent);
+  border-radius: 10px;
 }
 div.savingThrow {
   display: flex;

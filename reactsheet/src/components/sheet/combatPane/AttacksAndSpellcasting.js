@@ -5,7 +5,8 @@ import {
   TableBody,
   TableHead,
   TableRow,
-  TableCell
+  TableCell,
+  Paper
 } from "@mui/material";
 
 export default function AttacksAndSpellcasting({ attacks, config }) {
@@ -61,7 +62,7 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
   });
 
   return (
-    <div className="attacksAndSpellcasting">
+    <Paper className="attacksAndSpellcasting">
       <label>Attacks & Spellcasting</label>
       <Table style={{ height: "100%" }}>
         <TableHead className="tableHeader">
@@ -76,6 +77,6 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
           {rows}
         </TableBody>
       </Table>
-    </div>
+    </Paper>
   );
 }

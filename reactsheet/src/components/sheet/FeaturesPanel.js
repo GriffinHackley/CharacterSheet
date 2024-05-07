@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import CollapsibleTab from "../shared/collapsibleTab";
 
 function getAllFeatures(features) {
@@ -31,11 +31,9 @@ export default function FeaturesPanel({ features }) {
   let pinnedFeatures = [];
 
   return (
-    <Box
-      sx={{ border: "1px solid black", height: "100%", borderRadius: "10px" }}
-    >
+    <Paper>
       Features
       {pinnedFeatures}
-    </Box>
+    </Paper>
   );
 }

@@ -1,10 +1,6 @@
-div.consumable {
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 10px;
+.consumable {
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 div.consumable > div.total {
   display: flex;
@@ -13,7 +9,7 @@ div.consumable > div.total {
 }
 div.consumable > div.total div.key {
   font-size: 10px;
-  color: var(--primary-accent);
+  color: var(--secondary-accent);
   margin: 0.25em;
   text-transform: none;
 }
@@ -21,7 +17,7 @@ div.consumable > div.total > div.value {
   font-size: 15px;
   flex-grow: 1;
   border: 0;
-  border-bottom: 1px solid var(--primary-accent);
+  border-bottom: 1px solid var(--secondary-accent);
   margin-right: 0.25em;
   padding: 0 0.25em;
   text-align: center;
@@ -31,18 +27,21 @@ label.consumableLabel {
   padding: 2px;
   font-size: 5px;
 }
-div.remainingConsumable {
+.remainingConsumable {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
 }
 div.remainingConsumable input {
-  width: 100%;
+  width: 90%;
+  margin-top: 5px;
   font-size: 25px;
   box-sizing: border-box;
   text-align: center;
   border: 0;
+  border-radius: 10px;
   flex-grow: 1;
 }
 div.remainingConsumable label {

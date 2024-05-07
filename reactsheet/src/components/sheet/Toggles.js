@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel, Paper } from "@mui/material";
 import "../../css/sheet/Toggles.css";
 
 function submitForm(e, setCharacter, id, activeToggles) {
@@ -64,11 +64,11 @@ export default function Toggles({ togglesInfo, setCharacter, id }) {
   }
 
   return (
-    <section className="toggles">
+    <Paper className="toggles">
       <form onSubmit={e => submitForm(e, setCharacter, id, activeToggles)}>
         {display}
         <input type="submit" value="Submit" />
       </form>
-    </section>
+    </Paper>
   );
 }

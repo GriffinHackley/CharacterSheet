@@ -1,4 +1,4 @@
-section.toggles {
+.toggles {
   display: flex;
   border: 1px solid black;
   border-radius: 10px;
@@ -9,7 +9,7 @@ section.toggles {
   padding-left: 5px;
   padding-right: 5px;
 }
-section.toggles > form {
+.toggles > form {
   display: flex;
   flex-direction: column;
 }

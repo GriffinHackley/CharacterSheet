@@ -1,3 +1,4 @@
+import { useTheme } from "@emotion/react";
 import "../../../css/sheet/combat/Combat.css";
 
 import CombatHeader from "./CombatHeader";
@@ -7,11 +8,12 @@ import DeathSaves from "./DeathSaves";
 import HitDice from "./HitDice";
 import Resistances from "./Resistances";
 import TempHP from "./TempHP";
+import { Paper } from "@mui/material";
 
 export default function Combat({ combatInfo }) {
   //TODO: Fix getCheckboxValues()
   return (
-    <section className="combat">
+    <Paper className="combat">
       <CombatHeader combatInfo={combatInfo} />
       <div className="hp">
         <div className="otherHP">
@@ -25,6 +27,6 @@ export default function Combat({ combatInfo }) {
           <Resistances config={combatInfo.config} />
         </div>
       </div>
-    </section>
+    </Paper>
   );
 }

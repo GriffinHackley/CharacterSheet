@@ -1,11 +1,8 @@
-section.combat {
-  background-color: var(--primary-accent);
+.combat {
   display: flex;
-  border-radius: 10px;
   flex-direction: column;
   flex-grow: 2;
   justify-content: center;
-  height: 100%;
 }
 
 div.hitDice,
