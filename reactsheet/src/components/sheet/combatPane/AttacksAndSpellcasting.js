@@ -69,7 +69,7 @@ export default function AttacksAndSpellcasting({ attacks, config }) {
           <TableRow>
             <TableCell>Name</TableCell>
             {critRangeHeader}
-            <TableCell>Atk Bonus</TableCell>
+            <TableCell>To-Hit</TableCell>
             <TableCell>Damage/Type</TableCell>
           </TableRow>
         </TableHead>

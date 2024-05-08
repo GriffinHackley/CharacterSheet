@@ -43,5 +43,6 @@ class Plan:
         ret = {}
 
         ret["all"] = allClassesJSON()
+        ret["choice"] = self.character.charClass
 
         return ret

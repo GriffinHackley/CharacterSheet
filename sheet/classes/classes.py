@@ -23,9 +23,8 @@ def allClassesJSON():
     ret = {}
 
     for name, info in allClasses().items():
-        print()
         cls = getattr(info, name.title())()
-        ret[name] = {"features": cls.features}
+        ret[name.title()] = {"features": cls.features}
 
     return ret
 

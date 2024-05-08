@@ -28,15 +28,20 @@ function getPrevMax(selectionList, index) {
 }
 
 export default function ClassChoice({
+  def,
   selectionList,
   setSelectionList,
   allClasses,
   index
 }) {
   let prevMax = getPrevMax(selectionList, index) + 1;
-  const [currentSelection, setCurrentSelection] = useState("default");
+  if (def.level < prevMax) {
+    throw `Invalid class selections for ${def.name}`;
+  }
+  const [currentSelection, setCurrentSelection] = useState(def.name);
   const [startLevel, setStartLevel] = useState(prevMax);
-  const [endLevel, setEndLevel] = useState(prevMax);
+
+  const [endLevel, setEndLevel] = useState(def.endLevel);
   const [features, setFeatures] = useState([]);
 
   let endSelector = (
