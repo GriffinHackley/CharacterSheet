@@ -1,6 +1,9 @@
+from enum import Enum
 import re
 import math
 import markdown
+
+from sheet.toggles import ToggleList
 from .. import classes
 from pathlib import Path
 from bs4 import BeautifulSoup
@@ -24,7 +27,7 @@ def allClassesJSON():
 
     for name, info in allClasses().items():
         cls = getattr(info, name.title())()
-        ret[name.title()] = {"features": cls.features}
+        ret[name.title()] = {"features": cls.features, "starting": cls.starting}
 
     return ret
 
@@ -60,9 +63,19 @@ class Class:
 
     def setOptions(self, options):
         self.options = options
+        subclassInfo = self.options[self.subclass]
+        subclassInfo["name"] = self.subclass
+        try:
+            self.subclass = getattr(self, subclassInfo["choice"])(subclassInfo)
+        except:
+            raise Exception(
+                "Could not find a {} subclass by the name of {}".format(
+                    self.name, subclassInfo["name"]
+                )
+            )
 
     def getConsumables(self, stats, proficiencyBonus):
-        return []
+        return self.subclass.getConsumables(stats, proficiencyBonus)
 
     def appendModifiers(self, modList: ModifierList):
         return
@@ -180,6 +193,18 @@ class Class:
         return featureText
 
 
+class Subclass:
+    def __init__(self, subclassInfo):
+        self.name = subclassInfo["name"]
+        self.choice = subclassInfo["choice"]
+
+    def getConsumables(self, stats, proficiencyBonus):
+        return {}
+
+    def getToggles(self, toggleList: ToggleList):
+        return
+
+
 class FifthEditionClass(Class):
     def __init__(self, name, hitDie, spellProgression, primaryStat=None):
         super().__init__(name, hitDie, spellProgression, primaryStat)
@@ -219,6 +244,7 @@ class FifthEditionClass(Class):
         self.table = self.parseTable(htmlFile)
 
         self.features = self.getAllClassFeatures(htmlFile)
+        self.starting = self.getStarting(htmlFile)
 
     def parseTable(self, html):
         levels = {}
@@ -244,8 +270,9 @@ class FifthEditionClass(Class):
                     continue
 
                 ##TODO: Handle subclass levels
-                if feature == self.subclass:
-                    continue
+                # if feature == self.subclass:
+                #     self.getSubclassFeatures(i)
+                #     continue
                 if feature == self.subclass + " feature":
                     continue
 
@@ -314,19 +341,32 @@ class FifthEditionClass(Class):
     def getFeaturesToLevel(self):
         features = []
 
+        relPath = "sources\\subclasses\\{}\\{}.md".format(
+            self.name, self.subclass.choice
+        )
+        new_path = Path(__file__).parent.parent.parent / relPath
+        with open(new_path) as f:
+            markdownFile = f.read()
+        html = markdown.markdown(markdownFile)
+        htmlFile = BeautifulSoup(html, "html.parser")
+
         for level in range(1, self.level + 1):
-            features = features + self.features[level]
+            for feature in self.features[level]:
+                if feature["name"] == self.subclass.name:
+                    features = features + self.getSubclassFeature(htmlFile, level)
+                else:
+                    features = features + [feature]
 
         return features
 
-    def getFeatureText(self, feature, soup):
+    def getFeatureText(self, feature, soup, omitFirst=False):
         current = soup.find("h3", text=feature)
 
         if current == None:
             current = soup.find("h3", text=feature + " (Optional)")
 
         if current == None:
-            raise Exception("Could not find {}".format(feature))
+            raise Exception("Could not find the {} feature".format(feature))
 
         featureText = []
         while current.findNext() and not current.findNext().name == "h3":
@@ -346,8 +386,76 @@ class FifthEditionClass(Class):
 
             featureText.append(str(current))
 
+        if omitFirst:
+            featureText = featureText[2:]
+
         featureText = "".join(featureText)
         return featureText
+
+    def getSubclassFeature(self, htmlFile, level):
+        allFeatures = htmlFile.findAll("em")
+
+        currentLevel = []
+
+        for feature in allFeatures:
+            if feature.text[:-2] == str(level):
+                currentLevel.append(feature)
+
+        ret = []
+
+        for feature in currentLevel:
+            name = feature.findPrevious().findPrevious().findPrevious().text
+            ret.append(
+                {
+                    "name": name,
+                    "text": self.getFeatureText(name, htmlFile, omitFirst=True),
+                }
+            )
+
+        return ret
+
+    def getStarting(self, htmlFile):
+        ret = {}
+
+        ret["Armor"] = htmlFile.find("strong", text="Armor:").next_sibling[1:]
+        ret["Weapons"] = htmlFile.find("strong", text="Weapons:").next_sibling[1:]
+        ret["Tools"] = self.convertToolsToDict(
+            htmlFile.find("strong", text="Tools:").next_sibling
+        )
+
+        return ret
+
+    def convertToolsToDict(self, string):
+        ret = {"choices": {}, "defaults": []}
+        entries = string[1:].split(", ")
+        for entry in entries:
+            if " of your choice" in entry:
+                split = entry.split(" of your choice")[0]
+                if " of " in split:
+                    (number, toolType) = split.split(" of ")
+                else:
+                    (number, toolType) = split.split(" ", 1)
+                number = number.split(" type")[0]
+                number = self.convertStringToInt(number)
+                ret["choices"][toolType] = number
+            else:
+                ret["defaults"].append(entry)
+        return ret
+
+    def convertStringToInt(self, string):
+        string = string.lower()
+
+        match string:
+            case "one":
+                return 1
+            case "two":
+                return 2
+            case "three":
+                return 3
+            case "four":
+                return 4
+            case "five":
+                return 5
 
     def toJSON(self):
         ret = {}

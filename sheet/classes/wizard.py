@@ -1,5 +1,5 @@
 from sheet.toggles import Toggle, ToggleList
-from .classes import FifthEditionClass
+from .classes import FifthEditionClass, Subclass
 from ..modifiers import Modifier, ModifierList
 
 
@@ -36,19 +36,33 @@ class Wizard(FifthEditionClass):
     def getConsumables(self, stats, proficiencyBonus):
         ret = {}
 
-        ret["Blade Song"] = {"uses": proficiencyBonus}
+        ret = ret | self.subclass.getConsumables(stats, proficiencyBonus)
 
         return ret
 
     def getToggles(self, toggleList: ToggleList):
-        bladesong = Toggle(
-            "Blade Song",
-            "Class Feature",
-            [
-                Modifier("Intelligence", "AC", source="Bladesong"),
-                Modifier("Intelligence", "Concentration", source="Bladesong"),
-                Modifier(10, "Speed", source="Bladesong"),
-            ],
-        )
+        self.subclass.getToggles(toggleList)
 
-        toggleList.addToggle(bladesong)
+    class Bladesinging(Subclass):
+        def getToggles(self, toggleList: ToggleList):
+            bladesong = Toggle(
+                "Blade Song",
+                "Class Feature",
+                [
+                    Modifier("Intelligence", "AC", source="Bladesong"),
+                    Modifier("Intelligence", "Concentration", source="Bladesong"),
+                    Modifier(10, "Speed", source="Bladesong"),
+                ],
+            )
+
+            toggleList.addToggle(bladesong)
+
+        def getConsumables(self, stats, proficiencyBonus):
+            ret = {}
+
+            ret["Blade Song"] = {"uses": proficiencyBonus}
+
+            return ret
+
+    class Abjurer(Subclass):
+        i = 0

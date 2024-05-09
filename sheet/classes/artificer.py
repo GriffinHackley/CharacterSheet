@@ -1,4 +1,4 @@
-from .classes import FifthEditionClass
+from .classes import FifthEditionClass, Subclass
 from ..modifiers import ModifierList
 
 
@@ -27,8 +27,16 @@ class Artificer(FifthEditionClass):
         super().appendModifiers(modList)
 
     def getConsumables(self, stats, proficiencyBonus):
-        ret = {}
+        ret = super().getConsumables(stats, proficiencyBonus)
 
         ret["Magical Tinkering"] = {"uses": stats["Intelligence"]}
 
         return ret
+
+    class Artillerist(Subclass):
+        def getConsumables(self, stats, proficiencyBonus):
+            ret = {}
+
+            ret["Free Eldritch Cannon"] = {"uses": 1}
+
+            return ret
