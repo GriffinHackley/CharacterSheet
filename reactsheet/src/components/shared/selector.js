@@ -1,6 +1,8 @@
 function getChoices(allChoices, index) {
   if (index !== null) {
     index = "-" + index;
+  } else {
+    index = "";
   }
   allChoices = allChoices.map(choice => {
     let value = choice + index;
@@ -18,10 +20,6 @@ function getChoices(allChoices, index) {
   );
 
   return allChoices;
-}
-
-function temp(value) {
-  let i = 0;
 }
 
 export default function Selector({

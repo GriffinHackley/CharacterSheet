@@ -72,7 +72,7 @@ function setupClassTabs(
 
   //Get all tab buttons set up
   for (let tabName in contents) {
-    if (Object.keys(featuresInfo.Class).length < 1) {
+    if (Object.keys(featuresInfo.Class).length > 1) {
       classButtons.push(
         <ToggleButton
           key={tabName}

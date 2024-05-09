@@ -138,6 +138,47 @@ export default function ClassChoice({
     [selectionList]
   );
 
+  let levelOne = [];
+  if (startLevel === 1 && currentSelection !== "default") {
+    let starting = allClasses[currentSelection]["starting"];
+
+    if (starting["Armor"] !== "None") {
+      levelOne.push(
+        <div>
+          Armor: {starting["Armor"]}
+        </div>
+      );
+    }
+
+    if (starting["Weapons"] !== "None") {
+      <div>
+        Weapons: {starting["Weapons"]}
+      </div>;
+    }
+
+    if (starting["Tools"].defaults[0] !== "None") {
+      levelOne.push(
+        <div>
+          Tools: {starting["Tools"].defaults.join(", ")}
+        </div>
+      );
+
+      for (let type of Object.keys(starting["Tools"].choices)) {
+        for (let i = 0; i < starting["Tools"].choices[type]; i++) {
+          levelOne.push(
+            <Selector
+              className={"toolSelector"}
+              type={type}
+              choice={"default"}
+              allChoices={["Smith", "Woodcarvers", "Thieves Tools"]}
+              setFunction={() => {}}
+            />
+          );
+        }
+      }
+    }
+  }
+
   return (
     <div className="classChoice">
       <div className="classHeader">
@@ -158,6 +199,7 @@ export default function ClassChoice({
           {endSelector}
         </div>
       </div>
+      {levelOne}
       {features}
     </div>
   );

@@ -13,10 +13,7 @@ export default function Classes({ classes }) {
 
   useEffect(
     () => {
-      const choices = Object.keys(classes.choice);
       let choiceList = selectionList.map((selection, index) => {
-        // let def = "default";
-        // let def = choices[index];
         return (
           <ClassChoice
             def={selection}
