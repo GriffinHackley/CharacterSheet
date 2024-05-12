@@ -61,4 +61,4 @@ class Wizard(FifthEditionClass):
             self.featureFunctions = ret
 
         def arcaneWard(self):
-            self.consumables["Arcane Ward"] = {"uses": "2*classLevel"}
+            self.consumables["Arcane Ward"] = {"uses": "2*classLevel+Intelligence"}

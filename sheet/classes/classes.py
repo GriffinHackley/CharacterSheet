@@ -1,5 +1,6 @@
 import re
 import math
+import pandas
 import markdown
 
 from .. import classes
@@ -49,16 +50,18 @@ def getClasses(levels, spellList):
 
 
 class Class:
-    toggles = []
-    modifiers = []
-    consumables = {}
-    featureFunctions = {}
 
     def __init__(self, name, hitDie, spellProgression, primaryStat):
         self.name = name
         self.hitDie = hitDie
         self.spellProgression = spellProgression
         self.primaryStat = primaryStat
+
+        self.toggles = []
+        self.modifiers = []
+        self.consumables = {}
+        self.featureFunctions = {}
+
         self.getFeatureFunctions()
 
     def setLevel(self, level):
@@ -136,18 +139,16 @@ class Class:
             if type(value["uses"]) == int:
                 continue
 
-            # Convert to stats
-            if value["uses"] in stats.keys():
-                value["uses"] = stats[value["uses"]]
+            expression = (
+                value["uses"]
+                .replace("classLevel", str(self.level))
+                .replace("proficiencyBonus", str(proficiencyBonus))
+            )
 
-            if value["uses"] == "2*classLevel":
-                value["uses"] = 2 * self.level
+            for stat in stats.keys():
+                expression = expression.replace(stat, str(stats[stat]))
 
-            if value["uses"] == "proficiencyBonus":
-                value["uses"] = proficiencyBonus
-
-            if value["uses"] == "2*proficiencyBonus":
-                value["uses"] = 2 * proficiencyBonus
+            value["uses"] = pandas.eval(expression)
 
             if not type(value["uses"]) == int:
                 raise APIException(
