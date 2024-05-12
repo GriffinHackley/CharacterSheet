@@ -1,6 +1,5 @@
 import json
 import math
-import sheet.forms as forms
 from sheet.models.Characters import Character
 from ..misc.feats import pathfinderFeats
 from ..lists import save_list_pathfinder, skill_list_pathfinder
@@ -346,33 +345,3 @@ class PathfinderCharacter(Character):
     def initModifiers(self):
         naturalArmor = Modifier(0, "Natural Armor", "AC", "Iron Skin")
         self.modList.addModifier(naturalArmor)
-
-    def getForms(self, request):
-        combatForm = forms.NailCombatForm(request.GET)
-        spellForm = forms.NailSpellForm(request.GET)
-        acTypeForm = forms.ACTypeForm(request.GET)
-        skillForm = forms.NailSkillForm(request.GET)
-        sacredWeaponForm = forms.SacredWeaponForm(request.GET)
-
-        toggles = {}
-        if combatForm.is_valid():
-            toggles.update(combatForm.cleaned_data)
-        if spellForm.is_valid():
-            toggles.update(spellForm.cleaned_data)
-        if acTypeForm.is_valid():
-            toggles.update(acTypeForm.cleaned_data)
-        if skillForm.is_valid():
-            toggles.update(skillForm.cleaned_data)
-        if sacredWeaponForm.is_valid():
-            toggles.update(sacredWeaponForm.cleaned_data)
-
-        self.toggles = toggles
-
-        ret = {}
-        ret["acType"] = acTypeForm
-        ret["combat"] = combatForm
-        ret["spell"] = spellForm
-        ret["skill"] = skillForm
-        ret["sacredWeapon"] = sacredWeaponForm
-
-        return ret

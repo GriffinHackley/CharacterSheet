@@ -1,7 +1,5 @@
 import math
 import re
-
-import sheet.forms as forms
 from sheet.misc.spells import SpellList
 from sheet.models.Characters import Character
 
@@ -157,6 +155,10 @@ class FifthEditionCharacter(Character):
         ret = []
         list = skill_list_5e
 
+        expertiseList = []
+        for cls in self.charClass:
+            expertiseList.append(cls.getExpertise())
+
         for key, value in list.items():
             current = {
                 "name": key,
@@ -173,9 +175,8 @@ class FifthEditionCharacter(Character):
             statBonus += bonus
 
             expertise = False
-            for cls in self.charClass:
-                if key in cls.expertise["skills"]:
-                    expertise = True
+            if key in expertiseList:
+                expertise = True
 
             if key in self.proficiencies["skills"]:
                 current["proficiency"] = True
@@ -279,36 +280,3 @@ class FifthEditionCharacter(Character):
 
     def initModifiers(self):
         pass
-
-    def getForms(self, request):
-        return {}
-        # TODO: Make this dynamic
-        if self.name == "Myriil Taegen":
-            combatForm = forms.MyriilCombatForm(request.GET)
-            spellForm = forms.MyriilSpellForm(request.GET)
-
-        if self.name == "Warmund":
-            combatForm = forms.WarmundCombatForm(request.GET)
-            spellForm = forms.WarmundSpellForm(request.GET)
-
-        if self.name == "Ezekiel":
-            combatForm = forms.EzekielCombatForm(request.GET)
-            spellForm = forms.EzekielSpellForm(request.GET)
-
-        if self.name == "New Ezekiel":
-            combatForm = forms.EzekielCombatForm(request.GET)
-            spellForm = forms.EzekielSpellForm(request.GET)
-
-        toggles = {}
-        if combatForm.is_valid():
-            toggles.update(combatForm.cleaned_data)
-        if spellForm.is_valid():
-            toggles.update(spellForm.cleaned_data)
-
-        self.toggles = {}
-
-        ret = {}
-        ret["combat"] = combatForm
-        ret["spell"] = spellForm
-
-        return ret

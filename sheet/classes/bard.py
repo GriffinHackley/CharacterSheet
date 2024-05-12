@@ -1,4 +1,4 @@
-from .classes import FifthEditionClass
+from .classes import FifthEditionClass, Subclass
 from ..modifiers import Modifier, ModifierList
 
 
@@ -21,7 +21,6 @@ class Bard(FifthEditionClass):
     expertise = {"skills": ["Perception", "Persuasion"]}
 
     def __init__(self):
-        self.subclassChoice = "Spirits"
         super().__init__(
             name="Bard",
             hitDie="8",
@@ -29,22 +28,19 @@ class Bard(FifthEditionClass):
             primaryStat="Charisma",
         )
 
-    def appendModifiers(self, modList: ModifierList):
-        if self.level >= 2:
-            mod = Modifier(
+    def getFeatureFunctions(self):
+        ret = {}
+
+        ret["Jack of All Trades"] = self.jackOfAllTrades
+
+        self.featureFunctions = ret
+
+    def jackOfAllTrades(self):
+        self.modifiers.append(
+            Modifier(
                 "Proficiency/2", "Non-Proficient Ability Check", "Jack of All Trades"
             )
-            modList.addModifier(mod)
-        super().appendModifiers(modList)
+        )
 
-    def getSubclassFeatureNames(self):
-        match self.subclass:
-            case "Spirits":
-                return {
-                    3: ["Guiding Whispers", "Spiritual Focus", "Tales from Beyond"],
-                    6: ["Spirit Session"],
-                    14: ["Mystical Connection"],
-                }
-            case _:
-                error = "{} is not a valid subclass"
-                raise Exception(error.format(self.subclass))
+    class Spirits(Subclass):
+        i = 0

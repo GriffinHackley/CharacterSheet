@@ -1,13 +1,13 @@
-from enum import Enum
 import re
 import math
 import markdown
 
-from sheet.toggles import ToggleList
 from .. import classes
 from pathlib import Path
 from bs4 import BeautifulSoup
+from sheet.toggles import ToggleList
 from ..modifiers import Modifier, ModifierList
+from rest_framework.exceptions import APIException
 
 
 def allClasses():
@@ -49,11 +49,17 @@ def getClasses(levels, spellList):
 
 
 class Class:
+    toggles = []
+    modifiers = []
+    consumables = {}
+    featureFunctions = {}
+
     def __init__(self, name, hitDie, spellProgression, primaryStat):
         self.name = name
         self.hitDie = hitDie
         self.spellProgression = spellProgression
         self.primaryStat = primaryStat
+        self.getFeatureFunctions()
 
     def setLevel(self, level):
         self.level = level
@@ -63,22 +69,45 @@ class Class:
 
     def setOptions(self, options):
         self.options = options
-        subclassInfo = self.options[self.subclass]
-        subclassInfo["name"] = self.subclass
+
         try:
-            self.subclass = getattr(self, subclassInfo["choice"])(subclassInfo)
+            subclassInfo = self.options[self.subclass]
+            subclassInfo["name"] = self.subclass
+        except:
+            raise Exception("Subclass section of options is malformed")
+
+        try:
+            choice = subclassInfo["choice"].replace(" ", "")
+            self.subclass = getattr(self, choice)(subclassInfo)
         except:
             raise Exception(
                 "Could not find a {} subclass by the name of {}".format(
-                    self.name, subclassInfo["name"]
+                    self.name, subclassInfo.get("choice")
                 )
             )
 
-    def getConsumables(self, stats, proficiencyBonus):
-        return self.subclass.getConsumables(stats, proficiencyBonus)
+    # Run the corresponding funtion for all features
+    def applyFeatures(self):
+        for feature in self.features:
+            functions = None
+
+            # Get feature functions from either class or subclass
+            if feature["name"] in self.featureFunctions:
+                functions = self.featureFunctions
+            if feature["name"] in self.subclass.featureFunctions:
+                functions = self.subclass.featureFunctions
+
+            if functions:
+                functions[feature["name"]]()
+        return
+
+    def getFeatureFunctions(self):
+        return
 
     def appendModifiers(self, modList: ModifierList):
-        return
+        allMods = self.modifiers + self.subclass.modifiers
+
+        modList.addModifierList(allMods)
 
     def addProficiencies(self, proficiencyList):
         # list(set()) converts removes duplicates
@@ -93,7 +122,41 @@ class Class:
         )
 
     def getToggles(self, toggleList):
+        allToggles = self.toggles + self.subclass.toggles
+
+        for toggle in allToggles:
+            toggleList.addToggle(toggle)
+
         return {}
+
+    def getConsumables(self, stats, proficiencyBonus):
+        allConsumables = self.consumables | self.subclass.consumables
+
+        for name, value in allConsumables.items():
+            if type(value["uses"]) == int:
+                continue
+
+            # Convert to stats
+            if value["uses"] in stats.keys():
+                value["uses"] = stats[value["uses"]]
+
+            if value["uses"] == "2*classLevel":
+                value["uses"] = 2 * self.level
+
+            if value["uses"] == "proficiencyBonus":
+                value["uses"] = proficiencyBonus
+
+            if value["uses"] == "2*proficiencyBonus":
+                value["uses"] = 2 * proficiencyBonus
+
+            if not type(value["uses"]) == int:
+                raise APIException(
+                    "Consumable uses must be an integer. Got {}".format(value["uses"])
+                )
+
+            allConsumables[name] = value
+
+        return allConsumables
 
     def getSpells(self, stats, profBonus, modList, ability):
         abilityMod = stats[ability]
@@ -192,16 +255,31 @@ class Class:
 
         return featureText
 
+    def getExpertise(self):
+        return self.subclass.getExpertise()
+
 
 class Subclass:
+
     def __init__(self, subclassInfo):
         self.name = subclassInfo["name"]
         self.choice = subclassInfo["choice"]
+        self.toggles = []
+        self.modifiers = []
+        self.consumables = {}
+        self.featureFunctions = {}
+        self.getFeatureFunctions()
 
     def getConsumables(self, stats, proficiencyBonus):
         return {}
 
     def getToggles(self, toggleList: ToggleList):
+        return
+
+    def getExpertise(self):
+        return []
+
+    def getFeatureFunctions(self):
         return
 
 
@@ -210,6 +288,10 @@ class FifthEditionClass(Class):
         super().__init__(name, hitDie, spellProgression, primaryStat)
         self.parseMd()
         self.edition = "5e"
+
+    def setOptions(self, options):
+        super().setOptions(options)
+        self.features = self.getFeaturesToLevel()
 
     def addProficiencies(self, proficiencyList):
         super().addProficiencies(proficiencyList)
@@ -236,7 +318,7 @@ class FifthEditionClass(Class):
     def parseMd(self):
         relPath = "sources\\classes\\" + self.name + ".md"
         new_path = Path(__file__).parent.parent.parent / relPath
-        with open(new_path) as f:
+        with open(new_path, "r", encoding="utf-8") as f:
             markdownFile = f.read()
         html = markdown.markdown(markdownFile)
         htmlFile = BeautifulSoup(html, "html.parser")
@@ -345,7 +427,7 @@ class FifthEditionClass(Class):
             self.name, self.subclass.choice
         )
         new_path = Path(__file__).parent.parent.parent / relPath
-        with open(new_path) as f:
+        with open(new_path, "r", encoding="utf-8") as f:
             markdownFile = f.read()
         html = markdown.markdown(markdownFile)
         htmlFile = BeautifulSoup(html, "html.parser")

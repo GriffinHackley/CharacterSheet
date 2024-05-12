@@ -1,4 +1,4 @@
-from .classes import FifthEditionClass
+from .classes import FifthEditionClass, Subclass
 from ..modifiers import Modifier, ModifierList
 
 
@@ -15,7 +15,6 @@ class Ranger(FifthEditionClass):
     expertise = {"skills": ["Stealth"]}
 
     def __init__(self):
-        self.subclassChoice = "Gloomstalker"
         super().__init__(
             name="Ranger",
             hitDie="10",
@@ -23,21 +22,27 @@ class Ranger(FifthEditionClass):
             primaryStat="Wisdom",
         )
 
-    def appendModifiers(self, modList: ModifierList):
-        super().appendModifiers(modList)
-
-        modList.addModifier(Modifier(2, "ToHit-Ranged", "Archery Fighting Style"))
-        modList.addModifier(Modifier("Wisdom", "Initiative", "Dread Ambusher"))
-
-    def getConsumables(self, stats, proficiencyBonus):
+    def getFeatureFunctions(self):
         ret = {}
 
-        ret["Favored Foe"] = {"uses": proficiencyBonus}
+        ret["Favored Foe"] = self.favoredFoe
+        ret["Fighting Style"] = self.fightingStyle
 
-        return ret
+        self.featureFunctions = ret
 
-    def getClassFeatures(self):
-        return super().get5eClassFeatures()
+    def favoredFoe(self):
+        self.consumables["Favored Foe"] = {"uses": "proficiencyBonus"}
 
-    def getSubclassFeatures(self, url):
-        return super().get5eSubclassFeatures(url)
+    def fightingStyle(self):
+        self.modifiers.append(Modifier(2, "ToHit-Ranged", "Archery Fighting Style"))
+
+    class GloomStalker(Subclass):
+        def getFeatureFunctions(self):
+            ret = {}
+
+            ret["Dread Ambusher"] = self.dreadAmbusher
+
+            self.featureFunctions = ret
+
+        def dreadAmbusher(self):
+            self.modifiers.append(Modifier("Wisdom", "Initiative", "Dread Ambusher"))

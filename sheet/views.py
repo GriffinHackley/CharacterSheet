@@ -45,9 +45,12 @@ def getCharacter(request, characterId):
             )
         )
 
-    character.build()
+    try:
+        character.build()
 
-    exported = character.exportCharacter()
+        exported = character.exportCharacter()
+    except Exception as e:
+        return HttpResponse(e, status=500)
 
     if request.method == "GET":
         return Response(exported)
@@ -72,9 +75,12 @@ def getCharacterWithToggles(request, characterId):
 
     character.activeToggles = request.data
 
-    character.build()
+    try:
+        character.build()
 
-    exported = character.exportCharacter()
+        exported = character.exportCharacter()
+    except Exception as e:
+        return HttpResponse(e, status=500)
 
     return Response(exported)
 

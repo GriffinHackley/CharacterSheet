@@ -23,15 +23,15 @@ class Artificer(FifthEditionClass):
             primaryStat="Intelligence",
         )
 
-    def appendModifiers(self, modList: ModifierList):
-        super().appendModifiers(modList)
+    def getFeatureFunctions(self):
+        ret = {}
 
-    def getConsumables(self, stats, proficiencyBonus):
-        ret = super().getConsumables(stats, proficiencyBonus)
+        ret["Magical Tinkering"] = self.magicalTinkering
 
-        ret["Magical Tinkering"] = {"uses": stats["Intelligence"]}
+        self.featureFunctions = ret
 
-        return ret
+    def magicalTinkering(self):
+        self.consumables["Magical Tinkering"] = {"uses": "Intelligence"}
 
     class Artillerist(Subclass):
         def getConsumables(self, stats, proficiencyBonus):

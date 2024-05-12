@@ -1,4 +1,4 @@
-from .classes import FifthEditionClass
+from .classes import FifthEditionClass, Subclass
 from ..modifiers import ModifierList
 
 
@@ -17,17 +17,13 @@ class Rogue(FifthEditionClass):
     def __init__(self):
         super().__init__(name="Rogue", hitDie="8", spellProgression="none")
 
-    def appendModifiers(self, modList: ModifierList):
-        super().appendModifiers(modList)
+    class Soulknife(Subclass):
+        def getFeatureFunctions(self):
+            ret = {}
 
-    def getConsumables(self, stats, proficiencyBonus):
-        return []
+            ret["Psionic Power"] = self.psionicPower
 
-    def getSpells(self, stats, profBonus, modList):
-        return {}
+            self.featureFunctions = ret
 
-    def getClassFeatures(self):
-        return super().get5eClassFeatures()
-
-    def getSubclassFeatures(self, url):
-        return super().get5eSubclassFeatures(url)
+        def psionicPower(self):
+            self.consumables["Psionic Energy Dice"] = {"uses": "2*proficiencyBonus"}

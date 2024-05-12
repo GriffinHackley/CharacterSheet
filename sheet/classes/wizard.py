@@ -30,23 +30,17 @@ class Wizard(FifthEditionClass):
             primaryStat="Intelligence",
         )
 
-    def appendModifiers(self, modList: ModifierList):
-        super().appendModifiers(modList)
-
-    def getConsumables(self, stats, proficiencyBonus):
-        ret = {}
-
-        ret = ret | self.subclass.getConsumables(stats, proficiencyBonus)
-
-        return ret
-
-    def getToggles(self, toggleList: ToggleList):
-        self.subclass.getToggles(toggleList)
-
     class Bladesinging(Subclass):
-        def getToggles(self, toggleList: ToggleList):
+        def getFeatureFunctions(self):
+            ret = {}
+
+            ret["Bladesong"] = self.bladesong
+
+            self.featureFunctions = ret
+
+        def bladesong(self):
             bladesong = Toggle(
-                "Blade Song",
+                "Bladesong",
                 "Class Feature",
                 [
                     Modifier("Intelligence", "AC", source="Bladesong"),
@@ -55,14 +49,16 @@ class Wizard(FifthEditionClass):
                 ],
             )
 
-            toggleList.addToggle(bladesong)
-
-        def getConsumables(self, stats, proficiencyBonus):
-            ret = {}
-
-            ret["Blade Song"] = {"uses": proficiencyBonus}
-
-            return ret
+            self.toggles.append(bladesong)
+            self.consumables["Bladesong"] = {"uses": "proficiencyBonus"}
 
     class Abjurer(Subclass):
-        i = 0
+        def getFeatureFunctions(self):
+            ret = {}
+
+            ret["Arcane Ward"] = self.arcaneWard
+
+            self.featureFunctions = ret
+
+        def arcaneWard(self):
+            self.consumables["Arcane Ward"] = {"uses": "2*classLevel"}

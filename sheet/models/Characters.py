@@ -274,32 +274,11 @@ class Character(models.Model):
         self.charClass = classes.getClasses(self.charClass, self.spellList)
 
         for cls in self.charClass:
+            cls.applyFeatures()
             cls.appendModifiers(self.modList)
             cls.addProficiencies(self.proficiencies)
             cls.getToggles(self.toggles)
             self.hitDie = cls.hitDie
-
-        # if "dreadAmbusher" in self.toggles.keys() and self.toggles["dreadAmbusher"]:
-        #     self.modList.addModifier(
-        #         Modifier("1d8", "untyped", "DamageDie", "Dread Ambusher")
-        #     )
-
-        # if "elemental" in self.toggles.keys() and self.toggles["elemental"]:
-        #     if "focusWeapon" in self.toggles.keys() and self.toggles["focusWeapon"]:
-        #         self.modList.addModifier(
-        #             Modifier("1d6", "elemental", "Main-DamageDie", "Focus Weapon")
-        #         )
-
-        # if "bladesong" in self.toggles.keys() and self.toggles["bladesong"]:
-        #     self.modList.addModifier(
-        #         Modifier("Intelligence", "untyped", "AC", "Bladesong")
-        #     )
-        #     self.modList.addModifier(Modifier(10, "untyped", "Speed", "Bladesong"))
-
-        # if "sneakAttack" in self.toggles.keys() and self.toggles["sneakAttack"]:
-        #     self.modList.addModifier(
-        #         Modifier("1d6", "untyped", "DamageDie", "Sneak Attack")
-        #     )
 
     def applyFeats(self, featList):
         ret = {}
@@ -602,7 +581,7 @@ class Character(models.Model):
 
         features = {}
         for cls in self.charClass:
-            features[cls.name] = cls.getFeaturesToLevel()
+            features[cls.name] = cls.features
 
         ret["Class"] = features
         ret["Race"] = self.race.getFeatures()
