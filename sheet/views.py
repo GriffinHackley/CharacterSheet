@@ -50,7 +50,7 @@ def getCharacter(request, characterId):
         character.build()
 
         exported = character.exportCharacter()
-    except Exception as e:
+    except APIException as e:
         return HttpResponse(e, status=500)
 
     if request.method == "GET":
