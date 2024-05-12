@@ -1,5 +1,5 @@
 import math
-from typing import List
+from rest_framework.exceptions import APIException
 
 
 class Modifier:
@@ -28,7 +28,7 @@ class ModifierList:
             self.list[modifier.stat] = []
 
         if not modifier.source:
-            raise Exception("Modifier has no source set")
+            raise APIException("Modifier has no source set")
 
         self.list[modifier.stat].append(modifier)
 
@@ -57,7 +57,7 @@ class ModifierList:
         source = {}
         for bonus in allBonus:
             if not type(bonus.bonus) == int:
-                raise Exception(
+                raise APIException(
                     "The type of bonus for {} is not an int".format(bonus.source)
                 )
             source[bonus.source] = bonus.bonus

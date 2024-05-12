@@ -1,11 +1,11 @@
-import math
 import re
-from sheet.misc.spells import SpellList
-from sheet.models.Characters import Character
+import math
 
-from ..misc.feats import fifthEditionFeats
-from ..misc.backgrounds import FifthEditionBackground
+from sheet.misc.spells import SpellList
 from ..lists import Ability, skill_list_5e
+from ..misc.feats import fifthEditionFeats
+from sheet.models.Characters import Character
+from ..misc.backgrounds import FifthEditionBackground
 
 
 class FifthEditionCharacter(Character):
@@ -99,7 +99,7 @@ class FifthEditionCharacter(Character):
                 elif "Off-Hand" in weapon["tags"]:
                     name = "Off-Hand " + weapon["name"]
                 else:
-                    raise Exception(
+                    raise APIException(
                         "The TWF tag was on this weapon but neither the Main or Off-Hand tags were found"
                     )
             else:

@@ -1,9 +1,11 @@
 import json
 import math
-from sheet.models.Characters import Character
-from ..misc.feats import pathfinderFeats
-from ..lists import save_list_pathfinder, skill_list_pathfinder
+
 from ..modifiers import Modifier
+from ..misc.feats import pathfinderFeats
+from sheet.models.Characters import Character
+from rest_framework.exceptions import APIException
+from ..lists import save_list_pathfinder, skill_list_pathfinder
 
 
 class PathfinderCharacter(Character):
@@ -113,7 +115,7 @@ class PathfinderCharacter(Character):
                 elif "Off-Hand" in weapon["tags"]:
                     name = "Off-Hand " + name
                 else:
-                    raise Exception(
+                    raise APIException(
                         "The TWF tag was on this weapon but neither the Main or Off-Hand tags were found"
                     )
 
@@ -263,7 +265,7 @@ class PathfinderCharacter(Character):
                     statBonus += 3
 
             if skillRanksUsed > totalSkillRanks:
-                raise Exception(
+                raise APIException(
                     "You have used {} skill ranks when only {} are available".format(
                         skillRanksUsed, totalSkillRanks
                     )

@@ -1,4 +1,5 @@
 from sheet.modifiers import Modifier
+from rest_framework.exceptions import APIException
 
 
 class Feat:
@@ -30,7 +31,7 @@ class ASI(Feat):
             i = 0
 
         if not hasattr(self, "options") or not self.options["ASI"]:
-            raise Exception("No ASI specified for the ASI feat")
+            raise APIException("No ASI specified for the ASI feat")
 
         stat = next(iter(self.options["ASI"]))
 
@@ -49,11 +50,11 @@ class ElvenAccuracy(Feat):
     def getModifiers(self, modList):
         validOptions = ["Dexterity", "Intelligence", "Wisdom", "Charisma"]
         if not hasattr(self, "options") or not self.options["ASI"]:
-            raise Exception("No ASI specified for the Elven Accuracy feat")
+            raise APIException("No ASI specified for the Elven Accuracy feat")
 
         stat = next(iter(self.options["ASI"]))
         if not stat in validOptions:
-            raise Exception(
+            raise APIException(
                 "{} is not a valid ASI choice for Elven Accuracy".format(
                     self.options["ASI"]
                 )
@@ -95,7 +96,7 @@ class RitualCaster(Feat):
             self.ability = "Wisdom"
 
         else:
-            raise Exception(
+            raise APIException(
                 "{} is not a valid clas choice for Ritual Caster".format(choice)
             )
 

@@ -1,17 +1,18 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
-from django.contrib import admin
-from django.core.cache import cache
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from .models.FifthEditionCharacter import FifthEditionCharacter
-from .models.PathfinderCharacter import PathfinderCharacter
-from .models.Characters import Character
-from .plan import Plan
 import json
+
+from django.contrib import admin
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import APIException
+
+from .plan import Plan
 from .races import races
+from .models.Characters import Character
+from .models.PathfinderCharacter import PathfinderCharacter
+from .models.FifthEditionCharacter import FifthEditionCharacter
 
 admin.site.register(Character)
 
@@ -39,7 +40,7 @@ def getCharacter(request, characterId):
     elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter(character)
     else:
-        raise Exception(
+        raise APIException(
             "Character config specifies {} edition, which does not exist".format(
                 character.config["edition"]
             )
@@ -67,7 +68,7 @@ def getCharacterWithToggles(request, characterId):
     elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter(character)
     else:
-        raise Exception(
+        raise APIException(
             "Character config specifies {} edition, which does not exist".format(
                 character.config["edition"]
             )
@@ -96,7 +97,7 @@ def getPlan(request, characterId):
     elif config["edition"] == "Pathfinder":
         character = PathfinderCharacter().fromCharacter(character)
     else:
-        raise Exception(
+        raise APIException(
             "Character config specifies {} edition, which does not exist".format(
                 character.config["edition"]
             )
@@ -129,7 +130,7 @@ def getPlan(request, characterId):
 #         elif config["edition"] == "Pathfinder":
 #             character = PathfinderCharacter(character)
 #         else:
-#             raise Exception(
+#             raise APIException(
 #                 "Character config specifies {} edition, which does not exist".format(
 #                     character.config["edition"]
 #                 )
@@ -184,7 +185,7 @@ def create(request):
     # elif character.config['edition'] == 'Pathfinder':
     #     character = PathfinderCharacter().fromCharacter(character)
     # else:
-    #     raise Exception("Character config specifies {} edition, which does not exist".format(character.config['edition']))
+    #     raise APIException("Character config specifies {} edition, which does not exist".format(character.config['edition']))
 
     # character.save()
 

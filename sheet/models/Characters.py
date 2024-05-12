@@ -1,15 +1,15 @@
 import math
+import json
 
 from django.db import models
 from django.template.defaulttags import register
-from django.core.cache import cache
 
-from ..classes import classes
 from ..races import races
-from ..lists import Ability, combat_list
-from ..modifiers import ModifierList
+from ..classes import classes
 from ..toggles import ToggleList
-import json
+from ..modifiers import ModifierList
+from ..lists import Ability, combat_list
+from rest_framework.exceptions import APIException
 
 
 class Character(models.Model):
@@ -79,7 +79,7 @@ class Character(models.Model):
             self.accentColor = json.loads(character.accentColor)
 
         except:
-            raise Exception("Invalid Character JSON")
+            raise APIException("Invalid Character JSON")
 
         return self
 
@@ -179,7 +179,7 @@ class Character(models.Model):
 
         for toggle, value in self.activeToggles.items():
             if not self.toggles.isInList(toggle):
-                raise Exception(
+                raise APIException(
                     "{} was not found in the toggle list for this character".format(
                         toggle
                     )

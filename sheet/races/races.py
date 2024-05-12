@@ -1,5 +1,6 @@
 from .. import races
 from ..modifiers import Modifier, ModifierList
+from rest_framework.exceptions import APIException
 from ..static.addParagraphTags import addParagraphTags
 
 
@@ -32,7 +33,7 @@ def getRace(name):
         return getattr(raceModule, name.replace("-", "").replace(" ", ""))
     except:
         error = "{} does not exist in list of available races"
-        raise Exception(error.format(name))
+        raise APIException(error.format(name))
 
 
 class Race:
@@ -65,7 +66,7 @@ class Race:
         for proficiency in proficiencies:
             for key, value in proficiency.items():
                 if not key in proficiencyList.keys():
-                    raise Exception(
+                    raise APIException(
                         "Key '"
                         + key
                         + "' was found in proficiencies but does not exist"
@@ -143,7 +144,7 @@ class Race:
             if hasattr(self, option):
                 setattr(self, option, value)
             else:
-                raise Exception(
+                raise APIException(
                     "A race option was found in the config that does not exist. Option:"
                     + option
                 )

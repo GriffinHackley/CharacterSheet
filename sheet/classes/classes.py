@@ -74,13 +74,13 @@ class Class:
             subclassInfo = self.options[self.subclass]
             subclassInfo["name"] = self.subclass
         except:
-            raise Exception("Subclass section of options is malformed")
+            raise APIException("Subclass section of options is malformed")
 
         try:
             choice = subclassInfo["choice"].replace(" ", "")
             self.subclass = getattr(self, choice)(subclassInfo)
         except:
-            raise Exception(
+            raise APIException(
                 "Could not find a {} subclass by the name of {}".format(
                     self.name, subclassInfo.get("choice")
                 )
@@ -448,7 +448,7 @@ class FifthEditionClass(Class):
             current = soup.find("h3", text=feature + " (Optional)")
 
         if current == None:
-            raise Exception("Could not find the {} feature".format(feature))
+            raise APIException("Could not find the {} feature".format(feature))
 
         featureText = []
         while current.findNext() and not current.findNext().name == "h3":

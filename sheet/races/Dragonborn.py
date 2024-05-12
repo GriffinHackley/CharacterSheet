@@ -1,5 +1,6 @@
 from .races import Race
 from ..modifiers import Modifier, ModifierList
+from rest_framework.exceptions import APIException
 
 
 class Dragonborn(Race):
@@ -51,7 +52,7 @@ class BreathWeapon:
         if level >= 17:
             return "4d10"
 
-        raise Exception(
+        raise APIException(
             "The level given for breath weapon was not valid: {}".format(level)
         )
 
