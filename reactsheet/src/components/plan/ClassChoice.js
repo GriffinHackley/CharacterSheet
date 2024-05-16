@@ -144,38 +144,39 @@ export default function ClassChoice({
 
     if (starting["Armor"] !== "None") {
       levelOne.push(
-        <div>
+        <div key="startingArmor">
           Armor: {starting["Armor"]}
         </div>
       );
     }
 
     if (starting["Weapons"] !== "None") {
-      <div>
+      <div key="startingWeapons">
         Weapons: {starting["Weapons"]}
       </div>;
     }
 
     if (starting["Tools"].defaults[0] !== "None") {
       levelOne.push(
-        <div>
+        <div key="startingTools">
           Tools: {starting["Tools"].defaults.join(", ")}
         </div>
       );
 
-      for (let type of Object.keys(starting["Tools"].choices)) {
-        for (let i = 0; i < starting["Tools"].choices[type]; i++) {
-          levelOne.push(
-            <Selector
-              className={"toolSelector"}
-              type={type}
-              choice={"default"}
-              allChoices={["Smith", "Woodcarvers", "Thieves Tools"]}
-              setFunction={() => {}}
-            />
-          );
-        }
-      }
+      //   for (let type of Object.keys(starting["Tools"].choices)) {
+      //     for (let i = 0; i < starting["Tools"].choices[type]; i++) {
+      //       levelOne.push(
+      //         <Selector
+      //           className={"toolSelector"}
+      //           type={type}
+      //           choice={"default"}
+      //           allChoices={["Smith", "Woodcarvers", "Thieves Tools"]}
+      //           setFunction={() => {}}
+      //           index={i}
+      //         />
+      //       );
+      //     }
+      //   }
     }
   }
 

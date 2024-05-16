@@ -23,10 +23,42 @@ function getFeatureText(ancestries, chosenAncestry) {
   return text;
 }
 
-export default function Ancestry({ ancestries }) {
+function addProficiencies(
+  allAncestries,
+  choice,
+  proficiencyChoices,
+  setProficiencyChoices
+) {
+  if (choice === "none") {
+    return;
+  }
+
+  let proficiencies = allAncestries[choice].Proficiencies;
+
+  for (let [type, value] of Object.entries(proficiencies)) {
+    for (let i = 0; i < value.length; i++) {
+      proficiencyChoices[type][`ancestry-${type}-${i}`] = value[i];
+    }
+  }
+
+  setProficiencyChoices(structuredClone(proficiencyChoices));
+}
+
+export default function Ancestry({
+  ancestries,
+  proficiencyChoices,
+  setProficiencyChoices
+}) {
   let allAncestries = ancestries.all;
   let choice = ancestries.choice;
   const [chosenAncestry, setAncestry] = useState(choice);
+
+  addProficiencies(
+    allAncestries,
+    choice,
+    proficiencyChoices,
+    setProficiencyChoices
+  );
 
   return (
     <div>

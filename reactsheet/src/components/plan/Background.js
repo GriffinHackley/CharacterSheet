@@ -1,96 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../css/plan/Background.css";
-
-let allSkills = [
-  "Acrobatics",
-  "Animal Handling",
-  "Arcana",
-  "Athletics",
-  "Deception",
-  "History",
-  "Insight",
-  "Intimidation",
-  "Investigation",
-  "Medicine",
-  "Nature",
-  "Perception",
-  "Performance",
-  "Persuasion",
-  "Religion",
-  "Sleight of Hand",
-  "Stealth",
-  "Survival"
-];
-
-let allArtisanTools = [
-  "Alchemist's supplies",
-  "Brewer's supplies",
-  "Calligrapher's supplies",
-  "Carpenter's tools",
-  "Cartographer's tools",
-  "Cobbler's tools",
-  "Cook's utensils",
-  "Glassblower's tools",
-  "Jeweler's tools",
-  "Leatherworker's tool",
-  "Mason's tools",
-  "Painter's supplies",
-  "Potter's tools",
-  "Smith's tools",
-  "Tinker's tools",
-  "Weaver's tools",
-  "Woodcarver's tools"
-];
-
-let allTools = [
-  "Disguise kit",
-  "Forgery kit",
-  "Herbalism kit",
-  "Navigator's tools",
-  "Poisoner's kit",
-  "Thieves' tools"
-];
-
-let allGames = [
-  "Dice set",
-  "Dragonchess set",
-  "Playing card set",
-  "Three-Dragon Ante set"
-];
-
-let allInstruments = [
-  "Bagpipes",
-  "Drum",
-  "Dulcimer",
-  "Flute",
-  "Lute",
-  "Lyre",
-  "Horn",
-  "Pan flute",
-  "Shawm",
-  "Viol"
-];
-
-let allLanguages = [
-  "Dwarvish",
-  "Elvish",
-  "Giant",
-  "Gnomish",
-  "Goblin",
-  "Halfling",
-  "Orc",
-  "Abyssal",
-  "Celestial",
-  "DeepSpeech",
-  "Draconic",
-  "Infernal",
-  "Aquan",
-  "Auran",
-  "Ignan",
-  "Terran",
-  "Sylvan",
-  "Undercommon"
-];
+import { MenuItem, Select } from "@mui/material";
+import Selector from "../shared/Selector";
 
 function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
   //   Dont let them choose the same option as the other selector
@@ -177,7 +88,14 @@ function miscProfSelector(id, selectorType, setSelector) {
   );
 }
 
-function applySelector(selector) {
+function applySelector(
+  selector,
+  allTools,
+  allArtisanTools,
+  allLanguages,
+  allInstruments,
+  allGames
+) {
   if (selector === "tools") {
     return allTools;
   } else if (selector === "languages") {
@@ -237,7 +155,79 @@ function getMiscSelections(choices) {
   return [key, value];
 }
 
-export default function Background({ backgrounds }) {
+function onTestSkillSelect(
+  e,
+  proficiencyChoices,
+  setProficiencyChoices,
+  setCurrentChoice,
+  id
+) {
+  proficiencyChoices.skills[id] = e.target.value;
+  setProficiencyChoices(proficiencyChoices);
+  setCurrentChoice(e.target.value);
+}
+
+function getSkillSelector(
+  currentChoice,
+  setCurrentChoice,
+  proficiencyChoices,
+  setProficiencyChoices,
+  allSkills,
+  index
+) {
+  let id = "backgroundSkill-" + index;
+
+  //   Filter out all entries that are already being used
+  let filterSkills = [];
+  for (const [key, skill] of Object.entries(proficiencyChoices.skills)) {
+    if (key !== id) {
+      filterSkills.push(skill);
+    }
+  }
+
+  if (proficiencyChoices.skills[id] !== currentChoice) {
+    proficiencyChoices.skills[id] = currentChoice;
+    setProficiencyChoices(structuredClone(proficiencyChoices));
+  }
+
+  return (
+    <Select
+      id={id}
+      key={id}
+      value={currentChoice}
+      onChange={e =>
+        onTestSkillSelect(
+          e,
+          proficiencyChoices,
+          setProficiencyChoices,
+          setCurrentChoice,
+          id
+        )}
+    >
+      {allSkills.map(skill => {
+        let disabled = filterSkills.includes(skill);
+
+        return (
+          <MenuItem disabled={disabled} key={id + skill} value={skill}>
+            {skill}
+          </MenuItem>
+        );
+      })}
+    </Select>
+  );
+}
+
+export default function Background({
+  backgrounds,
+  proficiencyChoices,
+  setProficiencyChoices,
+  allSkills,
+  allTools,
+  allArtisanTools,
+  allGames,
+  allInstruments,
+  allLanguages
+}) {
   let allBackgrounds = backgrounds.all;
   let choices = structuredClone(backgrounds.choices);
   delete choices.name;
@@ -247,17 +237,52 @@ export default function Background({ backgrounds }) {
 
   const [skill1, setskill1] = useState(choices.skills[0]);
   const [skill2, setskill2] = useState(choices.skills[1]);
+
+  let skillSelector1 = getSkillSelector(
+    skill1,
+    setskill1,
+    proficiencyChoices,
+    setProficiencyChoices,
+    allSkills,
+    0
+  );
+
+  let skillSelector2 = getSkillSelector(
+    skill2,
+    setskill2,
+    proficiencyChoices,
+    setProficiencyChoices,
+    allSkills,
+    1
+  );
+
+  //   const [skill1, setskill1] = useState(choices.skills[0]);
+  //   const [skill2, setskill2] = useState(choices.skills[1]);
   delete choices.skills;
 
   let [type, value] = getMiscSelections(choices);
   const [miscSelector1, setmiscSelector1] = useState(type);
   const [misc1, setmisc1] = useState(value);
-  let misc1Options = applySelector(miscSelector1);
+  let misc1Options = applySelector(
+    miscSelector1,
+    allTools,
+    allArtisanTools,
+    allLanguages,
+    allInstruments,
+    allGames
+  );
 
   [type, value] = getMiscSelections(choices);
   const [miscSelector2, setmiscSelector2] = useState(type);
   const [misc2, setmisc2] = useState(value);
-  let misc2Options = applySelector(miscSelector2);
+  let misc2Options = applySelector(
+    miscSelector2,
+    allTools,
+    allArtisanTools,
+    allLanguages,
+    allInstruments,
+    allGames
+  );
 
   return (
     <div>
@@ -275,8 +300,10 @@ export default function Background({ backgrounds }) {
       />
       <div className="backgroundSkills">
         <label>Skills:</label>
-        {optionSelector("skill1", setskill1, skill1, skill2, allSkills)}
-        {optionSelector("skill2", setskill2, skill2, skill1, allSkills)}
+        {skillSelector1}
+        {skillSelector2}
+        {/* {optionSelector("skill1", setskill1, skill1, skill2, allSkills)}
+        {optionSelector("skill2", setskill2, skill2, skill1, allSkills)} */}
       </div>
       <div className="backgroundMiscProf">
         <label>Misc. Proficiencies</label>

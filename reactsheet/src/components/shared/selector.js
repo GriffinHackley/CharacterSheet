@@ -52,6 +52,7 @@ export default function Selector({
       <select
         name={type + "Choice"}
         id={type + "Choice"}
+        key={type + "Choice" + index}
         value={currentValue}
         onChange={e => setFunction(e.target.value.split("-")[0])}
       >
