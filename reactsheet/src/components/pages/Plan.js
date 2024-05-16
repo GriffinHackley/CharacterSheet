@@ -78,23 +78,23 @@ let allInstruments = [
 ];
 
 let allLanguages = [
+  "Abyssal",
+  "Aquan",
+  "Auran",
+  "Celestial",
+  "DeepSpeech",
+  "Draconic",
   "Dwarvish",
   "Elvish",
   "Giant",
   "Gnomish",
   "Goblin",
   "Halfling",
-  "Orc",
-  "Abyssal",
-  "Celestial",
-  "DeepSpeech",
-  "Draconic",
-  "Infernal",
-  "Aquan",
-  "Auran",
   "Ignan",
-  "Terran",
+  "Infernal",
+  "Orc",
   "Sylvan",
+  "Terran",
   "Undercommon"
 ];
 
@@ -115,7 +115,7 @@ export default function Plan() {
     skills: {},
     artisanTools: {},
     tools: {},
-    games: {},
+    gameSets: {},
     instruments: {},
     languages: {}
   });
@@ -141,6 +141,7 @@ export default function Plan() {
           ancestries={plan[0].races}
           proficiencyChoices={proficiencyChoices}
           setProficiencyChoices={setProficiencyChoices}
+          allLanguages={allLanguages}
         />
         <Background
           backgrounds={plan[0].backgrounds}

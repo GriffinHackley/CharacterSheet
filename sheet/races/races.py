@@ -114,23 +114,21 @@ class Race:
             ret = ret + [
                 {
                     "name": "Darkvision",
-                    "text": addParagraphTags(
-                        "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray."
-                    ),
+                    "text": "You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You discern colors in that darkness only as shades of gray.",
                 }
             ]
 
         languages = "You can speak, read, and write Common"
-        if len(self.languages) == 1:
-            languages = languages + " and {}".format(self.languages[0])
-        if len(self.languages) > 1:
-            for i in range(len(self.languages) - 1):
-                languages = languages + ", {}".format(self.languages[i])
-            languages = languages + ", and {}".format(
-                self.languages[len(self.languages) - 1]
-            )
+        # if len(self.languages) == 1:
+        #     languages = languages + " and {}".format(self.languages[0])
+        # if len(self.languages) > 1:
+        #     for i in range(len(self.languages) - 1):
+        #         languages = languages + ", {}".format(self.languages[i])
+        #     languages = languages + ", and {}".format(
+        #         self.languages[len(self.languages) - 1]
+        #     )
 
-        ret = ret + [{"name": "Languages", "text": addParagraphTags(languages)}]
+        ret = ret + [{"name": "Languages", "text": languages}]
 
         return {"Features": ret, "Attributes": self.getAttributes()}
 

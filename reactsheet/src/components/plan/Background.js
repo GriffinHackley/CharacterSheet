@@ -1,41 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../css/plan/Background.css";
 import { MenuItem, Select } from "@mui/material";
-import Selector from "../shared/Selector";
-
-function optionSelector(id, setOption, currentOption, otherOption, allOptions) {
-  //   Dont let them choose the same option as the other selector
-  allOptions = allOptions.filter(option => option !== otherOption);
-  let selected = currentOption;
-
-  let options = allOptions.map(option => {
-    return (
-      <option key={option}>
-        {option}
-      </option>
-    );
-  });
-
-  options.push(
-    <option hidden disabled value key={"defaultOption"}>
-      -- select an option --
-    </option>
-  );
-
-  if (currentOption === "none") {
-    selected = "defaultOption";
-  }
-  return (
-    <select
-      name={id}
-      id={id}
-      onChange={e => setOption(e.target.value)}
-      value={selected}
-    >
-      {options}
-    </select>
-  );
-}
+import ExclusiveSelector from "../shared/ExclusiveSelector";
 
 function miscProfSelector(id, selectorType, setSelector) {
   return (
@@ -114,7 +80,7 @@ function getAllFeatures(features, chosenFeature) {
 
   let usedFeature = false;
 
-  for (let [key, value] of Object.entries(features)) {
+  for (let key of Object.keys(features)) {
     if (key === chosenFeature) {
       usedFeature = true;
       choices.push(
@@ -155,68 +121,6 @@ function getMiscSelections(choices) {
   return [key, value];
 }
 
-function onTestSkillSelect(
-  e,
-  proficiencyChoices,
-  setProficiencyChoices,
-  setCurrentChoice,
-  id
-) {
-  proficiencyChoices.skills[id] = e.target.value;
-  setProficiencyChoices(proficiencyChoices);
-  setCurrentChoice(e.target.value);
-}
-
-function getSkillSelector(
-  currentChoice,
-  setCurrentChoice,
-  proficiencyChoices,
-  setProficiencyChoices,
-  allSkills,
-  index
-) {
-  let id = "backgroundSkill-" + index;
-
-  //   Filter out all entries that are already being used
-  let filterSkills = [];
-  for (const [key, skill] of Object.entries(proficiencyChoices.skills)) {
-    if (key !== id) {
-      filterSkills.push(skill);
-    }
-  }
-
-  if (proficiencyChoices.skills[id] !== currentChoice) {
-    proficiencyChoices.skills[id] = currentChoice;
-    setProficiencyChoices(structuredClone(proficiencyChoices));
-  }
-
-  return (
-    <Select
-      id={id}
-      key={id}
-      value={currentChoice}
-      onChange={e =>
-        onTestSkillSelect(
-          e,
-          proficiencyChoices,
-          setProficiencyChoices,
-          setCurrentChoice,
-          id
-        )}
-    >
-      {allSkills.map(skill => {
-        let disabled = filterSkills.includes(skill);
-
-        return (
-          <MenuItem disabled={disabled} key={id + skill} value={skill}>
-            {skill}
-          </MenuItem>
-        );
-      })}
-    </Select>
-  );
-}
-
 export default function Background({
   backgrounds,
   proficiencyChoices,
@@ -235,53 +139,76 @@ export default function Background({
   const [activeFeature, setActiveFeature] = useState(choices.feature);
   delete choices.feature;
 
-  const [skill1, setskill1] = useState(choices.skills[0]);
-  const [skill2, setskill2] = useState(choices.skills[1]);
+  const [skill1, setSkill1] = useState(choices.skills[0]);
+  const [skill2, setSkill2] = useState(choices.skills[1]);
 
-  let skillSelector1 = getSkillSelector(
-    skill1,
-    setskill1,
-    proficiencyChoices,
-    setProficiencyChoices,
-    allSkills,
-    0
-  );
-
-  let skillSelector2 = getSkillSelector(
-    skill2,
-    setskill2,
-    proficiencyChoices,
-    setProficiencyChoices,
-    allSkills,
-    1
-  );
-
-  //   const [skill1, setskill1] = useState(choices.skills[0]);
-  //   const [skill2, setskill2] = useState(choices.skills[1]);
   delete choices.skills;
 
   let [type, value] = getMiscSelections(choices);
   const [miscSelector1, setmiscSelector1] = useState(type);
-  const [misc1, setmisc1] = useState(value);
-  let misc1Options = applySelector(
-    miscSelector1,
-    allTools,
-    allArtisanTools,
-    allLanguages,
-    allInstruments,
-    allGames
+  const [misc1, setMisc1] = useState(value);
+
+  let [misc1Options, setMisc1Options] = useState(
+    applySelector(
+      miscSelector1,
+      allTools,
+      allArtisanTools,
+      allLanguages,
+      allInstruments,
+      allGames
+    )
   );
 
   [type, value] = getMiscSelections(choices);
   const [miscSelector2, setmiscSelector2] = useState(type);
-  const [misc2, setmisc2] = useState(value);
-  let misc2Options = applySelector(
-    miscSelector2,
-    allTools,
-    allArtisanTools,
-    allLanguages,
-    allInstruments,
-    allGames
+  const [misc2, setMisc2] = useState(value);
+  let [misc2Options, setMisc2Options] = useState(
+    applySelector(
+      miscSelector2,
+      allTools,
+      allArtisanTools,
+      allLanguages,
+      allInstruments,
+      allGames
+    )
+  );
+
+  useEffect(
+    () => {
+      let allOptions = applySelector(
+        miscSelector1,
+        allTools,
+        allArtisanTools,
+        allLanguages,
+        allInstruments,
+        allGames
+      );
+
+      if (!allOptions.includes(misc1)) {
+        setMisc1("none");
+      }
+      setMisc1Options(allOptions);
+    },
+    [miscSelector1]
+  );
+
+  useEffect(
+    () => {
+      let allOptions = applySelector(
+        miscSelector2,
+        allTools,
+        allArtisanTools,
+        allLanguages,
+        allInstruments,
+        allGames
+      );
+
+      if (!allOptions.includes(misc2)) {
+        setMisc2("none");
+      }
+      setMisc2Options(allOptions);
+    },
+    [miscSelector2]
   );
 
   return (
@@ -300,22 +227,54 @@ export default function Background({
       />
       <div className="backgroundSkills">
         <label>Skills:</label>
-        {skillSelector1}
-        {skillSelector2}
-        {/* {optionSelector("skill1", setskill1, skill1, skill2, allSkills)}
-        {optionSelector("skill2", setskill2, skill2, skill1, allSkills)} */}
+        <ExclusiveSelector
+          name="skill"
+          type="skills"
+          currentChoice={skill1}
+          setCurrentChoice={setSkill1}
+          proficiencyChoices={proficiencyChoices}
+          setProficiencyChoices={setProficiencyChoices}
+          allChoices={allSkills}
+          index={0}
+        />
+        <ExclusiveSelector
+          name="skill"
+          type="skills"
+          currentChoice={skill2}
+          setCurrentChoice={setSkill2}
+          proficiencyChoices={proficiencyChoices}
+          setProficiencyChoices={setProficiencyChoices}
+          allChoices={allSkills}
+          index={1}
+        />
       </div>
       <div className="backgroundMiscProf">
         <label>Misc. Proficiencies</label>
         <div>
           {miscProfSelector("misc1", miscSelector1, setmiscSelector1)}
-          {optionSelector("misc1", setmisc1, misc1, misc2, misc1Options)}
-          {misc1}
+          <ExclusiveSelector
+            name="misc"
+            type={miscSelector1}
+            currentChoice={misc1}
+            setCurrentChoice={setMisc1}
+            proficiencyChoices={proficiencyChoices}
+            setProficiencyChoices={setProficiencyChoices}
+            allChoices={misc1Options}
+            index={0}
+          />
         </div>
         <div>
           {miscProfSelector("misc2", miscSelector2, setmiscSelector2)}
-          {optionSelector("misc2", setmisc2, misc2, misc1, misc2Options)}
-          {misc2}
+          <ExclusiveSelector
+            name="misc"
+            type={miscSelector2}
+            currentChoice={misc2}
+            setCurrentChoice={setMisc2}
+            proficiencyChoices={proficiencyChoices}
+            setProficiencyChoices={setProficiencyChoices}
+            allChoices={misc2Options}
+            index={1}
+          />
         </div>
       </div>
     </div>

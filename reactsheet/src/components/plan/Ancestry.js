@@ -41,7 +41,7 @@ function addProficiencies(
     }
   }
 
-  setProficiencyChoices(structuredClone(proficiencyChoices));
+  setProficiencyChoices(proficiencyChoices);
 }
 
 export default function Ancestry({
