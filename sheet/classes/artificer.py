@@ -34,7 +34,7 @@ class Artificer(FifthEditionClass):
         self.consumables["Magical Tinkering"] = {"uses": "Intelligence"}
 
     class Artillerist(Subclass):
-        def getConsumables(self, stats, proficiencyBonus):
+        def getConsumables(self):
             ret = {}
 
             ret["Free Eldritch Cannon"] = {"uses": 1}

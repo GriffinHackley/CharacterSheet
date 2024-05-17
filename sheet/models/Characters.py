@@ -238,17 +238,6 @@ class Character(models.Model):
         ret["hitDice"] = "{}d{}".format(self.level, self.hitDie)
         ret["config"] = {"name": self.name, "edition": self.config["edition"]}
 
-        if "Main Kukri" in ret["Attacks"]:
-            ret["PowerAttack"] = ret["Attacks"]["Main Kukri"]
-
-        if "Longbow" in ret["Attacks"]:
-            ret["PowerAttack"] = ret["Attacks"]["Longbow"]
-
-        if "Rapier" in ret["Attacks"]:
-            ret["PowerAttack"] = ret["Attacks"]["Rapier"]
-
-        # critChance = self.calculateCritChance(ret["Attacks"])
-
         return ret
 
     def getConsumables(self):
@@ -391,26 +380,6 @@ class Character(models.Model):
         return critChance
 
     def attackInit(self, weapon):
-        # Base to Hit
-        bonus, toHitSource = self.modList.applyModifier("ToHit")
-
-        toHit = 0
-        toHit += bonus
-        attackStat = weapon["toHitAbility"]
-        toHit += self.abilityMod[attackStat]
-        toHitSource[attackStat] = self.abilityMod[attackStat]
-
-        # Base Damage
-        damageMod = 0
-        damageMod += weapon["bonus"]
-        bonus, damageSource = self.modList.applyModifier("Damage")
-        damageMod += bonus
-
-        if weapon["bonus"] > 0:
-            toHit += weapon["bonus"]
-            toHitSource["Enchant"] = weapon["bonus"]
-            damageSource["Enchant"] = weapon["bonus"]
-
         # Add weapon die to damage die
         allDie, dieSource = self.modList.getDieModifier(weapon["tags"])
 
@@ -423,13 +392,13 @@ class Character(models.Model):
             allDie[size] = int(number)
 
         ret = {}
-        ret["toHit"] = {"value": toHit, "source": toHitSource}
-        ret["damageMod"] = {"value": damageMod, "source": damageSource}
+        # ret["toHit"] = {"value": toHit, "source": toHitSource}
+        # ret["damageMod"] = {"value": damageMod, "source": damageSource}
         ret["allDie"] = {"value": allDie, "source": dieSource}
 
         return ret
 
-    def calculateAttack(self, attack, weapon, hitPenalty, damageBonus):
+    def calculateAttack(self, attack, weapon):
         toHit = attack["toHit"]["value"]
         toHitSource = attack["toHit"]["source"]
 
@@ -515,8 +484,13 @@ class Character(models.Model):
 
         return ret
 
-    def calculateGraph(self):
-        if self.toggles.getFullList()["Advantage"].isUsed:
+    def calculateGraph(self, requestedToggles=[]):
+        allToggles = self.toggles.getFullList()
+
+        for toggle in requestedToggles:
+            allToggles[toggle].isUsed = True
+
+        if allToggles["Advantage"].isUsed:
             if "Elven Accuracy" in self.feats.keys():
                 timesRolling = 3
             else:
@@ -526,47 +500,28 @@ class Character(models.Model):
 
         critChance = 1 - pow(0.95, timesRolling)
 
-        attacks = self.combat["Attacks"]
-        attack = attacks[0]
+        ret = {"AC": []}
+        for attack in self.combat["Attacks"]:
+            toHit = attack["toHit"]["value"]
+            avgCritDamage = attack["bonusCritDamage"]
+            damage = attack["averageDamage"]
+            ret[attack["name"]] = []
+            for targetAC in range(toHit + 1, toHit + 22):
+                chancePerRoll = 0.05 * (targetAC - toHit - 1)
+                hitChance = 1 - pow(chancePerRoll, timesRolling)
 
-        ret = {"AC": [], "normal": [], "powerAttack": []}
-        toHit = attack["toHit"]["value"]
-        avgCritDamage = attack["bonusCritDamage"]
-        damage = attack["averageDamage"]
-        hitPenalty = 5
-        damageBonus = 10
-        for targetAC in range(toHit + 1, toHit + 22):
-            chancePerRoll = 0.05 * (targetAC - toHit - 1)
-            hitChance = 1 - pow(chancePerRoll, timesRolling)
+                if hitChance >= 1:
+                    hitChance = 1
 
-            powerchancePerRoll = 0.05 * (targetAC - toHit - 1 + hitPenalty)
-            powerHitChance = 1 - pow(powerchancePerRoll, timesRolling)
+                if 1 - chancePerRoll <= 0:
+                    normalDamage = (0.05 * damage) + avgCritDamage
+                else:
+                    normalDamage = (hitChance * damage) + avgCritDamage
 
-            if hitChance >= 1:
-                hitChance = 1
-            if powerHitChance >= 1:
-                powerHitChance = 1
+                if not targetAC in ret["AC"]:
+                    ret["AC"].append(targetAC)
 
-            if 1 - chancePerRoll <= 0:
-                normalDamage = (0.05 * damage) + avgCritDamage
-            else:
-                normalDamage = (hitChance * damage) + avgCritDamage
-
-            if 1 - powerchancePerRoll <= 0:
-                powerDamage = (
-                    (0.05 * damage) + avgCritDamage + (critChance * damageBonus)
-                )
-            else:
-                powerDamage = (
-                    (powerHitChance * (damage + damageBonus))
-                ) + avgCritDamage
-
-            ret["AC"].append(targetAC)
-            ret["normal"].append(round(normalDamage, 3))
-            ret["powerAttack"].append(round(powerDamage, 3))
-
-            if normalDamage > powerDamage:
-                ret["threshold"] = targetAC - 1
+                ret[attack["name"]].append(round(normalDamage, 3))
 
         return ret
 

@@ -49,6 +49,13 @@ export default function SideDrawer({ id, character, editMode, setEditMode }) {
         >
           <ListItemText>Flavor</ListItemText>
         </ListItem>
+        <ListItem
+          component={Link}
+          to={`/character/${id}/graph/`}
+          state={{ graphInfo: character.graph }}
+        >
+          <ListItemText>Graph</ListItemText>
+        </ListItem>
       </List>
       <Divider />
       <List>

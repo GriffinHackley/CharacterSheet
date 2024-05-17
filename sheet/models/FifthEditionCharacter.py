@@ -5,6 +5,7 @@ from sheet.misc.spells import SpellList
 from ..lists import Ability, skill_list_5e
 from ..misc.feats import fifthEditionFeats
 from sheet.models.Characters import Character
+from rest_framework.exceptions import APIException
 from ..misc.backgrounds import FifthEditionBackground
 
 
@@ -62,56 +63,77 @@ class FifthEditionCharacter(Character):
 
         return ret
 
+    def calculateToHit(self, weapon):
+        # Base to Hit
+        totalValue, source = self.modList.applyModifier("ToHit")
+
+        attackStat = weapon["toHitAbility"]
+        totalValue += self.abilityMod[attackStat]
+        source[attackStat] = self.abilityMod[attackStat]
+
+        totalValue += self.profBonus
+        source["Prof."] = self.profBonus
+
+        if "Melee" in weapon["tags"]:
+            bonus, source = self.modList.applyModifier("ToHit-Melee")
+            totalValue += bonus
+            source.update(source)
+
+        if "Ranged" in weapon["tags"]:
+            bonus, source = self.modList.applyModifier("ToHit-Ranged")
+            totalValue += bonus
+            source.update(source)
+
+            # Parse range increments from weapon properties
+            reg = re.compile(r"Range\(([0-9]+)\/([0-9]+)\)")
+            if any((match := reg.match(item)) for item in weapon["properties"]):
+                closeRange = match.group(1)
+                maxRange = match.group(2)
+                # weaponRet["range"] = closeRange + "/" + maxRange
+
+        return {"value": totalValue, "source": source}
+
+    def calculateDamageMod(self, weapon):
+        # Base Damage
+        damageMod = 0
+        damageMod += weapon["bonus"]
+        bonus, source = self.modList.applyModifier("Damage")
+        damageMod += bonus
+
+        if weapon["bonus"] > 0:
+            # toHit += weapon["bonus"]
+            # toHitSource["Enchant"] = weapon["bonus"]
+            source["Enchant"] = weapon["bonus"]
+        damageStat = weapon["damageAbility"]
+        if "TWF" in weapon["tags"]:
+            if "Main" in weapon["tags"]:
+                damageMod += self.abilityMod[damageStat]
+                source[damageStat] = self.abilityMod[damageStat]
+                name = "Main " + weapon["name"]
+            elif "Off-Hand" in weapon["tags"]:
+                name = "Off-Hand " + weapon["name"]
+            else:
+                raise APIException(
+                    "The TWF tag was on this weapon but neither the Main or Off-Hand tags were found"
+                )
+        else:
+            damageMod += self.abilityMod[damageStat]
+            source[damageStat] = self.abilityMod[damageStat]
+
+        return {"value": damageMod, "source": source}
+
     def calculateAttacks(self):
         ret = []
 
         for weapon in self.weapon:
             weaponRet = super().attackInit(weapon)
 
-            weaponRet["toHit"]["value"] += self.profBonus
-            weaponRet["toHit"]["source"]["Prof."] = self.profBonus
+            weaponRet["toHit"] = self.calculateToHit(weapon)
+            weaponRet["damageMod"] = self.calculateDamageMod(weapon)
 
-            if "Melee" in weapon["tags"]:
-                bonus, source = self.modList.applyModifier("ToHit-Melee")
-                weaponRet["toHit"]["value"] += bonus
-                weaponRet["toHit"]["source"].update(source)
+            weaponRet["name"] = weapon["name"]
 
-            if "Ranged" in weapon["tags"]:
-                bonus, source = self.modList.applyModifier("ToHit-Ranged")
-                weaponRet["toHit"]["value"] += bonus
-                weaponRet["toHit"]["source"].update(source)
-
-                # Parse range increments from weapon properties
-                reg = re.compile(r"Range\(([0-9]+)\/([0-9]+)\)")
-                if any((match := reg.match(item)) for item in weapon["properties"]):
-                    closeRange = match.group(1)
-                    maxRange = match.group(2)
-                    weaponRet["range"] = closeRange + "/" + maxRange
-
-            damageStat = weapon["damageAbility"]
-            if "TWF" in weapon["tags"]:
-                if "Main" in weapon["tags"]:
-                    weaponRet["damageMod"]["value"] += self.abilityMod[damageStat]
-                    weaponRet["damageMod"]["source"][damageStat] = self.abilityMod[
-                        damageStat
-                    ]
-                    name = "Main " + weapon["name"]
-                elif "Off-Hand" in weapon["tags"]:
-                    name = "Off-Hand " + weapon["name"]
-                else:
-                    raise APIException(
-                        "The TWF tag was on this weapon but neither the Main or Off-Hand tags were found"
-                    )
-            else:
-                weaponRet["damageMod"]["value"] += self.abilityMod[damageStat]
-                weaponRet["damageMod"]["source"][damageStat] = self.abilityMod[
-                    damageStat
-                ]
-                name = weapon["name"]
-
-            weaponRet["name"] = name
-
-            weaponRet = super().calculateAttack(weaponRet, weapon, 5, 10)
+            weaponRet = super().calculateAttack(weaponRet, weapon)
 
             ret.append(weaponRet)
 

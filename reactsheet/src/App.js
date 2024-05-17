@@ -7,6 +7,7 @@ import FeaturesTab from "./components/pages/Features";
 import EquipmentTab from "./components/pages/Equipment";
 import SpellTab from "./components/pages/Spells";
 import FlavorTab from "./components/pages/Flavor";
+import Graph from "./components/pages/Graph";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/character/:id/equipment" element={<EquipmentTab />} />
         <Route path="/character/:id/spells" element={<SpellTab />} />
         <Route path="/character/:id/flavor" element={<FlavorTab />} />
+        <Route path="/character/:id/graph" element={<Graph />} />
         <Route path="/character/:id/plan" element={<Plan />} />
         <Route path="/create" element={<Create />} />
       </Routes>
