@@ -381,7 +381,7 @@ class Character(models.Model):
 
     def attackInit(self, weapon):
         # Add weapon die to damage die
-        allDie, dieSource = self.modList.getDieModifier(weapon["tags"])
+        allDie, dieSource = self.modList.getDieModifier(weapon["tags"], self.spellList)
 
         dieSource["Weapon Die"] = weapon["damageDie"]
         damageDie = weapon["damageDie"]

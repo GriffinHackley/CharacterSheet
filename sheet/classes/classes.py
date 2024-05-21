@@ -352,12 +352,8 @@ class FifthEditionClass(Class):
                 if feature == "Ability Score Improvement":
                     continue
 
-                ##TODO: Handle subclass levels
-                # if feature == self.subclass:
-                #     self.getSubclassFeatures(i)
-                #     continue
                 if feature == self.subclass + " feature":
-                    continue
+                    feature = self.subclass
 
                 stripped.append(feature)
                 allFeatureNames.append(feature)

@@ -1,5 +1,6 @@
+from sheet.toggles import Toggle
 from .classes import FifthEditionClass, Subclass
-from ..modifiers import ModifierList
+from ..modifiers import Modifier, ModifierList
 
 
 class Artificer(FifthEditionClass):
@@ -34,6 +35,18 @@ class Artificer(FifthEditionClass):
         self.consumables["Magical Tinkering"] = {"uses": "Intelligence"}
 
     class Artillerist(Subclass):
+        def getFeatureFunctions(self):
+            ret = {}
+
+            ret["Arcane Firearm"] = self.arcaneFirearm
+
+            self.featureFunctions = ret
+
+        def arcaneFirearm(self):
+            self.modifiers.append(
+                Modifier("1d8", "Spells-Artificer-DamageDie", source="Arcane Firearm")
+            )
+
         def getConsumables(self):
             ret = {}
 

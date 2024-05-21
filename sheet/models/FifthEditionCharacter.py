@@ -249,7 +249,7 @@ class FifthEditionCharacter(Character):
         for cls in self.charClass:
             if not hasattr(cls, "spellList"):
                 continue
-            spellList.addClass(cls)
+            spellList.addClass(cls, self.modList)
             hasSpells = True
 
         if hasSpells:

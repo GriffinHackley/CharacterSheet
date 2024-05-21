@@ -78,9 +78,8 @@ def getCharacterWithToggles(request, characterId):
 
     try:
         character.build()
-
         exported = character.exportCharacter()
-    except Exception as e:
+    except APIException as e:
         return HttpResponse(e, status=500)
 
     return Response(exported)

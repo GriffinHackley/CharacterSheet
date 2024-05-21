@@ -1,10 +1,11 @@
+import re
 import json
-from prettytable import PrettyTable
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
+from prettytable import PrettyTable
 from sheet.modifiers import Modifier
-
 from sheet.toggles import Toggle, ToggleList
+from rest_framework.exceptions import APIException
 
 
 class Spell:
@@ -43,6 +44,12 @@ class Spell:
 
         self.sourcebook = sourceBook.text
         self.text = text.text
+
+        damage = re.search("([1-9]+d[1-9])", self.text)
+
+        if damage:
+            self.damage = damage.group()
+
         self.higherLevel = higherLevel.text
 
         self.castingTime = castingTime.text
@@ -169,117 +176,45 @@ class SpellList:
             ret[index + 1] = slots
         return ret
 
-    def addSpell(self, spell, source):
+    def addSpell(self, spell, source, modList):
         toAdd = Spell(spell, source)
+
+        if hasattr(toAdd, "damage"):
+            totalDamage, source = modList.applyDieModifier(
+                "Spells-{}-DamageDie".format(source), toAdd.damage
+            )
+            toAdd.damage = totalDamage
+            toAdd.source = source
+
         if toAdd.name in self.togglesMasterlist.keys():
             self.toggles.addToggle(self.togglesMasterlist[toAdd.name])
 
-        self.spellList[toAdd.level].append(toAdd.toJSON())
+        self.spellList[toAdd.level].append(toAdd)
 
-    def addClass(self, cls):
+    def addClass(self, cls, modList):
         if cls.spellProgression == "full":
             self.casterLevel += cls.level
 
         for spell in cls.spellList:
-            self.addSpell(spell, cls.name)
+            self.addSpell(spell, cls.name, modList)
 
         return
 
+    def findSpell(self, toFind):
+        for level, spells in self.spellList.items():
+            for spell in spells:
+                if spell.name == toFind:
+                    return spell
+
+        raise APIException("Could not find {} in spellList".format(toFind))
+
     def getSpellList(self):
+        for level, spells in self.spellList.items():
+            convertedSpells = []
+            for spell in spells:
+                convertedSpells.append(spell.toJSON())
+            self.spellList[level] = convertedSpells
         return self.spellList
-        # ret = {}
-        # ret["name"] = "Wizard"
-        # ret["castingType"] = ["prepared", "ritual"]
-
-        # ret["spells"] = {}
-        # ret["spells"]["Cantrip"] = {}
-        # ret["spells"]["1"] = {}
-        # ret["spells"]["2"] = {}
-
-        # ret["spells"]["1"]["slots"] = 4
-        # ret["spells"]["2"]["slots"] = 2
-
-        # cantrips = ["booming-blade"]
-        # level1 = ["shield"]
-
-        # for spell in level1:
-        #     Spell(spell, "Wizard: Spellcasting")
-
-        # ret["spells"]["Cantrip"]["list"] = {
-        #     "Booming Blade": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        #     "Mage Hand": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        #     "Mind Sliver": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        # }
-
-        # ret["spells"]["1"]["list"] = {
-        #     "Absorb Elements": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "1",
-        #         "description": "",
-        #     },
-        #     "Detect Magic": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        #     "Feather Fall": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "1",
-        #         "description": "",
-        #     },
-        #     "Find Familiar": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        #     "Identify": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        #     "Jump": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "1",
-        #         "description": "",
-        #     },
-        #     "Shield": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "1",
-        #         "description": "",
-        #     },
-        #     "Silvery Barbs": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "1",
-        #         "description": "",
-        #     },
-        # }
-
-        # ret["spells"]["2"]["list"] = {
-        #     "Invisibility": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        #     "Shadow Blade": {
-        #         "source": "Wizard: Spellcasting",
-        #         "timesPrepared": "-1",
-        #         "description": "",
-        #     },
-        # }
-
-        # return ret
 
     def getToggles(self):
         return self.toggles
@@ -304,27 +239,16 @@ class SpellSources:
 
         if edition == "5e":
             self.add5eSpells()
-        if edition == "pathfinder":
-            self.addPathfinderSpells()
 
     def add5eSpells(self):
         self.addSpellToggle(
             "Absorb Elements",
-            [Modifier("1d6", "Melee-DamageDie", type="elemental")],
+            [Modifier("Spell Damage", "Melee-DamageDie", type="elemental")],
         )
-        self.addSpellToggle("Booming Blade", [Modifier("1d8", "Melee-DamageDie")])
+        self.addSpellToggle(
+            "Booming Blade", [Modifier("Spell Damage", "Melee-DamageDie")]
+        )
         self.addSpellToggle("Favored Foe", [Modifier("1d4", "DamageDie")])
         self.addSpellToggle("Hunter's Mark", [Modifier("1d6", "DamageDie")])
         self.addSpellToggle("Shield", [Modifier(5, "AC", source="Shield (Spell)")])
         self.addSpellToggle("Shield Of Faith", [Modifier(2, "deflection", "AC")])
-
-    def addPathfinderSpells(self):
-        self.addSpellToggle("Cats Grace", [Modifier(4, "enhancement", "Dexterity")])
-        self.addSpellToggle(
-            "Divine Favor",
-            [
-                Modifier(1, "luck", "ToHit"),
-                Modifier(1, "luck", "Damage"),
-            ],
-        )
-        self.addSpellToggle("Iron Skin", [Modifier(4, "enhancement", "Natural Armor")])

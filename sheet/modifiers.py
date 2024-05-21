@@ -1,4 +1,5 @@
 import math
+import re
 from rest_framework.exceptions import APIException
 
 
@@ -65,13 +66,48 @@ class ModifierList:
 
         return (total, source)
 
+    def applyDieModifier(self, modifierName, originalDamage):
+        die = {}
+        [number, size] = originalDamage.split("d")
+        die[size] = [int(number)]
+
+        source = {"Base": originalDamage}
+
+        if not modifierName in self.list:
+            return (originalDamage, source)
+
+        allBonus = self.list[modifierName]
+        pattern = re.compile("([1-9]+d[1-9])")
+
+        for bonus in allBonus:
+            temp = []
+            if pattern.match(bonus.bonus):
+                [number, size] = bonus.bonus.split("d")
+            else:
+                raise APIException("Invalid die type:{}".format(bonus.bonus))
+
+            temp.append(int(number))
+
+            source[bonus.source] = bonus.bonus
+
+            if size in die.keys():
+                die[size] = die[size] + temp
+            else:
+                die[size] = temp
+
+        # Add all values per die size
+        for size, numbers in die.items():
+            die[size] = sum(numbers)
+
+        return (die, source)
+
     def applyModifierToModifier(self, modifier):
         for key, value in self.list.items():
             for mod in value:
                 if mod.type == modifier.stat:
                     mod.bonus += modifier.bonus
 
-    def getDieModifier(self, tags):
+    def getDieModifier(self, tags, spells):
         modifierName = "DamageDie"
 
         modifierList = []
@@ -98,22 +134,43 @@ class ModifierList:
         die = {}
         source = {}
         for bonus in allBonus:
-            temp = []
-            [number, size] = bonus.bonus.split("d")
-            temp.append(int(number))
+            bonusDie = {}
+            pattern = re.compile("([1-9]+d[1-9])")
+            if pattern.match(bonus.bonus):
+                [number, size] = bonus.bonus.split("d")
+                bonusDie = {size: number}
+            elif bonus.bonus == "Spell Damage":
+                spell = spells.findSpell(bonus.source)
+                bonus.bonus = self.formatDice(spell.damage)
+                bonusDie = spell.damage
+            else:
+                raise APIException("Invalid bonus type")
 
             source[bonus.source] = bonus.bonus
 
-            if size in die.keys():
-                die[size] = die[size] + temp
-            else:
-                die[size] = temp
+            for size, number in bonusDie.items():
+                if size in die.keys():
+                    die[size] = die[size] + [int(number)]
+                else:
+                    die[size] = [int(number)]
 
         # Add all values per die size
         for size, numbers in die.items():
             die[size] = sum(numbers)
 
         return (die, source)
+
+    def formatDice(self, allDice):
+        formatted = ""
+        first = True
+        for size, number in dict(reversed(sorted(allDice.items()))).items():
+            if first:
+                formatted = "[{}d{}".format(number, size)
+                first = False
+            else:
+                formatted = formatted + " + {}d{}".format(number, size)
+        formatted += "]"
+        return formatted
 
     def applyModifierWithFilters(self, modifierName, filters):
         if not modifierName in self.list:
