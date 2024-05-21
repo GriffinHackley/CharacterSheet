@@ -161,6 +161,9 @@ class ModifierList:
         return (die, source)
 
     def formatDice(self, allDice):
+        if len(allDice) == 1:
+            return "{}d{}".format(list(allDice.values())[0], list(allDice.keys())[0])
+
         formatted = ""
         first = True
         for size, number in dict(reversed(sorted(allDice.items()))).items():
