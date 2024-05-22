@@ -112,7 +112,6 @@ def getPlan(request, characterId):
 def getGraph(request, characterId):
     character = get_object_or_404(Character, pk=characterId)
     # graph = cache.get(character.name + "_graph")
-    requested_toggles = request.data
 
     # if graph and requested_toggles == graph["usedToggles"]:
     #     return Response(json.dumps(graph))
@@ -135,12 +134,14 @@ def getGraph(request, characterId):
                 )
             )
 
+        character.activeToggles = request.data
+
         character.build()
 
     else:
         character = cached_character
 
-    return Response(json.dumps(character.calculateGraph(requested_toggles)))
+    return Response(json.dumps(character.calculateGraph()))
 
 
 # @api_view(["GET"])

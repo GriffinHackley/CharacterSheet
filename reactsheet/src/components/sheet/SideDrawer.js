@@ -52,7 +52,7 @@ export default function SideDrawer({ id, character, editMode, setEditMode }) {
         <ListItem
           component={Link}
           to={`/character/${id}/graph/`}
-          state={{ graphInfo: character.graph }}
+          state={{ graphInfo: character.graph, toggles: character.toggles }}
         >
           <ListItemText>Graph</ListItemText>
         </ListItem>

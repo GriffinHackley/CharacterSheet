@@ -445,7 +445,7 @@ class FifthEditionClass(Class):
             current = soup.find("h3", text=feature + " (Optional)")
 
         if current == None:
-            raise APIException("Could not find the {} feature".format(feature))
+            raise APIException("Could not find the '{}' feature".format(feature))
 
         featureText = []
         while current.findNext() and not current.findNext().name == "h3":

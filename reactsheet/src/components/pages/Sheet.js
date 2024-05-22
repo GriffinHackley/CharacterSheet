@@ -230,7 +230,8 @@ function Sheet() {
             <div key="toggles">
               <Toggles
                 togglesInfo={character.toggles}
-                setCharacter={setCharacter}
+                setResponse={setCharacter}
+                url={"http://127.0.0.1:8000/api/characters/toggles/" + id}
                 id={id}
               />
             </div>

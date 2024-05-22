@@ -484,11 +484,12 @@ class Character(models.Model):
 
         return ret
 
-    def calculateGraph(self, requestedToggles=[]):
+    def calculateGraph(self):
         allToggles = self.toggles.getFullList()
 
-        for toggle in requestedToggles:
-            allToggles[toggle].isUsed = True
+        if hasattr(self, "activeToggles"):
+            for toggle, value in self.activeToggles.items():
+                allToggles[toggle].isUsed = value
 
         if allToggles["Advantage"].isUsed:
             if "Elven Accuracy" in self.feats.keys():
@@ -498,7 +499,7 @@ class Character(models.Model):
         else:
             timesRolling = 1
 
-        critChance = 1 - pow(0.95, timesRolling)
+        critChance = round(1 - pow(0.95, timesRolling), 5)
 
         ret = {"AC": []}
         for attack in self.combat["Attacks"]:
@@ -507,16 +508,16 @@ class Character(models.Model):
             damage = attack["averageDamage"]
             ret[attack["name"]] = []
             for targetAC in range(toHit + 1, toHit + 22):
-                chancePerRoll = 0.05 * (targetAC - toHit - 1)
-                hitChance = 1 - pow(chancePerRoll, timesRolling)
+                chancePerRoll = round(((21 - (targetAC - toHit)) / 20), 2)
+                hitChance = round(1 - pow(1 - chancePerRoll, timesRolling), 5)
 
                 if hitChance >= 1:
                     hitChance = 1
 
-                if 1 - chancePerRoll <= 0:
-                    normalDamage = (0.05 * damage) + avgCritDamage
-                else:
-                    normalDamage = (hitChance * damage) + avgCritDamage
+                # if 1 - chancePerRoll <= 0:
+                #     normalDamage = (0.05 * damage) + avgCritDamage
+                # else:
+                normalDamage = (hitChance * damage) + (avgCritDamage * critChance)
 
                 if not targetAC in ret["AC"]:
                     ret["AC"].append(targetAC)

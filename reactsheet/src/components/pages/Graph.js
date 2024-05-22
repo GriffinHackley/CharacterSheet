@@ -3,35 +3,8 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
+import Toggles from "../sheet/Toggles";
 Chart.register(...registerables);
-
-function getSelectors(characterSelectors) {
-  // Default selectors
-  let defaults = ["Advantage"];
-
-  let selectors = defaults.concat(characterSelectors);
-
-  let ret = [];
-  for (let selector in selectors) {
-    selector = selectors[selector];
-    ret.push(
-      <div>
-        <input
-          type="checkbox"
-          className="selectorToggle"
-          id={selector}
-          name={selector}
-          value={selector}
-        />
-        <label htmlFor={selector}>
-          {selector}
-        </label>
-      </div>
-    );
-  }
-
-  return ret;
-}
 
 const sendRequest = async (setLoading, setData, id) => {
   setLoading(true);
@@ -56,7 +29,7 @@ const sendRequest = async (setLoading, setData, id) => {
 export default function Graph() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-  const { graphInfo } = location.state;
+  const { graphInfo, toggles } = location.state;
   const { id } = useParams();
 
   const [graphData, setGraphData] = useState(graphInfo);
@@ -80,8 +53,6 @@ export default function Graph() {
     datasets: datasets
   };
 
-  let selectors = getSelectors([]);
-
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -92,15 +63,12 @@ export default function Graph() {
     return (
       <section className="damageGraph">
         <Line data={graph} options={{}} />
-        <div className="selectors">
-          {selectors}
-        </div>
-        <button
-          type="button"
-          onClick={() => sendRequest(setLoading, setGraphData, id)}
-        >
-          Submit
-        </button>
+        <Toggles
+          togglesInfo={toggles}
+          setResponse={setGraphData}
+          id={id}
+          url={"http://127.0.0.1:8000/api/characters/" + id + "/graph"}
+        />
       </section>
     );
   }
