@@ -1,19 +1,15 @@
-# Setup
-
-The first time you run the character sheet you will need to run the setup file called `init.bat`.
-This will create a python virtual enviornment and install all of the necessary modules
-The necessary modules can be found in the requirements.txt file
+# One Time Setup
 
 ```
-.\init.bat
+.\virtualEnv\Scripts\activate
+pip install -r requirements.txt
 ```
 
 # Running the backend
 
-To run the backend server just use the run.bat file
-
 ```
-.\run.bat
+.\virtualEnv\Scripts\activate
+python manage.py runserver
 ```
 
 # Running the front end
