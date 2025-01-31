@@ -19,6 +19,12 @@ export function storeCheckboxValue(key, name) {
 export function storeLayout(id, layout) {
   let storageKey = id + "-Layout";
 
+  if (layout == null) {
+    console.log("Got null layout. Not saving");
+
+    return;
+  }
+
   let ret = JSON.stringify(
     layout.map(value => {
       return JSON.stringify(value);

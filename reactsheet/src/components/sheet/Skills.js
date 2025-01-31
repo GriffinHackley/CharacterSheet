@@ -1,6 +1,6 @@
 import "../../../css/sheet/main/Skills.css";
 
-import formatSource from "../../../scripts/formatSource";
+import formatSource from "../../../utils/formatSource";
 
 function addSkill(skillInfo) {
   return (

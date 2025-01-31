@@ -410,6 +410,9 @@ class FifthEditionClass(Class):
                 currentLevel.append(
                     {
                         "name": feature,
+                        "key": "{feature}-{className}".format(
+                            feature=feature, className=self.name
+                        ),
                         "text": self.getFeatureText(feature, htmlFile),
                     }
                 )
@@ -487,6 +490,7 @@ class FifthEditionClass(Class):
             ret.append(
                 {
                     "name": name,
+                    "key": "{name}-{className}".format(name=name, className=self.name),
                     "text": self.getFeatureText(name, htmlFile, omitFirst=True),
                 }
             )

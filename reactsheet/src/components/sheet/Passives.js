@@ -1,5 +1,5 @@
 import { Paper } from "@mui/material";
-import formatSource from "../../scripts/formatSource";
+import formatSource from "../../utils/formatSource";
 import Tooltip from "@mui/material/Tooltip";
 
 function addPassive(passive) {

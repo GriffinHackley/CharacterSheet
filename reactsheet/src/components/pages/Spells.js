@@ -1,5 +1,5 @@
 import "../../css/pages/Spells.css";
-import formatSource from "../../scripts/formatSource";
+import formatSource from "../../utils/formatSource";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 

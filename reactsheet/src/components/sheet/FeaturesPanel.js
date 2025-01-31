@@ -14,21 +14,19 @@ function getAllFeatures(features) {
 }
 
 export default function FeaturesPanel({ features }) {
-  //   // Add all
-  //   let allFeatures = getAllFeatures(features);
-  //   let pinned = ["Magical Tinkering", "Spellcasting", "Infuse Item"];
+  // Add all
+  let allFeatures = getAllFeatures(features);
+  let pinned = ["Magical Tinkering", "Spellcasting", "Infuse Item"];
 
-  //   let pinnedFeatures = allFeatures
-  //     .filter(feature => pinned.includes(feature.name))
-  //     .map(feature =>
-  //       <CollapsibleTab
-  //         key={feature.name}
-  //         name={feature.name}
-  //         text={feature.text}
-  //       />
-  //     );
-
-  let pinnedFeatures = [];
+  let pinnedFeatures = allFeatures
+    .filter(feature => pinned.includes(feature.name))
+    .map(feature =>
+      <CollapsibleTab
+        key={feature.key}
+        name={feature.name}
+        text={feature.text}
+      />
+    );
 
   return (
     <Paper>

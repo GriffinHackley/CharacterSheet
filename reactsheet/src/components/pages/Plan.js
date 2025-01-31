@@ -98,14 +98,16 @@ let allLanguages = [
   "Undercommon"
 ];
 
-const loadPlan = async (setLoading, setPlan, id) => {
+const loadPlan = async (setLoading, setPlan, setAncestry, id) => {
   setLoading(true);
 
   const response = await axios.get(
     `http://127.0.0.1:8000/api/characters/${id}/plan`
   );
-  let character = JSON.parse(response.data);
-  setPlan(character);
+  let plan = JSON.parse(response.data);
+  setPlan(plan);
+
+  setAncestry(plan[0].races.choice);
 
   setLoading(false);
 };
@@ -123,9 +125,10 @@ export default function Plan() {
   const [loading, setLoading] = useState(true);
   const [plan, setPlan] = useState([]);
   const { id } = useParams();
+  const [chosenAncestry, setAncestry] = useState(null);
 
   useEffect(() => {
-    loadPlan(setLoading, setPlan, id);
+    loadPlan(setLoading, setPlan, setAncestry, id);
   }, []);
 
   if (loading) {
@@ -138,7 +141,9 @@ export default function Plan() {
         <h1>Level 0</h1>
         <Stats stats={plan[0].stats} />
         <Ancestry
-          ancestries={plan[0].races}
+          allAncestries={plan[0].races.all}
+          chosenAncestry={chosenAncestry}
+          setAncestry={setAncestry}
           proficiencyChoices={proficiencyChoices}
           setProficiencyChoices={setProficiencyChoices}
           allLanguages={allLanguages}

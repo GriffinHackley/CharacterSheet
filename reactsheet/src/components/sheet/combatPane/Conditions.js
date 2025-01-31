@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import {
   storeCheckboxValue,
   getCheckboxValue
-} from "../../../scripts/localState.js";
+} from "../../../utils/localState.js";
 
 function handleChange(event) {
   storeCheckboxValue("conditions", charName);

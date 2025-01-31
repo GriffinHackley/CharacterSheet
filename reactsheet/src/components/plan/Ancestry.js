@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Selector from "../shared/Selector";
 
 function getFeatureText(ancestries, chosenAncestry) {
@@ -45,17 +44,15 @@ function addProficiencies(
 }
 
 export default function Ancestry({
-  ancestries,
+  allAncestries,
+  chosenAncestry,
+  setAncestry,
   proficiencyChoices,
   setProficiencyChoices
 }) {
-  let allAncestries = ancestries.all;
-  let choice = ancestries.choice;
-  const [chosenAncestry, setAncestry] = useState(choice);
-
   addProficiencies(
     allAncestries,
-    choice,
+    chosenAncestry,
     proficiencyChoices,
     setProficiencyChoices
   );

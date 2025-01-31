@@ -1,11 +1,10 @@
 import "../../css/App.css";
 import "../../../node_modules/react-grid-layout/css/styles.css";
 
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
-import { getLayout, storeLayout } from "../../scripts/localState.js";
+import { getLayout, storeLayout } from "../../utils/localState.js";
 
 import Header from "../sheet/Header";
 import Toggles from "../sheet/Toggles";
@@ -18,7 +17,8 @@ import AttacksAndSpellcasting from "../sheet/combatPane/AttacksAndSpellcasting";
 import SideDrawer from "../sheet/SideDrawer.js";
 import FeaturesPanel from "../sheet/FeaturesPanel.js";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { blue, purple } from "@mui/material/colors";
+import defaultLayout from "../../layouts/defaultLayout.js";
+import { makeRequest } from "../../utils/api.js";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -31,91 +31,31 @@ function setColor(colors) {
   root.style.setProperty("--secondary-accent", secondary);
 }
 
-const loadCharacter = async (setLoading, setCharacter, id) => {
+function loadCharacter(setLoading, setCharacter, setLayout, id) {
   setLoading(true);
 
-  const response = await axios
-    .get("http://127.0.0.1:8000/api/characters/" + id)
-    .catch(function(error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        throw error.response.data;
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        throw error.request;
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        throw error.message;
-      }
-    });
-  let character = JSON.parse(response.data);
-  setCharacter(character);
+  let url = "http://127.0.0.1:8000/api/characters/" + id;
 
-  setLoading(false);
-  setColor(character.config.accentColors);
-  return character;
-};
+  makeRequest(url).then(character => {
+    setCharacter(character);
+    setColor(character.config.accentColors);
+    setLayout(initLayout(false, id, character));
+    setLoading(false);
+  });
+}
 
-function initLayout(editMode, id, consumables) {
+function initLayout(editMode, id, character) {
+  if (character.length == 0) {
+    return null;
+  }
+
   let layout = getLayout(id);
+
   if (layout != null) {
     return layout;
   }
 
-  console.log("Using default layout");
-  let ret = [
-    {
-      i: "combat",
-      x: 6,
-      y: 0,
-      w: 4,
-      h: 6,
-      minW: 3,
-      minH: 6,
-      static: !editMode
-    },
-    {
-      i: "attacksandspellcasting",
-      x: 6,
-      y: 6,
-      w: 4,
-      h: 4,
-      minW: 3,
-      minH: 4,
-      static: !editMode
-    },
-    { i: "proficiency", x: 10, y: 0, w: 2, h: 1, minW: 2, static: !editMode },
-    { i: "passives", x: 10, y: 1, w: 2, h: 2, minH: 2, static: !editMode },
-    {
-      i: "toggles",
-      x: 10,
-      y: 5,
-      w: 2,
-      h: 5,
-      minW: 2,
-      minH: 3,
-      static: !editMode
-    },
-    { i: "features", x: 0, y: 0, w: 6, h: 6, static: !editMode }
-  ];
-
-  let count = 0;
-  for (let consumable in consumables) {
-    ret.push({
-      i: "consumable-" + consumable,
-      x: 10 + count % 2,
-      y: 3 + Math.floor(count / 2),
-      w: 1,
-      h: 2,
-      static: !editMode
-    });
-    count++;
-  }
-
-  return ret;
+  return defaultLayout(editMode, id, character.consumables);
 }
 
 function Sheet() {
@@ -123,34 +63,39 @@ function Sheet() {
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [character, setCharacter] = useState([]);
-  const [layout, setLayout] = useState(
-    initLayout(editMode, id, character.consumables)
-  );
+  const [layout, setLayout] = useState(initLayout(editMode, id, character));
 
   useEffect(
     () => {
+      if (layout == null) {
+        return;
+      }
       let newLayout = [];
 
-      //Put the array in reverse order because they layout doesnt change enough?
+      //Put the array in reverse order because the layout doesnt change enough?
       layout.forEach(value => {
         value["static"] = !editMode;
         newLayout.unshift(value);
       });
 
+      console.log(layout);
+
       if (!editMode) {
-        storeLayout(id, newLayout);
+        storeLayout(id, defaultLayout());
       }
 
       setLayout([...newLayout]);
     },
-    [editMode]
+    [editMode, id]
   );
 
   //Get character data
-  useEffect(() => {
-    let temp = loadCharacter(setLoading, setCharacter, id);
-    setLayout(initLayout(editMode, id, temp.consumables));
-  }, []);
+  useEffect(
+    () => {
+      loadCharacter(setLoading, setCharacter, setLayout, id);
+    },
+    [id]
+  );
 
   if (loading) {
     return <h4>Loading...</h4>;

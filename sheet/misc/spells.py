@@ -45,7 +45,7 @@ class Spell:
         self.sourcebook = sourceBook.text
         self.text = text.text
 
-        damage = re.search("([1-9]+d[1-9])", self.text)
+        damage = re.search("([0-9]+d[0-9]+)", self.text)
 
         if damage:
             self.damage = damage.group()
@@ -197,8 +197,6 @@ class SpellList:
 
         for spell in cls.spellList:
             self.addSpell(spell, cls.name, modList)
-
-        return
 
     def findSpell(self, toFind):
         for level, spells in self.spellList.items():

@@ -1,5 +1,5 @@
 import "../../css/sheet/Attributes.css";
-import formatSource from "../../scripts/formatSource";
+import formatSource from "../../utils/formatSource";
 import { Checkbox, Paper } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import { RadioButtonChecked, RadioButtonUnchecked } from "@mui/icons-material";

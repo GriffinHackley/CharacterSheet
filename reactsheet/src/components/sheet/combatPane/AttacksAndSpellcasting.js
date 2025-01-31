@@ -1,4 +1,4 @@
-import formatSource from "../../../scripts/formatSource";
+import formatSource from "../../../utils/formatSource";
 import "../../../css/sheet/combat/AttacksAndSpellcasting.css";
 import {
   Table,
