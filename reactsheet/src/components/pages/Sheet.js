@@ -45,25 +45,27 @@ function loadCharacter(setLoading, setCharacter, setLayout, id) {
 }
 
 function initLayout(editMode, id, character) {
-  if (character.length == 0) {
+  if (!character) {
     return null;
   }
 
   let layout = getLayout(id);
 
   if (layout != null) {
+    console.log("Setting custom layout");
     return layout;
   }
 
-  return defaultLayout(editMode, id, character.consumables);
+  console.log("Setting layout to default");
+  return defaultLayout(editMode, character);
 }
 
 function Sheet() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
-  const [character, setCharacter] = useState([]);
-  const [layout, setLayout] = useState(initLayout(editMode, id, character));
+  const [character, setCharacter] = useState(null);
+  const [layout, setLayout] = useState(initLayout(editMode, character));
 
   useEffect(
     () => {
@@ -78,12 +80,11 @@ function Sheet() {
         newLayout.unshift(value);
       });
 
-      console.log(layout);
-
       if (!editMode) {
-        storeLayout(id, defaultLayout());
+        storeLayout(id, newLayout);
       }
 
+      console.log("Setting custom layout");
       setLayout([...newLayout]);
     },
     [editMode, id]
@@ -139,6 +140,7 @@ function Sheet() {
             character={character}
             editMode={editMode}
             setEditMode={setEditMode}
+            setLayout={setLayout}
           />
           <Header headerInfo={character.header} />
           <Attributes
@@ -153,6 +155,7 @@ function Sheet() {
             cols={12}
             rowHeight={50}
             onLayoutChange={newLayout => {
+              console.log("Setting custom layout");
               setLayout([...newLayout]);
             }}
           >

@@ -1,5 +1,9 @@
-export default function defaultLayout(editMode, id, consumables) {
-  console.log("Using default layout");
+export default function defaultLayout(editMode, character) {
+  if (!character) {
+    console.log("Layout could not be gotten. Character not yet loaded");
+    return;
+  }
+
   let ret = [
     {
       i: "combat",
@@ -37,7 +41,7 @@ export default function defaultLayout(editMode, id, consumables) {
   ];
 
   let count = 0;
-  for (let consumable in consumables) {
+  for (let consumable in character.consumables) {
     ret.push({
       i: "consumable-" + consumable,
       x: 10 + count % 2,
@@ -49,6 +53,8 @@ export default function defaultLayout(editMode, id, consumables) {
     });
     count++;
   }
+
+  console.log("Getting default layout");
 
   return ret;
 }

@@ -15,11 +15,19 @@ import {
   Switch
 } from "@mui/material";
 
-export default function SideDrawer({ id, character, editMode, setEditMode }) {
+export default function SideDrawer({
+  id,
+  character,
+  editMode,
+  setEditMode,
+  setLayout
+}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer = newOpen => () => {
     setDrawerOpen(newOpen);
   };
+
+  const defLayout = defaultLayout(editMode, character);
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -71,8 +79,11 @@ export default function SideDrawer({ id, character, editMode, setEditMode }) {
         </ListItem>
         <ListItemButton
           onClick={() => {
-            storeLayout(id, defaultLayout());
+            console.log("Setting layout to default");
+
             setEditMode(false);
+            storeLayout(id, defLayout);
+            setLayout(defLayout);
           }}
         >
           <ListItemText>Use Default Layout</ListItemText>
