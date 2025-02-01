@@ -1,5 +1,6 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import CollapsibleTab from "../shared/collapsibleTab";
+import "../../css/sheet/FeaturesPanel.css";
 
 function getAllFeatures(features) {
   let allFeatures = [];
@@ -29,7 +30,7 @@ export default function FeaturesPanel({ features }) {
     );
 
   return (
-    <Paper>
+    <Paper className="features">
       Features
       {pinnedFeatures}
     </Paper>
