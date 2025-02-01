@@ -1,5 +1,5 @@
 import "../../../css/sheet/combat/CurrentHP.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   storeCheckboxValue,
   getCheckboxValue

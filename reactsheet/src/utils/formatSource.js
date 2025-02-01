@@ -12,7 +12,7 @@ export default function formatSource(sources) {
       if (typeof value == "number" && value < 0) {
         value = value.toString().split("-")[1];
         string = " - " + value + "(" + source + ")";
-      } else if (typeof value == "number" && value == 0) {
+      } else if (typeof value === "number" && value === 0) {
       } else {
         string = " + " + value.toString() + "(" + source + ")";
       }

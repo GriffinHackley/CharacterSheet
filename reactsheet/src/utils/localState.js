@@ -5,7 +5,7 @@ export function storeCheckboxValue(key, name) {
   let storageKey = name + "-" + key;
   let element = document.getElementById(key);
   let value = null;
-  if (element.type == "checkbox") {
+  if (element.type === "checkbox") {
     value = element.checked;
   } else {
     value = element.value;
@@ -69,10 +69,10 @@ export function getCheckboxValue(key, name) {
     console.log("Getting " + storageKey + " as " + value);
   }
 
-  if (element.type == "checkbox") {
-    if (value == "false") {
+  if (element.type === "checkbox") {
+    if (value === "false") {
       value = false;
-    } else if (value == "true") {
+    } else if (value === "true") {
       value = true;
     }
     element.checked = value;

@@ -4,7 +4,7 @@ import formatSource from "../../../utils/formatSource";
 export default function CombatHeader({ combatInfo }) {
   let headerItems = ["Armor Class", "Initiative", "Speed"];
 
-  if (combatInfo.config == "Pathfinder") {
+  if (combatInfo.config === "Pathfinder") {
     headerItems.push("CMD");
   }
 
