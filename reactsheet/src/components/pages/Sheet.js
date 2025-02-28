@@ -19,17 +19,9 @@ import FeaturesPanel from "../sheet/FeaturesPanel.js";
 import { ThemeProvider, createTheme } from "@mui/material";
 import defaultLayout from "../../layouts/defaultLayout.js";
 import { makeRequest } from "../../utils/api.js";
+import setColors from "../../utils/setColors.js";
 
 const ReactGridLayout = WidthProvider(RGL);
-
-function setColor(colors) {
-  let primary = colors[0];
-  let secondary = colors[1];
-  let root = document.documentElement;
-
-  root.style.setProperty("--primary-accent", primary);
-  root.style.setProperty("--secondary-accent", secondary);
-}
 
 function loadCharacter(setLoading, setCharacter, setLayout, id) {
   setLoading(true);
@@ -38,7 +30,7 @@ function loadCharacter(setLoading, setCharacter, setLayout, id) {
 
   makeRequest(url).then(character => {
     setCharacter(character);
-    setColor(character.config.accentColors);
+    setColors(character.config.accentColors);
     setLayout(initLayout(false, id, character));
     setLoading(false);
   });

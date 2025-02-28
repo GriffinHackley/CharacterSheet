@@ -28,7 +28,12 @@ def allClassesJSON():
 
     for name, info in allClasses().items():
         cls = getattr(info, name.title())()
-        ret[name.title()] = {"features": cls.features, "starting": cls.starting}
+        ret[name.title()] = {
+            "features": cls.features,
+            "starting": cls.starting,
+            "subclassName": cls.subclass,
+            "allSubclasses": cls.subclassNames,
+        }
 
     return ret
 
@@ -188,74 +193,6 @@ class Class:
 
         return ret
 
-        # Loop through html elements until you hit the next feature heading
-        while not current.findNext().name == "h3":
-            current = current.findNext()
-
-            if len(featureText) >= 1:
-                if str(current) == featureText[len(featureText) - 2]["text"]:
-                    current = current.findNext()
-
-            # Handle list in feature
-            if current.name == "ul":
-                current = current.findNext()
-                optionList = False
-                while True:
-                    if not featureName in self.options:
-                        break
-                    if current.name == "script":
-                        break
-                    if self.options[featureName] in str(current):
-                        optionList = True
-                        break
-                    current = current.findNext().findNext()
-
-                # If this feature is in options, filter it so it is only the option chosen
-                if optionList:
-                    text = str(current).replace(".", ":", 1)
-                    choice = text.split(":")
-                    featureText = featureText + [
-                        {"type": "heading", "text": choice[0]},
-                        {"type": "normal", "text": choice[1]},
-                    ]
-                    break
-                else:
-                    featureText.append({"type": "normal", "text": str(current)})
-                    current = current.findNext()
-
-            # When we get to divs that is the end of the features section
-            elif current.name == "div":
-                break
-
-            # Links get duplicated, so just skip them
-            elif current.name == "a":
-                continue
-
-            # Strongs are put after the element they are in, so put it before instead
-            elif current.name == "strong":
-                featureText.insert(
-                    len(featureText) - 1, {"type": "heading", "text": str(current)}
-                )
-                continue
-
-            # If its a table just take the whole table
-            elif current.name == "table":
-                featureText.append(
-                    {"type": "table", "text": "tables have not been implemented yet"}
-                )
-                break
-
-            # Store headings as headings so they can be bolded
-            elif current.name == "h6" or current.name == "h5":
-                featureText.append({"type": "heading", "text": str(current)})
-                current = current.findNext()
-
-            # Store feature text
-            else:
-                featureText.append({"type": "normal", "text": str(current)})
-
-        return featureText
-
     def getExpertise(self):
         return self.subclass.getExpertise()
 
@@ -328,6 +265,7 @@ class FifthEditionClass(Class):
 
         self.features = self.getAllClassFeatures(htmlFile)
         self.starting = self.getStarting(htmlFile)
+        self.subclassNames = self.getAllSubclassNames(htmlFile)
 
     def parseTable(self, html):
         levels = {}
@@ -352,8 +290,9 @@ class FifthEditionClass(Class):
                 if feature == "Ability Score Improvement":
                     continue
 
-                if feature == self.subclass + " feature":
-                    feature = self.subclass
+                # TODO: ADD this back?
+                # if feature == self.subclass + " feature":
+                #     feature = self.subclass
 
                 stripped.append(feature)
                 allFeatureNames.append(feature)
@@ -420,6 +359,21 @@ class FifthEditionClass(Class):
 
         return allFeatures
 
+    def getAllSubclassNames(self, classHtmlFile):
+        try:
+            subclassList = classHtmlFile.find("h3", text=self.subclass).findNext("ul")
+            subclasses = list(
+                filter(("\n").__ne__, [item.text for item in subclassList])
+            )
+
+        except:
+            error = "Could not find or parse subclass list for {cls}. Check that the list is present in the class md page".format(
+                cls=self.name
+            )
+            raise Exception(error)
+
+        return subclasses
+
     def getFeaturesToLevel(self):
         features = []
 
@@ -445,10 +399,12 @@ class FifthEditionClass(Class):
         current = soup.find("h3", text=feature)
 
         if current == None:
+            if feature == self.subclass + " feature":
+                return "This feature depends on your subclass choice"
             current = soup.find("h3", text=feature + " (Optional)")
 
         if current == None:
-            raise APIException("Could not find the '{}' feature".format(feature))
+            raise Exception("Could not find the '{}' feature".format(feature))
 
         featureText = []
         while current.findNext() and not current.findNext().name == "h3":

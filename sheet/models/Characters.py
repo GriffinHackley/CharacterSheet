@@ -66,7 +66,6 @@ class Character(models.Model):
         self.playerName = character.playerName
 
         try:
-
             self.charClass = json.loads(character.charClass)
             self.spellList = json.loads(character.spellList)
             self.race = json.loads(character.race)

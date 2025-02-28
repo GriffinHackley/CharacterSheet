@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Selector from "../shared/Selector";
 import "../../css/plan/ClassChoice.css";
 import CollapsibleTab from "../shared/collapsibleTab";
+import SubclassSelector from "./SubclassSelector";
 
 function getPrevMax(selectionList, index) {
   let selection = selectionList[index].name;
@@ -27,6 +28,76 @@ function getPrevMax(selectionList, index) {
   return max;
 }
 
+function getFeatures(max, end, currentSelection, allClasses, subclassChoice) {
+  let ret = [];
+  for (let level = max; level <= end; level++) {
+    let currentClass = currentSelection;
+    if (currentSelection.includes("-")) {
+      currentClass = currentClass.split("-")[0];
+    }
+    let arr = allClasses[currentClass]["features"][level];
+    ret = ret.concat(
+      arr.map(feature => {
+        if (feature.name === allClasses[currentClass]["subclassName"]) {
+          return (
+            <SubclassSelector
+              subclassName={allClasses[currentClass]["subclassName"]}
+              choice={subclassChoice}
+              allSubclasses={allClasses[currentClass]["allSubclasses"]}
+            />
+          );
+        }
+        return (
+          <CollapsibleTab
+            value={feature.name}
+            name={feature.name}
+            text={feature.text}
+            key={feature.key + "-" + level}
+          />
+        );
+      })
+    );
+  }
+
+  return ret;
+}
+
+function getSelectionList(selectionList, name, subclass, end, index) {
+  let ret = selectionList.map((selection, i) => {
+    if (i === index) {
+      if (name === "") {
+        name = selection.name;
+      }
+      return {
+        name: name,
+        subclass: subclass,
+        endLevel: end
+      };
+    } else {
+      return {
+        name: selection.name,
+        subclass: selection.subclass,
+        endLevel: selection.endLevel
+      };
+    }
+  });
+  return ret;
+}
+
+function getEndSelector(choice, allChoices, setEndLevel, index) {
+  return (
+    <Selector
+      className="endLevel"
+      type={"level"}
+      choice={choice}
+      allChoices={allChoices}
+      setFunction={setEndLevel}
+      showLabel={false}
+      index={index}
+    />
+  );
+}
+
 export default function ClassChoice({
   def,
   selectionList,
@@ -36,7 +107,7 @@ export default function ClassChoice({
 }) {
   let prevMax = getPrevMax(selectionList, index) + 1;
   if (def.level < prevMax) {
-    throw `Invalid class selections for ${def.name}`;
+    throw new Error(`Invalid class selections for ${def.name}`);
   }
   const [currentSelection, setCurrentSelection] = useState(def.name);
   const [startLevel, setStartLevel] = useState(prevMax);
@@ -44,30 +115,22 @@ export default function ClassChoice({
   const [endLevel, setEndLevel] = useState(def.endLevel);
   const [features, setFeatures] = useState([]);
 
-  let endSelector = (
-    <Selector
-      className="endLevel"
-      type={"level"}
-      choice={prevMax > endLevel ? prevMax : endLevel}
-      allChoices={[...Array(21).keys()].slice(prevMax)}
-      setFunction={setEndLevel}
-      showLabel={false}
-      index={index}
-    />
+  let endSelector = getEndSelector(
+    prevMax > endLevel ? prevMax : endLevel,
+    [...Array(21).keys()].slice(prevMax),
+    setEndLevel,
+    index
   );
 
   useEffect(
     () => {
-      const newList = selectionList.map((selection, i) => {
-        if (i === index) {
-          return {
-            name: currentSelection,
-            endLevel: getPrevMax(selectionList, index) + 1
-          };
-        } else {
-          return { name: selection.name, endLevel: selection.endLevel };
-        }
-      });
+      const newList = getSelectionList(
+        selectionList,
+        currentSelection,
+        "",
+        getPrevMax(selectionList, index) + 1,
+        index
+      );
       setSelectionList(newList);
     },
     [currentSelection]
@@ -75,16 +138,7 @@ export default function ClassChoice({
 
   useEffect(
     () => {
-      const newList = selectionList.map((selection, i) => {
-        if (i === index) {
-          return {
-            name: selection.name,
-            endLevel: endLevel
-          };
-        } else {
-          return { name: selection.name, endLevel: selection.endLevel };
-        }
-      });
+      const newList = getSelectionList(selectionList, "", "", endLevel, index);
       setSelectionList(newList);
     },
     [endLevel]
@@ -101,38 +155,23 @@ export default function ClassChoice({
         setEndLevel(newEnd);
       }
 
-      endSelector = (
-        <Selector
-          className="endLevel"
-          type={"level"}
-          choice={newEnd}
-          allChoices={[...Array(21).keys()].slice(newMax)}
-          setFunction={setEndLevel}
-          showLabel={false}
-          index={index}
-        />
+      endSelector = getEndSelector(
+        newEnd,
+        [...Array(21).keys()].slice(newMax),
+        setEndLevel,
+        index
       );
 
       if (currentSelection !== "default") {
-        let temp = [];
-        for (let level = newMax; level <= newEnd; level++) {
-          let currentClass = currentSelection;
-          if (currentSelection.includes("-")) {
-            currentClass = currentClass.split("-")[0];
-          }
-          let arr = allClasses[currentClass]["features"][level];
-          arr.forEach(feature => {
-            temp.push(
-              <CollapsibleTab
-                value={feature.name}
-                name={feature.name}
-                text={feature.text}
-                key={feature.name + "-" + currentClass}
-              />
-            );
-          });
-        }
-        setFeatures(temp);
+        setFeatures(
+          getFeatures(
+            newMax,
+            newEnd,
+            currentSelection,
+            allClasses,
+            "Artificer Specialist"
+          )
+        );
       }
     },
     [selectionList]
@@ -162,21 +201,6 @@ export default function ClassChoice({
           Tools: {starting["Tools"].defaults.join(", ")}
         </div>
       );
-
-      //   for (let type of Object.keys(starting["Tools"].choices)) {
-      //     for (let i = 0; i < starting["Tools"].choices[type]; i++) {
-      //       levelOne.push(
-      //         <Selector
-      //           className={"toolSelector"}
-      //           type={type}
-      //           choice={"default"}
-      //           allChoices={["Smith", "Woodcarvers", "Thieves Tools"]}
-      //           setFunction={() => {}}
-      //           index={i}
-      //         />
-      //       );
-      //     }
-      //   }
     }
   }
 
@@ -193,9 +217,7 @@ export default function ClassChoice({
           index={index}
         />
         <div className="levels">
-          <div>
-            {startLevel}
-          </div>
+          {startLevel}
           {"--->"}
           {endSelector}
         </div>

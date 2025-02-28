@@ -6,7 +6,12 @@ export default function Classes({ classes }) {
 
   let selections = [];
   for (const [name, value] of Object.entries(classes.choice)) {
-    selections.push({ name: name, endLevel: value.level });
+    let subclassName = classes.all[name]["subclassName"];
+    selections.push({
+      name: name,
+      subclass: value.options[subclassName].choice,
+      endLevel: value.level
+    });
   }
 
   const [selectionList, setSelectionList] = useState(selections);

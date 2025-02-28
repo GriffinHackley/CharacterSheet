@@ -6,6 +6,7 @@ import Background from "../plan/Background";
 import Stats from "../plan/Stats";
 import "../../css/pages/Plan.css";
 import Classes from "../plan/Classes";
+import setColors from "../../utils/setColors";
 
 let allSkills = [
   "Acrobatics",
@@ -108,6 +109,8 @@ const loadPlan = async (setLoading, setPlan, setAncestry, id) => {
   setPlan(plan);
 
   setAncestry(plan[0].races.choice);
+
+  setColors(plan[0].config.accentColors);
 
   setLoading(false);
 };

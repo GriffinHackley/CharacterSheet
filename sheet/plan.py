@@ -37,6 +37,8 @@ class Plan:
             "feats": self.character.feats,
         }
 
+        ret["config"] = self.character.getConfig()
+
         return ret
 
     def getClassLevels(self):
